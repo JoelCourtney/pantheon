@@ -7,28 +7,23 @@ name: Fireball
 # Type
 level: 3
 school: evocation
-available_to:
-  - sorcerer
-  - wizard
+
+# availableTo:
+#  - list of classes, subclasses, and feats
 
 # Casting properties
-casting_time: 1 action
+castingTime: 1 action
+ritual: false # true, false, or optional
+
+range: 150 ft
+
 verbal: true
 somatic: true
-material: a tiny ball of bat guano and sulfur
+material: true # delete line below if false
+materialDescription: a tiny ball of bat guano and sulfur
+
 duration: instant
-concentration: false
-
-# Effect placement
-range: 150 ft
-area: 20 ft
-area_type: sphere
-
-# Damage
-save_type: dexterity
-damage: 0 fire
-fail_damage: 8d6 + (spell_level - 3) * 1d6 fire
-success_damage: (8d6 + (spell_cast_level - spell_level) * 1d6) /- 2 fire
+concentration: false # true or false
 
 # Fun stuff
 description: >
@@ -36,9 +31,7 @@ description: >
   roar into an explosion of flame. Each creature in a 20-foot-radius sphere centered on that point must make a Dexterity
   saving throw. A target takes 8d6 fire damage on a failed save, or half as much damage on a successful one.
 
-
   The fire spreads around corners. It ignites flammable objects in the area that aren't being worn or carried.
-
 
   **At higher levels.** When you cast this spell using a spell slot of 4th level or higher, the damage increases
   by 1d6 for each slot level above 3rd.

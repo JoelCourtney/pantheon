@@ -16,63 +16,64 @@ grammar DnFree;
 
 }
 
-time_quantity returns [Quantity<Time> result]
+time_quantity returns [Time result]
     : time_component        { $result = $time_component.result; }
     | a=time_component bop=( '+' | '-' ) b=time_component
-        { $result = new QuantityBinary<Time>(QuantityBinaryOp.fromString($bop.getText()), $a.result, $b.result); }
+        { $result = new QuantityBinary(QuantityBinaryOp.fromString($bop.getText()), $a.result, $b.result); }
     | INSTANTANEOUS         { $result = TimeKeyword.INSTANTANEOUS; }
     | INDEFINITE            { $result = TimeKeyword.INDEFINITE; };
 
-time_component returns [Quantity<Time> result]
-    : e=expression u=time_unit  { $result = new QuantityComponent($e.result, $u.result); };
+time_component returns [Time result]
+    : e=expression u=time_unit  { $result = new TimeComponent($e.result, $u.result); };
 
-time_unit returns [Time result]
-    : ACTION        { $result = Time.ACTION; }
-    | BONUS_ACTION  { $result = Time.BONUS_ACTION; }
-    | REACTION      { $result = Time.REACTION; }
-    | SECOND        { $result = Time.SECOND; }
-    | MINUTE        { $result = Time.MINUTE; }
-    | HOUR          { $result = Time.HOUR; }
-    | DAY           { $result = Time.DAY; }
-    | SHORT_REST    { $result = Time.SHORT_REST; }
-    | LONG_REST     { $result = Time.LONG_REST; };
+time_unit returns [TimeUnit result]
+    : ACTION        { $result = TimeUnit.ACTION; }
+    | BONUS_ACTION  { $result = TimeUnit.BONUS_ACTION; }
+    | REACTION      { $result = TimeUnit.REACTION; }
+    | SECOND        { $result = TimeUnit.SECOND; }
+    | MINUTE        { $result = TimeUnit.MINUTE; }
+    | HOUR          { $result = TimeUnit.HOUR; }
+    | DAY           { $result = TimeUnit.DAY; }
+    | SHORT_REST    { $result = TimeUnit.SHORT_REST; }
+    | LONG_REST     { $result = TimeUnit.LONG_REST; };
 
-distance_quantity returns [Quantity<Distance> result]
+distance_quantity returns [Distance result]
     : distance_component                        { $result = $distance_component.result; }
     | a=distance_component bop=( '+' | '-' ) b=distance_component
-        { $result = new QuantityBinary<Distance>(QuantityBinaryOp.fromString($bop.getText()), $a.result, $b.result); }
-    | TOUCH { $result = DistanceKeyword.TOUCH; };
+        { $result = new QuantityBinary(QuantityBinaryOp.fromString($bop.getText()), $a.result, $b.result); }
+    | TOUCH { $result = DistanceKeyword.TOUCH; }
+    | SELF { $result = DistanceKeyword.SELF; };
 
-distance_component returns [Quantity<Distance> result]
-    : e=expression u=distance_unit  { $result = new QuantityComponent($e.result, $u.result); };
+distance_component returns [Distance result]
+    : e=expression u=distance_unit  { $result = new DistanceComponent($e.result, $u.result); };
 
-distance_unit returns [Distance result]
-    : FOOT      { $result = Distance.FOOT; }
-    | MILE      { $result = Distance.MILE; }
-    | SPACE     { $result = Distance.SPACE; };
+distance_unit returns [DistanceUnit result]
+    : FOOT      { $result = DistanceUnit.FOOT; }
+    | MILE      { $result = DistanceUnit.MILE; }
+    | SPACE     { $result = DistanceUnit.SPACE; };
 
-damage_quantity returns [Quantity<Damage> result]
+damage_quantity returns [Damage result]
     : damage_component                        { $result = $damage_component.result; }
     | a=damage_component bop=( '+' | '-' ) b=damage_component
-        { $result = new QuantityBinary<Damage>(QuantityBinaryOp.fromString($bop.getText()), $a.result, $b.result); };
+        { $result = new QuantityBinary(QuantityBinaryOp.fromString($bop.getText()), $a.result, $b.result); };
 
-damage_component returns [Quantity<Damage> result]
-    : e=expression u=damage_unit    { $result = new QuantityComponent($e.result, $u.result); };
+damage_component returns [Damage result]
+    : e=expression u=damage_unit    { $result = new DamageComponent($e.result, $u.result); };
 
-damage_unit returns [Damage result]
-    : ACID          { $result = Damage.ACID; }
-    | BLUDGEONING   { $result = Damage.BLUDGEONING; }
-    | COLD          { $result = Damage.COLD; }
-    | FIRE          { $result = Damage.FIRE; }
-    | FORCE         { $result = Damage.FORCE; }
-    | LIGHTNING     { $result = Damage.LIGHTNING; }
-    | NECROTIC      { $result = Damage.NECROTIC; }
-    | PIERCING      { $result = Damage.PIERCING; }
-    | POISON        { $result = Damage.POISON; }
-    | PSYCHIC       { $result = Damage.PSYCHIC; }
-    | RADIANT       { $result = Damage.RADIANT; }
-    | SLASHING      { $result = Damage.SLASHING; }
-    | THUNDER       { $result = Damage.THUNDER; };
+damage_unit returns [DamageUnit result]
+    : ACID          { $result = DamageUnit.ACID; }
+    | BLUDGEONING   { $result = DamageUnit.BLUDGEONING; }
+    | COLD          { $result = DamageUnit.COLD; }
+    | FIRE          { $result = DamageUnit.FIRE; }
+    | FORCE         { $result = DamageUnit.FORCE; }
+    | LIGHTNING     { $result = DamageUnit.LIGHTNING; }
+    | NECROTIC      { $result = DamageUnit.NECROTIC; }
+    | PIERCING      { $result = DamageUnit.PIERCING; }
+    | POISON        { $result = DamageUnit.POISON; }
+    | PSYCHIC       { $result = DamageUnit.PSYCHIC; }
+    | RADIANT       { $result = DamageUnit.RADIANT; }
+    | SLASHING      { $result = DamageUnit.SLASHING; }
+    | THUNDER       { $result = DamageUnit.THUNDER; };
 
 expression returns [Expression result]
     : l=expression bop=( '*' | '/' | '/+' | '/-' ) r=expression
@@ -147,6 +148,7 @@ SPACE : S P (A C E S?)?;
 INSTANTANEOUS : I N S T A N T (A N E O U S)?;
 INDEFINITE : I N (D E)? F I N I T E;
 TOUCH : T O U C H;
+SELF : S E L F;
 
 NUMBER : DIGIT+;
 IDENTIFIER : LETTER (LETTER | DIGIT)*;
