@@ -6,6 +6,23 @@ interface Quantity<U: Unit> {
     override fun toString(): String
 }
 
+enum class TimeKeyword(private val symbol: String) : Quantity<Time> {
+    INSTANTANEOUS("instantaneous"),
+    INDEFINITE("indefinite");
+
+    override fun toString(): String {
+        return symbol
+    }
+}
+
+enum class DistanceKeyword(private val symbol: String) : Quantity<Distance> {
+    TOUCH("touch");
+
+    override fun toString(): String {
+        return symbol
+    }
+}
+
 data class QuantityComponent<U: Unit>(val exp: Expression, val unit: U): Quantity<U> {
     override fun toString(): String {
         return exp.toString() + " " + unit.symbol

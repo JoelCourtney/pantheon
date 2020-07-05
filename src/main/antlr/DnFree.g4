@@ -17,9 +17,11 @@ grammar DnFree;
 }
 
 time_quantity returns [Quantity<Time> result]
-    : time_component                        { $result = $time_component.result; }
+    : time_component        { $result = $time_component.result; }
     | a=time_component bop=( '+' | '-' ) b=time_component
-        { $result = new QuantityBinary<Time>(QuantityBinaryOp.from_string($bop.getText()), $a.result, $b.result); };
+        { $result = new QuantityBinary<Time>(QuantityBinaryOp.from_string($bop.getText()), $a.result, $b.result); }
+    | INSTANTANEOUS         { $result = TimeKeyword.INSTANTANEOUS; }
+    | INDEFINITE            { $result = TimeKeyword.INDEFINITE; };
 
 time_component returns [Quantity<Time> result]
     : e=expression u=time_unit  { $result = new QuantityComponent($e.result, $u.result); };
@@ -38,7 +40,8 @@ time_unit returns [Time result]
 distance_quantity returns [Quantity<Distance> result]
     : distance_component                        { $result = $distance_component.result; }
     | a=distance_component bop=( '+' | '-' ) b=distance_component
-        { $result = new QuantityBinary<Distance>(QuantityBinaryOp.from_string($bop.getText()), $a.result, $b.result); };
+        { $result = new QuantityBinary<Distance>(QuantityBinaryOp.from_string($bop.getText()), $a.result, $b.result); }
+    | TOUCH { $result = DistanceKeyword.TOUCH; };
 
 distance_component returns [Quantity<Distance> result]
     : e=expression u=distance_unit  { $result = new QuantityComponent($e.result, $u.result); };
@@ -114,7 +117,9 @@ fragment Y : 'y' | 'Y';
 fragment Z : 'z' | 'Z';
 
 ACTION : A C T I O N S?;
-BONUS_ACTION : B O N U S ' ' A C T I O N S?;
+BONUS_ACTION
+    : B O N U S ' ' A C T I O N S?
+    | B O N L E S S ' ' A C T I O N S?;
 REACTION : R E A C T I O N S?;
 SECOND : S E C (O N D)? S?;
 MINUTE : M I N (U T E)? S?;
@@ -135,9 +140,12 @@ PSYCHIC : P S Y C H I C;
 RADIANT : R A D I A N T;
 SLASHING : S L A S H I N G;
 THUNDER : T H U N D E R;
-FOOT : F (E E | O O) T;
-MILE : M I L E S?;
-SPACE : S P A C E S?;
+FOOT : F (E E | O O)? T;
+MILE : M I (L E S?)?;
+SPACE : S P (A C E S?)?;
+INSTANTANEOUS : I N S T A N T (A N E O U S)?;
+INDEFINITE : I N (D E)? F I N T E;
+TOUCH : T O U C H;
 
 NUMBER : DIGIT+;
 IDENTIFIER : LETTER (LETTER | DIGIT)*;
