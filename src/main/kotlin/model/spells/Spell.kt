@@ -1,5 +1,6 @@
 package model.spells
 
+import model.effects.Effect
 import model.quantities.*
 
 data class Spell(
@@ -28,5 +29,7 @@ data class Spell(
 ) {
     val `available to`: Array<String> = arrayOf()
     val `material description`: String = ""
+
+    val effects: Array<Effect> = arrayOf()
 }
 
