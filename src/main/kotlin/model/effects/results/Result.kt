@@ -1,5 +1,7 @@
 package model.effects.results
 
-import model.quantities.*
+import model.Character
 
-interface Result
+interface Result {
+    fun apply(c: Character)
+}

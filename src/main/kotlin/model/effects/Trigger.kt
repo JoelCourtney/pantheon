@@ -1,5 +1,5 @@
 package model.effects
 
-data class Trigger(
-    val name: String
-)
+sealed class Trigger {
+    class TakeDamageTrigger : Trigger()
+}

@@ -1,3 +1,7 @@
 package model.effects.results
 
-class NoOpResult : Result
+import model.Character
+
+object NoOpResult : Result {
+    override fun apply(c: Character) {}
+}
