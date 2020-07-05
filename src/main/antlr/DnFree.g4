@@ -4,18 +4,6 @@ grammar DnFree;
     import model.quantities.*;
 }
 
-@lexer::header {
-
-}
-
-@parser::members {
-
-}
-
-@lexer::members {
-
-}
-
 time_quantity returns [Time result]
     : time_component        { $result = $time_component.result; }
     | a=time_component bop=( '+' | '-' ) b=time_component
