@@ -8,11 +8,11 @@ name: Fireball
 level: 3
 school: evocation
 
-# availableTo:
+# available to:
 #  - list of classes, subclasses, and feats
 
 # Casting properties
-castingTime: 1 action
+casting time: 1 action
 ritual: false # true, false, or optional
 
 range: 150 feet
@@ -20,7 +20,7 @@ range: 150 feet
 verbal: true
 somatic: true
 material: true # delete line below if false
-materialDescription: a tiny ball of bat guano and sulfur
+material description: a tiny ball of bat guano and sulfur
 
 duration: instant
 concentration: false # true or false
@@ -36,5 +36,18 @@ description: >
   **At higher levels.** When you cast this spell using a spell slot of 4th level or higher, the damage increases
   by 1d6 for each slot level above 3rd.
 
-displayInCombat: true
-displayInRoleplay: false
+display in combat: true
+display in roleplay: false
+
+#effects:
+#  - triggers:
+#      - finished casting
+#    conditions:
+#      - effected self
+#    saving throws:
+#      - type: dexerity
+#        fail:
+#          - damage: (8d6 + (cast_level - spell_level)*1d6) /- 2 fire
+#        succeed:
+#          - damage: 8d6 + (cast_level - spell_level)*1d6 fire
+#        half damage on succeed: true

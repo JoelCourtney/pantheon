@@ -62,12 +62,12 @@ INDEFINITE : I N (D E)? F I N I T E;
 TOUCH : T O U C H;
 SELF : S E L F;
 
-abilities
-conditions
-skills
-proficiencies free text
-languages free text
-passives
+//abilities
+//conditions
+//skills
+//proficiencies free text
+//languages free text
+//passives
 
 
 NUMBER : DIGIT+;

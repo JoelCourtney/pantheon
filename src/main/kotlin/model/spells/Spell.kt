@@ -8,7 +8,7 @@ data class Spell(
     val level: Int,
     val school: SpellSchool,
 
-    val castingTime: Time,
+    val `casting time`: Time,
     val ritual: Boolean,
 
     val range: Distance,
@@ -22,11 +22,11 @@ data class Spell(
 
     val description: String,
 
-    val displayInCombat: Boolean,
-    val displayInRoleplay: Boolean
+    val `display in combat`: Boolean,
+    val `display in roleplay`: Boolean
 
 ) {
-    val availableTo: Array<String> = arrayOf()
-    val materialDescription: String = ""
+    val `available to`: Array<String> = arrayOf()
+    val `material description`: String = ""
 }
 

@@ -12,6 +12,14 @@ data class DamageComponent(val exp: Expression, val unit: DamageUnit): Damage {
     }
 }
 
+enum class DamageKeyword(private val symbol: String) : Damage {
+    NONE("none");
+
+    override fun toString(): String {
+        return symbol
+    }
+}
+
 enum class DamageUnit(override var symbol: String) : Unit {
     ACID("acid"),
     BLUDGEONING("bludgeoning"),
