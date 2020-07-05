@@ -1,4 +1,4 @@
-package quantities
+package model.quantities
 
 import java.lang.Exception
 

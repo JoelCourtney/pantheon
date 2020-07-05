@@ -1,7 +1,7 @@
 grammar DnFree;
 
 @parser::header {
-    import quantities.*;
+    import model.quantities.*;
 }
 
 @lexer::header {

@@ -15,7 +15,7 @@ school: evocation
 castingTime: 1 action
 ritual: false # true, false, or optional
 
-range: 150 ft
+range: 150 feet
 
 verbal: true
 somatic: true

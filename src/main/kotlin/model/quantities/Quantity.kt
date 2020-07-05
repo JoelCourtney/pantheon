@@ -1,8 +1,5 @@
-package quantities
+package model.quantities
 
-import com.fasterxml.jackson.core.JsonParser
-import com.fasterxml.jackson.databind.DeserializationContext
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer
 import java.lang.Exception
 
 interface Quantity

@@ -1,6 +1,6 @@
 package model.spells
 
-import quantities.*
+import model.quantities.*
 
 data class Spell(
     val name: String,

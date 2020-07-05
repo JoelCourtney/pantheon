@@ -1,6 +1,6 @@
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
-import quantities.*
+import model.quantities.*
 
 class ParseWrapper {
     companion object {

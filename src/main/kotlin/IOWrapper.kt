@@ -3,7 +3,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import model.spells.SpellSchool
 import model.spells.SpellSchoolDeserializer
-import quantities.*
+import model.quantities.*
 import java.nio.file.FileSystems
 import java.nio.file.Files
 
