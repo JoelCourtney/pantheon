@@ -1,4 +1,4 @@
-lexer grammar DnLexer;
+lexer grammar DnFLexer;
 
 fragment DIGIT : [0-9];
 fragment LETTER : [A-Z] | [a-z] | '_';
@@ -62,6 +62,14 @@ INDEFINITE : I N (D E)? F I N I T E;
 TOUCH : T O U C H;
 SELF : S E L F;
 
+abilities
+conditions
+skills
+proficiencies free text
+languages free text
+passives
+
+
 NUMBER : DIGIT+;
 IDENTIFIER : LETTER (LETTER | DIGIT)*;
 DICE : DIGIT+ D DIGIT+;
@@ -73,5 +81,7 @@ DIVIDE_DOWN : '/' | '/-';
 DIVIDE_UP : '/+';
 OPEN_PAREN : '(';
 CLOSE_PAREN : ')';
+EQUAL : '=';
+COMMA : ',';
 
 WS : [ \t\u000c]+ -> skip;
