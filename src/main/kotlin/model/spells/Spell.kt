@@ -20,7 +20,10 @@ data class Spell(
     val duration: Time,
     val concentration: Boolean,
 
-    val description: String
+    val description: String,
+
+    val displayInCombat: Boolean,
+    val displayInRoleplay: Boolean
 
 ) {
     val availableTo: Array<String> = arrayOf()
