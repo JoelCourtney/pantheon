@@ -4,11 +4,11 @@ import model.quantities.*
 
 class ParseWrapper {
     companion object {
-        private fun makeParser(s: String): DnFQuantityParser {
+        private fun makeParser(s: String): DnFParser {
             val input = CharStreams.fromString(s)
-            val lexer = DnFQuantityLexer(input)
+            val lexer = DnFLexer(input)
             val tokens = CommonTokenStream(lexer)
-            return DnFQuantityParser(tokens)
+            return DnFParser(tokens)
         }
 
         fun parseTime(s: String): Time {

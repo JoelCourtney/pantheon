@@ -1,4 +1,4 @@
-lexer grammar DnFLexer;
+lexer grammar DnLexer;
 
 fragment DIGIT : [0-9];
 fragment LETTER : [A-Z] | [a-z] | '_';

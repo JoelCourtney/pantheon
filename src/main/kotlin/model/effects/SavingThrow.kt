@@ -1,5 +1,7 @@
 package model.effects
 
+import model.effects.results.*
+
 class SavingThrow(
     val type: SavingThrowType,
     val fail: Array<Result>

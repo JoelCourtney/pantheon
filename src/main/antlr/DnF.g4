@@ -1,6 +1,6 @@
-grammar DnFQuantity;
+grammar DnF;
 
-import DnFLexer;
+import DnLexer;
 
 @parser::header {
     import model.quantities.*;
