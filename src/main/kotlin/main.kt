@@ -1,14 +1,14 @@
+import IOWrapper.Companion.read
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
+import com.fasterxml.jackson.module.kotlin.KotlinModule
 import model.*
-import org.antlr.runtime.ANTLRInputStream
-import org.antlr.v4.runtime.*
-import quantities.*
-import quantities.Unit
-import java.lang.Exception
+import java.nio.file.FileSystems
+import java.nio.file.Files
+import java.nio.file.Path
 
 fun main() {
-    println(ParseWrapper.parseTime("infinite"))
-    println(ParseWrapper.parseDamage(
-        "(8d6 + (spell_cast_level - spell_level) * 1d6) /- 2 fire"
-    ))
+    val spell = read<Spell>(".", "spell.yaml")
+    println(spell)
 }
 

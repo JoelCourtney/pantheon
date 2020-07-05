@@ -1,4 +1,9 @@
 package model
 
-class Spell {
+data class Spell(
+    val name: String,
+
+    val level: Int,
+    val school: String = "Nope"
+) {
 }
