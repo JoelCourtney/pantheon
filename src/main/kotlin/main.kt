@@ -6,6 +6,9 @@ import quantities.Unit
 import java.lang.Exception
 
 fun main() {
-    println(ParseWrapper.parseDamage("1d345 -2 fire + 3 cold"))
+    println(ParseWrapper.parseTime("infinite"))
+    println(ParseWrapper.parseDamage(
+        "(8d6 + (spell_cast_level - spell_level) * 1d6) /- 2 fire"
+    ))
 }
 

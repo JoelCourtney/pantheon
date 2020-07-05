@@ -79,6 +79,7 @@ expression returns [Expression result]
         { $result = new ExpressionBinary(ExpressionBinaryOp.from_string($bop.getText()), $l.result, $r.result); }
     | l=expression bop=( '+' | '-' ) r=expression
         { $result = new ExpressionBinary(ExpressionBinaryOp.from_string($bop.getText()), $l.result, $r.result); }
+    | '(' e=expression ')'  { $result = $e.result; }
     | n=NUMBER { $result = new NumberLiteral($n.getText()); }
     | d=DICE
         {   String s = $d.getText();
