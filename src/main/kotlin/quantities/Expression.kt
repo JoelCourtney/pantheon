@@ -24,7 +24,7 @@ enum class ExpressionBinaryOp(val symbol: String) {
 
 
     companion object {
-        @JvmStatic fun from_string(s: String): ExpressionBinaryOp {
+        @JvmStatic fun fromString(s: String): ExpressionBinaryOp {
             return when (s) {
                 "*" -> TIMES
                 "/", "/-" -> DIVIDE_DOWN

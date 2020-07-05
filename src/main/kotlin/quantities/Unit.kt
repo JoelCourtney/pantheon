@@ -37,7 +37,3 @@ enum class Damage(override var symbol: String) : Unit {
     SLASHING("slashing"),
     THUNDER("thunder");
 }
-
-enum class Unitless(override var symbol: String) : Unit {
-    UNITLESS("")
-}

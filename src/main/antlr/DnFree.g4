@@ -19,7 +19,7 @@ grammar DnFree;
 time_quantity returns [Quantity<Time> result]
     : time_component        { $result = $time_component.result; }
     | a=time_component bop=( '+' | '-' ) b=time_component
-        { $result = new QuantityBinary<Time>(QuantityBinaryOp.from_string($bop.getText()), $a.result, $b.result); }
+        { $result = new QuantityBinary<Time>(QuantityBinaryOp.fromString($bop.getText()), $a.result, $b.result); }
     | INSTANTANEOUS         { $result = TimeKeyword.INSTANTANEOUS; }
     | INDEFINITE            { $result = TimeKeyword.INDEFINITE; };
 
@@ -40,7 +40,7 @@ time_unit returns [Time result]
 distance_quantity returns [Quantity<Distance> result]
     : distance_component                        { $result = $distance_component.result; }
     | a=distance_component bop=( '+' | '-' ) b=distance_component
-        { $result = new QuantityBinary<Distance>(QuantityBinaryOp.from_string($bop.getText()), $a.result, $b.result); }
+        { $result = new QuantityBinary<Distance>(QuantityBinaryOp.fromString($bop.getText()), $a.result, $b.result); }
     | TOUCH { $result = DistanceKeyword.TOUCH; };
 
 distance_component returns [Quantity<Distance> result]
@@ -54,7 +54,7 @@ distance_unit returns [Distance result]
 damage_quantity returns [Quantity<Damage> result]
     : damage_component                        { $result = $damage_component.result; }
     | a=damage_component bop=( '+' | '-' ) b=damage_component
-        { $result = new QuantityBinary<Damage>(QuantityBinaryOp.from_string($bop.getText()), $a.result, $b.result); };
+        { $result = new QuantityBinary<Damage>(QuantityBinaryOp.fromString($bop.getText()), $a.result, $b.result); };
 
 damage_component returns [Quantity<Damage> result]
     : e=expression u=damage_unit    { $result = new QuantityComponent($e.result, $u.result); };
@@ -76,9 +76,9 @@ damage_unit returns [Damage result]
 
 expression returns [Expression result]
     : l=expression bop=( '*' | '/' | '/+' | '/-' ) r=expression
-        { $result = new ExpressionBinary(ExpressionBinaryOp.from_string($bop.getText()), $l.result, $r.result); }
+        { $result = new ExpressionBinary(ExpressionBinaryOp.fromString($bop.getText()), $l.result, $r.result); }
     | l=expression bop=( '+' | '-' ) r=expression
-        { $result = new ExpressionBinary(ExpressionBinaryOp.from_string($bop.getText()), $l.result, $r.result); }
+        { $result = new ExpressionBinary(ExpressionBinaryOp.fromString($bop.getText()), $l.result, $r.result); }
     | '(' e=expression ')'  { $result = $e.result; }
     | n=NUMBER { $result = new NumberLiteral($n.getText()); }
     | d=DICE

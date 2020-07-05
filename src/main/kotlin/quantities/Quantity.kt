@@ -42,7 +42,7 @@ enum class QuantityBinaryOp(val symbol: String) {
     SUBTRACT("-");
 
     companion object {
-        @JvmStatic fun from_string(s: String): QuantityBinaryOp {
+        @JvmStatic fun fromString(s: String): QuantityBinaryOp {
             return when(s) {
                 "+" -> ADD
                 "-" -> SUBTRACT
