@@ -1,0 +1,14 @@
+prerequisite:
+  class: # remove if applicable to all
+    - fighter
+    - barbarian
+    - warlock
+  ability_score: # error if more than one, remove if none
+    strength: 15
+
+abilities:
+  - time: reaction
+    uses: level + 2
+    regain_uses:
+      - when: dawn
+        amount: strength_mod min 1
