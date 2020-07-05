@@ -3,7 +3,7 @@ package quantities
 interface Unit
 
 enum class Distance : Unit {
-    FEET,
+    FOOT,
     MILE,
     SPACE
 }

@@ -1,7 +1,7 @@
-grammar quantities;
+grammar Quantities;
 
 @parser::header {
-
+    import quantities.*;
 }
 
 @lexer::header {
@@ -18,11 +18,11 @@ grammar quantities;
 
 time_quantity returns [Quantity<Time> result]
     : time_component                        { $result = $time_component.result; }
-    | a=time_component '+' b=time_component { $result = ($a.result).add($b.result); }
-    | time_component '-' time_component     { $result = $a.result.subtract($b.result); };
+    | a=time_component bop=( '+' | '-' ) b=time_component
+        { $result = new QuantityBinary<Time>(QuantityBinaryOp.from_string($bop.getText()), $a.result, $b.result); };
 
 time_component returns [Quantity<Time> result]
-    : e=expression u=time_unit;
+    : e=expression u=time_unit  { $result = new QuantityComponent($e.result, $u.result); };
 
 time_unit returns [Time result]
     : ACTION        { $result = Time.ACTION; }
@@ -37,11 +37,11 @@ time_unit returns [Time result]
 
 distance_quantity returns [Quantity<Distance> result]
     : distance_component                        { $result = $distance_component.result; }
-    | a=distance_component '+' b=distance_component { $result = ($a.result).add($b.result); }
-    | distance_component '-' distance_component     { $result = $a.result.subtract($b.result); };
+    | a=distance_component bop=( '+' | '-' ) b=distance_component
+        { $result = new QuantityBinary<Distance>(QuantityBinaryOp.from_string($bop.getText()), $a.result, $b.result); };
 
 distance_component returns [Quantity<Distance> result]
-    : e=expression u=distance_unit;
+    : e=expression u=distance_unit  { $result = new QuantityComponent($e.result, $u.result); };
 
 distance_unit returns [Distance result]
     : FOOT      { $result = Distance.FOOT; }
@@ -50,11 +50,11 @@ distance_unit returns [Distance result]
 
 damage_quantity returns [Quantity<Damage> result]
     : damage_component                        { $result = $damage_component.result; }
-    | a=damage_component '+' b=damage_component { $result = ($a.result).add($b.result); }
-    | damage_component '-' damage_component     { $result = $a.result.subtract($b.result); };
+    | a=damage_component bop=( '+' | '-' ) b=damage_component
+        { $result = new QuantityBinary<Damage>(QuantityBinaryOp.from_string($bop.getText()), $a.result, $b.result); };
 
 damage_component returns [Quantity<Damage> result]
-    : e=expression u=damage_unit;
+    : e=expression u=damage_unit    { $result = new QuantityComponent($e.result, $u.result); };
 
 damage_unit returns [Damage result]
     : ACID          { $result = Damage.ACID; }
@@ -73,12 +73,13 @@ damage_unit returns [Damage result]
 
 expression returns [Expression result]
     : l=expression bop=( '*' | '/' | '/+' | '/-' ) r=expression
-        { $result = BinaryOp(Binary.from_string($bop), $l, $r); }
+        { $result = new ExpressionBinary(ExpressionBinaryOp.from_string($bop.toString()), $l.result, $r.result); }
     | l=expression bop=( '+' | '-' ) r=expression
-        { $result = BinaryOp(Binary.from_string($bop), $l, $r); }
-    | n=NUMBER { $result = Number($n); }
-    | d=DICE { $result = Dice($d); }
-    | i=IDENTIFIER { $result = Identifier($i); };
+        { $result = new ExpressionBinary(ExpressionBinaryOp.from_string($bop.toString()), $l.result, $r.result); }
+    | n=NUMBER { $result = new NumberLiteral($n.getText()); }
+    | n=NUMBER ( 'd' | 'D' ) d=NUMBER
+        { $result = new Dice($n.getText(), $d.getText()); }
+    | i=IDENTIFIER { $result = new Identifier($i.getText()); };
 
 fragment DIGIT : [0-9];
 fragment LETTER : [A-Z] | [a-z] | '_';
@@ -136,9 +137,7 @@ FOOT : F (E E | O O) T;
 MILE : M I L E S?;
 SPACE : S P A C E S?;
 
-
 NUMBER : DIGIT+;
-DICE : DIGIT+ D DIGIT+;
 IDENTIFIER : LETTER (LETTER | DIGIT)*;
 
 WS : [ \t\u000c]+ -> skip;
