@@ -144,7 +144,7 @@ FOOT : F (E E | O O)? T;
 MILE : M I (L E S?)?;
 SPACE : S P (A C E S?)?;
 INSTANTANEOUS : I N S T A N T (A N E O U S)?;
-INDEFINITE : I N (D E)? F I N T E;
+INDEFINITE : I N (D E)? F I N I T E;
 TOUCH : T O U C H;
 
 NUMBER : DIGIT+;
