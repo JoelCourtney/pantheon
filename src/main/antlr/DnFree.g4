@@ -1,4 +1,4 @@
-grammar Quantities;
+grammar DnFree;
 
 @parser::header {
     import quantities.*;
@@ -73,12 +73,14 @@ damage_unit returns [Damage result]
 
 expression returns [Expression result]
     : l=expression bop=( '*' | '/' | '/+' | '/-' ) r=expression
-        { $result = new ExpressionBinary(ExpressionBinaryOp.from_string($bop.toString()), $l.result, $r.result); }
+        { $result = new ExpressionBinary(ExpressionBinaryOp.from_string($bop.getText()), $l.result, $r.result); }
     | l=expression bop=( '+' | '-' ) r=expression
-        { $result = new ExpressionBinary(ExpressionBinaryOp.from_string($bop.toString()), $l.result, $r.result); }
+        { $result = new ExpressionBinary(ExpressionBinaryOp.from_string($bop.getText()), $l.result, $r.result); }
     | n=NUMBER { $result = new NumberLiteral($n.getText()); }
-    | n=NUMBER ( 'd' | 'D' ) d=NUMBER
-        { $result = new Dice($n.getText(), $d.getText()); }
+    | d=DICE
+        {   String s = $d.getText();
+            String[] parts = s.toLowerCase().split("d");
+            $result = new Dice(parts[0], parts[1]); }
     | i=IDENTIFIER { $result = new Identifier($i.getText()); };
 
 fragment DIGIT : [0-9];
@@ -139,5 +141,7 @@ SPACE : S P A C E S?;
 
 NUMBER : DIGIT+;
 IDENTIFIER : LETTER (LETTER | DIGIT)*;
+DICE : DIGIT+ D DIGIT+;
+
 
 WS : [ \t\u000c]+ -> skip;
