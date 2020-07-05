@@ -1,4 +1,7 @@
 package model.equipment
 
-class Item {
+import model.EffectGenerator
+
+abstract class Item : EffectGenerator {
+    val name: String = ""
 }
