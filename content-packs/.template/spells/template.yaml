@@ -1,0 +1,19 @@
+#######################
+# Template for spells #
+#######################
+
+name: Fireball
+
+# Type
+level: 3
+school: evocation
+
+# Casting properties
+casting_time: 1 action
+verbal: true
+somatic: true
+material: a tiny ball of bat guano and sulfur
+range: 150 ft
+duration: instant
+
+#
