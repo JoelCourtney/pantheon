@@ -39,3 +39,14 @@ description: >
 display in combat: true
 display in roleplay: false
 
+results:
+  - conditions:
+      - effected by this spell
+    condition type: any
+    results:
+      - saving throw: dexterity
+        dc: character$spellSaveDC
+        fail results:
+          - take damage: 8d6 + (spell$cast_level - spell$level)*1d6 fire
+        success results:
+          - take damage: (8d6 + (spell$cast_level - spell$level)*1d6) /- 2 fire

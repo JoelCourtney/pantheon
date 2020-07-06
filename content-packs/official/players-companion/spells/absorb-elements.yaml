@@ -52,15 +52,23 @@ display in roleplay: false
 #        half damage on succeed: true
 results:
   - triggers:
-      - take damage: [acid, cold, fire, lightning, thunder]
+      - take damage type: [acid, cold, fire, lightning, thunder]
+    trigger type: any
+    limited triggers: 1
     results:
-      - gain resistance: trigger$damageType
-        lifetime: start of turn
-      - spawn: result
-        triggers:
-          - deal damage: melee
-        consecutive lifetime:
+      - timers:
+          - start of turn
+        timer type: consecutive
+        results:
+          gain resistance: parent$damageType
+      - timers:
           - start of turn
           - end of turn
+        timer type: consecutive
         results:
-          - deal extra damage: spell$cast_level * 1d6 trigger$damageType
+          triggers:
+            - deal damage type: [melee]
+          trigger type: any
+          limited triggers: 1
+          results:
+            - deal extra damage: spell$cast_level * 1d6 trigger$damageType

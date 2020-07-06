@@ -33,7 +33,15 @@ enum class DamageUnit(override var symbol: String) : Unit {
     PSYCHIC("psychic"),
     RADIANT("radiant"),
     SLASHING("slashing"),
-    THUNDER("thunder");
+    THUNDER("thunder"),
+    MELEE("melee"),
+    RANGED("ranged");
+}
+
+class DamageUnitDeserializer : StdDeserializer<DamageUnit>(DamageUnit::class.java) {
+    override fun deserialize(p: JsonParser?, ctxt: DeserializationContext?): DamageUnit {
+        return DamageUnit.valueOf(IOWrapper.enumString(p))
+    }
 }
 
 class DamageDeserializer : StdDeserializer<Damage>(Damage::class.java) {

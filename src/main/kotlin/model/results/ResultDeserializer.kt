@@ -11,18 +11,19 @@ class ResultDeserializer : StdDeserializer<Result>(Result::class.java) {
     override fun deserialize(p: JsonParser?, ctxt: DeserializationContext?): Result {
         val tn = p!!.readValueAsTree<TreeNode>()
         val keys = tn.fieldNames().asSequence().toList()
-        if (keys.size != 1) {
-            throw IllegalArgumentException("Only one key/value pair per result is allowed.")
-        }
-        val key = keys[0]
-        val value = (tn.get(key) as ValueNode).asText()
-        return when (key) {
-            "damage" -> TakeDamageResult(ParseWrapper.parseDamage(value))
-            "do" -> when (value) {
-                "nothing" -> NoOpResult
-                else -> throw IllegalArgumentException("Unrecognized do command.")
-            }
+        val targetClass = when (keys[0].toLowerCase()) {
+            "triggers" -> TriggeredResult::class.java
+            "conditions" -> ConditionedResult::class.java
+            "timers" -> TimedResult::class.java
+            "saving throw" -> SavingThrowResult::class.java
+            "take damage" -> TakeDamageResult::class.java
+            "deal extra damage" -> DealExtraDamageResult::class.java
             else -> throw IllegalArgumentException("Unrecognized result key.")
         }
+        val parser = tn.traverse()
+        parser.codec = IOWrapper.mapper
+        parser.nextToken()
+        val result = ctxt!!.readValue(parser, targetClass)
+        return result
     }
 }

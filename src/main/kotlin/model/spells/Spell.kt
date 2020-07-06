@@ -1,6 +1,7 @@
 package model.spells
 
 import model.quantities.*
+import model.results.Result
 
 data class Spell(
     val name: String,
@@ -28,5 +29,9 @@ data class Spell(
 ) {
     val `available to`: Array<String> = arrayOf()
     val `material description`: String = ""
+
+    val results: Array<Result> = arrayOf()
+
+    val `reaction to`: String = ""
 }
 

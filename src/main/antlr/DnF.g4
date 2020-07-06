@@ -77,4 +77,5 @@ expression returns [Expression result]
         {   String s = $d.getText();
             String[] parts = s.toLowerCase().split("d");
             $result = new Dice(parts[0], parts[1]); }
-    | i=IDENTIFIER { $result = new Identifier($i.getText()); };
+    | o=IDENTIFIER DOLLAR i=IDENTIFIER { $result = new Identifier($o.getText(), $i.getText()); }
+    | i=IDENTIFIER { $result = new Identifier($i.getText(), null); };

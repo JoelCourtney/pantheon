@@ -22,5 +22,9 @@ class ParseWrapper {
         fun parseDamage(s: String): Damage {
             return makeParser(s).damage_quantity().result
         }
+
+        fun parseExpression(s: String): Expression {
+            return makeParser(s).expression().result
+        }
     }
 }

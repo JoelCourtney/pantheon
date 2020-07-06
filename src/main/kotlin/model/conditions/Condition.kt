@@ -1,5 +1,6 @@
 package model.conditions
 
-data class Condition(
-    val name: String
-)
+sealed class Condition {
+    class EffectedByThisSpellCondition() : Condition()
+}
+
