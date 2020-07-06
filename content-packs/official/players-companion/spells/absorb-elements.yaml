@@ -1,0 +1,66 @@
+#######################
+# Template for spells #
+#######################
+
+name: Absorb Elements
+
+# Type
+level: 1
+school: abjuration
+
+# available to:
+#  - list of classes, subclasses, and feats
+
+# Casting properties
+casting time: 1 reaction
+reaction to: immediately before taking acid, cold, fire, lightning, or thunder damage
+ritual: false # true, false, or optional
+
+range: self
+
+verbal: false
+somatic: true
+material: false # delete line below if false
+
+duration: 1 round
+concentration: false # true or false
+
+# Fun stuff
+description: >
+  The spell captures some of the incoming energy, lessening its effect on you and storing it for your next melee
+  attack. You have resistance to the triggering damage type until the start of your next turn. Also, the first time you
+  hit with a melee attack on your next turn, the target takes an extra 1d6 damage of the triggering type, and the
+  spell ends.
+
+  **At Higher Levels.** When you cast this spell using a spell slot of 2nd level or higher, the extra damage increases by
+  1d6 for each slot level above 1st.
+
+display in combat: true
+display in roleplay: false
+
+#effects:
+#  - triggers:
+#      - finished casting
+#    conditions:
+#      - effected self
+#    saving throws:
+#      - type: dexerity
+#        fail:
+#          - damage: (8d6 + (cast_level - spell_level)*1d6) /- 2 fire
+#        succeed:
+#          - damage: 8d6 + (cast_level - spell_level)*1d6 fire
+#        half damage on succeed: true
+results:
+  - triggers:
+      - take damage: [acid, cold, fire, lightning, thunder]
+    results:
+      - gain resistance: trigger$damageType
+        lifetime: start of turn
+      - spawn: result
+        triggers:
+          - deal damage: melee
+        consecutive lifetime:
+          - start of turn
+          - end of turn
+        results:
+          - deal extra damage: spell$cast_level * 1d6 trigger$damageType

@@ -16,6 +16,7 @@ enum class TimeUnit(override val symbol: String) : Unit {
     ACTION("action"),
     BONUS_ACTION("bonus action"),
     REACTION("reaction"),
+    ROUND("round"),
     SECOND("sec"),
     MINUTE("min"),
     HOUR("hr"),

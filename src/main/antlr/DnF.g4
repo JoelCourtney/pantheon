@@ -20,6 +20,7 @@ time_unit returns [TimeUnit result]
     : ACTION        { $result = TimeUnit.ACTION; }
     | BONUS_ACTION  { $result = TimeUnit.BONUS_ACTION; }
     | REACTION      { $result = TimeUnit.REACTION; }
+    | ROUND         { $result = TimeUnit.ROUND; }
     | SECOND        { $result = TimeUnit.SECOND; }
     | MINUTE        { $result = TimeUnit.MINUTE; }
     | HOUR          { $result = TimeUnit.HOUR; }

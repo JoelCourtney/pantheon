@@ -1,9 +1,9 @@
-package model.effects.results
+package model.results
 
 import model.Character
 import model.quantities.Damage
 
-data class DamageResult(
+data class TakeDamageResult(
     val damage: Damage
 ) : Result {
     override fun apply(c: Character) {

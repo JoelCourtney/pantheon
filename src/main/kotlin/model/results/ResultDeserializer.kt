@@ -1,4 +1,4 @@
-package model.effects.results
+package model.results
 
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.core.TreeNode
@@ -17,7 +17,11 @@ class ResultDeserializer : StdDeserializer<Result>(Result::class.java) {
         val key = keys[0]
         val value = (tn.get(key) as ValueNode).asText()
         return when (key) {
-            "damage" -> DamageResult(ParseWrapper.parseDamage(value))
+            "damage" -> TakeDamageResult(ParseWrapper.parseDamage(value))
+            "do" -> when (value) {
+                "nothing" -> NoOpResult
+                else -> throw IllegalArgumentException("Unrecognized do command.")
+            }
             else -> throw IllegalArgumentException("Unrecognized result key.")
         }
     }

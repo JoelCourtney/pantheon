@@ -1,6 +1,6 @@
-package model.effects
+package model
 
-import model.effects.results.*
+import model.results.*
 
 class SavingThrow(
     val type: SavingThrowType,

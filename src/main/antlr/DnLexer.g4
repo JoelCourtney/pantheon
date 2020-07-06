@@ -35,6 +35,7 @@ BONUS_ACTION
     : B O N U S ' ' A C T I O N S?
     | B O N L E S S ' ' A C T I O N S?;
 REACTION : R E A C T I O N S?;
+ROUND : R O U N D S?;
 SECOND : S E C (O N D)? S?;
 MINUTE : M I N (U T E)? S?;
 HOUR : H O U R S? | H R S;

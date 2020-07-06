@@ -1,4 +1,4 @@
-package model.effects.results
+package model.results
 
 import model.Character
 

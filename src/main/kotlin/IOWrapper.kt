@@ -1,8 +1,8 @@
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.KotlinModule
-import model.effects.results.ResultDeserializer
-import model.effects.results.Result
+import model.results.ResultDeserializer
+import model.results.Result
 import model.spells.SpellSchool
 import model.spells.SpellSchoolDeserializer
 import model.quantities.*

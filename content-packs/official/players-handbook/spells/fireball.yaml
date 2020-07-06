@@ -39,18 +39,3 @@ description: >
 display in combat: true
 display in roleplay: false
 
-#effects:
-#  - triggers:
-#      - finished casting
-#    conditions:
-#      - effected self
-#    saving throws:
-#      - type: dexerity
-#        fail:
-#          - damage: (8d6 + (cast_level - spell_level)*1d6) /- 2 fire
-#        succeed:
-#          - damage: 8d6 + (cast_level - spell_level)*1d6 fire
-#        half damage on succeed: true
-effects:
-  - results:
-    - damage: 1d6 fire
