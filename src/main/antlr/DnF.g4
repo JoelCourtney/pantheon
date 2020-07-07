@@ -11,6 +11,9 @@ import DnLexer;
 }
 
 time returns [Time result]
+    : time_amount EOF { $result = $time_amount.result; };
+
+time_amount returns [Time result]
     : time_component        { $result = $time_component.result; }
     | a=time_component SEMICOLON b=time_component
         { $result = new QuantityBinary($a.result, $b.result); }
@@ -35,6 +38,9 @@ time_unit returns [TimeUnit result]
     | i=identifier  { $result = $i.result; };
 
 distance returns [Distance result]
+    : distance_amount EOF { $result = $distance_amount.result; };
+
+distance_amount returns [Distance result]
     : distance_component                        { $result = $distance_component.result; }
     | a=distance_component SEMICOLON b=distance_component
         { $result = new QuantityBinary($a.result, $b.result); }
@@ -52,6 +58,9 @@ distance_unit returns [DistanceUnit result]
     | i=identifier  { $result = $i.result; };
 
 damage returns [Damage result]
+    : damage_amount EOF { $result = $damage_amount.result; };
+
+damage_amount returns [Damage result]
     : damage_component                        { $result = $damage_component.result; }
     | a=damage_component SEMICOLON b=damage_component
         { $result = new QuantityBinary($a.result, $b.result); };

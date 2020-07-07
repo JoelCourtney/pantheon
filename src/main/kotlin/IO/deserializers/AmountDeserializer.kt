@@ -9,6 +9,6 @@ import model.quantities.amounts.Amount
 class AmountDeserializer : StdDeserializer<Amount>(Amount::class.java) {
     override fun deserialize(p: JsonParser?, ctxt: DeserializationContext?): Amount {
         val s = p!!.readValueAs(String::class.java)
-        return ANTLRWrapper.parseExpression(s)
+        return ANTLRWrapper.parseAmount(s)
     }
 }

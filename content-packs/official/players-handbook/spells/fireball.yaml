@@ -51,3 +51,4 @@ results:
           - take damage: 8d6 + (spell$cast_level - spell$level)*1d6 fire
         success results:
           - take damage: (8d6 + (spell$cast_level - spell$level)*1d6) /- 2 fire
+        half damage on success: true

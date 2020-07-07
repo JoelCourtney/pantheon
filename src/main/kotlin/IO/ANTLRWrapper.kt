@@ -45,7 +45,7 @@ class ANTLRWrapper {
             return makeParser(s).time_unit().result
         }
 
-        fun parseExpression(s: String): Amount {
+        fun parseAmount(s: String): Amount {
             return makeParser(s).amount().result
         }
     }
