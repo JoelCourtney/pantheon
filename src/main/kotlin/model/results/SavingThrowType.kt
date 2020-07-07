@@ -5,26 +5,26 @@ import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer
 
-enum class SavingThrowType {
+enum class SavingThrowType(val symbol: String) {
     @JsonProperty("strength")
-    STRENGTH,
+    STRENGTH("strength"),
 
     @JsonProperty("dexterity")
-    DEXTERITY,
+    DEXTERITY("dexterity"),
 
     @JsonProperty("constitution")
-    CONSTITUTION,
+    CONSTITUTION("constitution"),
 
     @JsonProperty("intelligence")
-    INTELLIGENCE,
+    INTELLIGENCE("intelligence"),
 
     @JsonProperty("wisdom")
-    WISDOM,
+    WISDOM("wisdom"),
 
     @JsonProperty("charisma")
-    CHARISMA,
+    CHARISMA("charisma"),
 
     @JsonProperty("death")
-    DEATH;
+    DEATH("death");
 }
 
