@@ -1,0 +1,13 @@
+name: Aarakocra
+
+results:
+  - ability score increase: dexterity
+    amount: 2
+  - ability score increease: wisdom
+    amount: 1
+  - set size: medium
+  - base speed: walking
+    distance: 25 feet
+  - base speed: flying
+    distance: 50 feet
+      
