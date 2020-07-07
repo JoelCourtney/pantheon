@@ -23,9 +23,9 @@ dependencies {
 
     testImplementation('org.junit.jupiter:junit-jupiter:5.6.2')
 
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.11.+'
-    compile 'com.fasterxml.jackson.module:jackson-module-kotlin:2.11.+'
-    compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.11.+'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.+'
+    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.11.+'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.11.+'
 }
 
 compileKotlin {
