@@ -1,12 +1,11 @@
 package model.results
 
-import model.Character
 import model.SavingThrowType
-import model.quantities.Expression
+import model.quantities.amounts.Amount
 
 class SavingThrowResult(
     val `saving throw`: SavingThrowType,
-    val dc: Expression
+    val dc: Amount
 ) : Result {
     val `fail results`: Array<Result> = arrayOf()
     val `success results`: Array<Result> = arrayOf()

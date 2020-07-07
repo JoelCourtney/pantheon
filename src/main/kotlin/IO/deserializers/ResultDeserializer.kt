@@ -30,7 +30,6 @@ class ResultDeserializer : StdDeserializer<Result>(Result::class.java) {
         val parser = tn.traverse()
         parser.codec = JacksonWrapper.mapper
         parser.nextToken()
-        val result = ctxt!!.readValue(parser, targetClass)
-        return result
+        return ctxt!!.readValue(parser, targetClass)
     }
 }

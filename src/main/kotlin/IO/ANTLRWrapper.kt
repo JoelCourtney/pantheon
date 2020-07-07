@@ -4,7 +4,7 @@ import DnFLexer
 import DnFParser
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
-import model.quantities.*
+import model.quantities.amounts.Amount
 import model.quantities.damage.Damage
 import model.quantities.damage.DamageUnit
 import model.quantities.distance.Distance
@@ -22,15 +22,15 @@ class ANTLRWrapper {
         }
 
         fun parseTime(s: String): Time {
-            return makeParser(s).time_quantity().result
+            return makeParser(s).time().result
         }
 
         fun parseDistance(s: String): Distance {
-            return makeParser(s).distance_quantity().result
+            return makeParser(s).distance().result
         }
 
         fun parseDamage(s: String): Damage {
-            return makeParser(s).damage_quantity().result
+            return makeParser(s).damage().result
         }
 
         fun parseDamageUnit(s: String): DamageUnit {
@@ -45,8 +45,8 @@ class ANTLRWrapper {
             return makeParser(s).time_unit().result
         }
 
-        fun parseExpression(s: String): Expression {
-            return makeParser(s).expression().result
+        fun parseExpression(s: String): Amount {
+            return makeParser(s).amount().result
         }
     }
 }

@@ -6,18 +6,19 @@ import DnLexer;
     import model.quantities.time.*;
     import model.quantities.distance.*;
     import model.quantities.damage.*;
+    import model.quantities.amounts.*;
     import model.quantities.*;
 }
 
-time_quantity returns [Time result]
+time returns [Time result]
     : time_component        { $result = $time_component.result; }
-    | a=time_component bop=( PLUS | MINUS ) b=time_component
-        { $result = new QuantityBinary(QuantityBinaryOp.fromString($bop.getText()), $a.result, $b.result); }
+    | a=time_component SEMICOLON b=time_component
+        { $result = new QuantityBinary($a.result, $b.result); }
     | INSTANTANEOUS         { $result = TimeKeyword.INSTANTANEOUS; }
     | INDEFINITE            { $result = TimeKeyword.INDEFINITE; };
 
 time_component returns [Time result]
-    : e=expression u=time_unit  { $result = new TimeComponent($e.result, $u.result); }
+    : e=amount u=time_unit  { $result = new TimeComponent($e.result, $u.result); }
     | i=identifier              { $result = $i.result; };
 
 time_unit returns [TimeUnit result]
@@ -33,15 +34,15 @@ time_unit returns [TimeUnit result]
     | LONG_REST     { $result = TimeUnitLiteral.LONG_REST; }
     | i=identifier  { $result = $i.result; };
 
-distance_quantity returns [Distance result]
+distance returns [Distance result]
     : distance_component                        { $result = $distance_component.result; }
-    | a=distance_component bop=( PLUS | MINUS ) b=distance_component
-        { $result = new QuantityBinary(QuantityBinaryOp.fromString($bop.getText()), $a.result, $b.result); }
+    | a=distance_component SEMICOLON b=distance_component
+        { $result = new QuantityBinary($a.result, $b.result); }
     | TOUCH { $result = DistanceKeyword.TOUCH; }
     | SELF { $result = DistanceKeyword.SELF; };
 
 distance_component returns [Distance result]
-    : e=expression u=distance_unit  { $result = new DistanceComponent($e.result, $u.result); }
+    : e=amount u=distance_unit  { $result = new DistanceComponent($e.result, $u.result); }
     | i=identifier              { $result = $i.result; };
 
 distance_unit returns [DistanceUnit result]
@@ -50,13 +51,13 @@ distance_unit returns [DistanceUnit result]
     | SPACE         { $result = DistanceUnitLiteral.SPACE; }
     | i=identifier  { $result = $i.result; };
 
-damage_quantity returns [Damage result]
+damage returns [Damage result]
     : damage_component                        { $result = $damage_component.result; }
-    | a=damage_component bop=( PLUS | MINUS ) b=damage_component
-        { $result = new QuantityBinary(QuantityBinaryOp.fromString($bop.getText()), $a.result, $b.result); };
+    | a=damage_component SEMICOLON b=damage_component
+        { $result = new QuantityBinary($a.result, $b.result); };
 
 damage_component returns [Damage result]
-    : e=expression u=damage_unit    { $result = new DamageComponent($e.result, $u.result); }
+    : e=amount u=damage_unit    { $result = new DamageComponent($e.result, $u.result); }
     | i=identifier              { $result = $i.result; };
 
 damage_unit returns [DamageUnit result]
@@ -75,12 +76,12 @@ damage_unit returns [DamageUnit result]
     | THUNDER       { $result = DamageUnitLiteral.THUNDER; }
     | i=identifier  { $result = $i.result; };
 
-expression returns [Expression result]
-    : l=expression bop=( TIMES | DIVIDE_DOWN | DIVIDE_UP ) r=expression
-        { $result = new ExpressionBinary(ExpressionBinaryOp.fromString($bop.getText()), $l.result, $r.result); }
-    | l=expression bop=( PLUS | MINUS ) r=expression
-        { $result = new ExpressionBinary(ExpressionBinaryOp.fromString($bop.getText()), $l.result, $r.result); }
-    | OPEN_PAREN e=expression CLOSE_PAREN  { $result = $e.result; }
+amount returns [Amount result]
+    : l=amount bop=( TIMES | DIVIDE_DOWN | DIVIDE_UP ) r=amount
+        { $result = new AmountBinary(AmountBinaryOp.fromString($bop.getText()), $l.result, $r.result); }
+    | l=amount bop=( PLUS | MINUS ) r=amount
+        { $result = new AmountBinary(AmountBinaryOp.fromString($bop.getText()), $l.result, $r.result); }
+    | OPEN_PAREN e=amount CLOSE_PAREN  { $result = $e.result; }
     | n=NUMBER { $result = new NumberLiteral($n.getText()); }
     | d=DICE
         {   String s = $d.getText();

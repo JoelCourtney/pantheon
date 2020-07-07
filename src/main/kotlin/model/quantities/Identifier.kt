@@ -1,5 +1,6 @@
 package model.quantities
 
+import model.quantities.amounts.Amount
 import model.quantities.damage.Damage
 import model.quantities.damage.DamageUnit
 import model.quantities.damage.DamageUnitLiteral
@@ -11,7 +12,7 @@ import model.quantities.time.TimeUnit
 import model.quantities.time.TimeUnitLiteral
 
 class Identifier(val s: String, val t: String? = null) :
-    Expression,
+    Amount,
     TimeUnit,
     DistanceUnit,
     DamageUnit,

@@ -10,7 +10,7 @@ import model.SavingThrowTypeDeserializer
 import model.logic.Event
 import model.results.Result
 //import model.spells.SpellSchoolDeserializer
-import model.quantities.*
+import model.quantities.amounts.Amount
 import model.quantities.damage.Damage
 import model.quantities.damage.DamageUnit
 import model.quantities.distance.Distance
@@ -26,10 +26,6 @@ class JacksonWrapper {
         val module = KotlinModule()
 
         init {
-//            module.addDeserializer(
-//                SpellSchool::class.java,
-//                SpellSchoolDeserializer()
-//            )
             module.addDeserializer(
                 Time::class.java,
                 TimeDeserializer()
@@ -51,8 +47,8 @@ class JacksonWrapper {
                 SavingThrowTypeDeserializer()
             )
             module.addDeserializer(
-                Expression::class.java,
-                ExpressionDeserializer()
+                Amount::class.java,
+                AmountDeserializer()
             )
             module.addDeserializer(
                 DamageUnit::class.java,

@@ -1,9 +1,8 @@
 package model.quantities.damage
 
-import model.quantities.Expression
+import model.quantities.amounts.Amount
 
-data class DamageComponent(val exp: Expression, val unit: DamageUnit):
-    Damage {
+data class DamageComponent(val exp: Amount, val unit: DamageUnit) : Damage {
     override fun toString(): String {
         return "$exp $unit"
     }

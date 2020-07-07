@@ -77,5 +77,6 @@ CLOSE_PAREN : ')';
 EQUAL : '=';
 COMMA : ',';
 DOLLAR : '$';
+SEMICOLON : ';';
 
 WS : [ \t\u000c]+ -> skip;
