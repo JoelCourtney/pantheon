@@ -1,9 +1,5 @@
 package model
 
-import com.fasterxml.jackson.core.JsonParser
-import com.fasterxml.jackson.databind.DeserializationContext
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer
-
 interface Skill
 
 enum class DexteritySkill(val symbol: String) : Skill {

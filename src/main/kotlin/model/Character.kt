@@ -5,6 +5,4 @@ data class Character(
 //    val race: Race,
 //    val classes: Array<CharacterClass>,
 //    val
-) {
-
-}
+)

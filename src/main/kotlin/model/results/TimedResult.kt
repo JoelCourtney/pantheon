@@ -1,11 +1,13 @@
 package model.results
 
-import model.lifetimes.Trigger
+import com.fasterxml.jackson.annotation.JsonProperty
+import model.logic.Trigger
 
 data class TimedResult(
     val results: Array<Result>,
     val until: Trigger = Trigger(),
-    val `not until`: Trigger = Trigger()
+    @JsonProperty("not until")
+    val notUntil: Trigger = Trigger()
 ) : Result {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -15,7 +17,7 @@ data class TimedResult(
 
         if (!results.contentEquals(other.results)) return false
         if (until != other.until) return false
-        if (`not until` != other.`not until`) return false
+        if (notUntil != other.notUntil) return false
 
         return true
     }
@@ -23,7 +25,7 @@ data class TimedResult(
     override fun hashCode(): Int {
         var result = results.contentHashCode()
         result = 31 * result + until.hashCode()
-        result = 31 * result + `not until`.hashCode()
+        result = 31 * result + notUntil.hashCode()
         return result
     }
 }

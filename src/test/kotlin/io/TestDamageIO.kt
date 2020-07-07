@@ -6,13 +6,9 @@ import model.quantities.amounts.AmountBinary
 import model.quantities.amounts.AmountBinaryOp
 import model.quantities.amounts.Dice
 import model.quantities.amounts.NumberLiteral
-import model.quantities.damage.Damage
 import model.quantities.damage.DamageComponent
 import model.quantities.damage.DamageKeyword
 import model.quantities.damage.DamageUnitLiteral
-import model.quantities.time.TimeComponent
-import model.quantities.time.TimeKeyword
-import model.quantities.time.TimeUnitLiteral
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest

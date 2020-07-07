@@ -1,9 +1,6 @@
 package model.spells
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.core.JsonParser
-import com.fasterxml.jackson.databind.DeserializationContext
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer
 
 enum class SpellSchool(val symbol: String) {
     @JsonProperty("abjuration")
@@ -33,10 +30,3 @@ enum class SpellSchool(val symbol: String) {
     @JsonProperty("universal")
     UNIVERSAL("universal");
 }
-
-//class SpellSchoolDeserializer : StdDeserializer<SpellSchool>(SpellSchool::class.java) {
-//    override fun deserialize(p: JsonParser?, ctxt: DeserializationContext?): SpellSchool {
-//        val s = p!!.readValueAs(String::class.java)
-//        return SpellSchool.valueOf(s.toUpperCase())
-//    }
-//}

@@ -1,13 +1,18 @@
 package model.results
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import model.quantities.amounts.Amount
 
 data class SavingThrowResult(
-    val `saving throw`: SavingThrowType,
+    @JsonProperty("saving throw")
+    val savingThrowType: SavingThrowType,
     val dc: Amount,
-    val `fail results`: Array<Result> = arrayOf(),
-    val `success results`: Array<Result> = arrayOf(),
-    val `half damage on success`: Boolean = false
+    @JsonProperty("fail results")
+    val failResults: Array<Result> = arrayOf(),
+    @JsonProperty("success results")
+    val successResults: Array<Result> = arrayOf(),
+    @JsonProperty("half damage on success")
+    val halfDamageOnSuccess: Boolean = false
 ) : Result {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -15,21 +20,21 @@ data class SavingThrowResult(
 
         other as SavingThrowResult
 
-        if (`saving throw` != other.`saving throw`) return false
+        if (savingThrowType != other.savingThrowType) return false
         if (dc != other.dc) return false
-        if (!`fail results`.contentEquals(other.`fail results`)) return false
-        if (!`success results`.contentEquals(other.`success results`)) return false
-        if (`half damage on success` != other.`half damage on success`) return false
+        if (!failResults.contentEquals(other.failResults)) return false
+        if (!successResults.contentEquals(other.successResults)) return false
+        if (halfDamageOnSuccess != other.halfDamageOnSuccess) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        var result = `saving throw`.hashCode()
+        var result = savingThrowType.hashCode()
         result = 31 * result + dc.hashCode()
-        result = 31 * result + `fail results`.contentHashCode()
-        result = 31 * result + `success results`.contentHashCode()
-        result = 31 * result + `half damage on success`.hashCode()
+        result = 31 * result + failResults.contentHashCode()
+        result = 31 * result + successResults.contentHashCode()
+        result = 31 * result + halfDamageOnSuccess.hashCode()
         return result
     }
 }

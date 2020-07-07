@@ -1,6 +1,6 @@
 package io
 
-import model.lifetimes.Trigger
+import model.logic.Trigger
 import model.logic.Event
 import model.logic.LogicType
 import model.logic.Question
@@ -119,10 +119,10 @@ class TestLogicIO {
     fun parseTrigger() {
         assertEquals(
             Trigger(
-                arrayOf<Event>(
+                arrayOf(
                     Event("take damage")
                 ),
-                arrayOf<Timer>(
+                arrayOf(
                     Timer(TimeKeyword.INDEFINITE)
                 ),
                 LogicType.CONSECUTIVE

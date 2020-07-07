@@ -1,14 +1,18 @@
 package model.results
 
-import model.logic.LogicType
+import com.fasterxml.jackson.annotation.JsonProperty
 import model.logic.Question
 
 data class ConditionalResult(
-    val `if`: Array<Question> = arrayOf(),
-    val `if not`: Array<Question> = arrayOf(),
+    @JsonProperty("if")
+    val ifTrue: Array<Question> = arrayOf(),
+    @JsonProperty("not if")
+    val ifFalse: Array<Question> = arrayOf(),
 
-    val `success results`: Array<Result> = arrayOf(),
-    val `failure results`: Array<Result> = arrayOf()
+    @JsonProperty("success results")
+    val successResults: Array<Result> = arrayOf(),
+    @JsonProperty("failure results")
+    val failureResults: Array<Result> = arrayOf()
 
 ) : Result {
     override fun equals(other: Any?): Boolean {
@@ -17,19 +21,19 @@ data class ConditionalResult(
 
         other as ConditionalResult
 
-        if (!`if`.contentEquals(other.`if`)) return false
-        if (!`if not`.contentEquals(other.`if not`)) return false
-        if (!`success results`.contentEquals(other.`success results`)) return false
-        if (!`failure results`.contentEquals(other.`failure results`)) return false
+        if (!ifTrue.contentEquals(other.ifTrue)) return false
+        if (!ifFalse.contentEquals(other.ifFalse)) return false
+        if (!successResults.contentEquals(other.successResults)) return false
+        if (!failureResults.contentEquals(other.failureResults)) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        var result = `if`.contentHashCode()
-        result = 31 * result + `if not`.contentHashCode()
-        result = 31 * result + `success results`.contentHashCode()
-        result = 31 * result + `failure results`.contentHashCode()
+        var result = ifTrue.contentHashCode()
+        result = 31 * result + ifFalse.contentHashCode()
+        result = 31 * result + successResults.contentHashCode()
+        result = 31 * result + failureResults.contentHashCode()
         return result
     }
 }

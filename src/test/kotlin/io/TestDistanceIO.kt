@@ -1,17 +1,11 @@
 package io
 
-import model.quantities.Identifier
 import model.quantities.QuantityBinary
-import model.quantities.amounts.AmountBinary
-import model.quantities.amounts.AmountBinaryOp
 import model.quantities.amounts.Dice
 import model.quantities.amounts.NumberLiteral
 import model.quantities.distance.DistanceComponent
 import model.quantities.distance.DistanceKeyword
 import model.quantities.distance.DistanceUnitLiteral
-import model.quantities.time.TimeComponent
-import model.quantities.time.TimeKeyword
-import model.quantities.time.TimeUnitLiteral
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest

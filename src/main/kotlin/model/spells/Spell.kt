@@ -1,5 +1,6 @@
 package model.spells
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import model.quantities.distance.Distance
 import model.quantities.time.Time
 import model.results.Result
@@ -10,7 +11,8 @@ data class Spell(
     val level: Int,
     val school: SpellSchool,
 
-    val `casting time`: Time,
+    @JsonProperty("casting time")
+    val castingTime: Time,
     val ritual: Boolean,
 
     val range: Distance,
@@ -24,15 +26,20 @@ data class Spell(
 
     val description: String,
 
-    val `display in combat`: Boolean,
-    val `display in roleplay`: Boolean
+    @JsonProperty("display in combat")
+    val displayInCombat: Boolean,
+    @JsonProperty("display in roleplay")
+    val displayInRoleplay: Boolean
 
 ) {
-    val `available to`: Array<String> = arrayOf()
-    val `material description`: String = ""
+    @JsonProperty("available to")
+    val availableTo: Array<String> = arrayOf()
+    @JsonProperty("material description")
+    val materialDescription: String = ""
 
     val results: Array<Result> = arrayOf()
 
-    val `reaction to`: String = ""
+    @JsonProperty("reaction to")
+    val reactionTo: String = ""
 }
 

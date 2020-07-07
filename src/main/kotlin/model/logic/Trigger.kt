@@ -1,8 +1,4 @@
-package model.lifetimes
-
-import model.logic.Timer
-import model.logic.Event
-import model.logic.LogicType
+package model.logic
 
 data class Trigger(
     val events: Array<Event> = arrayOf(),
