@@ -15,7 +15,7 @@ time returns [Time result]
 
 time_amount returns [Time result]
     : time_component        { $result = $time_component.result; }
-    | a=time_component SEMICOLON b=time_component
+    | a=time_amount SEMICOLON b=time_amount
         { $result = new QuantityBinary($a.result, $b.result); }
     | INSTANTANEOUS         { $result = TimeKeyword.INSTANTANEOUS; }
     | INDEFINITE            { $result = TimeKeyword.INDEFINITE; };
@@ -42,7 +42,7 @@ distance returns [Distance result]
 
 distance_amount returns [Distance result]
     : distance_component                        { $result = $distance_component.result; }
-    | a=distance_component SEMICOLON b=distance_component
+    | a=distance_amount SEMICOLON b=distance_amount
         { $result = new QuantityBinary($a.result, $b.result); }
     | TOUCH { $result = DistanceKeyword.TOUCH; }
     | SELF { $result = DistanceKeyword.SELF; };
@@ -62,7 +62,7 @@ damage returns [Damage result]
 
 damage_amount returns [Damage result]
     : damage_component                        { $result = $damage_component.result; }
-    | a=damage_component SEMICOLON b=damage_component
+    | a=damage_amount SEMICOLON b=damage_amount
         { $result = new QuantityBinary($a.result, $b.result); };
 
 damage_component returns [Damage result]
