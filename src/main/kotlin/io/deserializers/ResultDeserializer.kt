@@ -10,8 +10,8 @@ import model.results.Result
 import model.results.SavingThrowResult
 import model.results.TimedResult
 import model.results.effects.DealExtraDamageEffect
-import model.results.effects.GainResistanceEffect
 import model.results.effects.TakeDamageEffect
+import model.results.statuses.HaveResistanceStatus
 import java.lang.IllegalArgumentException
 
 class ResultDeserializer : StdDeserializer<Result>(Result::class.java) {
@@ -24,7 +24,7 @@ class ResultDeserializer : StdDeserializer<Result>(Result::class.java) {
             "saving throw" -> SavingThrowResult::class.java
             "take damage" -> TakeDamageEffect::class.java
             "deal extra damage" -> DealExtraDamageEffect::class.java
-            "gain resistance" -> GainResistanceEffect::class.java
+            "have resistance" -> HaveResistanceStatus::class.java
             else -> throw IllegalArgumentException("Unrecognized result key.")
         }
         val parser = tn.traverse()

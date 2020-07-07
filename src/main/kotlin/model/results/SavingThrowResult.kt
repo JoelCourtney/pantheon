@@ -1,6 +1,7 @@
 package model.results
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import model.Character
 import model.quantities.amounts.Amount
 
 data class SavingThrowResult(
@@ -14,6 +15,12 @@ data class SavingThrowResult(
     @JsonProperty("half damage on success")
     val halfDamageOnSuccess: Boolean = false
 ) : Result {
+    override val isResolved: Boolean
+        get() = TODO("Not yet implemented")
+
+    override fun apply(c: Character) {
+        TODO("Not yet implemented")
+    }
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

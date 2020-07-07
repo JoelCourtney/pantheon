@@ -8,6 +8,11 @@ results:
   - set size: medium
   - base speed: walking
     distance: 25 feet
-  - base speed: flying
-    distance: 50 feet
-      
+  - if not:
+      - key: character$isWearingHeavyArmor
+        ask: ERROR. SHOULD NOT HAVE TO ASK.
+      - key: character@isWearingMediumArmor
+        ask: ERROR. SHOULD NOT HAVE TO ASK.
+    success results:
+      - base speed: flying
+        distance: 50 feet

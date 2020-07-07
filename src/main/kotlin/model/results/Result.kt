@@ -1,3 +1,8 @@
 package model.results
 
-interface Result
+import model.Character
+
+interface Result {
+    val isResolved: Boolean
+    fun apply(c: Character)
+}

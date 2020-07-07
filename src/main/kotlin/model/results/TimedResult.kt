@@ -1,6 +1,7 @@
 package model.results
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import model.Character
 import model.logic.Trigger
 
 data class TimedResult(
@@ -9,6 +10,22 @@ data class TimedResult(
     @JsonProperty("not until")
     val notUntil: Trigger = Trigger()
 ) : Result {
+    override val isResolved: Boolean = false
+
+    override fun apply(c: Character) {
+        TODO("Not yet implemented")
+        /*
+
+        implementation notes for later (very important):
+
+        if not T R I G G E R E D:
+            sit there quietly like a good little object
+        else:
+            DRAMATICALLY SPILL FEELINGS OUT OVER DINNER like an emotionally repressed little object
+
+         */
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

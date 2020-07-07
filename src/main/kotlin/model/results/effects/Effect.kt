@@ -4,5 +4,6 @@ import model.Character
 import model.results.Result
 
 interface Effect : Result {
-    fun apply(c: Character)
+    override val isResolved: Boolean
+        get() = true
 }

@@ -53,7 +53,7 @@ results:
             - start of turn
           type: consecutive
         results:
-          - gain resistance: parent$parent$damageType
+          - have resistance: parent$parent$damageType
       - until:
           events:
             - start of turn
