@@ -1,12 +1,15 @@
 package io
 
+import model.lifetimes.Trigger
 import model.logic.Event
 import model.logic.LogicType
 import model.logic.Question
 import model.logic.Timer
 import model.quantities.Identifier
+import model.quantities.amounts.Dice
 import model.quantities.amounts.NumberLiteral
 import model.quantities.time.TimeComponent
+import model.quantities.time.TimeKeyword
 import model.quantities.time.TimeUnitLiteral
 import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -87,6 +90,52 @@ class TestLogicIO {
         assertEquals(
             Timer(TimeComponent(NumberLiteral(2), TimeUnitLiteral.DAY)),
             JacksonWrapper.readString<Timer>("2 days")
+        )
+        assertEquals(
+            Timer(TimeComponent(Dice(3, 6), TimeUnitLiteral.ACTION)),
+            JacksonWrapper.readString<Timer>("3d6 actions")
+        )
+    }
+
+    @Test
+    fun parseTimerList() {
+        assertArrayEquals(
+            arrayOf(
+                Timer(TimeKeyword.NOW),
+                Timer(TimeComponent(NumberLiteral(2), TimeUnitLiteral.MINUTE)),
+                Timer(TimeComponent(Dice(4,6), TimeUnitLiteral.DAY))
+            ),
+            JacksonWrapper.readString<Array<Timer>>(
+                """
+                    - now
+                    - 2 minutes
+                    - 4d6 days
+                """.trimIndent()
+            )
+        )
+    }
+
+    @Test
+    fun parseTrigger() {
+        assertEquals(
+            Trigger(
+                arrayOf<Event>(
+                    Event("take damage")
+                ),
+                arrayOf<Timer>(
+                    Timer(TimeKeyword.INDEFINITE)
+                ),
+                LogicType.CONSECUTIVE
+            ),
+            JacksonWrapper.readString<Trigger>(
+                """
+                    events:
+                      - take damage
+                    timers:
+                      - infinite
+                    type: consecutive
+                """.trimIndent()
+            )
         )
     }
 }

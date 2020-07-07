@@ -50,6 +50,7 @@ SHORT_REST
 
 INSTANTANEOUS : I N S T A N T (A N E O U S)?;
 INDEFINITE : I N (D E)? F I N I T E;
+NOW : N O W;
 
 // Damage
 ACID : A C I D;

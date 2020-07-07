@@ -18,7 +18,8 @@ time_amount returns [Time result]
     | a=time_amount SEMICOLON b=time_amount
         { $result = new QuantityBinary($a.result, $b.result); }
     | INSTANTANEOUS         { $result = TimeKeyword.INSTANTANEOUS; }
-    | INDEFINITE            { $result = TimeKeyword.INDEFINITE; };
+    | INDEFINITE            { $result = TimeKeyword.INDEFINITE; }
+    | NOW                   { $result = TimeKeyword.NOW; };
 
 time_component returns [Time result]
     : e=amount u=time_unit  { $result = new TimeComponent($e.result, $u.result); }
