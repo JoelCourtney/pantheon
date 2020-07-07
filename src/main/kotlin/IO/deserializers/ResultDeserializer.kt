@@ -18,8 +18,6 @@ class ResultDeserializer : StdDeserializer<Result>(Result::class.java) {
     override fun deserialize(p: JsonParser?, ctxt: DeserializationContext?): Result {
         val tn = p!!.readValueAsTree<TreeNode>()
         val keys = tn.fieldNames().asSequence().toList()
-        for (key in keys)
-            println(key)
         val targetClass = when (keys[0].toLowerCase()) {
             "until", "not until" -> TimedResult::class.java
             "if", "not if" -> ConditionalResult::class.java

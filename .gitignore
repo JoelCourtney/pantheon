@@ -32,3 +32,5 @@ gradle/
 
 # ANTLR
 src/main/gen/
+*.interp
+*.tokens

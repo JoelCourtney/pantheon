@@ -14,7 +14,9 @@ import model.quantities.*
 import model.quantities.damage.Damage
 import model.quantities.damage.DamageUnit
 import model.quantities.distance.Distance
+import model.quantities.distance.DistanceUnit
 import model.quantities.time.Time
+import model.quantities.time.TimeUnit
 import java.nio.file.FileSystems
 import java.nio.file.Files
 
@@ -55,6 +57,14 @@ class JacksonWrapper {
             module.addDeserializer(
                 DamageUnit::class.java,
                 DamageUnitDeserializer()
+            )
+            module.addDeserializer(
+                TimeUnit::class.java,
+                TimeUnitDeserializer()
+            )
+            module.addDeserializer(
+                DistanceUnit::class.java,
+                DistanceUnitDeserializer()
             )
             module.addDeserializer(
                 Event::class.java,

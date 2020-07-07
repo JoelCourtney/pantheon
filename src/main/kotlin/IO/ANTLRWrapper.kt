@@ -8,7 +8,9 @@ import model.quantities.*
 import model.quantities.damage.Damage
 import model.quantities.damage.DamageUnit
 import model.quantities.distance.Distance
+import model.quantities.distance.DistanceUnit
 import model.quantities.time.Time
+import model.quantities.time.TimeUnit
 
 class ANTLRWrapper {
     companion object {
@@ -33,6 +35,14 @@ class ANTLRWrapper {
 
         fun parseDamageUnit(s: String): DamageUnit {
             return makeParser(s).damage_unit().result
+        }
+
+        fun parseDistanceUnit(s: String): DistanceUnit {
+            return makeParser(s).distance_unit().result
+        }
+
+        fun parseTimeUnit(s: String): TimeUnit {
+            return makeParser(s).time_unit().result
         }
 
         fun parseExpression(s: String): Expression {
