@@ -7,7 +7,7 @@ import java.lang.Exception
 
 interface Quantity
 
-class QuantityBinary(
+data class QuantityBinary(
     val left: Quantity, val right: Quantity
 ): Distance, Damage, Time {
     override fun toString(): String {

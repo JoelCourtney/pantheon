@@ -62,9 +62,16 @@ class JacksonWrapper {
             mapper.registerModule(module)
         }
 
-        inline fun<reified T: Any> read(dir: String, file: String): T {
+        inline fun<reified T: Any> readFile(dir: String, file: String): T {
             val path = FileSystems.getDefault().getPath(dir, file)
             return Files.newBufferedReader(path).use {
+                mapper.readValue(it, T::class.java)
+            }
+        }
+
+        inline fun<reified T: Any> readString(s: String): T {
+            val reader = java.io.StringReader(s)
+            return reader.use {
                 mapper.readValue(it, T::class.java)
             }
         }

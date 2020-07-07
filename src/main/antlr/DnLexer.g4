@@ -38,7 +38,7 @@ REACTION : R E A C T I O N S?;
 ROUND : R O U N D S?;
 SECOND : S E C (O N D)? S?;
 MINUTE : M I N (U T E)? S?;
-HOUR : H O U R S? | H R S;
+HOUR : H O U R S? | H R S?;
 DAY : D A Y S?;
 LONG_REST : L O N G ' ' R E S T S?;
 SHORT_REST : S H O R T ' ' R E S T S?;

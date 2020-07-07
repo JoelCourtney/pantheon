@@ -7,7 +7,7 @@ enum class TimeUnitLiteral(val symbol: String) : TimeUnit {
     ROUND("round"),
     SECOND("sec"),
     MINUTE("min"),
-    HOUR("hr"),
+    HOUR("hour"),
     DAY("day"),
     LONG_REST("long rest"),
     SHORT_REST("short rest");

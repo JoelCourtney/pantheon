@@ -1,6 +1,6 @@
 package model.quantities.amounts
 
-class AmountBinary(
+data class AmountBinary(
     val bop: AmountBinaryOp, val left: Amount, val right: Amount
 ) : Amount {
     override fun toString(): String {

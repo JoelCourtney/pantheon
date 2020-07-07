@@ -1,4 +1,4 @@
-import model.quantities.amounts.Amount
+package model.quantities.amounts
 
 data class Dice(val n: Int, val size: Int) : Amount {
     constructor(s1: String, s2: String) : this(s1.toInt(), s2.toInt())

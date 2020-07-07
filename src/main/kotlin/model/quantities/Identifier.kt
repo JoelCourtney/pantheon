@@ -11,7 +11,7 @@ import model.quantities.time.Time
 import model.quantities.time.TimeUnit
 import model.quantities.time.TimeUnitLiteral
 
-class Identifier(val s: String, val t: String? = null) :
+data class Identifier(val s: String, val t: String? = null) :
     Amount,
     TimeUnit,
     DistanceUnit,
