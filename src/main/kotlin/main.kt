@@ -1,4 +1,4 @@
-import IO.JacksonWrapper
+import io.JacksonWrapper
 import model.spells.Spell
 
 fun main() {

@@ -55,6 +55,8 @@ PSYCHIC : P S Y C H I C;
 RADIANT : R A D I A N T;
 SLASHING : S L A S H I N G;
 THUNDER : T H U N D E R;
+MELEE : M E L E E;
+RANGED : R A N G E D;
 FOOT : F (E E | O O)? T;
 MILE : M I (L E S?)?;
 SPACE : S P (A C E S?)?;

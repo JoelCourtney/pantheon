@@ -1,4 +1,4 @@
-package IO
+package io
 
 import model.quantities.Identifier
 import model.quantities.QuantityBinary
@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 
-class TestTime {
+class TestTimeIO {
     @Test
     fun singleComponent() {
         assertEquals(

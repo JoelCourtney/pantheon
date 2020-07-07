@@ -83,6 +83,8 @@ damage_unit returns [DamageUnit result]
     | RADIANT       { $result = DamageUnitLiteral.RADIANT; }
     | SLASHING      { $result = DamageUnitLiteral.SLASHING; }
     | THUNDER       { $result = DamageUnitLiteral.THUNDER; }
+    | MELEE         { $result = DamageUnitLiteral.MELEE; }
+    | RANGED        { $result = DamageUnitLiteral.RANGED; }
     | i=identifier  { $result = $i.result; };
 
 amount returns [Amount result]
