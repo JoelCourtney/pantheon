@@ -1,6 +1,6 @@
-package IO.deserializers
+package io.deserializers
 
-import IO.JacksonWrapper
+import io.JacksonWrapper
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.core.TreeNode
 import com.fasterxml.jackson.databind.DeserializationContext

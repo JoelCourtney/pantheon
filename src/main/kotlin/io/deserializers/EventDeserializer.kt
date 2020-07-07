@@ -1,4 +1,4 @@
-package IO.deserializers
+package io.deserializers
 
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.DeserializationContext
