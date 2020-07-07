@@ -1,4 +1,4 @@
-import IOWrapper.Companion.read
+import IO.JacksonWrapper.Companion.read
 import model.spells.Spell
 
 fun main() {

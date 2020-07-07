@@ -40,10 +40,11 @@ display in combat: true
 display in roleplay: false
 
 results:
-  - conditions:
-      - effected by this spell
-    condition type: any
-    results:
+  - if:
+      - object: this
+        value: hit self
+        ask: Did you hit yourself?
+    success results:
       - saving throw: dexterity
         dc: character$spellSaveDC
         fail results:

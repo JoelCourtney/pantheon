@@ -38,37 +38,30 @@ description: >
 display in combat: true
 display in roleplay: false
 
-#effects:
-#  - triggers:
-#      - finished casting
-#    conditions:
-#      - effected self
-#    saving throws:
-#      - type: dexerity
-#        fail:
-#          - damage: (8d6 + (cast_level - spell_level)*1d6) /- 2 fire
-#        succeed:
-#          - damage: 8d6 + (cast_level - spell_level)*1d6 fire
-#        half damage on succeed: true
 results:
-  - triggers:
-      - take damage type: [acid, cold, fire, lightning, thunder]
-    trigger type: any
-    limited triggers: 1
+  - not until:
+      events:
+        - take acid damage
+        - take cold damage
+        - take fire damage
+        - take lightning damage
+        - take thunder damage
+      type: any
     results:
-      - timers:
-          - start of turn
-        timer type: consecutive
+      - until:
+          events:
+            - start of turn
+          type: consecutive
         results:
-          gain resistance: parent$damageType
-      - timers:
-          - start of turn
-          - end of turn
-        timer type: consecutive
+          - gain resistance: parent$parent$damageType
+      - until:
+          events:
+            - start of turn
+            - end of turn
+          type: consecutive
+        not until:
+          events:
+            - deal melee damage
+          type: any
         results:
-          triggers:
-            - deal damage type: [melee]
-          trigger type: any
-          limited triggers: 1
-          results:
-            - deal extra damage: spell$cast_level * 1d6 trigger$damageType
+          - deal extra damage: spell$cast_level * 1d6 trigger$damageType

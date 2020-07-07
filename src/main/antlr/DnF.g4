@@ -3,6 +3,9 @@ grammar DnF;
 import DnLexer;
 
 @parser::header {
+    import model.quantities.time.*;
+    import model.quantities.distance.*;
+    import model.quantities.damage.*;
     import model.quantities.*;
 }
 
@@ -14,19 +17,21 @@ time_quantity returns [Time result]
     | INDEFINITE            { $result = TimeKeyword.INDEFINITE; };
 
 time_component returns [Time result]
-    : e=expression u=time_unit  { $result = new TimeComponent($e.result, $u.result); };
+    : e=expression u=time_unit  { $result = new TimeComponent($e.result, $u.result); }
+    | i=identifier              { $result = $i.result; };
 
 time_unit returns [TimeUnit result]
-    : ACTION        { $result = TimeUnit.ACTION; }
-    | BONUS_ACTION  { $result = TimeUnit.BONUS_ACTION; }
-    | REACTION      { $result = TimeUnit.REACTION; }
-    | ROUND         { $result = TimeUnit.ROUND; }
-    | SECOND        { $result = TimeUnit.SECOND; }
-    | MINUTE        { $result = TimeUnit.MINUTE; }
-    | HOUR          { $result = TimeUnit.HOUR; }
-    | DAY           { $result = TimeUnit.DAY; }
-    | SHORT_REST    { $result = TimeUnit.SHORT_REST; }
-    | LONG_REST     { $result = TimeUnit.LONG_REST; };
+    : ACTION        { $result = TimeUnitLiteral.ACTION; }
+    | BONUS_ACTION  { $result = TimeUnitLiteral.BONUS_ACTION; }
+    | REACTION      { $result = TimeUnitLiteral.REACTION; }
+    | ROUND         { $result = TimeUnitLiteral.ROUND; }
+    | SECOND        { $result = TimeUnitLiteral.SECOND; }
+    | MINUTE        { $result = TimeUnitLiteral.MINUTE; }
+    | HOUR          { $result = TimeUnitLiteral.HOUR; }
+    | DAY           { $result = TimeUnitLiteral.DAY; }
+    | SHORT_REST    { $result = TimeUnitLiteral.SHORT_REST; }
+    | LONG_REST     { $result = TimeUnitLiteral.LONG_REST; }
+    | i=identifier  { $result = $i.result; };
 
 distance_quantity returns [Distance result]
     : distance_component                        { $result = $distance_component.result; }
@@ -36,12 +41,14 @@ distance_quantity returns [Distance result]
     | SELF { $result = DistanceKeyword.SELF; };
 
 distance_component returns [Distance result]
-    : e=expression u=distance_unit  { $result = new DistanceComponent($e.result, $u.result); };
+    : e=expression u=distance_unit  { $result = new DistanceComponent($e.result, $u.result); }
+    | i=identifier              { $result = $i.result; };
 
 distance_unit returns [DistanceUnit result]
-    : FOOT      { $result = DistanceUnit.FOOT; }
-    | MILE      { $result = DistanceUnit.MILE; }
-    | SPACE     { $result = DistanceUnit.SPACE; };
+    : FOOT          { $result = DistanceUnitLiteral.FOOT; }
+    | MILE          { $result = DistanceUnitLiteral.MILE; }
+    | SPACE         { $result = DistanceUnitLiteral.SPACE; }
+    | i=identifier  { $result = $i.result; };
 
 damage_quantity returns [Damage result]
     : damage_component                        { $result = $damage_component.result; }
@@ -49,22 +56,24 @@ damage_quantity returns [Damage result]
         { $result = new QuantityBinary(QuantityBinaryOp.fromString($bop.getText()), $a.result, $b.result); };
 
 damage_component returns [Damage result]
-    : e=expression u=damage_unit    { $result = new DamageComponent($e.result, $u.result); };
+    : e=expression u=damage_unit    { $result = new DamageComponent($e.result, $u.result); }
+    | i=identifier              { $result = $i.result; };
 
 damage_unit returns [DamageUnit result]
-    : ACID          { $result = DamageUnit.ACID; }
-    | BLUDGEONING   { $result = DamageUnit.BLUDGEONING; }
-    | COLD          { $result = DamageUnit.COLD; }
-    | FIRE          { $result = DamageUnit.FIRE; }
-    | FORCE         { $result = DamageUnit.FORCE; }
-    | LIGHTNING     { $result = DamageUnit.LIGHTNING; }
-    | NECROTIC      { $result = DamageUnit.NECROTIC; }
-    | PIERCING      { $result = DamageUnit.PIERCING; }
-    | POISON        { $result = DamageUnit.POISON; }
-    | PSYCHIC       { $result = DamageUnit.PSYCHIC; }
-    | RADIANT       { $result = DamageUnit.RADIANT; }
-    | SLASHING      { $result = DamageUnit.SLASHING; }
-    | THUNDER       { $result = DamageUnit.THUNDER; };
+    : ACID          { $result = DamageUnitLiteral.ACID; }
+    | BLUDGEONING   { $result = DamageUnitLiteral.BLUDGEONING; }
+    | COLD          { $result = DamageUnitLiteral.COLD; }
+    | FIRE          { $result = DamageUnitLiteral.FIRE; }
+    | FORCE         { $result = DamageUnitLiteral.FORCE; }
+    | LIGHTNING     { $result = DamageUnitLiteral.LIGHTNING; }
+    | NECROTIC      { $result = DamageUnitLiteral.NECROTIC; }
+    | PIERCING      { $result = DamageUnitLiteral.PIERCING; }
+    | POISON        { $result = DamageUnitLiteral.POISON; }
+    | PSYCHIC       { $result = DamageUnitLiteral.PSYCHIC; }
+    | RADIANT       { $result = DamageUnitLiteral.RADIANT; }
+    | SLASHING      { $result = DamageUnitLiteral.SLASHING; }
+    | THUNDER       { $result = DamageUnitLiteral.THUNDER; }
+    | i=identifier  { $result = $i.result; };
 
 expression returns [Expression result]
     : l=expression bop=( TIMES | DIVIDE_DOWN | DIVIDE_UP ) r=expression
@@ -77,5 +86,8 @@ expression returns [Expression result]
         {   String s = $d.getText();
             String[] parts = s.toLowerCase().split("d");
             $result = new Dice(parts[0], parts[1]); }
-    | o=IDENTIFIER DOLLAR i=IDENTIFIER { $result = new Identifier($o.getText(), $i.getText()); }
-    | i=IDENTIFIER { $result = new Identifier($i.getText(), null); };
+    | i=identifier { $result = $i.result; };
+
+identifier returns [Identifier result]
+    : o=NAME DOLLAR i=NAME { $result = new Identifier($o.getText(), $i.getText()); }
+    | i=NAME { $result = new Identifier($i.getText(), null); };

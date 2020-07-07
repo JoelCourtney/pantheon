@@ -1,6 +1,7 @@
 package model.spells
 
-import model.quantities.*
+import model.quantities.distance.Distance
+import model.quantities.time.Time
 import model.results.Result
 
 data class Spell(

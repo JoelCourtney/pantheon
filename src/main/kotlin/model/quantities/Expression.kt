@@ -1,5 +1,6 @@
 package model.quantities
 
+import IO.ANTLRWrapper
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer
@@ -56,19 +57,9 @@ data class Dice(val n: Int, val size: Int) : Expression {
     }
 }
 
-data class Identifier(val s: String, val t: String? = null) : Expression {
-    override fun toString(): String {
-        return if (t != null) {
-            "$s$$t"
-        } else {
-            s
-        }
-    }
-}
-
 class ExpressionDeserializer : StdDeserializer<Expression>(Expression::class.java) {
     override fun deserialize(p: JsonParser?, ctxt: DeserializationContext?): Expression {
         val s = p!!.readValueAs(String::class.java)
-        return ParseWrapper.parseExpression(s)
+        return ANTLRWrapper.parseExpression(s)
     }
 }
