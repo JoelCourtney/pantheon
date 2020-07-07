@@ -31,4 +31,4 @@ build/
 gradle/
 
 # ANTLR
-#src/main/gen/
+src/main/gen/
