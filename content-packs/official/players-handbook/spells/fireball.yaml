@@ -41,8 +41,7 @@ display in roleplay: false
 
 results:
   - if:
-      - object: this
-        value: hit self
+      - key: hitSelf
         ask: Did you hit yourself?
     success results:
       - saving throw: dexterity

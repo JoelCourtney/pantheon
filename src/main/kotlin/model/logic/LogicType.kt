@@ -1,17 +1,14 @@
 package model.logic
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.core.JsonParser
-import com.fasterxml.jackson.databind.DeserializationContext
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer
 
-enum class LogicType {
+enum class LogicType(val symbol: String) {
     @JsonProperty("any")
-    ANY,
+    ANY("any"),
 
     @JsonProperty("all")
-    ALL,
+    ALL("all"),
 
     @JsonProperty("consecutive")
-    CONSECUTIVE;
+    CONSECUTIVE("consecutive");
 }

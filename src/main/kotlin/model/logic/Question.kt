@@ -1,7 +1,8 @@
 package model.logic
 
-class Question {
-    val `object`: String = ""
-    val value: String = ""
-    val ask: String = ""
-}
+import model.quantities.Identifier
+
+data class Question(
+    val key: Identifier,
+    val ask: String
+)

@@ -32,6 +32,10 @@ class TestAmountIO {
         assertEquals(
             Identifier("hello", "world"), ANTLRWrapper.parseAmount("hello${'$'}world")
         )
+        assertEquals(Identifier("hello"), ANTLRWrapper.parseIdentifier(("hello")))
+        assertEquals(
+            Identifier("hello", "world"), ANTLRWrapper.parseIdentifier("hello${'$'}world")
+        )
     }
 
     @ParameterizedTest(name = "test binary op {0}")

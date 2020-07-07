@@ -6,6 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import model.logic.Event
+import model.logic.Question
+import model.logic.Timer
+import model.quantities.Identifier
 import model.results.Result
 import model.quantities.amounts.Amount
 import model.quantities.damage.Damage
@@ -58,6 +61,14 @@ class JacksonWrapper {
             module.addDeserializer(
                 Event::class.java,
                 EventDeserializer()
+            )
+            module.addDeserializer(
+                Identifier::class.java,
+                IdentifierDeserializer()
+            )
+            module.addDeserializer(
+                Timer::class.java,
+                TimerDeserializer()
             )
             mapper.registerModule(module)
         }

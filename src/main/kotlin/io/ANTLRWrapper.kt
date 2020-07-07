@@ -11,6 +11,7 @@ import model.quantities.distance.Distance
 import model.quantities.distance.DistanceUnit
 import model.quantities.time.Time
 import model.quantities.time.TimeUnit
+import model.quantities.Identifier
 
 class ANTLRWrapper {
     companion object {
@@ -47,6 +48,10 @@ class ANTLRWrapper {
 
         fun parseAmount(s: String): Amount {
             return makeParser(s).amount().result
+        }
+
+        fun parseIdentifier(s: String): Identifier {
+            return makeParser(s).identifier().result
         }
     }
 }
