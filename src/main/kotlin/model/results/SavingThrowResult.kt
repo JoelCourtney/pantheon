@@ -1,6 +1,5 @@
 package model.results
 
-import model.SavingThrowType
 import model.quantities.amounts.Amount
 
 class SavingThrowResult(

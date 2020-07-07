@@ -5,11 +5,8 @@ import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.KotlinModule
-import model.SavingThrowType
-import model.SavingThrowTypeDeserializer
 import model.logic.Event
 import model.results.Result
-//import model.spells.SpellSchoolDeserializer
 import model.quantities.amounts.Amount
 import model.quantities.damage.Damage
 import model.quantities.damage.DamageUnit
@@ -41,10 +38,6 @@ class JacksonWrapper {
             module.addDeserializer(
                 Result::class.java,
                 ResultDeserializer()
-            )
-            module.addDeserializer(
-                SavingThrowType::class.java,
-                SavingThrowTypeDeserializer()
             )
             module.addDeserializer(
                 Amount::class.java,
