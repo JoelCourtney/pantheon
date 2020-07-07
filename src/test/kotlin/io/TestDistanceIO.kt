@@ -15,7 +15,10 @@ import model.quantities.time.TimeUnitLiteral
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.EnumSource
+import org.junit.jupiter.params.provider.MethodSource
+import java.util.stream.Stream
 
 class TestDistanceIO {
     @Test
@@ -56,6 +59,29 @@ class TestDistanceIO {
     @EnumSource(DistanceUnitLiteral::class)
     fun parseUnit(unit: DistanceUnitLiteral) {
         assertEquals(unit, ANTLRWrapper.parseDistanceUnit(unit.symbol))
+    }
+
+    @ParameterizedTest(name = "parse unit literal {1}")
+    @MethodSource
+    fun parseAlternateUnitLiteral(s: String, unit: DistanceUnitLiteral) {
+        assertEquals(
+            unit,
+            ANTLRWrapper.parseDistanceUnit(s)
+        )
+    }
+
+    companion object {
+        @JvmStatic
+        fun parseAlternateUnitLiteral(): Stream<Arguments> {
+            return Stream.of(
+                Arguments.of("foot", DistanceUnitLiteral.FOOT),
+                Arguments.of("feet", DistanceUnitLiteral.FOOT),
+                Arguments.of("mile", DistanceUnitLiteral.MILE),
+                Arguments.of("miles", DistanceUnitLiteral.MILE),
+                Arguments.of("space", DistanceUnitLiteral.SPACE),
+                Arguments.of("spaces", DistanceUnitLiteral.SPACE)
+            )
+        }
     }
 
     @ParameterizedTest(name = "parse quantity keyword {0}")

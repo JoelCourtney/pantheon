@@ -40,19 +40,13 @@ class TestTimeIO {
         assertEquals(unit, ANTLRWrapper.parseTimeUnit(unit.symbol))
     }
 
-    @ParameterizedTest(name = "parse unit literal {0}")
+    @ParameterizedTest(name = "parse unit literal {1}")
     @MethodSource
     fun parseAlternateUnitLiteral(s: String, unit: TimeUnitLiteral) {
         assertEquals(
             unit,
             ANTLRWrapper.parseTimeUnit(s)
         )
-    }
-
-    @ParameterizedTest(name = "parse quantity keyword {0}")
-    @EnumSource(TimeKeyword::class)
-    fun parseKeyword(kw: TimeKeyword) {
-        assertEquals(kw, ANTLRWrapper.parseTime(kw.name))
     }
 
     companion object {
@@ -90,5 +84,11 @@ class TestTimeIO {
                 Arguments.of("lr", TimeUnitLiteral.LONG_REST)
             )
         }
+    }
+
+    @ParameterizedTest(name = "parse quantity keyword {0}")
+    @EnumSource(TimeKeyword::class)
+    fun parseKeyword(kw: TimeKeyword) {
+        assertEquals(kw, ANTLRWrapper.parseTime(kw.name))
     }
 }
