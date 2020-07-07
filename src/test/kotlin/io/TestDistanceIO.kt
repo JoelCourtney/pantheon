@@ -10,6 +10,7 @@ import model.quantities.distance.DistanceComponent
 import model.quantities.distance.DistanceKeyword
 import model.quantities.distance.DistanceUnitLiteral
 import model.quantities.time.TimeComponent
+import model.quantities.time.TimeKeyword
 import model.quantities.time.TimeUnitLiteral
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -55,5 +56,11 @@ class TestDistanceIO {
     @EnumSource(DistanceUnitLiteral::class)
     fun parseUnit(unit: DistanceUnitLiteral) {
         assertEquals(unit, ANTLRWrapper.parseDistanceUnit(unit.symbol))
+    }
+
+    @ParameterizedTest(name = "parse quantity keyword {0}")
+    @EnumSource(DistanceKeyword::class)
+    fun parseKeyword(kw: DistanceKeyword) {
+        assertEquals(kw, ANTLRWrapper.parseDistance(kw.name))
     }
 }

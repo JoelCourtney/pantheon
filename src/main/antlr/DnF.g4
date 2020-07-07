@@ -63,7 +63,8 @@ damage returns [Damage result]
 damage_amount returns [Damage result]
     : damage_component                        { $result = $damage_component.result; }
     | a=damage_amount SEMICOLON b=damage_amount
-        { $result = new QuantityBinary($a.result, $b.result); };
+        { $result = new QuantityBinary($a.result, $b.result); }
+    | NONE { $result = DamageKeyword.NONE; };
 
 damage_component returns [Damage result]
     : e=amount u=damage_unit    { $result = new DamageComponent($e.result, $u.result); }

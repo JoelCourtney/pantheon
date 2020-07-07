@@ -5,6 +5,7 @@ import model.quantities.QuantityBinary
 import model.quantities.amounts.Dice
 import model.quantities.amounts.NumberLiteral
 import model.quantities.time.TimeComponent
+import model.quantities.time.TimeKeyword
 import model.quantities.time.TimeUnitLiteral
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -35,5 +36,11 @@ class TestTimeIO {
     @EnumSource(TimeUnitLiteral::class)
     fun parseUnit(unit: TimeUnitLiteral) {
         assertEquals(unit, ANTLRWrapper.parseTimeUnit(unit.symbol))
+    }
+
+    @ParameterizedTest(name = "parse quantity keyword {0}")
+    @EnumSource(TimeKeyword::class)
+    fun parseKeyword(kw: TimeKeyword) {
+        assertEquals(kw, ANTLRWrapper.parseTime(kw.name))
     }
 }
