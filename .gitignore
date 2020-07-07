@@ -29,3 +29,6 @@ build/
 # Gradle
 .gradle/
 gradle/
+
+# ANTLR
+#src/main/gen/
