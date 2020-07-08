@@ -3,14 +3,29 @@ package model.results
 import com.fasterxml.jackson.annotation.JsonProperty
 import model.Character
 import model.logic.Trigger
+import java.lang.IllegalArgumentException
 
 data class TimedResult(
-    val results: Array<Result>,
+    val results: ArrayList<Result>,
     val until: Trigger = Trigger(),
     @JsonProperty("not until")
     val notUntil: Trigger = Trigger()
 ) : Result {
-    override val isResolved: Boolean = false
+    init {
+        if (until.isEmpty() and notUntil.isEmpty()) {
+            throw IllegalArgumentException("Timed Results need at least one trigger")
+        }
+    }
+
+    override fun purge(): Boolean =
+        if (until.triggered) {
+            true
+        } else if (!notUntil.triggered) {
+            false
+        } else {
+            results.removeAll { it.purge() }
+            results.size == 0
+        }
 
     override fun apply(c: Character) {
         TODO("Not yet implemented")
@@ -24,25 +39,6 @@ data class TimedResult(
             DRAMATICALLY SPILL FEELINGS OUT OVER DINNER like an emotionally repressed little object
 
          */
-    }
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as TimedResult
-
-        if (!results.contentEquals(other.results)) return false
-        if (until != other.until) return false
-        if (notUntil != other.notUntil) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = results.contentHashCode()
-        result = 31 * result + until.hashCode()
-        result = 31 * result + notUntil.hashCode()
-        return result
     }
 }

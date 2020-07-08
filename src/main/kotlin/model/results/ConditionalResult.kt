@@ -16,8 +16,9 @@ data class ConditionalResult(
     val failureResults: Array<Result> = arrayOf()
 
 ) : Result {
-    override val isResolved: Boolean
-        get() = TODO("Not yet implemented")
+    override fun purge(): Boolean {
+        TODO("Not yet implemented")
+    }
 
     override fun apply(c: Character) {
         TODO("Not yet implemented")

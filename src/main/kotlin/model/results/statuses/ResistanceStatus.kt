@@ -5,11 +5,11 @@ import model.Character
 import model.quantities.damage.DamageUnit
 import model.results.effects.Effect
 
-data class HaveResistanceStatus(
+data class ResistanceStatus(
     @JsonProperty("have resistance")
     val gainResistance: DamageUnit
-) : Status {
-    override fun apply(c: Character) {
+) : Status() {
+    override fun applyStatus(c: Character) {
         TODO("Not yet implemented")
     }
 }

@@ -20,8 +20,6 @@ data class Character(
             results[i].apply(this)
             i++
         }
-        results.removeAll {
-            it.isResolved
-        }
+        results.removeAll { it.purge() }
     }
 }

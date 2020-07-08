@@ -37,7 +37,7 @@ data class Spell(
     @JsonProperty("material description")
     val materialDescription: String = ""
 
-    val results: Array<Result> = arrayOf()
+    val cast: Array<Result> = arrayOf()
 
     @JsonProperty("reaction to")
     val reactionTo: String = ""

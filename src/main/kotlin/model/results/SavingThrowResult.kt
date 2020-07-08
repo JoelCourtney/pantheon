@@ -15,8 +15,9 @@ data class SavingThrowResult(
     @JsonProperty("half damage on success")
     val halfDamageOnSuccess: Boolean = false
 ) : Result {
-    override val isResolved: Boolean
-        get() = TODO("Not yet implemented")
+    override fun purge(): Boolean {
+        TODO("Not yet implemented")
+    }
 
     override fun apply(c: Character) {
         TODO("Not yet implemented")

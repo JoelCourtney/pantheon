@@ -38,7 +38,7 @@ description: >
 display in combat: true
 display in roleplay: false
 
-results:
+cast:
   - not until:
       events:
         - take acid damage

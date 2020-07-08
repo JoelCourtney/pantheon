@@ -39,7 +39,7 @@ description: >
 display in combat: true
 display in roleplay: false
 
-results:
+cast:
   - if:
       - key: hitSelf
         ask: Did you hit yourself?

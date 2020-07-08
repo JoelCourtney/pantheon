@@ -7,8 +7,8 @@ import model.quantities.damage.Damage
 data class TakeDamageEffect(
     @JsonProperty("take damage")
     val takeDamage: Damage
-) : Effect {
-    override fun apply(c: Character) {
+) : Effect() {
+    override fun applyEffect(c: Character) {
         TODO("Not yet implemented")
     }
 }
