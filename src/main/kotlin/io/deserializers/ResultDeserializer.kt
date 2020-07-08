@@ -23,21 +23,17 @@ import java.lang.IllegalArgumentException
  * Chooses the subclass to deserialize as based on the first key.  
  * E.G. if "saving throw" is the first key, it will be parsed as [SavingThrowResult].
  *
- * Table of parsing decisions (alphabetical order):
+ * ## List of parsing decisions (key -> class):
  * 
- *  ```
-    | key [, key]            | class                        |
-    |------------------------|------------------------------|
-    | ability score increase | [AbilityScoreIncreaseStatus] |
-    | base movement speed    | [BaseSpeedStatus]            |
-    | creature size          | [CreatureSizeStatus]         |
-    | deal extra damage      | [DealExtraDamageEffect]      |
-    | have resistance        | [ResistanceStatus]           |
-    | if, if not             | [ConditionalResult]          |
-    | saving throw           | [SavingThrowResult]          |
-    | take damage            | [TakeDamageEffect]           |
-    | until, not until       | [TimedResult]                |
- ```
+ * - ability score increase -> [AbilityScoreIncreaseStatus]
+ * - base movement speed    -> [BaseSpeedStatus]
+ * - creature size          -> [CreatureSizeStatus]
+ * - deal extra damage      -> [DealExtraDamageEffect]
+ * - have resistance        -> [ResistanceStatus]
+ * - if | if not            -> [ConditionalResult]
+ * - saving throw           -> [SavingThrowResult]
+ * - take damage            -> [TakeDamageEffect]
+ * - until | not until      -> [TimedResult]
  *
  * Use through [JacksonWrapper.readFile] or [JacksonWrapper.readString] only.
  */

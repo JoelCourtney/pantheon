@@ -4,22 +4,55 @@ import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
-import java.util.stream.Stream
 import kotlin.streams.toList
 
+/**
+ * Miscellaneous file IO for testing.
+ * 
+ * Provides convenience methods for getting lists of file, directories, or both. Singleton object; do not instantiate.
+ */
 object FileSystemWrapper {
+    /**
+     * Get a list of directories contained in the given path.
+     * 
+     * @param [dir] Path to search in. Must be a directory; not checked.
+     * @return A [List] of Paths, where each is a directory in [dir]. 
+     */
     fun getDirectories(dir: String): List<Path> {
         val path = Paths.get(dir)
         return Files.list(path).filter { Files.isDirectory(it) }.toList()
     }
+    
+    /**
+     * Get a list of files contained in the given path.
+     *
+     * @param [dir] Path to search in. Must be a directory; not checked.
+     * @return A [List] of Paths, where each is a regular file in [dir].
+     */
     fun getFiles(dir: String): List<Path> {
         val path = Paths.get(dir)
         return Files.list(path).filter { Files.isRegularFile(it) }.toList()
     }
-    fun getFilesAndDirectories(dir: String): List<Path> {
+
+    /**
+     * Get a list of all nodes (files and directories) contained in the given path.
+     *
+     * @param [dir] Path to search in. Must be a directory; not checked.
+     * @return A [List] of Paths, where each is in [dir].
+     */
+    fun getAll(dir: String): List<Path> {
         val path = Paths.get(dir)
         return Files.list(path).toList()
     }
+
+    /**
+     * Recursively get a list of files contained in the given path.
+     * 
+     * Finds all files that are contained in [dir] or children of [dir], not just immediate children.
+     *
+     * @param [dir] Path to search in. Must be a directory; not checked.
+     * @return A [List] of Paths, where each is a file in [dir]'s hierarchy.
+     */
     fun getFilesRecursive(dir: String): List<Path> {
         return File(dir).walkTopDown().filter { it.isFile }.toList().map { it.toPath() }
     }
