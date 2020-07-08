@@ -35,52 +35,8 @@ object JacksonWrapper {
 
     init {
         module.addDeserializer(
-            Time::class.java,
-            TimeDeserializer
-        )
-        module.addDeserializer(
-            Damage::class.java,
-            DamageDeserializer
-        )
-        module.addDeserializer(
-            Distance::class.java,
-            DistanceDeserializer
-        )
-        module.addDeserializer(
             Result::class.java,
-            ResultDeserializer
-        )
-        module.addDeserializer(
-            Amount::class.java,
-            AmountDeserializer
-        )
-        module.addDeserializer(
-            DamageUnit::class.java,
-            DamageUnitDeserializer
-        )
-        module.addDeserializer(
-            TimeUnit::class.java,
-            TimeUnitDeserializer
-        )
-        module.addDeserializer(
-            DistanceUnit::class.java,
-            DistanceUnitDeserializer
-        )
-        module.addDeserializer(
-            Event::class.java,
-            EventDeserializer
-        )
-        module.addDeserializer(
-            Identifier::class.java,
-            IdentifierDeserializer
-        )
-        module.addDeserializer(
-            Timer::class.java,
-            TimerDeserializer
-        )
-        module.addDeserializer(
-            AbilityScoreType::class.java,
-            AbilityScoreTypeDeserializer
+            ResultDeserializer()
         )
         mapper.registerModule(module)
     }

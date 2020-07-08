@@ -1,5 +1,7 @@
 package model.quantities
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import io.deserializers.IdentifierDeserializer
 import model.quantities.amounts.Amount
 import model.quantities.damage.Damage
 import model.quantities.damage.DamageUnit
@@ -11,6 +13,7 @@ import model.quantities.time.Time
 import model.quantities.time.TimeUnit
 import model.quantities.time.TimeUnitLiteral
 
+@JsonDeserialize(using = IdentifierDeserializer::class)
 data class Identifier(val s: String, val t: String? = null) :
     Amount,
     TimeUnit,

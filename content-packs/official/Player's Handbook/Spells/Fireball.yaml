@@ -40,14 +40,15 @@ display in combat: true
 display in roleplay: false
 
 cast:
-  - if:
-      - key: hitSelf
-        ask: Did you hit yourself?
-    success results:
-      - saving throw: dexterity
-        dc: character$spellSaveDC
-        fail results:
-          - take damage: 8d6 + (spell$cast_level - spell$level)*1d6 fire
-        success results:
-          - take damage: (8d6 + (spell$cast_level - spell$level)*1d6) /- 2 fire
-        half damage on success: true
+  - take damage: 4 fire
+#  - if:
+#      - key: hitSelf
+#        ask: Did you hit yourself?
+#    success results:
+#      - saving throw: dexterity
+#        dc: character$spellSaveDC
+#        fail results:
+#          - take damage: 8d6 + (spell$cast_level - spell$level)*1d6 fire
+#        success results:
+#          - take damage: (8d6 + (spell$cast_level - spell$level)*1d6) /- 2 fire
+#        half damage on success: true

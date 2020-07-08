@@ -38,7 +38,7 @@ import java.lang.IllegalArgumentException
  *
  * Use through [JacksonWrapper.readFile] or [JacksonWrapper.readString] only.
  */
-object ResultDeserializer : StdDeserializer<Result>(Result::class.java) {
+class ResultDeserializer : StdDeserializer<Result>(Result::class.java) {
     override fun deserialize(p: JsonParser?, ctxt: DeserializationContext?): Result {
         val tn = p!!.readValueAsTree<TreeNode>()
         val keys = tn.fieldNames().asSequence().toList()

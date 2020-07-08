@@ -51,6 +51,10 @@ test {
     }
 }
 
+tasks.withType(Test).configureEach {
+    outputs.upToDateWhen { false }
+}
+
 dokka {
     outputFormat = 'html'
     outputDirectory = "$buildDir/doc"

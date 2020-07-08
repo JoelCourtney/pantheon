@@ -1,5 +1,9 @@
 package model
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import io.deserializers.AbilityScoreTypeDeserializer
+
+@JsonDeserialize(using = AbilityScoreTypeDeserializer::class)
 enum class AbilityScoreType {
     STRENGTH,
     DEXTERITY,

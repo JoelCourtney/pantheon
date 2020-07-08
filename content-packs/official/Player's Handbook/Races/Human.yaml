@@ -1,0 +1,24 @@
+name: Human
+
+traits:
+  - ability score increase: str
+    amount: 1
+  - ability score increase: dex
+    amount: 1
+  - ability score increase: con
+    amount: 1
+  - ability score increase: int
+    amount: 1
+  - ability score increase: wis
+    amount: 1
+  - ability score increase: cha
+    amount: 1
+  - creature size: medium
+  - base movement speed: walking
+    distance: 30 feet
+  - know language: common
+#  - file choice: Languages
+#    filter:
+#      not in: character$knownLanguages
+#    results:
+#      - know language: parent$choice

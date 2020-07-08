@@ -24,6 +24,7 @@ class TestAllRead {
     @ParameterizedTest(name = "parse race file {1}")
     @MethodSource
     fun parseRaceFile(dir: String, file: String) {
+        println("why")
         assertDoesNotThrow {
             JacksonWrapper.readFile<Race>(dir, file)
         }

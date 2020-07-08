@@ -1,5 +1,7 @@
 package model.logic
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import io.deserializers.EventDeserializer
 import model.results.TimedResult
 import model.results.effects.SpawnEventEffect
 
@@ -81,4 +83,5 @@ import model.results.effects.SpawnEventEffect
  * 
  * @property [name] String that represents the event.
  */
+@JsonDeserialize(using = EventDeserializer::class)
 data class Event(val name: String)
