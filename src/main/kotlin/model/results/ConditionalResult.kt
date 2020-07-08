@@ -7,7 +7,7 @@ import model.logic.Question
 data class ConditionalResult(
     @JsonProperty("if")
     val ifTrue: Array<Question> = arrayOf(),
-    @JsonProperty("not if")
+    @JsonProperty("if not")
     val ifFalse: Array<Question> = arrayOf(),
 
     @JsonProperty("success results")

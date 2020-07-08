@@ -3,16 +3,16 @@ name: Aarakocra
 results:
   - ability score increase: dexterity
     amount: 2
-  - ability score increease: wisdom
+  - ability score increase: wisdom
     amount: 1
-  - set size: medium
-  - base speed: walking
+  - creature size: medium
+  - base movement speed: walking
     distance: 25 feet
   - if not:
       - key: character$isWearingHeavyArmor
         ask: ERROR. SHOULD NOT HAVE TO ASK.
-      - key: character@isWearingMediumArmor
+      - key: character$isWearingMediumArmor
         ask: ERROR. SHOULD NOT HAVE TO ASK.
     success results:
-      - base speed: flying
+      - base movement speed: flying
         distance: 50 feet
