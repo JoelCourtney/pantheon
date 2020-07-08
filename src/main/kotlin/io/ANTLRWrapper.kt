@@ -12,7 +12,15 @@ import model.quantities.distance.DistanceUnit
 import model.quantities.time.Time
 import model.quantities.time.TimeUnit
 import model.quantities.Identifier
+import model.quantities.Quantity
 
+/**
+ * Parses Strings into [Quantity]'s and [Identifier]'s.
+ *
+ * Singleton object; no not attempt to instantiate.
+ *
+ *
+ */
 object ANTLRWrapper {
     private fun makeParser(s: String): DnFParser {
         val input = CharStreams.fromString(s)
