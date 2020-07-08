@@ -10,11 +10,9 @@ import model.results.Result
 import model.results.SavingThrowResult
 import model.results.TimedResult
 import model.results.effects.DealExtraDamageEffect
+import model.results.effects.SpawnEventEffect
 import model.results.effects.TakeDamageEffect
-import model.results.statuses.AbilityScoreIncreaseStatus
-import model.results.statuses.BaseSpeedStatus
-import model.results.statuses.CreatureSizeStatus
-import model.results.statuses.ResistanceStatus
+import model.results.statuses.*
 import java.lang.IllegalArgumentException
 
 /**
@@ -29,9 +27,12 @@ import java.lang.IllegalArgumentException
  * - base movement speed    -> [BaseSpeedStatus]
  * - creature size          -> [CreatureSizeStatus]
  * - deal extra damage      -> [DealExtraDamageEffect]
+ * - have melee weapon      -> [MeleeWeaponStatus]
  * - have resistance        -> [ResistanceStatus]
  * - if | if not            -> [ConditionalResult]
+ * - know language          -> [KnowLanguageStatus]
  * - saving throw           -> [SavingThrowResult]
+ * - spawn effect           -> [SpawnEventEffect]
  * - take damage            -> [TakeDamageEffect]
  * - until | not until      -> [TimedResult]
  *
@@ -46,9 +47,12 @@ object ResultDeserializer : StdDeserializer<Result>(Result::class.java) {
             "base movement speed" -> BaseSpeedStatus::class.java
             "creature size" -> CreatureSizeStatus::class.java
             "deal extra damage" -> DealExtraDamageEffect::class.java
+            "have melee weapon" -> MeleeWeaponStatus::class.java
             "have resistance" -> ResistanceStatus::class.java
             "if", "if not" -> ConditionalResult::class.java
+            "know language" -> KnowLanguageStatus::class.java
             "saving throw" -> SavingThrowResult::class.java
+            "spawn event" -> SpawnEventEffect::class.java
             "take damage" -> TakeDamageEffect::class.java
             "until", "not until" -> TimedResult::class.java
             else -> throw IllegalArgumentException("Unrecognized result key: ${keys[0]}")
