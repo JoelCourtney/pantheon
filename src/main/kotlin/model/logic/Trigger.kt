@@ -10,13 +10,13 @@ data class Trigger(
     var triggered: Boolean = false
         private set
 
-    fun processEvent(e: Event): Boolean {
-        TODO("asdf")
-    }
-
-    fun processTime(t: Time): Boolean {
-        TODO("zxcv")
-    }
+//    fun processEvent(e: Event): Boolean {
+//        TODO("asdf")
+//    }
+//
+//    fun processTime(t: Time): Boolean {
+//        TODO("zxcv")
+//    }
 
     fun isEmpty(): Boolean {
         return events.isEmpty() && timers.isEmpty()
