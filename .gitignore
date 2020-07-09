@@ -34,3 +34,6 @@ gradle/
 src/main/gen/
 *.interp
 *.tokens
+
+# Mac
+.DS_Store

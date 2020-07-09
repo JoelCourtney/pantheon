@@ -1,0 +1,11 @@
+name: Variant Human
+
+variant of: Human
+
+description: yes helooo i am description
+
+traits:
+  - ability score increase: dex
+    amount: 2
+  - ability score increase: dex
+    amount: 2

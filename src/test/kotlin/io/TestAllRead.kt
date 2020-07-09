@@ -1,5 +1,6 @@
 package io
 
+import io.FileSystemWrapper.getAllContentOfType
 import model.races.Race
 import model.spells.Spell
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -31,20 +32,6 @@ class TestAllRead {
     }
 
     companion object {
-        private fun getAllContentOfType(type: String): List<Path> {
-            val contentSources = FileSystemWrapper.getDirectories("content-packs")
-            val packs: MutableList<Path> = mutableListOf()
-            for (source in contentSources) {
-                packs.addAll(FileSystemWrapper.getDirectories(source.toString()))
-            }
-            val files: MutableList<Path> = mutableListOf()
-            for (pack in packs) {
-                val path = pack.resolve(type)
-                files.addAll(FileSystemWrapper.getFilesRecursive(path.toString()))
-            }
-            return files
-        }
-
         @JvmStatic
         fun parseSpellFile(): List<Arguments> {
             return getAllContentOfType("Spells").map { Arguments.of(it.parent.toString(), it.fileName.toString()) }

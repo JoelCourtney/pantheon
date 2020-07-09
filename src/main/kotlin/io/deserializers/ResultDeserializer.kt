@@ -5,10 +5,7 @@ import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.core.TreeNode
 import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer
-import model.results.ConditionalResult
-import model.results.Result
-import model.results.SavingThrowResult
-import model.results.TimedResult
+import model.results.*
 import model.results.effects.DealExtraDamageEffect
 import model.results.effects.SpawnEventEffect
 import model.results.effects.TakeDamageEffect
@@ -55,6 +52,7 @@ class ResultDeserializer : StdDeserializer<Result>(Result::class.java) {
             "spawn event" -> SpawnEventEffect::class.java
             "take damage" -> TakeDamageEffect::class.java
             "until", "not until" -> TimedResult::class.java
+            "file choice" -> FileChoiceResult::class.java
             else -> throw IllegalArgumentException("Unrecognized result key: ${keys[0]}")
         }
         val parser = tn.traverse()

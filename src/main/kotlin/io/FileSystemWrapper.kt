@@ -56,4 +56,27 @@ object FileSystemWrapper {
     fun getFilesRecursive(dir: String): List<Path> {
         return File(dir).walkTopDown().filter { it.isFile }.toList().map { it.toPath() }
     }
+
+    /**
+     * Gets the list of all content of the given type.
+     * 
+     * @param [type] can be one of:
+     *     - Races
+     *     - Spells
+     *     - Languages
+     * @return A [List] of Paths, each to a file of that content type.
+     */
+    fun getAllContentOfType(type: String): List<Path> {
+        val contentSources = getDirectories("content-packs")
+        val packs: MutableList<Path> = mutableListOf()
+        for (source in contentSources) {
+            packs.addAll(getDirectories(source.toString()))
+        }
+        val files: MutableList<Path> = mutableListOf()
+        for (pack in packs) {
+            val path = pack.resolve(type)
+            files.addAll(getFilesRecursive(path.toString()))
+        }
+        return files
+    }
 }

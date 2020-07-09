@@ -1,19 +1,20 @@
 package model.races
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import io.deserializers.RaceDeserializer
 import model.results.Result
 
-open class Race {
-    @JsonProperty(required = true)
-    val name: String = ""
-
-    @JsonProperty(required = true)
-    val traits: Array<Result> = arrayOf()
-    
-    @JsonProperty(required = true)
-    val description: String = ""
-    
+@JsonDeserialize(using = RaceDeserializer::class)
+open class Race (
+    val name: String,
+    val traits: Array<Result>,
+    val description: String,
+    open val chooseable: Boolean = true
+) {
+    protected constructor(r: Race): this(r.name, r.traits, r.description)
     override fun toString(): String {
-        return "Race(name='$name', traits=${traits.contentToString()}, description='$description')"
+        return "Race(name='$name', traits=${traits.contentToString()}, description='$description', chooseable=$chooseable)"
     }
+
 }
