@@ -1,8 +1,10 @@
 package model.results
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import model.identity.Evaluated
 
-enum class SavingThrowType(val symbol: String) {
+enum class SavingThrowType(val identity: String):
+    Evaluated<SavingThrowType> {
     @JsonProperty("strength")
     STRENGTH("strength"),
 

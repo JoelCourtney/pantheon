@@ -1,14 +1,18 @@
 package model.results
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import io.deserializers.BooleanArrayDeserializer
 import model.Character
-import model.logic.Question
+import model.identity.Expression
 
 data class ConditionalResult(
     @JsonProperty("if")
-    val ifTrue: Array<Question> = arrayOf(),
+    @JsonDeserialize(using = BooleanArrayDeserializer::class)
+    val ifTrue: Array<Expression<Boolean>> = arrayOf(),
     @JsonProperty("if not")
-    val ifFalse: Array<Question> = arrayOf(),
+    @JsonDeserialize(using = BooleanArrayDeserializer::class)
+    val ifFalse: Array<Expression<Boolean>> = arrayOf(),
 
     @JsonProperty("success results")
     val successResults: Array<Result> = arrayOf(),

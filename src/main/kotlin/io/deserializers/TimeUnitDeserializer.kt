@@ -4,16 +4,18 @@ import io.ANTLRWrapper
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer
-import model.quantities.time.TimeUnit
 import io.JacksonWrapper
+import model.identity.Expression
+import model.quantities.QuantityUnit
+import model.quantities.QuantityType.Time
 
 /**
  * Deserializes [TimeUnit] from YAML.
  *
  * Use through [JacksonWrapper.readFile] or [JacksonWrapper.readString] only.
  */
-object TimeUnitDeserializer : StdDeserializer<TimeUnit>(TimeUnit::class.java) {
-    override fun deserialize(p: JsonParser?, ctxt: DeserializationContext?): TimeUnit {
+object TimeUnitDeserializer : StdDeserializer<Expression<QuantityUnit<Time>>>(Expression::class.java) {
+    override fun deserialize(p: JsonParser?, ctxt: DeserializationContext?): Expression<QuantityUnit<Time>> {
         return ANTLRWrapper.parseTimeUnit(p!!.readValueAs(String::class.java))
     }
 }

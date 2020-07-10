@@ -30,6 +30,9 @@ dependencies {
 
 compileKotlin {
     kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions {
+        freeCompilerArgs = ["-XXLanguage:+InlineClasses"]
+    }
 }
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
@@ -54,5 +57,5 @@ tasks.withType(Test).configureEach {
 
 dokka {
     outputFormat = 'html'
-    outputDirectory = "$buildDir/doc"
+    outputDirectory = 'doc'
 }

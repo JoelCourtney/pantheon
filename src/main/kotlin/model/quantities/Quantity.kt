@@ -1,15 +1,16 @@
 package model.quantities
 
-import model.quantities.damage.Damage
-import model.quantities.distance.Distance
-import model.quantities.time.Time
+import model.identity.Expression
 
-interface Quantity
-
-data class QuantityBinary(
-    val left: Quantity, val right: Quantity
-): Distance, Damage, Time {
-    override fun toString(): String {
-        return "$left; $right"
+data class Quantity<T: QuantityType>(
+    val terms: ArrayList<Expression<QuantityComponent<T>>>
+): Expression<Quantity<T>> {
+    override fun evaluate(): Quantity<T> {
+        TODO("Not yet implemented")
+    }
+    
+    companion object {
+        inline fun<reified T: QuantityType> empty(): Quantity<T> =
+            Quantity<T>(arrayListOf())
     }
 }

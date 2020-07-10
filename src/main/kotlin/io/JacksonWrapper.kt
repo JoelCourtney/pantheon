@@ -4,23 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import io.deserializers.*
-import model.AbilityScoreType
-import model.logic.Event
-import model.logic.Timer
-import model.quantities.Identifier
-import model.quantities.amounts.Amount
-import model.quantities.damage.Damage
-import model.quantities.damage.DamageUnit
-import model.quantities.distance.Distance
-import model.quantities.distance.DistanceUnit
-import model.quantities.time.Time
-import model.quantities.time.TimeUnit
 import model.results.Result
 import java.nio.file.FileSystems
 import java.nio.file.Files
 import java.io.IOException
 import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.databind.JsonMappingException
+import model.identity.Identifier
 
 /**
  * Convenience object for deserializing objects through com.fasterxml.jackson.

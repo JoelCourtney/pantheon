@@ -1,26 +1,27 @@
 name: Aarakocra
 
-traits:
-  - ability score increase: dexterity
-    amount: 2
-  - ability score increase: wisdom
-    amount: 1
-  - creature size: medium
-  - base movement speed: walking
-    distance: 25 feet
+results:
+  - modify: character[dexterity]
+    add: 2
+  - modify: character[wisdom]
+    add: 1
+  - set: character[size]
+    to: medium
+  - set: character[walking speed]
+    to: 25 feet
   - if not:
-      - key: character$isWearingHeavyArmor
-        ask: ERROR. SHOULD NOT HAVE TO ASK.
-      - key: character$isWearingMediumArmor
-        ask: ERROR. SHOULD NOT HAVE TO ASK.
+      - character[wearing heavy armor]
+      - character[wearing medium armor]
     success results:
-      - base movement speed: flying
-        distance: 50 feet
-  - have melee weapon: Talons
-    damage: 1d4+character$strengthModifier slashing
-  - know language: Common
-  - know language: Aarakocra
-  - know language: Auran
+      - set: character[flying speed]
+        to: 50 feet
+#  - have melee weapon: Talons
+#    damage: 1d4+character[strength modifier] slashing
+  - modify: character[known languages]
+    append:
+      - Common
+      - Aarakocra
+      - Auran
 
 description: |
   # Aarakocra

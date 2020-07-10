@@ -1,12 +1,10 @@
 package io
 
-import model.quantities.amounts.Dice
-import model.quantities.amounts.NumberLiteral
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import model.quantities.Identifier
-import model.quantities.amounts.AmountBinary
-import model.quantities.amounts.AmountBinaryOp
+import model.identity.Identifier
+import model.identity.IdentifierKey
+import model.quantities.amounts.*
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 
@@ -28,13 +26,32 @@ class TestAmountIO {
 
     @Test
     fun testIdentifier() {
-        assertEquals(Identifier("hello"), ANTLRWrapper.parseAmount(("hello")))
         assertEquals(
-            Identifier("hello", "world"), ANTLRWrapper.parseAmount("hello${'$'}world")
+            Identifier<Amount>(
+                IdentifierKey("hello"),
+                IdentifierKey("world")
+            ),
+            ANTLRWrapper.parseAmount("hello[world]")
         )
-        assertEquals(Identifier("hello"), ANTLRWrapper.parseIdentifier(("hello")))
         assertEquals(
-            Identifier("hello", "world"), ANTLRWrapper.parseIdentifier("hello${'$'}world")
+            Identifier<Amount>(
+                Identifier<Any>(
+                    IdentifierKey("hello"),
+                    IdentifierKey("meh")
+                ),
+                IdentifierKey("world")
+            ),
+            ANTLRWrapper.parseAmount("hello[meh][world]")
+        )
+        assertEquals(
+            Identifier<Amount>(
+                IdentifierKey("hello"),
+                Identifier<Any>(
+                    IdentifierKey("meh"),
+                    IdentifierKey("world")
+                )
+            ),
+            ANTLRWrapper.parseAmount("hello[meh[world]]")
         )
     }
 

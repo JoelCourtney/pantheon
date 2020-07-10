@@ -1,23 +1,24 @@
 package model
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import model.identity.Evaluated
 
-enum class CreatureSize {
+enum class CreatureSize(val identity: String): Evaluated<CreatureSize> {
     @JsonProperty("tiny")
-    TINY,
+    TINY("tiny"),
 
     @JsonProperty("small")
-    SMALL,
+    SMALL("small"),
 
     @JsonProperty("medium")
-    MEDIUM,
+    MEDIUM("medium"),
 
     @JsonProperty("large")
-    LARGE,
+    LARGE("large"),
 
     @JsonProperty("huge")
-    HUGE,
+    HUGE("huge"),
 
     @JsonProperty("gargantuan")
-    GARGANTUAN;
+    GARGANTUAN("gargantuan");
 }

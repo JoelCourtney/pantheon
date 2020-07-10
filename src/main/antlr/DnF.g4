@@ -1,95 +1,95 @@
-grammar DnF;
+parser grammar DnF;
 
-import DnLexer;
+options { tokenVocab = DnLexer; }
 
 @parser::header {
-    import model.quantities.time.*;
-    import model.quantities.distance.*;
-    import model.quantities.damage.*;
-    import model.quantities.amounts.*;
+    import model.identity.*;
     import model.quantities.*;
+    import model.quantities.QuantityType.*;
+    import model.quantities.amounts.*;
+    import model.results.SavingThrowType;
 }
 
-time returns [Time result]
-    : time_amount EOF { $result = $time_amount.result; };
+damage returns [Expression<Quantity<Damage>> result]
+    : { ArrayList<Expression<QuantityComponent<Damage>>> components = new ArrayList<Expression<QuantityComponent<Damage>>>(); }
+    c=damage_component { components.add($c.result); }
+    (
+        SEMICOLON c=damage_component { components.add($c.result); }
+    )* EOF { $result = new Quantity<Damage>(components); }
+    | i=identifier { $result = (Identifier<Quantity<Damage>>) $i.result; };
 
-time_amount returns [Time result]
-    : time_component        { $result = $time_component.result; }
-    | a=time_amount SEMICOLON b=time_amount
-        { $result = new QuantityBinary($a.result, $b.result); }
+damage_component returns [Expression<QuantityComponent<Damage>> result]
+    : e=amount u=damage_unit  { $result = new QuantityComponent<Damage>($e.result, $u.result); }
+    | i=identifier          { $result = (Identifier<QuantityComponent<Damage>>) $i.result; }
+    | NONE                  { $result = DamageKeyword.NONE; };
+
+damage_unit returns [Expression<QuantityUnit<Damage>> result]
+    : ACID          { $result = DamageUnit.ACID; }
+    | BLUDGEONING   { $result = DamageUnit.BLUDGEONING; }
+    | COLD          { $result = DamageUnit.COLD; }
+    | FIRE          { $result = DamageUnit.FIRE; }
+    | FORCE         { $result = DamageUnit.FORCE; }
+    | LIGHTNING     { $result = DamageUnit.LIGHTNING; }
+    | NECROTIC      { $result = DamageUnit.NECROTIC; }
+    | PIERCING      { $result = DamageUnit.PIERCING; }
+    | POISON        { $result = DamageUnit.POISON; }
+    | PSYCHIC       { $result = DamageUnit.PSYCHIC; }
+    | RADIANT       { $result = DamageUnit.RADIANT; }
+    | SLASHING      { $result = DamageUnit.SLASHING; }
+    | THUNDER       { $result = DamageUnit.THUNDER; }
+    | MELEE         { $result = DamageUnit.MELEE; }
+    | RANGED        { $result = DamageUnit.RANGED; }
+    | i=identifier  { $result = (Identifier<QuantityUnit<Damage>>) $i.result; };
+
+distance returns [Expression<Quantity<Distance>> result]
+    : { ArrayList<Expression<QuantityComponent<Distance>>> components = new ArrayList<Expression<QuantityComponent<Distance>>>(); }
+    c=distance_component { components.add($c.result); }
+    (
+        SEMICOLON c=distance_component { components.add($c.result); }
+    )* EOF { $result = new Quantity<Distance>(components); }
+    | i=identifier { $result = (Identifier<Quantity<Distance>>) $i.result; };
+
+distance_component returns [Expression<QuantityComponent<Distance>> result]
+    : e=amount u=distance_unit  { $result = new QuantityComponent<Distance>($e.result, $u.result); }
+    | i=identifier          { $result = (Identifier<QuantityComponent<Distance>>) $i.result; }
+    | TOUCH                 { $result = DistanceKeyword.TOUCH; }
+    | SELF                  { $result = DistanceKeyword.SELF; };
+
+distance_unit returns [Expression<QuantityUnit<Distance>> result]
+    : FOOT          { $result = DistanceUnit.FOOT; }
+    | MILE          { $result = DistanceUnit.MILE; }
+    | SPACE         { $result = DistanceUnit.SPACE; }
+    | i=identifier  { $result = (Identifier<QuantityUnit<Distance>>) $i.result; };
+
+time returns [Expression<Quantity<Time>> result]
+    : { ArrayList<Expression<QuantityComponent<Time>>> components = new ArrayList<Expression<QuantityComponent<Time>>>(); }
+    c=time_component { components.add($c.result); }
+    (
+        SEMICOLON c=time_component { components.add($c.result); }
+    )* EOF { $result = new Quantity<Time>(components); }
+    | i=identifier { $result = (Identifier<Quantity<Time>>) $i.result; };
+
+time_component returns [Expression<QuantityComponent<Time>> result]
+    : e=amount u=time_unit  { $result = new QuantityComponent<Time>($e.result, $u.result); }
+    | i=identifier          { $result = (Identifier<QuantityComponent<Time>>) $i.result; }
     | INSTANTANEOUS         { $result = TimeKeyword.INSTANTANEOUS; }
     | INDEFINITE            { $result = TimeKeyword.INDEFINITE; }
     | NOW                   { $result = TimeKeyword.NOW; };
 
-time_component returns [Time result]
-    : e=amount u=time_unit  { $result = new TimeComponent($e.result, $u.result); }
-    | i=identifier              { $result = $i.result; };
+time_unit returns [Expression<QuantityUnit<Time>> result]
+    : ACTION        { $result = TimeUnit.ACTION; }
+    | BONUS_ACTION  { $result = TimeUnit.BONUS_ACTION; }
+    | REACTION      { $result = TimeUnit.REACTION; }
+    | ROUND         { $result = TimeUnit.ROUND; }
+    | SECOND        { $result = TimeUnit.SECOND; }
+    | MINUTE        { $result = TimeUnit.MINUTE; }
+    | HOUR          { $result = TimeUnit.HOUR; }
+    | DAY           { $result = TimeUnit.DAY; }
+    | SHORT_REST    { $result = TimeUnit.SHORT_REST; }
+    | LONG_REST     { $result = TimeUnit.LONG_REST; }
+    | i=identifier  { $result = (Identifier<QuantityUnit<Time>>) $i.result; };
 
-time_unit returns [TimeUnit result]
-    : ACTION        { $result = TimeUnitLiteral.ACTION; }
-    | BONUS_ACTION  { $result = TimeUnitLiteral.BONUS_ACTION; }
-    | REACTION      { $result = TimeUnitLiteral.REACTION; }
-    | ROUND         { $result = TimeUnitLiteral.ROUND; }
-    | SECOND        { $result = TimeUnitLiteral.SECOND; }
-    | MINUTE        { $result = TimeUnitLiteral.MINUTE; }
-    | HOUR          { $result = TimeUnitLiteral.HOUR; }
-    | DAY           { $result = TimeUnitLiteral.DAY; }
-    | SHORT_REST    { $result = TimeUnitLiteral.SHORT_REST; }
-    | LONG_REST     { $result = TimeUnitLiteral.LONG_REST; }
-    | i=identifier  { $result = $i.result; };
-
-distance returns [Distance result]
-    : distance_amount EOF { $result = $distance_amount.result; };
-
-distance_amount returns [Distance result]
-    : distance_component                        { $result = $distance_component.result; }
-    | a=distance_amount SEMICOLON b=distance_amount
-        { $result = new QuantityBinary($a.result, $b.result); }
-    | TOUCH { $result = DistanceKeyword.TOUCH; }
-    | SELF { $result = DistanceKeyword.SELF; };
-
-distance_component returns [Distance result]
-    : e=amount u=distance_unit  { $result = new DistanceComponent($e.result, $u.result); }
-    | i=identifier              { $result = $i.result; };
-
-distance_unit returns [DistanceUnit result]
-    : FOOT          { $result = DistanceUnitLiteral.FOOT; }
-    | MILE          { $result = DistanceUnitLiteral.MILE; }
-    | SPACE         { $result = DistanceUnitLiteral.SPACE; }
-    | i=identifier  { $result = $i.result; };
-
-damage returns [Damage result]
-    : damage_amount EOF { $result = $damage_amount.result; };
-
-damage_amount returns [Damage result]
-    : damage_component                        { $result = $damage_component.result; }
-    | a=damage_amount SEMICOLON b=damage_amount
-        { $result = new QuantityBinary($a.result, $b.result); }
-    | NONE { $result = DamageKeyword.NONE; };
-
-damage_component returns [Damage result]
-    : e=amount u=damage_unit    { $result = new DamageComponent($e.result, $u.result); }
-    | i=identifier              { $result = $i.result; };
-
-damage_unit returns [DamageUnit result]
-    : ACID          { $result = DamageUnitLiteral.ACID; }
-    | BLUDGEONING   { $result = DamageUnitLiteral.BLUDGEONING; }
-    | COLD          { $result = DamageUnitLiteral.COLD; }
-    | FIRE          { $result = DamageUnitLiteral.FIRE; }
-    | FORCE         { $result = DamageUnitLiteral.FORCE; }
-    | LIGHTNING     { $result = DamageUnitLiteral.LIGHTNING; }
-    | NECROTIC      { $result = DamageUnitLiteral.NECROTIC; }
-    | PIERCING      { $result = DamageUnitLiteral.PIERCING; }
-    | POISON        { $result = DamageUnitLiteral.POISON; }
-    | PSYCHIC       { $result = DamageUnitLiteral.PSYCHIC; }
-    | RADIANT       { $result = DamageUnitLiteral.RADIANT; }
-    | SLASHING      { $result = DamageUnitLiteral.SLASHING; }
-    | THUNDER       { $result = DamageUnitLiteral.THUNDER; }
-    | MELEE         { $result = DamageUnitLiteral.MELEE; }
-    | RANGED        { $result = DamageUnitLiteral.RANGED; }
-    | i=identifier  { $result = $i.result; };
-
-amount returns [Amount result]
+amount returns [Expression<Amount> result]
     : l=amount bop=( TIMES | DIVIDE_DOWN | DIVIDE_UP ) r=amount
         { $result = new AmountBinary(AmountBinaryOp.fromString($bop.getText()), $l.result, $r.result); }
     | l=amount bop=( PLUS | MINUS ) r=amount
@@ -100,8 +100,31 @@ amount returns [Amount result]
         {   String s = $d.getText();
             String[] parts = s.toLowerCase().split("d");
             $result = new Dice(parts[0], parts[1]); }
-    | i=identifier { $result = $i.result; };
+    | i=identifier { $result = (Identifier<Amount>) $i.result; };
 
-identifier returns [Identifier result]
-    : o=NAME DOLLAR i=NAME { $result = new Identifier($o.getText(), $i.getText()); }
-    | i=NAME { $result = new Identifier($i.getText(), null); };
+identifier returns [Identifier<? extends Object> result]
+    : n1=NAME { ArrayList<IdentifierComponent> comps = new ArrayList<IdentifierComponent>(); }
+    (OPEN_BRACKET (
+        n2=NAME { comps.add(new IdentifierKey($n2.getText())); }
+        | i=identifier { comps.add($i.result); }
+    ) CLOSE_BRACKET)+ {
+        $result = new Identifier<Object>(new IdentifierKey($n1.getText()), comps.get(0));
+        for (int i = 1; i < comps.size(); i++) {
+            $result = new Identifier<Object>($result, comps.get(i));
+        }
+    };
+
+saving_throw_type returns [Expression<SavingThrowType> result]
+    : STRENGTH      { $result = SavingThrowType.STRENGTH; }
+    | DEXTERITY     { $result = SavingThrowType.DEXTERITY; }
+    | CONSTITUTION  { $result = SavingThrowType.CONSTITUTION; }
+    | INTELLIGENCE  { $result = SavingThrowType.INTELLIGENCE; }
+    | WISDOM        { $result = SavingThrowType.WISDOM; }
+    | CHARISMA      { $result = SavingThrowType.CHARISMA; }
+    | DEATH         { $result = SavingThrowType.DEATH; }
+    | i=identifier  { $result = (Identifier<SavingThrowType>) $i.result; };
+
+bool returns [Expression<Boolean> result]
+    : TRUE         { $result = new Expression<Boolean>() { public Boolean evaluate() { return true; } }; }
+    | FALSE         { $result = new Expression<Boolean>() { public Boolean evaluate() { return false; } }; }
+    | i=identifier  { $result = (Identifier<Boolean>) $i.result; };

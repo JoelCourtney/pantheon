@@ -1,23 +1,21 @@
 package model
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import io.deserializers.AbilityScoreTypeDeserializer
+import model.identity.Evaluated
 
-@JsonDeserialize(using = AbilityScoreTypeDeserializer::class)
-enum class AbilityScoreType {
-    STRENGTH,
-    DEXTERITY,
-    CONSTITUTION,
-    INTELLIGENCE,
-    WISDOM,
-    CHARISMA;
+enum class Ability(val identity: String): Evaluated<Ability> {
+    STRENGTH("strength"),
+    DEXTERITY("dexterity"),
+    CONSTITUTION("constitution"),
+    INTELLIGENCE("intelligence"),
+    WISDOM("wisdom"),
+    CHARISMA("charisma");
 
     override fun toString(): String {
         return this.name.toLowerCase()
     }
 
     companion object {
-        fun fromString(s: String): AbilityScoreType {
+        fun fromString(s: String): Ability {
             return when (s.toLowerCase()) {
                 "str", "strength" -> STRENGTH
                 "dex", "dexterity" -> DEXTERITY

@@ -1,7 +1,5 @@
 package model.logic
 
-import model.quantities.time.Time
-
 data class Trigger(
     val events: Array<Event> = arrayOf(),
     val timers: Array<Timer> = arrayOf(),

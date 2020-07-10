@@ -1,36 +1,47 @@
 package model
 
-interface Skill
+import model.identity.Evaluated
 
-enum class DexteritySkill(val symbol: String) : Skill {
+enum class Skill(val identity: String): Evaluated<Skill> {
     ACROBATICS("acrobatics"),
-    SLEIGHT_OF_HAND("sleight of hand"),
-    STEALTH("stealth");
-}
-
-enum class StrengthSkill(val symbol: String) : Skill {
-    ATHLETICS("athletics");
-}
-
-enum class IntelligenceSkill(val symbol: String) : Skill {
-    ARCANA("arcana"),
-    HISTORY("history"),
-    INVESTIGATION("investigation"),
-    NATURE("nature"),
-    RELIGION("religion");
-}
-
-enum class WisdomSkill(val symbol: String) : Skill {
     ANIMAL_HANDLING("animal handling"),
-    INSIGHT("insight"),
-    MEDICINE("medicine"),
-    PERCEPTION("perception"),
-    SURVIVAL("survival");
-}
-
-enum class CharismaSkill(val symbol: String) : Skill {
+    ARCANA("arcana"),
+    ATHLETICS("athletics"),
     DECEPTION("deception"),
+    HISTORY("history"),
+    INSIGHT("insight"),
     INTIMIDATION("intimidation"),
+    INVESTIGATION("investigation"),
+    MEDICINE("medicine"),
+    NATURE("nature"),
+    PERCEPTION("perception"),
     PERFORMANCE("performance"),
-    PERSUASION("persuasion");
+    PERSUASION("persuasion"),
+    RELIGION("religion"),
+    SLEIGHT_OF_HAND("sleight of hand"),
+    STEALTH("stealth"),
+    SURVIVAL("survival");
+    
+    fun getAbility(): Ability {
+        return when (this) {
+            ATHLETICS -> Ability.STRENGTH
+            ACROBATICS,
+            SLEIGHT_OF_HAND,
+            STEALTH -> Ability.DEXTERITY
+            ARCANA,
+            HISTORY,
+            INVESTIGATION,
+            NATURE,
+            RELIGION -> Ability.INTELLIGENCE
+            ANIMAL_HANDLING,
+            INSIGHT,
+            MEDICINE,
+            PERCEPTION,
+            SURVIVAL -> Ability.WISDOM
+            DECEPTION,
+            INTIMIDATION,
+            PERFORMANCE,
+            PERSUASION -> Ability.CHARISMA
+        }
+    }
 }

@@ -3,19 +3,19 @@ package io
 import model.logic.Trigger
 import model.logic.Event
 import model.logic.LogicType
-import model.logic.Question
 import model.logic.Timer
-import model.quantities.Identifier
+import model.quantities.Quantity
+import model.quantities.QuantityComponent
 import model.quantities.amounts.Dice
 import model.quantities.amounts.NumberLiteral
-import model.quantities.time.TimeComponent
-import model.quantities.time.TimeKeyword
-import model.quantities.time.TimeUnitLiteral
+import model.quantities.TimeKeyword
+import model.quantities.TimeUnit
 import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
+import model.quantities.QuantityType.Time
 
 class TestLogicIO {
 
@@ -50,49 +50,36 @@ class TestLogicIO {
     fun parseLogicType(lt: LogicType) {
         assertEquals(
             lt,
-            JacksonWrapper.readString<LogicType>(lt.symbol)
-        )
-    }
-
-    @Test
-    fun parseQuestion() {
-        assertEquals(
-            Question(Identifier("hello"), "can you hello"),
-            JacksonWrapper.readString<Question>(
-                """
-                    key: hello
-                    ask: can you hello
-                """.trimIndent()
-            )
-        )
-    }
-
-    @Test
-    fun parseQuestionList() {
-        assertArrayEquals(
-            arrayOf(
-                Question(Identifier("hello", "world"), "compile me papa"),
-                Question(Identifier("i", "dont"), "believe i just wrote that")
-            ),
-            JacksonWrapper.readString<Array<Question>>(
-                """
-                    - key: hello${'$'}world
-                      ask: compile me papa
-                    - key: i${'$'}dont
-                      ask: believe i just wrote that
-                """.trimIndent()
-            )
+            JacksonWrapper.readString<LogicType>(lt.identity)
         )
     }
 
     @Test
     fun parseTimer() {
         assertEquals(
-            Timer(TimeComponent(NumberLiteral(2), TimeUnitLiteral.DAY)),
+            Timer(
+                Quantity<Time>(
+                    arrayListOf(
+                        QuantityComponent(
+                            NumberLiteral(2),
+                            TimeUnit.DAY
+                        )
+                    )
+                )
+            ),
             JacksonWrapper.readString<Timer>("2 days")
         )
         assertEquals(
-            Timer(TimeComponent(Dice(3, 6), TimeUnitLiteral.ACTION)),
+            Timer(
+                Quantity<Time>(
+                    arrayListOf(
+                        QuantityComponent(
+                            Dice(3, 6),
+                            TimeUnit.ACTION
+                        )
+                    )
+                )
+            ),
             JacksonWrapper.readString<Timer>("3d6 actions")
         )
     }
@@ -101,9 +88,9 @@ class TestLogicIO {
     fun parseTimerList() {
         assertArrayEquals(
             arrayOf(
-                Timer(TimeKeyword.NOW),
-                Timer(TimeComponent(NumberLiteral(2), TimeUnitLiteral.MINUTE)),
-                Timer(TimeComponent(Dice(4,6), TimeUnitLiteral.DAY))
+                Timer(Quantity<Time>(arrayListOf(TimeKeyword.NOW))),
+                Timer(Quantity<Time>(arrayListOf(QuantityComponent(NumberLiteral(2), TimeUnit.MINUTE)))),
+                Timer(Quantity<Time>(arrayListOf(QuantityComponent(Dice(4,6), TimeUnit.DAY))))
             ),
             JacksonWrapper.readString<Array<Timer>>(
                 """
@@ -123,7 +110,7 @@ class TestLogicIO {
                     Event("take damage")
                 ),
                 arrayOf(
-                    Timer(TimeKeyword.INDEFINITE)
+                    Timer(Quantity<Time>(arrayListOf(TimeKeyword.INDEFINITE)))
                 ),
                 LogicType.CONSECUTIVE
             ),

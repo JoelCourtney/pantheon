@@ -1,12 +1,12 @@
 package io
 
-import model.quantities.Identifier
-import model.quantities.QuantityBinary
+import model.identity.Identifier
+import model.identity.IdentifierKey
+import model.quantities.Quantity
+import model.quantities.QuantityComponent
 import model.quantities.amounts.Dice
-import model.quantities.amounts.NumberLiteral
-import model.quantities.time.TimeComponent
-import model.quantities.time.TimeKeyword
-import model.quantities.time.TimeUnitLiteral
+import model.quantities.TimeKeyword
+import model.quantities.TimeUnit
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
@@ -14,12 +14,21 @@ import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.EnumSource
 import org.junit.jupiter.params.provider.MethodSource
 import java.util.stream.Stream
+import model.quantities.QuantityType.Time
+import model.quantities.amounts.NumberLiteral
 
 class TestTimeIO {
     @Test
     fun singleComponent() {
         assertEquals(
-            TimeComponent(NumberLiteral(1), TimeUnitLiteral.ACTION),
+            Quantity<Time>(
+                arrayListOf(
+                    QuantityComponent(
+                        NumberLiteral(1),
+                        TimeUnit.ACTION
+                    )
+                )
+            ),
             ANTLRWrapper.parseTime("1 action")
         )
     }
@@ -27,23 +36,37 @@ class TestTimeIO {
     @Test
     fun sum() {
         assertEquals(
-            QuantityBinary(
-                TimeComponent(Identifier("character", "health"), TimeUnitLiteral.MINUTE),
-                TimeComponent(Dice(2, 3), Identifier("meh"))
+            Quantity<Time>(
+                arrayListOf(
+                    QuantityComponent(
+                        Identifier(
+                            IdentifierKey("character"), 
+                            IdentifierKey("health")
+                        ),
+                        TimeUnit.MINUTE
+                    ),
+                    QuantityComponent(
+                        Dice(2, 3),
+                        Identifier(
+                            IdentifierKey("meh"),
+                            IdentifierKey("erty")
+                        )
+                    )
+                )
             ),
-            ANTLRWrapper.parseTime("character${'$'}health min; 2d3 meh")
+            ANTLRWrapper.parseTime("character[health] min; 2d3 meh[erty]")
         )
     }
 
     @ParameterizedTest(name = "parse unit literal {0}")
-    @EnumSource(TimeUnitLiteral::class)
-    fun parseUnitLiteral(unit: TimeUnitLiteral) {
-        assertEquals(unit, ANTLRWrapper.parseTimeUnit(unit.symbol))
+    @EnumSource(TimeUnit::class)
+    fun parseUnitLiteral(unit: TimeUnit) {
+        assertEquals(unit, ANTLRWrapper.parseTimeUnit(unit.identity))
     }
 
     @ParameterizedTest(name = "parse unit literal {1}")
     @MethodSource
-    fun parseAlternateUnitLiteral(s: String, unit: TimeUnitLiteral) {
+    fun parseAlternateUnitLiteral(s: String, unit: TimeUnit) {
         assertEquals(
             unit,
             ANTLRWrapper.parseTimeUnit(s)
@@ -54,35 +77,35 @@ class TestTimeIO {
         @JvmStatic
         fun parseAlternateUnitLiteral(): Stream<Arguments> {
             return Stream.of(
-                Arguments.of("actions", TimeUnitLiteral.ACTION),
+                Arguments.of("actions", TimeUnit.ACTION),
 
-                Arguments.of("bonus actions", TimeUnitLiteral.BONUS_ACTION),
-                Arguments.of("boneless action", TimeUnitLiteral.BONUS_ACTION),
-                Arguments.of("boneless actions", TimeUnitLiteral.BONUS_ACTION),
+                Arguments.of("bonus actions", TimeUnit.BONUS_ACTION),
+                Arguments.of("boneless action", TimeUnit.BONUS_ACTION),
+                Arguments.of("boneless actions", TimeUnit.BONUS_ACTION),
 
-                Arguments.of("reactions", TimeUnitLiteral.REACTION),
+                Arguments.of("reactions", TimeUnit.REACTION),
 
-                Arguments.of("rounds", TimeUnitLiteral.ROUND),
+                Arguments.of("rounds", TimeUnit.ROUND),
 
-                Arguments.of("sec", TimeUnitLiteral.SECOND),
-                Arguments.of("secs", TimeUnitLiteral.SECOND),
-                Arguments.of("seconds", TimeUnitLiteral.SECOND),
+                Arguments.of("sec", TimeUnit.SECOND),
+                Arguments.of("secs", TimeUnit.SECOND),
+                Arguments.of("seconds", TimeUnit.SECOND),
 
-                Arguments.of("min", TimeUnitLiteral.MINUTE),
-                Arguments.of("mins", TimeUnitLiteral.MINUTE),
-                Arguments.of("minutes", TimeUnitLiteral.MINUTE),
+                Arguments.of("min", TimeUnit.MINUTE),
+                Arguments.of("mins", TimeUnit.MINUTE),
+                Arguments.of("minutes", TimeUnit.MINUTE),
 
-                Arguments.of("hours", TimeUnitLiteral.HOUR),
-                Arguments.of("hrs", TimeUnitLiteral.HOUR),
-                Arguments.of("hr", TimeUnitLiteral.HOUR),
+                Arguments.of("hours", TimeUnit.HOUR),
+                Arguments.of("hrs", TimeUnit.HOUR),
+                Arguments.of("hr", TimeUnit.HOUR),
 
-                Arguments.of("days", TimeUnitLiteral.DAY),
+                Arguments.of("days", TimeUnit.DAY),
 
-                Arguments.of("short rests", TimeUnitLiteral.SHORT_REST),
-                Arguments.of("sr", TimeUnitLiteral.SHORT_REST),
+                Arguments.of("short rests", TimeUnit.SHORT_REST),
+                Arguments.of("sr", TimeUnit.SHORT_REST),
 
-                Arguments.of("long rests", TimeUnitLiteral.LONG_REST),
-                Arguments.of("lr", TimeUnitLiteral.LONG_REST)
+                Arguments.of("long rests", TimeUnit.LONG_REST),
+                Arguments.of("lr", TimeUnit.LONG_REST)
             )
         }
     }
@@ -90,6 +113,6 @@ class TestTimeIO {
     @ParameterizedTest(name = "parse quantity keyword {0}")
     @EnumSource(TimeKeyword::class)
     fun parseKeyword(kw: TimeKeyword) {
-        assertEquals(kw, ANTLRWrapper.parseTime(kw.name))
+        assertEquals(Quantity<Time>(arrayListOf(kw)), ANTLRWrapper.parseTime(kw.name))
     }
 }

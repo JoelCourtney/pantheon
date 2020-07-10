@@ -6,10 +6,10 @@ import com.fasterxml.jackson.core.TreeNode
 import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer
 import model.results.*
-import model.results.effects.DealExtraDamageEffect
+import model.results.effects.ModifyOnceEffect
 import model.results.effects.SpawnEventEffect
-import model.results.effects.TakeDamageEffect
-import model.results.statuses.*
+import model.results.statuses.ModifyStatus
+import model.results.statuses.SetStatus
 import java.lang.IllegalArgumentException
 
 /**
@@ -40,19 +40,14 @@ class ResultDeserializer : StdDeserializer<Result>(Result::class.java) {
         val tn = p!!.readValueAsTree<TreeNode>()
         val keys = tn.fieldNames().asSequence().toList()
         val targetClass = when (keys[0].toLowerCase()) {
-            "ability score increase" -> AbilityScoreIncreaseStatus::class.java
-            "base movement speed" -> BaseSpeedStatus::class.java
-            "creature size" -> CreatureSizeStatus::class.java
-            "deal extra damage" -> DealExtraDamageEffect::class.java
-            "have melee weapon" -> MeleeWeaponStatus::class.java
-            "have resistance" -> ResistanceStatus::class.java
             "if", "if not" -> ConditionalResult::class.java
-            "know language" -> KnowLanguageStatus::class.java
             "saving throw" -> SavingThrowResult::class.java
             "spawn event" -> SpawnEventEffect::class.java
-            "take damage" -> TakeDamageEffect::class.java
             "until", "not until" -> TimedResult::class.java
-            "file choice" -> FileChoiceResult::class.java
+            "choose" -> ChooseResult::class.java
+            "modify" -> ModifyStatus::class.java
+            "modify once" -> ModifyOnceEffect::class.java
+            "set" -> SetStatus::class.java
             else -> throw IllegalArgumentException("Unrecognized result key: ${keys[0]}")
         }
         val parser = tn.traverse()

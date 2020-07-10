@@ -1,13 +1,32 @@
 package model
 
+import com.fasterxml.jackson.annotation.JsonProperty
+import model.identity.Evaluated
+import model.races.Race
 import model.results.Result
 
+/**
+ * exposed properties:
+ * 
+ * - identity: String
+ * - race: Race
+ * - knownSpells: MutableList<Spell>
+ * - strength: Int
+ * - dexterity: Int
+ * - constitution: Int
+ * - intelligence: Int
+ * - wisdom: Int
+ * - charisma: Int
+ * - size: CreatureSize
+ * - knownLanguages: MutableList<Language>
+ * - items: MutableList<Item>
+ */
 data class Character(
-    val name: String
-//    val race: Race,
+    @JsonProperty("name")
+    val identity: String,
+    val race: Race
 //    val classes: Array<CharacterClass>,
-//    val
-) {
+): Evaluated<Character> {
     private val results: ArrayList<Result> = arrayListOf()
 
     fun addResult(r: Result) {

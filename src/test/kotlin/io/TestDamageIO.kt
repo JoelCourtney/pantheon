@@ -1,24 +1,27 @@
 package io
 
-import model.quantities.Identifier
-import model.quantities.QuantityBinary
+import model.identity.Identifier
+import model.identity.IdentifierKey
+import model.quantities.*
 import model.quantities.amounts.AmountBinary
 import model.quantities.amounts.AmountBinaryOp
 import model.quantities.amounts.Dice
 import model.quantities.amounts.NumberLiteral
-import model.quantities.damage.DamageComponent
-import model.quantities.damage.DamageKeyword
-import model.quantities.damage.DamageUnitLiteral
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
+import model.quantities.QuantityType.Damage
 
 class TestDamageIO {
     @Test
     fun singleComponent() {
         assertEquals(
-            DamageComponent(NumberLiteral(1), DamageUnitLiteral.COLD),
+            Quantity<QuantityType.Damage>(
+                arrayListOf(
+                    QuantityComponent(NumberLiteral(1), DamageUnit.COLD)
+                )
+            ),
             ANTLRWrapper.parseDamage("1 cold")
         )
     }
@@ -26,30 +29,41 @@ class TestDamageIO {
     @Test
     fun sum() {
         assertEquals(
-            QuantityBinary(
-                DamageComponent(Identifier("character", "health"), DamageUnitLiteral.MELEE),
-                DamageComponent(
-                    AmountBinary(
-                        AmountBinaryOp.DIVIDE_DOWN,
-                        Dice(2, 3),
-                        NumberLiteral(3)
+            Quantity<Damage>(
+                arrayListOf(
+                    QuantityComponent(
+                        Identifier(
+                            IdentifierKey("character"), 
+                            IdentifierKey("health")
+                        ),
+                        DamageUnit.MELEE
                     ),
-                    Identifier("this")
+                    QuantityComponent(
+                        AmountBinary(
+                            AmountBinaryOp.DIVIDE_DOWN,
+                            Dice(2, 3),
+                            NumberLiteral(3)
+                        ),
+                        Identifier(
+                            IdentifierKey("this"),
+                            IdentifierKey("thang")
+                        )
+                    )
                 )
             ),
-            ANTLRWrapper.parseDamage("character${'$'}health melee; 2d3/3 this")
+            ANTLRWrapper.parseDamage("character[health] melee; 2d3/3 this[thang]")
         )
     }
 
     @ParameterizedTest(name = "parse unit literal {0}")
-    @EnumSource(DamageUnitLiteral::class)
-    fun parseUnit(unit: DamageUnitLiteral) {
-        assertEquals(unit, ANTLRWrapper.parseDamageUnit(unit.symbol))
+    @EnumSource(DamageUnit::class)
+    fun parseUnit(unit: DamageUnit) {
+        assertEquals(unit, ANTLRWrapper.parseDamageUnit(unit.identity))
     }
 
     @ParameterizedTest(name = "parse quantity keyword {0}")
     @EnumSource(DamageKeyword::class)
     fun parseKeyword(kw: DamageKeyword) {
-        assertEquals(kw, ANTLRWrapper.parseDamage(kw.name))
+        assertEquals(Quantity<Damage>(arrayListOf(kw)), ANTLRWrapper.parseDamage(kw.name))
     }
 }

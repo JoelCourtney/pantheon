@@ -1,26 +1,29 @@
 name: Human
 
-traits:
-  - ability score increase: str
-    amount: 1
-  - ability score increase: dex
-    amount: 1
-  - ability score increase: con
-    amount: 1
-  - ability score increase: int
-    amount: 1
-  - ability score increase: wis
-    amount: 1
-  - ability score increase: cha
-    amount: 1
-  - creature size: medium
-  - base movement speed: walking
-    distance: 30 feet
-  - know language: common
-  - file choice: Languages
-    filter out: character$knownLanguages
+results:
+  - modify: character[strength score]
+    add: 1
+  - modify: character[dexterity score]
+    add: 1
+  - modify: character[constitution]
+    add: 1
+  - modify: character[intelligence]
+    add: 1
+  - modify: character[wisdom]
+    add: 1
+  - modify: character[constitution]
+    add: 1
+  - set: character[size]
+    to: medium
+  - set: character[walkingSpeed]
+    to: 30 feet
+  - modify: character[known languages]
+    add: Common
+  - choose: language
+    filter out: character[known languages]
     results:
-      - know language: parent$choice
+      - modify: charcter[known languages]
+        add: parent[value]
 
 description: |
   # Human

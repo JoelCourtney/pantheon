@@ -38,7 +38,7 @@ description: >
 display in combat: true
 display in roleplay: false
 
-cast:
+results:
   - not until:
       events:
         - take acid damage
@@ -52,8 +52,8 @@ cast:
           events:
             - start of turn
           type: consecutive
-        results:
-          - have resistance: parent$parent$damageType
+        results: []
+#          - have resistance: parent[parent][damageType]
       - until:
           events:
             - start of turn
@@ -63,5 +63,5 @@ cast:
           events:
             - deal melee damage
           type: any
-        results:
-          - deal extra damage: spell$cast_level * 1d6 trigger$damageType
+        results: []
+#          - deal extra damage: spell[cast_level] * 1d6 trigger[damageType]

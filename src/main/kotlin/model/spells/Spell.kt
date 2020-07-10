@@ -1,27 +1,36 @@
 package model.spells
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import model.quantities.distance.Distance
-import model.quantities.time.Time
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import io.deserializers.DistanceDeserializer
+import model.identity.Expression
 import model.results.Result
+import model.identity.Evaluated
+import model.quantities.QuantityType.*
+import io.deserializers.TimeDeserializer
+import model.quantities.Quantity
 
 data class Spell(
-    val name: String,
+    @JsonProperty("name")
+    val identity: String,
 
     val level: Int,
     val school: SpellSchool,
 
     @JsonProperty("casting time")
-    val castingTime: Time,
+    @JsonDeserialize(using = TimeDeserializer::class)
+    val castingTime: Expression<Quantity<Time>>,
     val ritual: Boolean,
 
-    val range: Distance,
+    @JsonDeserialize(using = DistanceDeserializer::class)
+    val range: Expression<Quantity<Distance>>,
 
     val verbal: Boolean,
     val somatic: Boolean,
     val material: Boolean,
 
-    val duration: Time,
+    @JsonDeserialize(using = TimeDeserializer::class)
+    val duration: Expression<Quantity<Time>>,
     val concentration: Boolean,
 
     val description: String,
@@ -31,13 +40,13 @@ data class Spell(
     @JsonProperty("display in roleplay")
     val displayInRoleplay: Boolean
 
-) {
+): Evaluated<Spell> {
     @JsonProperty("available to")
     val availableTo: Array<String> = arrayOf()
     @JsonProperty("material description")
     val materialDescription: String = ""
 
-    val cast: Array<Result> = arrayOf()
+    val results: Array<Result> = arrayOf()
 
     @JsonProperty("reaction to")
     val reactionTo: String = ""

@@ -1,13 +1,19 @@
 package model.results
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import io.deserializers.AmountDeserializer
+import io.deserializers.SavingThrowTypeDeserializer
 import model.Character
+import model.identity.Expression
 import model.quantities.amounts.Amount
 
 data class SavingThrowResult(
     @JsonProperty("saving throw")
-    val savingThrowType: SavingThrowType,
-    val dc: Amount,
+    @JsonDeserialize(using = SavingThrowTypeDeserializer::class)
+    val savingThrowType: Expression<SavingThrowType>,
+    @JsonDeserialize(using = AmountDeserializer::class)
+    val dc: Expression<Amount>,
     @JsonProperty("fail results")
     val failResults: Array<Result> = arrayOf(),
     @JsonProperty("success results")

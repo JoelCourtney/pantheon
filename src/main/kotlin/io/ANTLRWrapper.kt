@@ -1,18 +1,15 @@
 package io
 
-import DnFLexer
-import DnFParser
+import DnLexer
+import DnF
+import model.identity.Expression
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
 import model.quantities.amounts.Amount
-import model.quantities.damage.Damage
-import model.quantities.damage.DamageUnit
-import model.quantities.distance.Distance
-import model.quantities.distance.DistanceUnit
-import model.quantities.time.Time
-import model.quantities.time.TimeUnit
-import model.quantities.Identifier
-import model.quantities.Quantity
+import model.identity.Identifier
+import model.quantities.*
+import model.quantities.QuantityType.*
+import model.results.SavingThrowType
 
 /**
  * Parses Strings into [Quantity]'s and [Identifier]'s using ANTLR.
@@ -20,11 +17,11 @@ import model.quantities.Quantity
  * Singleton object; no not attempt to instantiate.
  */
 object ANTLRWrapper {
-    private fun makeParser(s: String): DnFParser {
+    private fun makeParser(s: String): DnF {
         val input = CharStreams.fromString(s)
-        val lexer = DnFLexer(input)
+        val lexer = DnLexer(input)
         val tokens = CommonTokenStream(lexer)
-        return DnFParser(tokens)
+        return DnF(tokens)
     }
 
     /**
@@ -33,7 +30,7 @@ object ANTLRWrapper {
      * @param [s] String to parse.
      * @return [Time] object containing the same data.
      */
-    fun parseTime(s: String): Time {
+    fun parseTime(s: String): Expression<Quantity<Time>> {
         return makeParser(s).time().result
     }
 
@@ -44,7 +41,7 @@ object ANTLRWrapper {
      * @param [s] String to parse.
      * @return [Distance] object containing the same data.
      */
-    fun parseDistance(s: String): Distance {
+    fun parseDistance(s: String): Expression<Quantity<Distance>> {
         return makeParser(s).distance().result
     }
 
@@ -55,7 +52,7 @@ object ANTLRWrapper {
      * @param [s] String to parse.
      * @return [Damage] object containing the same data.
      */
-    fun parseDamage(s: String): Damage {
+    fun parseDamage(s: String): Expression<Quantity<Damage>> {
         return makeParser(s).damage().result
     }
 
@@ -66,7 +63,7 @@ object ANTLRWrapper {
      * @param [s] String to parse.
      * @return [DamageUnit] object containing the same data.
      */
-    fun parseDamageUnit(s: String): DamageUnit {
+    fun parseDamageUnit(s: String): Expression<QuantityUnit<Damage>> {
         return makeParser(s).damage_unit().result
     }
 
@@ -77,7 +74,7 @@ object ANTLRWrapper {
      * @param [s] String to parse.
      * @return [DistanceUnit] object containing the same data.
      */
-    fun parseDistanceUnit(s: String): DistanceUnit {
+    fun parseDistanceUnit(s: String): Expression<QuantityUnit<Distance>> {
         return makeParser(s).distance_unit().result
     }
 
@@ -88,7 +85,7 @@ object ANTLRWrapper {
      * @param [s] String to parse.
      * @return [TimeUnit] object containing the same data.
      */
-    fun parseTimeUnit(s: String): TimeUnit {
+    fun parseTimeUnit(s: String): Expression<QuantityUnit<Time>> {
         return makeParser(s).time_unit().result
     }
 
@@ -99,18 +96,19 @@ object ANTLRWrapper {
      * @param [s] String to parse.
      * @return [Amount] object containing the same data.
      */
-    fun parseAmount(s: String): Amount {
+    fun parseAmount(s: String): Expression<Amount> {
         return makeParser(s).amount().result
     }
 
-
-    /**
-     * Parses a [String] as a [Identifier] object.
-     *
-     * @param [s] String to parse.
-     * @return [Identifier] object containing the same data.
-     */
-    fun parseIdentifier(s: String): Identifier {
+    fun parseIdentifier(s: String): Identifier<*> {
         return makeParser(s).identifier().result
+    }
+    
+    fun parseSavingThrowType(s: String): Expression<SavingThrowType> {
+        return makeParser(s).saving_throw_type().result
+    }
+    
+    fun parseBoolean(s: String): Expression<Boolean> {
+        return makeParser(s).bool().result
     }
 }

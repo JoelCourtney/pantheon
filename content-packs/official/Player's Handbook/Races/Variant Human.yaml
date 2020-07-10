@@ -2,10 +2,11 @@ name: Variant Human
 
 variant of: Human
 
-description: yes helooo i am description
+description: If your campaign uses the optional feat rules from the *Player’s Handbook*, your Dungeon Master might allow these variant traits, all of which replace the human’s Ability Score Increase trait.
 
-traits:
-  - ability score increase: dex
-    amount: 2
-  - ability score increase: dex
-    amount: 2
+results:
+  - choose: ability score
+    choices: 2
+    unique: true
+    results:
+      - modify: character[parent[choice]]

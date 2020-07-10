@@ -1,6 +1,9 @@
-package model.quantities.damage
+package model.quantities
 
-enum class DamageUnitLiteral(var symbol: String) : DamageUnit {
+import model.identity.Evaluated
+import model.quantities.QuantityType.Damage
+
+enum class DamageUnit(var identity: String): QuantityUnit<Damage> {
     ACID("acid"),
     BLUDGEONING("bludgeoning"),
     COLD("cold"),
@@ -17,11 +20,7 @@ enum class DamageUnitLiteral(var symbol: String) : DamageUnit {
     MELEE("melee"),
     RANGED("ranged");
 
-    override fun getDamageUnitLiteral(): DamageUnitLiteral {
-        return this
-    }
-
     override fun toString(): String {
-        return symbol
+        return identity
     }
 }

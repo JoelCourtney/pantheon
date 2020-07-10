@@ -1,6 +1,8 @@
-package model.quantities.time
+package model.quantities
 
-enum class TimeUnitLiteral(val symbol: String) : TimeUnit {
+import model.identity.Evaluated
+
+enum class TimeUnit(val identity: String): QuantityUnit<QuantityType.Time> {
     ACTION("action"),
     BONUS_ACTION("bonus action"),
     REACTION("reaction"),
@@ -11,8 +13,8 @@ enum class TimeUnitLiteral(val symbol: String) : TimeUnit {
     DAY("day"),
     LONG_REST("long rest"),
     SHORT_REST("short rest");
-
-    override fun getTimeUnitLiteral(): TimeUnitLiteral {
-        return this
+    
+    override fun toString(): String {
+        return identity
     }
 }

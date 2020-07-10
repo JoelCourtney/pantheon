@@ -79,6 +79,19 @@ SPACE : S P (A C E S?)?;
 TOUCH : T O U C H;
 SELF : S E L F;
 
+// SavingThrowType
+STRENGTH : S T R E N G T H;
+DEXTERITY : D E X T E R I T Y;
+CONSTITUTION: C O N S T I T U T I O N;
+INTELLIGENCE: I N T E L L I G E N C E;
+WISDOM : W I S D O M;
+CHARISMA : C H A R I S M A;
+DEATH : D E A T H;
+
+// Boolean
+TRUE: T R U E;
+FALSE: F A L S E;
+
 
 NUMBER : DIGIT+;
 NAME : LETTER (LETTER | DIGIT)*;
@@ -91,9 +104,17 @@ DIVIDE_DOWN : '/' | '/-';
 DIVIDE_UP : '/+';
 OPEN_PAREN : '(';
 CLOSE_PAREN : ')';
+OPEN_BRACKET : '[' -> pushMode(PLAINTEXT);
 EQUAL : '=';
 COMMA : ',';
 DOLLAR : '$';
 SEMICOLON : ';';
 
 WS : [ \t\u000c]+ -> skip;
+
+mode PLAINTEXT;
+
+TEXT : ( LETTER | DIGIT | ' ')+ -> type(NAME);
+NEW_OPEN_BRACKET : '[' -> type(OPEN_BRACKET);
+CLOSE_BRACKET : ']' -> popMode;
+//NEW_CLOSE_BRACKET : ']' -> type(CLOSE_BRACKET);
