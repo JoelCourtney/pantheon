@@ -48,6 +48,7 @@ class ResultDeserializer : StdDeserializer<Result>(Result::class.java) {
             "modify" -> ModifyStatus::class.java
             "modify once" -> ModifyOnceEffect::class.java
             "set" -> SetStatus::class.java
+            "for each" -> ForEachResult::class.java
             else -> throw IllegalArgumentException("Unrecognized result key: ${keys[0]}")
         }
         val parser = tn.traverse()

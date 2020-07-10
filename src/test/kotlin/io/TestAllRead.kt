@@ -1,6 +1,7 @@
 package io
 
 import io.FileSystemWrapper.getAllContentOfType
+import model.Feat
 import model.races.Race
 import model.spells.Spell
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -25,9 +26,16 @@ class TestAllRead {
     @ParameterizedTest(name = "parse race file {1}")
     @MethodSource
     fun parseRaceFile(dir: String, file: String) {
-        println("why")
         assertDoesNotThrow {
             JacksonWrapper.readFile<Race>(dir, file)
+        }
+    }
+    
+    @ParameterizedTest(name = "parse feat file {1}")
+    @MethodSource
+    fun parseFeatFile(dir: String, file: String) {
+        assertDoesNotThrow {
+            JacksonWrapper.readFile<Feat>(dir, file)
         }
     }
 
@@ -40,6 +48,11 @@ class TestAllRead {
         @JvmStatic
         fun parseRaceFile(): List<Arguments> {
             return getAllContentOfType("Races").map { Arguments.of(it.parent.toString(), it.fileName.toString()) }
+        }
+        
+        @JvmStatic
+        fun parseFeatFile(): List<Arguments> {
+            return getAllContentOfType("Feats").map { Arguments.of(it.parent.toString(), it.fileName.toString()) }
         }
     }
 }

@@ -25,7 +25,7 @@ results:
           - modify: character[known spells]
             add: parent[choice]
   - for each: character[known spells]
-    filter: value[requires attack roll]
+    filter except: value[requires attack roll]
     results:
       - modify: parent[value][range]
         multiply: 2

@@ -6,18 +6,42 @@ import io.deserializers.FileNameDeserializer.RaceFileNameDeserializer
 import model.identity.Evaluated
 import model.results.Result
 
-open class Race (
+data class Race (
     @JsonProperty("name")
     val identity: String,
     val results: Array<Result>,
     val description: String,
-    open val chooseable: Boolean = true,
+    val selectable: Boolean = true,
     @JsonProperty("variant of")
     @JsonDeserialize(using = RaceFileNameDeserializer::class)
     val variantOf: Race? = null
 ): Evaluated<Race> {
     override fun toString(): String {
-        return "Race(name='$identity', traits=${results.contentToString()}, description='$description', chooseable=$chooseable, variantOf=$variantOf)"
+        return "Race(name='$identity', traits=${results.contentToString()}, description='$description', chooseable=$selectable, variantOf=$variantOf)"
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Race
+
+        if (identity != other.identity) return false
+        if (!results.contentEquals(other.results)) return false
+        if (description != other.description) return false
+        if (selectable != other.selectable) return false
+        if (variantOf != other.variantOf) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = identity.hashCode()
+        result = 31 * result + results.contentHashCode()
+        result = 31 * result + description.hashCode()
+        result = 31 * result + selectable.hashCode()
+        result = 31 * result + (variantOf?.hashCode() ?: 0)
+        return result
     }
 
 }
