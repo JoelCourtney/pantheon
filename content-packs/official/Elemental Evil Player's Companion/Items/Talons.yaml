@@ -1,0 +1,7 @@
+name: Talons
+
+type: melee
+
+selectable: false
+
+damage: 1d4+character[strength modifier] slashing

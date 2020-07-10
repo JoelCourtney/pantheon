@@ -23,7 +23,7 @@ results:
     filter out: character[known languages]
     results:
       - modify: charcter[known languages]
-        add: parent[value]
+        add: parent[choice]
 
 description: |
   # Human

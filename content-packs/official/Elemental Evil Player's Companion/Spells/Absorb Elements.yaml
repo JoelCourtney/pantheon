@@ -52,8 +52,9 @@ results:
           events:
             - start of turn
           type: consecutive
-        results: []
-#          - have resistance: parent[parent][damageType]
+        results:
+          - modify: character[resistances]
+            add: parent[parent][damage type]
       - until:
           events:
             - start of turn
@@ -63,5 +64,6 @@ results:
           events:
             - deal melee damage
           type: any
-        results: []
-#          - deal extra damage: spell[cast_level] * 1d6 trigger[damageType]
+        results:
+          - modify once: parent[weapon]
+            add: root[cast level] * 1d6 parent[parent][damage type]

@@ -15,8 +15,8 @@ results:
     success results:
       - set: character[flying speed]
         to: 50 feet
-#  - have melee weapon: Talons
-#    damage: 1d4+character[strength modifier] slashing
+  - modify: character[items]
+    add: Talons
   - modify: character[known languages]
     append:
       - Common
