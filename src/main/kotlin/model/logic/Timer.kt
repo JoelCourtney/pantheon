@@ -7,4 +7,4 @@ import model.quantities.Quantity
 import model.quantities.QuantityType
 
 @JsonDeserialize(using = TimerDeserializer::class)
-inline class Timer(val time: Expression<Quantity<QuantityType.Time>>)
+data class Timer(val time: Expression<Quantity<QuantityType.Time>>)

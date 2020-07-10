@@ -84,4 +84,4 @@ import model.results.effects.SpawnEventEffect
  * @property [name] String that represents the event.
  */
 @JsonDeserialize(using = EventDeserializer::class)
-inline class Event(val name: String)
+data class Event(val name: String)
