@@ -1,7 +1,7 @@
 package model.results
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import model.identity.Evaluated
+import model.access.Evaluated
 
 enum class SavingThrowType(val identity: String):
     Evaluated<SavingThrowType> {

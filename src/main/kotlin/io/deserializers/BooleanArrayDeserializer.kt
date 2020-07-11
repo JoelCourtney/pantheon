@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer
 import io.ANTLRWrapper
-import model.identity.Expression
+import model.access.Expression
 
 class BooleanArrayDeserializer: StdDeserializer<Array<Expression<Boolean>>>(Expression::class.java) {
     override fun deserialize(p: JsonParser?, ctxt: DeserializationContext?): Array<Expression<Boolean>> {

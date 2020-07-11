@@ -10,7 +10,6 @@ import java.nio.file.Files
 import java.io.IOException
 import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.databind.JsonMappingException
-import model.identity.Identifier
 
 /**
  * Convenience object for deserializing objects through com.fasterxml.jackson.

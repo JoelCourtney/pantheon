@@ -1,7 +1,7 @@
 package model.spells
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import model.identity.Evaluated
+import model.access.Evaluated
 
 enum class SpellSchool(val identity: String): Evaluated<SpellSchool> {
     @JsonProperty("abjuration")

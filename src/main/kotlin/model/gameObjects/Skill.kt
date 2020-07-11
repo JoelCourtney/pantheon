@@ -1,6 +1,7 @@
-package model
+package model.gameObjects
 
-import model.identity.Evaluated
+import model.Ability
+import model.access.Evaluated
 
 enum class Skill(val identity: String): Evaluated<Skill> {
     ACROBATICS("acrobatics"),

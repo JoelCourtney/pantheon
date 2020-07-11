@@ -15,7 +15,7 @@ results:
     success results:
       - set: character[flying speed]
         to: 50 feet
-  - modify: character[items]
+  - modify: character[weapons]
     add: Talons
   - modify: character[known languages]
     append:

@@ -1,8 +1,7 @@
 package model.quantities
 
-import model.identity.Evaluated
 import model.quantities.amounts.Amount
-import model.identity.Expression
+import model.access.Expression
 
 data class QuantityComponent<T: QuantityType>(val amount: Expression<Amount>, val unit: Expression<QuantityUnit<T>>):
     Expression<QuantityComponent<T>> {

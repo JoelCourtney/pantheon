@@ -2,8 +2,8 @@ package io
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import model.identity.Identifier
-import model.identity.IdentifierKey
+import model.access.Identifier
+import model.access.IdentifierKey
 import model.quantities.amounts.*
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource

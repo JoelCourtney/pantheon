@@ -1,9 +1,9 @@
 package model.results
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import model.*
-import model.identity.Accessible
-import model.identity.Identifier
+import model.gameObjects.Character
+import model.access.Accessible
+import model.access.Identifier
 import model.quantities.amounts.AmountBinaryOp
 
 data class ChooseResult<T>(

@@ -1,6 +1,5 @@
 package model.quantities
 
-import model.identity.Evaluated
 import model.quantities.QuantityType.Damage
 
 enum class DamageUnit(var identity: String): QuantityUnit<Damage> {

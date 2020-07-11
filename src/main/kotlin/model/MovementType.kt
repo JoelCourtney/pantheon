@@ -1,7 +1,7 @@
 package model
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import model.identity.Evaluated
+import model.access.Evaluated
 
 enum class MovementType(val identity: String): Evaluated<MovementType> {
     @JsonProperty("walking")

@@ -3,8 +3,8 @@ package model.results.effects
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import io.deserializers.IdentifierDeserializer
-import model.Character
-import model.identity.Identifier
+import model.gameObjects.Character
+import model.access.Identifier
 
 class ModifyOnceEffect(
     @JsonProperty("modify once")

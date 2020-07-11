@@ -1,6 +1,6 @@
 package model.quantities
 
-import model.identity.Expression
+import model.access.Expression
 import model.quantities.QuantityType.Damage
 
 enum class DamageKeyword(val identity: String): Expression<QuantityComponent<Damage>> {

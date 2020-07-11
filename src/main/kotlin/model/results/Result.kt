@@ -1,6 +1,6 @@
 package model.results
 
-import model.Character
+import model.gameObjects.Character
 
 interface Result {
     fun apply(c: Character)

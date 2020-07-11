@@ -1,7 +1,7 @@
 package io
 
-import model.identity.Identifier
-import model.identity.IdentifierKey
+import model.access.Identifier
+import model.access.IdentifierKey
 import model.quantities.*
 import model.quantities.amounts.AmountBinary
 import model.quantities.amounts.AmountBinaryOp

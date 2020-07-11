@@ -1,6 +1,6 @@
 package model.results.effects
 
-import model.Character
+import model.gameObjects.Character
 import model.results.Result
 
 abstract class Effect : Result {

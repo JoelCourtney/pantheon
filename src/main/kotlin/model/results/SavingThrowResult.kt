@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import io.deserializers.AmountDeserializer
 import io.deserializers.SavingThrowTypeDeserializer
-import model.Character
-import model.identity.Expression
+import model.gameObjects.Character
+import model.access.Expression
 import model.quantities.amounts.Amount
 
 data class SavingThrowResult(

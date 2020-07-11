@@ -1,6 +1,6 @@
 package model.quantities
 
-import model.identity.Expression
+import model.access.Expression
 
 data class Quantity<T: QuantityType>(
     val terms: ArrayList<Expression<QuantityComponent<T>>>

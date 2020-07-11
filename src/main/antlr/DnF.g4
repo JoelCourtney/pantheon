@@ -3,7 +3,7 @@ parser grammar DnF;
 options { tokenVocab = DnLexer; }
 
 @parser::header {
-    import model.identity.*;
+    import model.access.*;
     import model.quantities.*;
     import model.quantities.QuantityType.*;
     import model.quantities.amounts.*;

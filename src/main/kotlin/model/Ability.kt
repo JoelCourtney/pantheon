@@ -1,6 +1,6 @@
 package model
 
-import model.identity.Evaluated
+import model.access.Evaluated
 
 enum class Ability(val identity: String): Evaluated<Ability> {
     STRENGTH("strength"),

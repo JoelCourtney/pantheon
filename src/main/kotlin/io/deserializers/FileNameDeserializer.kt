@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer
 import io.FileSystemWrapper
 import io.JacksonWrapper
-import model.Language
-import model.races.Race
+import model.gameObjects.Language
+import model.gameObjects.Race
 import model.spells.Spell
 
 sealed class FileNameDeserializer<T>(val type: String) : StdDeserializer<Any>(Any::class.java) {

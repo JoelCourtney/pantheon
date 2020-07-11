@@ -1,6 +1,6 @@
 package model.quantities.amounts
 
-import model.identity.Expression
+import model.access.Expression
 
 data class AmountBinary(
     val bop: AmountBinaryOp, val left: Expression<Amount>, val right: Expression<Amount>

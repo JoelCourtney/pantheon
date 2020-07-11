@@ -1,7 +1,7 @@
 package model
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import model.identity.Evaluated
+import model.access.Evaluated
 
 enum class CreatureSize(val identity: String): Evaluated<CreatureSize> {
     @JsonProperty("tiny")

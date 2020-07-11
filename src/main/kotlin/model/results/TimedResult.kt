@@ -1,7 +1,7 @@
 package model.results
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import model.Character
+import model.gameObjects.Character
 import model.logic.Trigger
 import java.lang.IllegalArgumentException
 

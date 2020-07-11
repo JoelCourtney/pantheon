@@ -1,4 +1,4 @@
-package model.identity
+package model.access
 
 data class IdentifierKey(val key: String): IdentifierComponent {
     override fun evaluateObject(): Accessible {

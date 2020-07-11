@@ -1,7 +1,7 @@
-package model
+package model.gameObjects
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import model.identity.Evaluated
+import model.access.Evaluated
 
 data class Language(
     @JsonProperty("name")

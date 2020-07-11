@@ -5,7 +5,7 @@ import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer
 import io.JacksonWrapper
-import model.identity.Expression
+import model.access.Expression
 import model.quantities.Quantity
 import model.quantities.QuantityType
 

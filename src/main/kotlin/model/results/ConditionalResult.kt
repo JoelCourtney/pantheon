@@ -3,8 +3,8 @@ package model.results
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import io.deserializers.BooleanArrayDeserializer
-import model.Character
-import model.identity.Expression
+import model.gameObjects.Character
+import model.access.Expression
 
 data class ConditionalResult(
     @JsonProperty("if")

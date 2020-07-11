@@ -1,6 +1,6 @@
-package model
+package model.gameObjects
 
-import model.identity.Evaluated
+import model.access.Evaluated
 import model.results.Result
 
 data class Feat(

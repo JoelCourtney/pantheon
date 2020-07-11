@@ -3,9 +3,9 @@ package model.spells
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import io.deserializers.DistanceDeserializer
-import model.identity.Expression
+import model.access.Expression
 import model.results.Result
-import model.identity.Evaluated
+import model.access.Evaluated
 import model.quantities.QuantityType.*
 import io.deserializers.TimeDeserializer
 import model.quantities.Quantity

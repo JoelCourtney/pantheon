@@ -1,9 +1,9 @@
-package model.races
+package model.gameObjects
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import io.deserializers.FileNameDeserializer.RaceFileNameDeserializer
-import model.identity.Evaluated
+import model.access.Evaluated
 import model.results.Result
 
 data class Race (
@@ -17,7 +17,7 @@ data class Race (
     val variantOf: Race? = null
 ): Evaluated<Race> {
     override fun toString(): String {
-        return "Race(name='$identity', traits=${results.contentToString()}, description='$description', chooseable=$selectable, variantOf=$variantOf)"
+        return "Race(name='$identity', traits=${results.contentToString()}, description='$description', selectable=$selectable, variantOf=$variantOf)"
     }
 
     override fun equals(other: Any?): Boolean {

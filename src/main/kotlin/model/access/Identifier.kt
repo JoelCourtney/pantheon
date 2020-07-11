@@ -1,4 +1,4 @@
-package model.identity
+package model.access
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import io.deserializers.IdentifierDeserializer

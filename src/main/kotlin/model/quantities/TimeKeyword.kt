@@ -1,6 +1,6 @@
 package model.quantities
 
-import model.identity.Expression
+import model.access.Expression
 import model.quantities.QuantityType.Time
 
 enum class TimeKeyword(val identity: String): Expression<QuantityComponent<Time>> {

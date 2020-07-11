@@ -1,7 +1,5 @@
 package model.quantities
 
-import model.identity.Evaluated
-
 enum class TimeUnit(val identity: String): QuantityUnit<QuantityType.Time> {
     ACTION("action"),
     BONUS_ACTION("bonus action"),

@@ -1,5 +1,5 @@
 package model.quantities
 
-import model.identity.Evaluated
+import model.access.Evaluated
 
 interface QuantityUnit<T: QuantityType>: Evaluated<QuantityUnit<T>>

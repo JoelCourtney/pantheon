@@ -1,7 +1,7 @@
 package model.results.statuses
 
 import model.results.Result
-import model.Character
+import model.gameObjects.Character
 
 abstract class Status : Result {
     override fun purge(): Boolean = false

@@ -1,6 +1,6 @@
 package model.quantities
 
-import model.identity.Expression
+import model.access.Expression
 import model.quantities.QuantityType.Distance
 
 enum class DistanceKeyword(val identity: String): Expression<QuantityComponent<Distance>> {

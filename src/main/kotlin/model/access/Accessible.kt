@@ -1,4 +1,4 @@
-package model.identity
+package model.access
 
 import model.quantities.amounts.AmountBinaryOp
 

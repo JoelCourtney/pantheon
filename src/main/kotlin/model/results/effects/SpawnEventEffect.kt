@@ -1,6 +1,6 @@
 package model.results.effects
 
-import model.Character
+import model.gameObjects.Character
 import model.logic.Event
 
 data class SpawnEventEffect(
