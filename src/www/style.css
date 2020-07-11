@@ -1,8 +1,13 @@
 #sidebar {
-    border-right: 2px solid black;
+    border-right: 1px dashed black;
     overflow: hidden;
     white-space: nowrap;
     width: 418px;
+}
+
+.sidebar-block {
+    margin-bottom: 15px;
+    clear: left;
 }
 
 #main-content {
@@ -31,7 +36,7 @@
 }
 
 .ability-score-box {
-    border: 2px solid black;
+    border: 1px solid black;
     border-radius: 9px;
     float: left;
     text-align: center;
@@ -39,11 +44,13 @@
     width: 100px;
     height: 100px;
     margin: 6px;
+    line-height: 1.5;
 }
 
 .ability-score-row {
     clear: left;
     overflow: hidden;
+    height: 113px;
 }
 
 .ability-score-offset {
@@ -66,7 +73,7 @@
     vertical-align: middle;
 }
 
-.ability-score-letter {
+.ghosty-background-stuff {
     position: absolute;
     width: 100%;
     color: #e9e9e9;
@@ -75,7 +82,6 @@
     text-align: center;
     font-family: overpass-mono, sans-serif;
     font-weight: bold;
-    letter-spacing: -3px;
 }
 
 .section {
@@ -91,19 +97,65 @@ body, html {
 
 #health-box {
     clear: left;
-    border: 2px solid black;
+    border: 1px solid black;
     border-radius: 9px;
     margin: 20px 6px 6px;
+    width: 212px;
+    height: 100px;
+    position: relative;
 }
 
 #health-controls {
-    font-size: 20px;
+    font-size: 25px;
 }
 
 #lower-health-control {
     font-weight: bold;
+    border-bottom-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+    border-top: none;
+    height:37px;
+    color: #a00000;
+}
+
+#upper-health-control {
+    border-top-right-radius: 6px;
+    border-top-left-radius: 6px;
+    margin-top: 11px;
+    border-bottom: none;
+    height: 40px;
+    color: #0000a0;
 }
 
 .control-button {
-    
+    border: 1px solid black;
+    width: 40px;
+    margin-left: 10px;
+    line-height: 40px;
+    text-align: center;
+}
+
+#health-display {
+    position: absolute;
+    top: 0;
+    height: 100px;
+    width: 100%;
+}
+
+#health-and-temp, #max-health-number {
+    font-size: 50px;
+    position: absolute;
+    right: 10px;
+}
+
+#health-and-temp {
+    top: -7px;
+}
+
+#max-health-number {
+    top: 42px;
+}
+
+.small-spacing {
+    letter-spacing: -3px;
 }
