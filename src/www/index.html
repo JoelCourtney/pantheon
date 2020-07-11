@@ -5,6 +5,8 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://overpass-30e2.kxcdn.com/overpass.css">
+    <link rel="stylesheet" href="https://overpass-30e2.kxcdn.com/overpass-mono.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,28 +14,45 @@
         <div id="sidebar" class="section">
             <div id="title_box">
                 <h1 id="character_name">Asher Mossflower</h1>
-                <p>Half-Elf</p>
-                <p>Rogue 4 | Warlock 1</p>
+                <div id="race"><p>Half-Elf</p></div>
+                <div id="class"><p>Rogue 4 | Warlock 1</p></div>
             </div>
             <div class="ability_score_row">
-            <div class="ability_score_box">
-                <p class="lead">Strength</p>
-                <p id="strength_modifier" class="ability_score_modifier">+0</p>
-                <div class="ability_score_offset"><p id="strength_score">10</p></div>
+                <div class="ability_score_box">
+                    <div class="ability_score_letter"><p>St</p></div>
+                    <div class="ability_score_modifier"><p id="strength_modifier">+0</p></div>
+                    <div class="ability_score_offset"><p id="strength_score">10</p></div>
+                </div>
+                <div class="ability_score_box">
+                    <div class="ability_score_letter"><p>De</p></div>
+                    <div class="ability_score_modifier"><p id="dexterity_modifier">+2</p></div>
+                    <div class="ability_score_offset"><p id="dexterity_score">14</p></div>
+                </div>
+                <div class="ability_score_box">
+                    <div class="ability_score_letter"><p>Co</p></div>
+                    <div class="ability_score_modifier"><p id="constitution_modifier">+2</p></div>
+                    <div class="ability_score_offset"><p id="constitution_score">14</p></div>
+                </div>
             </div>
-            <div class="ability_score_box">
-                <p class="lead">Dexterity</p>
-                <p id="dexterity_modifier">+2</p>
-                <div class="ability_score_offset"><p id="dexterity_score">14</p></div>
-            </div>
-            <div class="ability_score_box">
-                <p class="lead">Strength</p>
-                <p id="constitution_modifier">+1</p>
-                <div class="ability_score_offset"><p id="constitution_score">14</p></div>
-            </div>
+            <div class="ability_score_row">
+                <div class="ability_score_box">
+                    <div class="ability_score_letter"><p>In</p></div>
+                    <div class="ability_score_modifier"><p id="intelligence_modifier">+1</p></div>
+                    <div class="ability_score_offset"><p id="intelligence_score">12</p></div>
+                </div>
+                <div class="ability_score_box">
+                    <div class="ability_score_letter"><p>Wi</p></div>
+                    <div class="ability_score_modifier"><p id="wisdom_modifier">+2</p></div>
+                    <div class="ability_score_offset"><p id="wisdom_score">14</p></div>
+                </div>
+                <div class="ability_score_box">
+                    <div class="ability_score_letter"><p>Ch</p></div>
+                    <div class="ability_score_modifier"><p id="charisma_modifier">+4</p></div>
+                    <div class="ability_score_offset"><p id="charisma_score">18</p></div>
+                </div>
             </div>
         </div>
-        <div id="main_content" class="col-md-6; section"></div>
+<div id="main_content" class="col-md-6; section"></div>
 <!--</div>-->
 </body>
 </html>
