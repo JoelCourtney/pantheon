@@ -1,0 +1,45 @@
+#sidebar {
+    border-right: 2px solid darkslategray;
+    width: max-content;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+#main_content {
+
+}
+
+#title_box {
+
+}
+
+.ability_score_box {
+    border: 2px solid darkslategray;
+    border-radius: 9px;
+    float: left;
+    width: 30%;
+    text-align: center;
+}
+
+.ability_score_row {
+}
+
+.ability_score_offset {
+    position: absolute;
+
+}
+
+.ability_score_modifier {
+    font-size: 50px;
+    margin: 0px;
+}
+
+.section {
+    padding: 50px;
+    height: 100%;
+    float: left;
+}
+
+body, html {
+    height: 100%;
+}
