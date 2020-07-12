@@ -43,7 +43,7 @@
 
 .sidebar-box-mid {
     border: 1px solid black;
-    border-radius: 9px;
+    border-radius: 50px;
     float: left;
     text-align: center;
     position: relative;
@@ -54,8 +54,8 @@
 
 #character-name {
     font-variant-caps: small-caps;
-    text-align: left;
-    padding-left: 6px;
+    text-align: right;
+    padding-right: 6px;
 }
 
 #race {
@@ -175,4 +175,8 @@ body, html {
 
 .small-spacing {
     letter-spacing: -3px;
+}
+
+#armor-class-box {
+    border-radius: 50px;
 }
