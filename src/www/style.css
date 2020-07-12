@@ -10,12 +10,34 @@
     clear: left;
 }
 
-#main-content {
-
+.sidebar-row {
+    clear: left;
+    overflow: hidden;
+    height: 113px;
 }
 
-#title-box {
+.sidebar-box {
+    border: 1px solid black;
+    border-radius: 9px;
+    float: left;
+    text-align: center;
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin: 6px;
+    line-height: 1.5;
+}
 
+.sidebar-box-double {
+    border: 1px solid black;
+    border-radius: 9px;
+    float: left;
+    text-align: center;
+    position: relative;
+    width: 212px;
+    height: 100px;
+    margin: 6px;
+    line-height: 1.5;
 }
 
 #character-name {
@@ -33,24 +55,6 @@
     float: right;
     width: available;
     padding-right: 6px;
-}
-
-.ability-score-box {
-    border: 1px solid black;
-    border-radius: 9px;
-    float: left;
-    text-align: center;
-    position: relative;
-    width: 100px;
-    height: 100px;
-    margin: 6px;
-    line-height: 1.5;
-}
-
-.ability-score-row {
-    clear: left;
-    overflow: hidden;
-    height: 113px;
 }
 
 .ability-score-offset {
@@ -95,20 +99,6 @@ body, html {
     font-family: overpass, sans-serif;
 }
 
-#health-box {
-    clear: left;
-    border: 1px solid black;
-    border-radius: 9px;
-    margin: 20px 6px 6px;
-    width: 212px;
-    height: 100px;
-    position: relative;
-}
-
-#health-controls {
-    font-size: 25px;
-}
-
 #lower-health-control {
     font-weight: bold;
     border-bottom-right-radius: 6px;
@@ -133,11 +123,13 @@ body, html {
     margin-left: 10px;
     line-height: 40px;
     text-align: center;
+    font-size: 25px;
 }
 
 #health-display {
     position: absolute;
     top: 0;
+    left: 0;
     height: 100px;
     width: 100%;
 }

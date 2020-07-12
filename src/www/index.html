@@ -17,50 +17,52 @@
         <div id="class"><p>Rogue 4 | Warlock 1</p></div>
     </div>
     <div class="sidebar-block">
-        <div id="health-box">
-            <div class="ghosty-background-stuff small-spacing"><p>Hp</p></div>
-            <div id="health-controls">
-                <div class="control-button" id="upper-health-control"><p>&#9650;</p></div> <!-- &#10003 -->
-                <div class="control-button" id="lower-health-control"><p>&#9660;</p></div> <!-- &#10005 -->
+        <div class="sidebar-row">
+            <div class="sidebar-box-double">
+                <div class="ghosty-background-stuff small-spacing"><p>Hp</p></div>
+                <div id="health-controls">
+                    <div class="control-button" id="upper-health-control"><p>&#9650;</p></div> <!-- &#10003 -->
+                    <div class="control-button" id="lower-health-control"><p>&#9660;</p></div> <!-- &#10005 -->
+                </div>
+                <p class="small-spacing" id="health-and-temp"><span id="temp-health-number"></span><span id="health-number">38</span></pi>
+                <p class="small-spacing" id="max-health-number">38</p>
+                <svg id="health-display">
+                    <!--            <line x1="275" y1="0" x2="125" y2="100" stroke="black"/>-->
+                    <line x1="0" y1="50" x2="212" y2="50" stroke="black"/>
+                </svg>
             </div>
-            <p class="small-spacing" id="health-and-temp"><span id="temp-health-number">0+</span><span id="health-number">38</span></pi>
-            <p class="small-spacing" id="max-health-number">38</p>
-            <svg id="health-display">
-                <!--            <line x1="275" y1="0" x2="125" y2="100" stroke="black"/>-->
-                <line x1="0" y1="50" x2="212" y2="50" stroke="black"/>
-            </svg>
         </div>
     </div>
     <div class="sidebar-block">
-        <div class="ability-score-row">
-            <div class="ability-score-box">
+        <div class="sidebar-row">
+            <div class="sidebar-box">
                 <div class="ghosty-background-stuff small-spacing"><p>St</p></div>
                 <div class="ability-score-modifier"><p id="strength-modifier">+0</p></div>
                 <div class="ability-score-offset"><p id="strength-score">10</p></div>
             </div>
-            <div class="ability-score-box">
+            <div class="sidebar-box">
                 <div class="ghosty-background-stuff small-spacing"><p>De</p></div>
                 <div class="ability-score-modifier"><p id="dexterity-modifier">+2</p></div>
                 <div class="ability-score-offset"><p id="dexterity-score">14</p></div>
             </div>
-            <div class="ability-score-box">
+            <div class="sidebar-box">
                 <div class="ghosty-background-stuff small-spacing"><p>Co</p></div>
                 <div class="ability-score-modifier"><p id="constitution-modifier">+2</p></div>
                 <div class="ability-score-offset"><p id="constitution-score">14</p></div>
             </div>
         </div>
-        <div class="ability-score-row">
-            <div class="ability-score-box">
+        <div class="sidebar-row">
+            <div class="sidebar-box">
                 <div class="ghosty-background-stuff small-spacing"><p>In</p></div>
                 <div class="ability-score-modifier"><p id="intelligence-modifier">+1</p></div>
                 <div class="ability-score-offset"><p id="intelligence-score">12</p></div>
             </div>
-            <div class="ability-score-box">
+            <div class="sidebar-box">
                 <div class="ghosty-background-stuff small-spacing"><p>Wi</p></div>
                 <div class="ability-score-modifier"><p id="wisdom-modifier">+2</p></div>
                 <div class="ability-score-offset"><p id="wisdom-score">14</p></div>
             </div>
-            <div class="ability-score-box">
+            <div class="sidebar-box">
                 <div class="ghosty-background-stuff small-spacing"><p>Ch</p></div>
                 <div class="ability-score-modifier"><p id="charisma-modifier">+4</p></div>
                 <div class="ability-score-offset"><p id="charisma-score">18</p></div>
