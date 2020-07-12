@@ -2,11 +2,11 @@
     width: available;
 }
 #sidebar {
-    border-left: 1px dashed black;
+    border-right: 1px dashed black;
     overflow: hidden;
     white-space: nowrap;
     width: 418px;
-    float: right;
+    float: left;
 }
 
 .sidebar-block {
