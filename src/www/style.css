@@ -1,12 +1,18 @@
 #main-content {
-    width: available;
+    padding: 30px 40px 40px;
+    height: 100%;
+    overflow: scroll;
+    position: relative;
 }
+
 #sidebar {
     border-right: 1px dashed black;
     overflow: hidden;
     white-space: nowrap;
     width: 418px;
     float: left;
+    padding: 30px 40px 40px;
+    height: 100%;
 }
 
 .sidebar-block {
@@ -113,12 +119,6 @@
     font-weight: bold;
 }
 
-.section {
-    padding: 30px 40px 40px;
-    height: 100%;
-    float: left;
-}
-
 body, html {
     height: 100%;
     font-family: overpass, sans-serif;
@@ -179,4 +179,37 @@ body, html {
 
 #armor-class-box {
     border-radius: 50px;
+}
+
+#main-content-header {
+    width: available;
+    border-bottom: 1px solid black;
+    overflow: auto;
+    position: sticky;
+    top: 0;
+}
+
+.main-content-header-item {
+    font-variant-caps: all-petite-caps;
+    float: left;
+    width: 33%;
+    text-align: center;
+}
+
+#main-content-header-slider {
+    background-color: #e9e9e9;
+    border-radius: 9px;
+    width: 33%;
+    height: 10px;
+    position: relative;
+    left: 33%;
+    top: 32px;
+}
+
+#main-content-header-background {
+    background-color: white;
+    position: fixed;
+    width: 100%;
+    height: 80px;
+    top: -3px;
 }
