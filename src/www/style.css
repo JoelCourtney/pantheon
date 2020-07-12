@@ -1,18 +1,21 @@
+#main-content {
+    width: available;
+}
 #sidebar {
-    border-right: 1px dashed black;
+    border-left: 1px dashed black;
     overflow: hidden;
     white-space: nowrap;
     width: 418px;
+    float: right;
 }
 
 .sidebar-block {
-    margin-bottom: 15px;
+    margin-bottom: 5px;
     clear: left;
 }
 
 .sidebar-row {
     clear: left;
-    overflow: hidden;
     height: 113px;
 }
 
@@ -25,7 +28,6 @@
     width: 100px;
     height: 100px;
     margin: 6px;
-    line-height: 1.5;
 }
 
 .sidebar-box-double {
@@ -37,13 +39,23 @@
     width: 212px;
     height: 100px;
     margin: 6px;
-    line-height: 1.5;
+}
+
+.sidebar-box-mid {
+    border: 1px solid black;
+    border-radius: 9px;
+    float: left;
+    text-align: center;
+    position: relative;
+    width: 156px;
+    height: 100px;
+    margin: 6px;
 }
 
 #character-name {
     font-variant-caps: small-caps;
-    text-align: right;
-    padding-right: 6px;
+    text-align: left;
+    padding-left: 6px;
 }
 
 #race {
@@ -60,21 +72,34 @@
 .ability-score-offset {
     position: absolute;
     bottom: -16px;
-    left: 33px;
+    left: 35px;
     vertical-align: middle;
     background-color: white;
     width: 30px;
     height: 30px;
     line-height: 30px;
     font-size: 25px;
+    margin: 0 auto;
 }
 
-.ability-score-modifier {
+.speed-offset {
+    position: absolute;
+    bottom: -16px;
+    left: 35px;
+    vertical-align: middle;
+    background-color: white;
+    width: 90px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 25px;
+    margin: 0 auto;
+}
+
+.sidebar-box-text {
     font-size: 50px;
     line-height: 100px;
-    margin: 0;
+    margin: 3px;
     height: 100px;
-    vertical-align: middle;
 }
 
 .ghosty-background-stuff {
