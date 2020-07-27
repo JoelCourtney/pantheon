@@ -3,6 +3,7 @@ name: Rogue
 hit dice: 8
 
 features:
+  # Level 1
   - results:
       - modify: character[proficiencies]
         add: light armor
@@ -24,7 +25,7 @@ features:
         unique: true
         results:
           - modify: character[skill proficiencies]
-            append: parent[choice]
+            add: parent[choice]
       - choose: proficiency
         choices: 2
         unique: true
@@ -53,7 +54,38 @@ features:
         results:
           - modify: character[expertise]
             add: parent[choice]
-      - TODO("finish this")
+      - for each: character[weapons]
+        results:
+          - if:
+              - parent[value][finesse]
+              - parent[value][ranged]
+            type: any
+            results:
+              - modify: parent[parent][value][possible damage]
+                add: (root[level] /+ 2) * 1d6 parent[parent][value][damage type]
+              - modify: parent[parent][value][possible damage notes]
+                add: see [Sneak Attack](Rogue#Sneak Attack)
+      - modify: character[languages]
+        add: Thieves' Cant
+  # Level 2
+  - results:
+      - modify: character[bonus actions]
+        append:
+          - [Dash](lonk)
+          - Disengage
+          - Hide
+  # Level 3
+  - results:
+      - subclass: Roguish Archetype
+  # Level 4
+  - results:
+      - asi or feat: []
+  # Level 5
+  - results:
+      - modify: character[reactions]
+        add: [Uncanny Dodge](Rogue#Uncanny Dodge)
+  # TODO("finish this")
+
 description: |
   # Rogue
 

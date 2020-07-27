@@ -1,4 +1,3 @@
-//import model.races.VariantRace
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.Token
 import io.JacksonWrapper
