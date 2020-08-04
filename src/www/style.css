@@ -256,3 +256,8 @@ tr {
 .skill-table-end {
     border: none;
 }
+
+ul {
+    margin-top: revert;
+    padding-left: 25px;
+}

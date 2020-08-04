@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="eng">
 <head>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://overpass-30e2.kxcdn.com/overpass.css">
     <link rel="stylesheet" href="https://overpass-30e2.kxcdn.com/overpass-mono.css">
     <link rel="stylesheet" href="style.css">
+    <title>Avral</title>
 </head>
 <body>
 <div id="sidebar">
@@ -24,7 +25,7 @@
                     <div class="control-button" id="upper-health-control"><p>&#9650;</p></div> <!-- &#10003 -->
                     <div class="control-button" id="lower-health-control"><p>&#9660;</p></div> <!-- &#10005 -->
                 </div>
-                <p class="small-spacing" id="health-and-temp"><span id="temp-health-number"></span><span id="health-number">38</span></pi>
+                <p class="small-spacing" id="health-and-temp"><span id="temp-health-number"></span><span id="health-number">38</span></p>
                 <p class="small-spacing" id="max-health-number">38</p>
                 <svg id="health-display">
                     <!--            <line x1="275" y1="0" x2="125" y2="100" stroke="black"/>-->
@@ -213,9 +214,53 @@
                 </tr>
             </table>
         </div>
-        <div id="saving throws" class="main-content-block">skilz</div>
-        <div id="senses" class="main-content-block">skilz</div>
-        <div id="languages" class="main-content-block">skilz</div>
+        <div id="saving throws" class="main-content-block">
+            <h3 class="main-content-block-title">Saving Throws</h3>
+            <table>
+                <tr>
+                    <th>Mod</th>
+                    <th>Save</th>
+                </tr>
+                <tr>
+                    <td>-1</td>
+                    <td>Strength</td>
+                </tr>
+                <tr>
+                    <td>+6</td>
+                    <td>Dexterity</td>
+                </tr>
+                <tr>
+                    <td>+2</td>
+                    <td>Constitution</td>
+                </tr>
+                <tr>
+                    <td>+4</td>
+                    <td>Intelligence</td>
+                </tr>
+                <tr>
+                    <td>+1</td>
+                    <td>Wisdom</td>
+                </tr>
+                <tr>
+                    <td>+4</td>
+                    <td>Charisma</td>
+                </tr>
+                <tr>
+                    <td>+0</td>
+                    <td>Death</td>
+                </tr>
+            </table>
+            <ul>
+                <li>ADV against being charmed</li>
+                <li>Magic can't put you to sleep</li>
+            </ul>
+        </div>
+        <div id="senses" class="main-content-block">
+            <h3 class="main-content-block-title">Senses</h3>
+        </div>
+        <div id="languages" class="main-content-block">
+            <h3 class="main-content-block-title">Languages</h3>
+        </div>
     </div>
 </div>
 </body>
