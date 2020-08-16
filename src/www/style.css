@@ -261,3 +261,14 @@ ul {
     margin-top: revert;
     padding-left: 25px;
 }
+
+#general-body {
+}
+
+#combat-body {
+    display: none;
+}
+
+#roleplay-body {
+    display: none;
+}
