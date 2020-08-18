@@ -226,6 +226,26 @@ body, html {
     overflow: scroll;
 }
 
+.main-content-block-6 {
+    border: 1px solid black;
+    border-radius: 9px;
+    width: calc(50% - 10px);
+    margin: 5px;
+    float: left;
+    padding: 5px;
+    overflow: scroll;
+}
+
+.main-content-block-8 {
+    border: 1px solid black;
+    border-radius: 9px;
+    width: calc(66% - 6px);
+    margin: 5px;
+    float: left;
+    padding: 5px;
+    overflow: scroll;
+}
+
 .main-content-block-title {
     font-size: 20px;
     text-align: center;
@@ -263,10 +283,10 @@ ul {
 }
 
 #general-body {
+    display: none;
 }
 
 #combat-body {
-    display: none;
 }
 
 #roleplay-body {

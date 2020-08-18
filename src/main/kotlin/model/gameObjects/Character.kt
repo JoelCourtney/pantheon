@@ -1,10 +1,9 @@
 package model.gameObjects
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import model.CreatureSize
 import model.access.Evaluated
+import model.gameObjects.items.Item
 import model.results.Result
-import model.spells.Spell
 
 /**
  * exposed properties:
@@ -23,20 +22,20 @@ import model.spells.Spell
  * - items: MutableList<Item>
  */
 data class Character(
-    @JsonProperty("name")
+        @JsonProperty("name")
     var identity: String,
-    var race: Race,
+        var race: Race,
 //    var classes: MutableList<Class>,
-    var strength: Int,
-    var dexterity: Int,
-    var constitution: Int,
-    var wisdom: Int,
-    var charisma: Int,
-    var health: Int,
-    var tempHealth: Int,
-    var items: MutableList<Item>,
-//    var background: Background,
-    var inspired: Boolean
+        var strength: Int,
+        var dexterity: Int,
+        var constitution: Int,
+        var wisdom: Int,
+        var charisma: Int,
+        var health: Int,
+        var tempHealth: Int,
+        var items: MutableList<Item>,
+        var equipped: MutableList<Item>,
+        var inspired: Boolean
 //    var statuses: MutableList<Status>
     ): Evaluated<Character> {
     private val results: ArrayList<Result> = arrayListOf()
