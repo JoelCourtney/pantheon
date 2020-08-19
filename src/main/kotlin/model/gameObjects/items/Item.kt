@@ -1,8 +1,11 @@
 package model.gameObjects.items
 
 open class Item(
-        val identity: String,
+        val name: String,
         val weight: Double,
-        val price: Double,
-        val rarity: Rarity
+        val cost: Double,
+        val rarity: Rarity,
+        val intrinsic: Boolean,
+        val magical: Boolean,
+        val description: String = ""
 )

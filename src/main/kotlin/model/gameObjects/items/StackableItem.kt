@@ -1,9 +1,12 @@
 package model.gameObjects.items
 
 class StackableItem(
-        identity: String,
+        name: String,
         weight: Double,
-        price: Double,
+        cost: Double,
+        rarity: Rarity,
+        intrinsic: Boolean,
+        magical: Boolean,
         val quantity: Int
-): Item(identity, weight, price) {
+): Item(name, weight, cost, rarity, intrinsic, magical) {
 }

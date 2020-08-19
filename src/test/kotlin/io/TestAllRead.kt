@@ -3,7 +3,7 @@ package io
 import io.FileSystemWrapper.getAllContentOfType
 import model.gameObjects.Feat
 import model.gameObjects.Race
-import model.spells.Spell
+import model.gameObjects.Spell
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments

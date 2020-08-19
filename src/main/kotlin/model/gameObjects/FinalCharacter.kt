@@ -1,15 +1,20 @@
 package model.gameObjects
 
 import model.ProficiencyType
+import model.gameObjects.actions.Move
+import model.gameObjects.items.Armor
+import model.gameObjects.items.Item
 import model.quantities.Quantity
 import model.quantities.QuantityType
 
 data class FinalCharacter(
         val identity: String
 ) {
+
+    // SIDE BAR
+
     val race: Race? = null
     val classes: Array<Class>? = null
-
 
     val strengthBase: Int? = null
     val strengthModifier: Int? = null
@@ -29,6 +34,15 @@ data class FinalCharacter(
     val charismaBase: Int? = null
     val charismaModifier: Int? = null
 
+    val initiative: Int? = null
+
+    val proficiencyBonus: Int? = null
+
+    val walkingSpeed: Quantity<QuantityType.Distance>? = null
+    val flyingSpeed: Quantity<QuantityType.Distance>? = null
+    val climbingSpeed: Quantity<QuantityType.Distance>? = null
+    val burrowingSpeed: Quantity<QuantityType.Distance>? = null
+    val swimmingSpeed: Quantity<QuantityType.Distance>? = null
 
     val acrobaticsBonus: Int? = null
     val acrobaticsProficiencyType: ProficiencyType? = null
@@ -84,15 +98,20 @@ data class FinalCharacter(
     val survivalBonus: Int? = null
     val survivalProficiencyType: ProficiencyType? = null
 
-    val proficiencyBonus: Int? = null
+    // COMBAT
 
-    val walkingSpeed: Quantity<QuantityType.Distance>? = null
-    val flyingSpeed: Quantity<QuantityType.Distance>? = null
-    val climbingSpeed: Quantity<QuantityType.Distance>? = null
-    val burrowingSpeed: Quantity<QuantityType.Distance>? = null
-    val swimmingSpeed: Quantity<QuantityType.Distance>? = null
+    val actions: List<Move> = listOf()
+    val bonusActions: List<Move> = listOf()
+    val reactions: List<Move> = listOf()
 
-    fun finalize() {
+    // MISC
+
+    val inventory: List<Item> = listOf()
+    val primaryHandItem: Item? = null
+    val offHandItem: Item? = null
+    val armor: Armor? = null
+
+    fun commit() {
 
     }
 }

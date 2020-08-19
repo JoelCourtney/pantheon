@@ -1,4 +1,4 @@
-package model.spells
+package model.gameObjects
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize

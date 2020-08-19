@@ -1,0 +1,19 @@
+name: Dagger
+
+rarity: common
+weight: 1
+price: 2
+intrinsic: false
+magical: false
+
+type: melee
+
+properties:
+  - finesse
+  - light
+  - thrown
+
+range: 20 ft
+disadvantage range: 60 ft
+
+damage: 1d4 piercing

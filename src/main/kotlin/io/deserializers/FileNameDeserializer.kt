@@ -7,7 +7,7 @@ import io.FileSystemWrapper
 import io.JacksonWrapper
 import model.gameObjects.Language
 import model.gameObjects.Race
-import model.spells.Spell
+import model.gameObjects.Spell
 
 sealed class FileNameDeserializer<T>(val type: String) : StdDeserializer<Any>(Any::class.java) {
     override fun deserialize(p: JsonParser?, ctxt: DeserializationContext?): Any {

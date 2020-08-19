@@ -1,7 +1,11 @@
 name: Talons
 
+rarity: n/a
+weight: 0
+price: 0
+intrinsic: true
+magical: false
+
 type: melee
 
-selectable: false
-
-damage: 1d4+character[strength modifier] slashing
+damage: 1d4 slashing
