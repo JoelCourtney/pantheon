@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import io.deserializers.DistanceDeserializer
 import model.access.Expression
-import model.results.Result
+import model.modifications.Modification
 import model.access.Evaluated
 import model.quantities.QuantityType.*
 import io.deserializers.TimeDeserializer
@@ -46,7 +46,7 @@ data class Spell(
     @JsonProperty("material description")
     val materialDescription: String = ""
 
-    val results: Array<Result> = arrayOf()
+    val modifications: Array<Modification> = arrayOf()
 
     @JsonProperty("reaction to")
     val reactionTo: String = ""

@@ -2,13 +2,13 @@ package model.logic
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import io.deserializers.EventDeserializer
-import model.results.TimedResult
-import model.results.effects.SpawnEventEffect
+import model.modifications.results.TimedResult
+import model.modifications.results.SpawnEventResult
 
 /**
  * In-game event used to process [TimedResult]s.
  * 
- * Spawned by either hard-coded logic or by a [SpawnEventEffect]. Triggers listening for this event will be notified when it is spawned. Note that there are a list of common events used by the base rules, but homebrew content can both spawn and listen for arbitrary custom events.
+ * Spawned by either hard-coded logic or by a [SpawnEventResult]. Triggers listening for this event will be notified when it is spawned. Note that there are a list of common events used by the base rules, but homebrew content can both spawn and listen for arbitrary custom events.
  * 
  * ## List of Common Events
  * 

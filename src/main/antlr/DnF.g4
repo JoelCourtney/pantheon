@@ -7,7 +7,7 @@ options { tokenVocab = DnLexer; }
     import model.quantities.*;
     import model.quantities.QuantityType.*;
     import model.quantities.amounts.*;
-    import model.results.SavingThrowType;
+    import model.modifications.results.SavingThrowType;
 }
 
 damage returns [Expression<Quantity<Damage>> result]

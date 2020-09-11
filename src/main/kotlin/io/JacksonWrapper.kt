@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import io.deserializers.*
-import model.results.Result
+import model.modifications.Modification
 import java.nio.file.FileSystems
 import java.nio.file.Files
 import java.io.IOException
@@ -24,7 +24,7 @@ object JacksonWrapper {
 
     init {
         module.addDeserializer(
-            Result::class.java,
+            Modification::class.java,
             ResultDeserializer()
         )
         mapper.registerModule(module)

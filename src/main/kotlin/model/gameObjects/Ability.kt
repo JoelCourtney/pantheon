@@ -1,4 +1,4 @@
-package model
+package model.gameObjects
 
 import model.access.Evaluated
 

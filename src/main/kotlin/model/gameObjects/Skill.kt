@@ -1,6 +1,5 @@
 package model.gameObjects
 
-import model.Ability
 import model.access.Evaluated
 
 enum class Skill(val identity: String): Evaluated<Skill> {

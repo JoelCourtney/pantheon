@@ -9,7 +9,7 @@ import model.quantities.amounts.Amount
 import model.access.Identifier
 import model.quantities.*
 import model.quantities.QuantityType.*
-import model.results.SavingThrowType
+import model.modifications.results.SavingThrowType
 
 /**
  * Parses Strings into [Quantity]'s and [Identifier]'s using ANTLR.

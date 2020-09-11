@@ -14,3 +14,7 @@ data class Quantity<T: QuantityType>(
             Quantity<T>(arrayListOf())
     }
 }
+
+//typealias Damage = Quantity<QuantityType.Damage>
+//typealias Distance = Quantity<QuantityType.Distance>
+//typealias Time = Quantity<QuantityType.Time>

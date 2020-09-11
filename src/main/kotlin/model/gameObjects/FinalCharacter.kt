@@ -1,7 +1,6 @@
 package model.gameObjects
 
-import model.ProficiencyType
-import model.gameObjects.actions.Move
+import model.gameObjects.moves.Move
 import model.gameObjects.items.Armor
 import model.gameObjects.items.Item
 import model.quantities.Quantity

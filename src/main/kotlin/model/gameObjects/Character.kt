@@ -1,13 +1,12 @@
 package model.gameObjects
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import model.access.Evaluated
 import model.gameObjects.items.Item
-import model.results.Result
+import model.modifications.results.Result
 
 /**
  * exposed properties:
- * 
+ *
  * - identity: String
  * - race: Race
  * - known spells: MutableList<Spell>
@@ -22,34 +21,23 @@ import model.results.Result
  * - items: MutableList<Item>
  */
 data class Character(
-        @JsonProperty("name")
-    var identity: String,
-        var race: Race,
-//    var classes: MutableList<Class>,
-        var strength: Int,
-        var dexterity: Int,
-        var constitution: Int,
-        var wisdom: Int,
-        var charisma: Int,
+        var name: String,
+        var race: Instance<Race>,
+        var classes: List<Instance<Class>>,
+        var background: Instance<Background>,
+        var baseStrength: Int,
+        var baseDexterity: Int,
+        var baseConstitution: Int,
+        var baseWisdom: Int,
+        var baseCharisma: Int,
         var health: Int,
         var tempHealth: Int,
         var items: MutableList<Item>,
         var equipped: MutableList<Item>,
-        var inspired: Boolean
-//    var statuses: MutableList<Status>
-    ): Evaluated<Character> {
-    private val results: ArrayList<Result> = arrayListOf()
-
-    fun addResult(r: Result) {
-        results.add(r)
-    }
-
-    private fun processResults() {
-        var i = 0
-        while (i < results.size) {
-            results[i].apply(this)
-            i++
-        }
-        results.removeAll { it.purge() }
-    }
+        var inspired: Boolean,
+        val results: MutableList<Result>
+        /*
+        There will probably need to be more here.
+         */
+): Evaluated<Character> {
 }

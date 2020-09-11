@@ -1,4 +1,4 @@
-package model
+package model.gameObjects
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import model.access.Evaluated

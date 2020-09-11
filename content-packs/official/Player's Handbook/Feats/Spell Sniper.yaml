@@ -11,6 +11,7 @@ description: |
 
 results:
   - choose: class
+    prompt: choose a class
     filter except list:
       - bard
       - cleric

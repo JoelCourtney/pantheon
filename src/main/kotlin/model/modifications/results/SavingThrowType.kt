@@ -1,4 +1,4 @@
-package model.results
+package model.modifications.results
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import model.access.Evaluated

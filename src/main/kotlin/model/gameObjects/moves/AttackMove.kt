@@ -1,4 +1,4 @@
-package model.gameObjects.actions
+package model.gameObjects.moves
 
 import model.quantities.Quantity
 import model.quantities.QuantityType
