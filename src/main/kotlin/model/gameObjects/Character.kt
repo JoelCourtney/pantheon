@@ -1,7 +1,9 @@
 package model.gameObjects
 
+import model.access.Accessible
 import model.access.Evaluated
 import model.gameObjects.items.Item
+import model.modifications.effects.Effect
 import model.modifications.results.Result
 
 /**
@@ -39,5 +41,5 @@ data class Character(
         /*
         There will probably need to be more here.
          */
-): Evaluated<Character> {
+): Accessible {
 }

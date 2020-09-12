@@ -1,5 +1,8 @@
+import model.access.Accessible
+import model.access.Environment
 import model.gameObjects.Character
 import model.gameObjects.FinalCharacter
+import model.gameObjects.Instance
 import model.modifications.results.Result
 
 class Engine(val character: Character) {
@@ -30,6 +33,7 @@ class Engine(val character: Character) {
     1. If you run it twice and the second run has no events, you MUST get EXACTLY the same result.
      */
     fun calculate(): FinalCharacter {
+        Environment.character = character as Accessible
         throw NotImplementedError()
     }
 }
