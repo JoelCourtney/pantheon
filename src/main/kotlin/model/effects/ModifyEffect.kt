@@ -1,10 +1,9 @@
-package model.modifications.effects
+package model.effects
 
-import Engine
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import io.deserializers.IdentifierDeserializer
-import model.gameObjects.Character
+import model.access.Environment
 import model.access.Identifier
 
 class ModifyEffect(
@@ -19,8 +18,16 @@ class ModifyEffect(
     @JsonProperty("divide up")
     val divideUp: String? = null,
     val append: Array<String> = arrayOf()
-): Effect {
-    override fun applyEffect(e: Engine) {
+): Effect() {
+    override fun apply() {
+        TODO("Not yet implemented")
+    }
+
+    override fun findDependencies(): List<String> {
+        TODO("Not yet implemented")
+    }
+
+    override fun findEffected(): List<String> {
         TODO("Not yet implemented")
     }
 }

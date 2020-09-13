@@ -1,14 +1,11 @@
-package model.modifications
+package model.effects
 
-import Engine
 import com.fasterxml.jackson.annotation.JsonProperty
 import model.access.Accessible
+import model.access.Environment
 import model.access.Identifier
-import model.gameObjects.Character
-import model.modifications.effects.Effect
-import model.quantities.amounts.AmountBinaryOp
 
-data class ForEachLogic<T>(
+data class ForEachEffect(
     @JsonProperty("for each")
     val forEach: String,
 
@@ -24,18 +21,31 @@ data class ForEachLogic<T>(
     @JsonProperty("filter except list")
     val filterExceptList: Array<String> = arrayOf(),
 
-    val modifications: Array<Modification>
-): Logic, Accessible {
-    override fun applyEffect(e: Engine) {
+    val effects: Array<Effect>
+): Effect(), Accessible {
+    override var env: Environment?
+        get() = super.env
+        set(value) {
+            super.env = value
+            val newEnv = value!!.nest(this)
+            for (effect in effects) {
+                effect.env = newEnv
+            }
+        }
+
+    override fun apply() {
         TODO("Not yet implemented")
     }
 
-    override fun applyResult(e: Engine): Effect? {
-        TODO("Not yet implemented")
+    override fun findDependencies(): List<String> {
+        return listOfNotNull(
+                filterOut?.characterAttribute,
+                filterExcept?.characterAttribute
+        ) + effects.flatMap { it.dependencies!! }
     }
 
-    override fun purge(): Boolean {
-        TODO("Not yet implemented")
+    override fun findEffected(): List<String> {
+        return effects.flatMap { it.dependencies!! }
     }
 
     override fun get(id: String): Any {
@@ -43,10 +53,6 @@ data class ForEachLogic<T>(
     }
 
     override fun set(id: String, value: String) {
-        TODO("Not yet implemented")
-    }
-
-    override fun modify(op: AmountBinaryOp, value: String) {
         TODO("Not yet implemented")
     }
 }

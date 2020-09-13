@@ -6,7 +6,7 @@ fun main() {
         "content-packs/official/Player's Handbook/Races/",
         "Human.yaml"
     )
-    println(human.identity)
+    println(human.name)
 //    val input = CharStreams.fromString("character[health] min ; 2d3 meh[erty]")
 //    val lexer = DnLexer(input)
 //    val tokens = CommonTokenStream(lexer) 

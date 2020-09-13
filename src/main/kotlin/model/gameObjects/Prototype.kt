@@ -1,9 +1,16 @@
 package model.gameObjects
 
-import model.modifications.Modification
-import model.modifications.effects.Effect
+import model.access.Accessible
+import model.access.Environment
+import model.effects.Effect
 
-interface Prototype {
-    val name: String
-    fun getEffects(data: List<String>): List<Effect>
+abstract class Prototype(
+        val effects: List<Effect>
+): Accessible {
+    fun getEffects(env: Environment): List<Effect> {
+        for (effect in effects) {
+            effect.env = env
+        }
+        return effects
+    }
 }

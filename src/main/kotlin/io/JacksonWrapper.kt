@@ -4,12 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import io.deserializers.*
-import model.modifications.Modification
 import java.nio.file.FileSystems
 import java.nio.file.Files
 import java.io.IOException
 import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.databind.JsonMappingException
+import model.effects.Effect
 
 /**
  * Convenience object for deserializing objects through com.fasterxml.jackson.
@@ -24,8 +24,8 @@ object JacksonWrapper {
 
     init {
         module.addDeserializer(
-            Modification::class.java,
-            ResultDeserializer()
+            Effect::class.java,
+            EffectDeserializer()
         )
         mapper.registerModule(module)
     }

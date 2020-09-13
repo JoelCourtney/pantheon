@@ -1,14 +1,21 @@
 package model.gameObjects
 
-import model.modifications.Modification
-import model.modifications.effects.Effect
+import model.effects.Effect
 
-data class Feat(
-    val name: String,
-    val description: String,
-    val effects: Array<Effect>
-): Prototype {
-    override fun getEffects(data: List<String>): List<Effect> {
+class Feat(
+        val name: String,
+        val description: String,
+        effects: List<Effect>
+): Prototype(standardEffects() + effects) {
+    override fun get(id: String): Any {
         TODO("Not yet implemented")
+    }
+
+    override fun set(id: String, value: String) {
+        TODO("Not yet implemented")
+    }
+
+    companion object {
+        fun standardEffects() = listOf<Effect>()
     }
 }

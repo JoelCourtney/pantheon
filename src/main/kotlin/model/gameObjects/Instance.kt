@@ -1,13 +1,23 @@
 package model.gameObjects
 
-import model.modifications.effects.Effect
+import model.access.Accessible
+import model.access.Environment
+import model.effects.Effect
 
 data class Instance<T: Prototype>(
-        val base: T,
-        val choices: List<String>,
-        val properties: Map<String,String>
-) {
+        val proto: T,
+        val choices: List<String>
+): Accessible {
     fun getEffects(): List<Effect> {
-        return base.getEffects(choices)
+        val env = Environment(this)
+        return proto.getEffects(env)
+    }
+
+    override fun get(id: String): Any {
+        TODO("Not yet implemented")
+    }
+
+    override fun set(id: String, value: String) {
+        TODO("Not yet implemented")
     }
 }

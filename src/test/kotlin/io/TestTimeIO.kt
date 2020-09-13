@@ -1,7 +1,6 @@
 package io
 
 import model.access.Identifier
-import model.access.IdentifierKey
 import model.quantities.Quantity
 import model.quantities.QuantityComponent
 import model.quantities.amounts.Dice
@@ -40,16 +39,16 @@ class TestTimeIO {
                 arrayListOf(
                     QuantityComponent(
                         Identifier(
-                            IdentifierKey("character"), 
-                            IdentifierKey("health")
+                            "character",
+                            "health"
                         ),
                         TimeUnit.MINUTE
                     ),
                     QuantityComponent(
                         Dice(2, 3),
                         Identifier(
-                            IdentifierKey("meh"),
-                            IdentifierKey("erty")
+                            "meh",
+                            "erty"
                         )
                     )
                 )

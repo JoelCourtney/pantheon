@@ -1,14 +1,11 @@
-package model.modifications
+package model.effects
 
-import Engine
 import com.fasterxml.jackson.annotation.JsonProperty
 import model.access.Accessible
+import model.access.Environment
 import model.access.Identifier
-import model.gameObjects.Character
-import model.modifications.effects.Effect
-import model.quantities.amounts.AmountBinaryOp
 
-data class ChoiceLogic<T>(
+data class ChoiceEffect<T>(
     val choose: String,
 
     @JsonProperty("filter out")
@@ -27,18 +24,31 @@ data class ChoiceLogic<T>(
     val numChoices: Int = 1,
     val unique: Boolean = false,
 
-    val modifications: Array<Modification>
-): Logic, Accessible {
-    override fun applyEffect(e: Engine) {
+    val effects: Array<Effect>
+): Effect(), Accessible {
+    override var env: Environment?
+        get() = super.env
+        set(value) {
+            super.env = value
+            val newEnv = value!!.nest(this)
+            for (effect in effects) {
+                effect.env = newEnv
+            }
+        }
+
+    override fun apply() {
         TODO("Not yet implemented")
     }
 
-    override fun applyResult(e: Engine): Effect? {
-        TODO("Not yet implemented")
+    override fun findDependencies(): List<String> {
+        return listOfNotNull(
+                filterOut?.characterAttribute,
+                filterExcept?.characterAttribute
+        ) + effects.flatMap { it.dependencies!! }
     }
 
-    override fun purge(): Boolean {
-        TODO("Not yet implemented")
+    override fun findEffected(): List<String> {
+        return effects.flatMap { it.effected!! }
     }
 
     override fun get(id: String): Any {
@@ -46,10 +56,6 @@ data class ChoiceLogic<T>(
     }
 
     override fun set(id: String, value: String) {
-        TODO("Not yet implemented")
-    }
-
-    override fun modify(op: AmountBinaryOp, value: String) {
         TODO("Not yet implemented")
     }
 }

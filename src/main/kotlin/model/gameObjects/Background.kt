@@ -1,14 +1,22 @@
 package model.gameObjects
 
-import model.modifications.Modification
-import model.modifications.effects.Effect
+import model.access.Environment
+import model.effects.Effect
 
-data class Background(
+class Background(
         val name: String,
         val description: String,
-        val effects: List<Effect>
-): Prototype {
-    override fun getResults(data: List<String>): List<Modification> {
+        effects: List<Effect>
+): Prototype(standardEffects + effects) {
+    override fun get(id: String): Any {
         TODO("Not yet implemented")
+    }
+
+    override fun set(id: String, value: String) {
+        TODO("Not yet implemented")
+    }
+
+    companion object {
+        val standardEffects = listOf<Effect>()
     }
 }

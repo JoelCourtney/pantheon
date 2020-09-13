@@ -7,7 +7,6 @@ options { tokenVocab = DnLexer; }
     import model.quantities.*;
     import model.quantities.QuantityType.*;
     import model.quantities.amounts.*;
-    import model.modifications.results.SavingThrowType;
 }
 
 damage returns [Expression<Quantity<Damage>> result]
@@ -103,28 +102,4 @@ amount returns [Expression<Amount> result]
     | i=identifier { $result = (Identifier<Amount>) $i.result; };
 
 identifier returns [Identifier<? extends Object> result]
-    : n1=NAME { ArrayList<IdentifierComponent> comps = new ArrayList<IdentifierComponent>(); }
-    (OPEN_BRACKET (
-        n2=NAME { comps.add(new IdentifierKey($n2.getText())); }
-        | i=identifier { comps.add($i.result); }
-    ) CLOSE_BRACKET)+ {
-        $result = new Identifier<Object>(new IdentifierKey($n1.getText()), comps.get(0));
-        for (int i = 1; i < comps.size(); i++) {
-            $result = new Identifier<Object>($result, comps.get(i));
-        }
-    };
-
-saving_throw_type returns [Expression<SavingThrowType> result]
-    : STRENGTH      { $result = SavingThrowType.STRENGTH; }
-    | DEXTERITY     { $result = SavingThrowType.DEXTERITY; }
-    | CONSTITUTION  { $result = SavingThrowType.CONSTITUTION; }
-    | INTELLIGENCE  { $result = SavingThrowType.INTELLIGENCE; }
-    | WISDOM        { $result = SavingThrowType.WISDOM; }
-    | CHARISMA      { $result = SavingThrowType.CHARISMA; }
-    | DEATH         { $result = SavingThrowType.DEATH; }
-    | i=identifier  { $result = (Identifier<SavingThrowType>) $i.result; };
-
-bool returns [Expression<Boolean> result]
-    : TRUE         { $result = new Expression<Boolean>() { public Boolean evaluate() { return true; } }; }
-    | FALSE         { $result = new Expression<Boolean>() { public Boolean evaluate() { return false; } }; }
-    | i=identifier  { $result = (Identifier<Boolean>) $i.result; };
+    : n1=NAME OPEN_BRACKET n2=NAME CLOSE_BRACKET { $result = new Identifier<Object>($n1.getText(), $n2.getText()); };

@@ -4,10 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import io.deserializers.DistanceDeserializer
 import model.access.Expression
-import model.modifications.Modification
-import model.access.Evaluated
 import model.quantities.QuantityType.*
 import io.deserializers.TimeDeserializer
+import model.access.Environment
+import model.effects.Effect
 import model.quantities.Quantity
 
 data class Spell(
@@ -39,16 +39,22 @@ data class Spell(
     val displayInCombat: Boolean,
     @JsonProperty("display in roleplay")
     val displayInRoleplay: Boolean
-
-): Evaluated<Spell> {
+): Prototype(standardEffects()) {
     @JsonProperty("available to")
     val availableTo: Array<String> = arrayOf()
     @JsonProperty("material description")
     val materialDescription: String = ""
 
-    val modifications: Array<Modification> = arrayOf()
+    override fun get(id: String): Any {
+        TODO("Not yet implemented")
+    }
 
-    @JsonProperty("reaction to")
-    val reactionTo: String = ""
+    override fun set(id: String, value: String) {
+        TODO("Not yet implemented")
+    }
+
+    companion object {
+        fun standardEffects() = listOf<Effect>()
+    }
 }
 

@@ -3,7 +3,6 @@ package io
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import model.access.Identifier
-import model.access.IdentifierKey
 import model.quantities.amounts.*
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
@@ -24,36 +23,7 @@ class TestAmountIO {
         assertEquals(Dice(3, 1), ANTLRWrapper.parseAmount("3d1"))
     }
 
-    @Test
-    fun testIdentifier() {
-        assertEquals(
-            Identifier<Amount>(
-                IdentifierKey("hello"),
-                IdentifierKey("world")
-            ),
-            ANTLRWrapper.parseAmount("hello[world]")
-        )
-        assertEquals(
-            Identifier<Amount>(
-                Identifier<Any>(
-                    IdentifierKey("hello"),
-                    IdentifierKey("meh")
-                ),
-                IdentifierKey("world")
-            ),
-            ANTLRWrapper.parseAmount("hello[meh][world]")
-        )
-        assertEquals(
-            Identifier<Amount>(
-                IdentifierKey("hello"),
-                Identifier<Any>(
-                    IdentifierKey("meh"),
-                    IdentifierKey("world")
-                )
-            ),
-            ANTLRWrapper.parseAmount("hello[meh[world]]")
-        )
-    }
+
 
     @ParameterizedTest(name = "test binary op {0}")
     @EnumSource(AmountBinaryOp::class)

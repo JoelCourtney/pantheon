@@ -4,8 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import model.access.Evaluated
 
 data class Language(
-    @JsonProperty("name")
-    val identity: String,
+    val name: String,
 
     @JsonProperty("typical speakers")
     val typicalSpeakers: String,

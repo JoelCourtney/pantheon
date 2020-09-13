@@ -9,7 +9,6 @@ import model.quantities.amounts.Amount
 import model.access.Identifier
 import model.quantities.*
 import model.quantities.QuantityType.*
-import model.modifications.results.SavingThrowType
 
 /**
  * Parses Strings into [Quantity]'s and [Identifier]'s using ANTLR.
@@ -102,13 +101,5 @@ object ANTLRWrapper {
 
     fun parseIdentifier(s: String): Identifier<*> {
         return makeParser(s).identifier().result
-    }
-    
-    fun parseSavingThrowType(s: String): Expression<SavingThrowType> {
-        return makeParser(s).saving_throw_type().result
-    }
-    
-    fun parseBoolean(s: String): Expression<Boolean> {
-        return makeParser(s).bool().result
     }
 }

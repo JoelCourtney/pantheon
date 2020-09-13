@@ -1,10 +1,9 @@
-package model.modifications.effects
+package model.effects
 
-import Engine
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import io.deserializers.IdentifierDeserializer
-import model.gameObjects.Character
+import model.access.Environment
 import model.access.Identifier
 
 data class SetEffect(
@@ -12,8 +11,16 @@ data class SetEffect(
     @JsonDeserialize(using = IdentifierDeserializer::class)
     val id: Identifier<*>,
     val to: String
-): Effect {
-    override fun applyEffect(e: Engine) {
+): Effect() {
+    override fun apply() {
+        TODO("Not yet implemented")
+    }
+
+    override fun findDependencies(): List<String> {
+        TODO("Not yet implemented")
+    }
+
+    override fun findEffected(): List<String> {
         TODO("Not yet implemented")
     }
 }

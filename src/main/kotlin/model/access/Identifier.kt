@@ -3,26 +3,23 @@ package model.access
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import io.deserializers.IdentifierDeserializer
 
-
 @JsonDeserialize(using = IdentifierDeserializer::class)
 data class Identifier<out T>(
-    val obj: IdentifierComponent,
-    val key: IdentifierComponent
-): Expression<T>, IdentifierComponent {
-    fun set(value: String) {
-        obj.evaluateObject()[key.evaluateKey()] = value
-    }
-    
-    fun get(): T {
-        TODO("holup")
-    }
-    
-    override fun evaluateObject(): Accessible {
-        TODO("Not yet implemented")
+    val obj: String,
+    val key: String
+): Expression<T> {
+    val characterAttribute: String?
+        get() = if (obj == "character") key else null
+
+    fun set(env: Environment, value: String) {
+        val obj = env[obj]
+        obj[key] = value
     }
 
-    override fun evaluateKey(): String {
-        TODO("Not yet implemented")
+    @Suppress("Unchecked_Cast")
+    fun get(env: Environment): T {
+        val obj = env[obj]
+        return obj[key] as T
     }
 
     override fun evaluate(): T {

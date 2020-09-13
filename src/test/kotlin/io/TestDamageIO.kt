@@ -1,7 +1,6 @@
 package io
 
 import model.access.Identifier
-import model.access.IdentifierKey
 import model.quantities.*
 import model.quantities.amounts.AmountBinary
 import model.quantities.amounts.AmountBinaryOp
@@ -33,8 +32,8 @@ class TestDamageIO {
                 arrayListOf(
                     QuantityComponent(
                         Identifier(
-                            IdentifierKey("character"), 
-                            IdentifierKey("health")
+                            "character",
+                            "health"
                         ),
                         DamageUnit.MELEE
                     ),
@@ -45,8 +44,8 @@ class TestDamageIO {
                             NumberLiteral(3)
                         ),
                         Identifier(
-                            IdentifierKey("this"),
-                            IdentifierKey("thang")
+                            "this",
+                            "thang"
                         )
                     )
                 )
