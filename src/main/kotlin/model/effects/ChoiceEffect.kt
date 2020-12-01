@@ -20,9 +20,11 @@ data class ChoiceEffect<T>(
     @JsonProperty("filter except list")
     val filterExceptList: Array<String> = arrayOf(),
 
-    @JsonProperty("choices")
+    @JsonProperty("number of choices")
     val numChoices: Int = 1,
     val unique: Boolean = false,
+
+    val prompt: String = "choose $numChoices",
 
     val effects: Array<Effect>
 ): Effect(), Accessible {

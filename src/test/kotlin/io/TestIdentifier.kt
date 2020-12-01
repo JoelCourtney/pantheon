@@ -1,6 +1,7 @@
 package io
 
 import model.access.Identifier
+import model.access.StringLiteral
 import model.quantities.amounts.Amount
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -11,7 +12,7 @@ class TestIdentifier {
         Assertions.assertEquals(
                 Identifier<Amount>(
                         "hello",
-                        "world"
+                        listOf(StringLiteral("world"))
                 ),
                 ANTLRWrapper.parseAmount("hello[world]")
         )

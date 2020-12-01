@@ -102,4 +102,11 @@ amount returns [Expression<Amount> result]
     | i=identifier { $result = (Identifier<Amount>) $i.result; };
 
 identifier returns [Identifier<? extends Object> result]
-    : n1=NAME OPEN_BRACKET n2=NAME CLOSE_BRACKET { $result = new Identifier<Object>($n1.getText(), $n2.getText()); };
+    : n1=NAME { ArrayList<Expression<String>> keys = new ArrayList<Expression<String>>(); int height = 1; }
+    (OPEN_PAREN i=NUMBER CLOSE_PAREN { height = Integer.parseInt($i.getText()); })?
+    (
+        OPEN_BRACKET (
+            n2=NAME { keys.add(new StringLiteral($n2.getText())); }
+            | id=identifier { keys.add((Identifier<String>) $id.result); }
+        ) CLOSE_BRACKET
+    )+ { $result = new Identifier<Object>($n1.getText(), keys, height); };

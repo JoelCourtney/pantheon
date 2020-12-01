@@ -1,6 +1,7 @@
 package io
 
 import model.access.Identifier
+import model.access.StringLiteral
 import model.quantities.Quantity
 import model.quantities.QuantityComponent
 import model.quantities.amounts.Dice
@@ -40,7 +41,7 @@ class TestTimeIO {
                     QuantityComponent(
                         Identifier(
                             "character",
-                            "health"
+                            listOf(StringLiteral("health"))
                         ),
                         TimeUnit.MINUTE
                     ),
@@ -48,7 +49,7 @@ class TestTimeIO {
                         Dice(2, 3),
                         Identifier(
                             "meh",
-                            "erty"
+                            listOf(StringLiteral("erty"))
                         )
                     )
                 )

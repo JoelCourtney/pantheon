@@ -4,7 +4,7 @@ variant of: Human
 
 description: If your campaign uses the optional feat rules from the *Player’s Handbook*, your Dungeon Master might allow these variant traits, all of which replace the human’s Ability Score Increase trait.
 
-results:
+effects:
   - modify: character[strength score]
     subtract: 1
   - modify: character[dexterity score]
@@ -18,8 +18,8 @@ results:
   - modify: character[constitution]
     subtract: 1
   - choose: ability score
-    choices: 2
+    number of choices: 2
     unique: true
-    results:
+    effects:
       - modify: character[parent[choice]]
         add: 1

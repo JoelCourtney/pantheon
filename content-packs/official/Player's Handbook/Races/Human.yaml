@@ -1,6 +1,6 @@
 name: Human
 
-results:
+effects:
   - modify: character[strength score]
     add: 1
   - modify: character[dexterity score]
@@ -13,16 +13,16 @@ results:
     add: 1
   - modify: character[constitution]
     add: 1
-  - set: character[size]
-    to: medium
-  - set: character[walkingSpeed]
-    to: 30 feet
+  - modify: character[size]
+    set: medium
+  - modify: character[walkingSpeed]
+    set: 30 feet
   - modify: character[known languages]
-    add: Common
+    set: Common
   - choose: language
     filter out: character[known languages]
-    results:
-      - modify: charcter[known languages]
+    effects:
+      - modify: character[known languages]
         add: parent[choice]
 
 description: |

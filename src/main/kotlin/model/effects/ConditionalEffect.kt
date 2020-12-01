@@ -5,8 +5,9 @@ import model.access.Environment
 import model.access.Identifier
 
 data class ConditionalEffect(
-        val ifCond: List<Identifier<Boolean>>,
-        val ifFalseCond: List<Identifier<Boolean>>,
+        val ifCond: List<Identifier<*>>,
+        val ifFalseCond: List<Identifier<*>>,
+        val equals: String,
         val effects: List<Effect>
 ): Effect(), Accessible {
     override var env: Environment?

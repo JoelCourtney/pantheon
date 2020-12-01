@@ -4,7 +4,7 @@ import model.gameObjects.Race
 fun main() {
     val human = JacksonWrapper.readFile<Race>(
         "content-packs/official/Player's Handbook/Races/",
-        "Human.yaml"
+        "Variant Human.yaml"
     )
     println(human.name)
 //    val input = CharStreams.fromString("character[health] min ; 2d3 meh[erty]")

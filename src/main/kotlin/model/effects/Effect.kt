@@ -8,7 +8,6 @@ abstract class Effect {
     var dependencies: List<String>? = null
         get() {
             if (field == null) {
-
                 field = findDependencies()
             }
             return field

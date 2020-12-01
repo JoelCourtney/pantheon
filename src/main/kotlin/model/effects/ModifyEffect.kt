@@ -17,7 +17,8 @@ class ModifyEffect(
     val divide: String? = null,
     @JsonProperty("divide up")
     val divideUp: String? = null,
-    val append: Array<String> = arrayOf()
+    val append: Array<String> = arrayOf(),
+    val set: String? = null
 ): Effect() {
     override fun apply() {
         TODO("Not yet implemented")

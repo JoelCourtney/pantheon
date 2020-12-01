@@ -16,7 +16,6 @@ class EffectDeserializer : StdDeserializer<Effect>(Effect::class.java) {
             "if", "if not" -> ConditionalEffect::class.java
             "choose" -> ChoiceEffect::class.java
             "modify" -> ModifyEffect::class.java
-            "set" -> SetEffect::class.java
             "for each" -> ForEachEffect::class.java
             else -> throw IllegalArgumentException("Unrecognized result key: ${keys[0]}")
         }

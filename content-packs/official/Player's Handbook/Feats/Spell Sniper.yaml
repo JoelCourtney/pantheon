@@ -9,7 +9,7 @@ description: |
   - Your ranged spell attacks ignore half cover and three-quarters cover.
   - You learn one cantrip that requires an attack roll. Choose the cantrip from the bard, cleric, druid, sorcerer, warlock, or wizard spell list. Your spellcasting ability for this cantrip depends on the spell list you chose from: Charisma for bard, sorcerer, and warlock; Wisdom for cleric or druid; or Intelligence for wizard.
 
-results:
+effects:
   - choose: class
     prompt: choose a class
     filter except list:
@@ -19,16 +19,17 @@ results:
       - warlock
       - sorcerer
       - wizard
-    results:
+    effects:
       - choose: spell
         filter except: parent[choice][spell list]
-        results:
+        effects:
           - modify: character[known spells]
             add: parent[choice]
   - for each: character[known spells]
-    filter except: value[requires attack roll]
     results:
-      - modify: parent[value][range]
-        multiply: 2
+      - if: parent[value][requires attack roll]
+        effects:
+          - modify: parent[parent][value][range]
+            multiply: 2
 
 # TODO("this spell ignores cover and I don't know what do")

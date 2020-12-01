@@ -75,11 +75,28 @@ features:
           - Disengage
           - Hide
   # Level 3
-  - results:
+  - effects:
       - subclass: Roguish Archetype
   # Level 4
   - results:
-      - asi or feat: []
+      - choose from:
+          - Ability Score Increase
+          - Feat
+        effects:
+          - if: parent[choice]
+            equals: Ability Score Increase
+            effects:
+              - choose: ability
+                number of choices: 2
+                unique: false
+                effects:
+                  - modify: character[parent[choice]]
+                    add: 1
+            else effects:
+              - choose: feat
+                effects:
+                  - modify: character[feats]
+                    add: parent[choice]
   # Level 5
   - results:
       - modify: character[reactions]

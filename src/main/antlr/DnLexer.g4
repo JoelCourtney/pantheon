@@ -1,5 +1,7 @@
 lexer grammar DnLexer;
 
+tokens { OPEN_BRACKET, CLOSE_BRACKET }
+
 fragment DIGIT : [0-9];
 fragment LETTER : [A-Z] | [a-z] | '_';
 
@@ -104,7 +106,7 @@ DIVIDE_DOWN : '/' | '/-';
 DIVIDE_UP : '/+';
 OPEN_PAREN : '(';
 CLOSE_PAREN : ')';
-OPEN_BRACKET : '[' -> pushMode(PLAINTEXT);
+DEFAULT_OPEN_BRACKET : '[' -> type(OPEN_BRACKET), pushMode(PLAINTEXT);
 EQUAL : '=';
 COMMA : ',';
 DOLLAR : '$';
@@ -114,7 +116,6 @@ WS : [ \t\u000c]+ -> skip;
 
 mode PLAINTEXT;
 
-TEXT : ( LETTER | DIGIT | ' ')+ -> type(NAME);
-NEW_OPEN_BRACKET : '[' -> type(OPEN_BRACKET);
-CLOSE_BRACKET : ']' -> popMode;
-//NEW_CLOSE_BRACKET : ']' -> type(CLOSE_BRACKET);
+NEW_NAME : LETTER (LETTER | DIGIT | ' ')* -> type(NAME);
+NEW_OPEN_BRACKET : '[' -> type(OPEN_BRACKET), pushMode(PLAINTEXT);
+NEW_CLOSE_BRACKET : ']' -> type(CLOSE_BRACKET), popMode;
