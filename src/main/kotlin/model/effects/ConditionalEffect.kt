@@ -1,13 +1,15 @@
 package model.effects
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import model.access.Accessible
 import model.access.Environment
 import model.access.Identifier
 
 data class ConditionalEffect(
-        val ifCond: List<Identifier<*>>,
-        val ifFalseCond: List<Identifier<*>>,
-        val equals: String,
+        @JsonProperty("if")
+        val ifCond: List<Identifier<*>>?,
+        @JsonProperty("if not")
+        val ifNotCond: List<Identifier<*>>?,
         val effects: List<Effect>
 ): Effect(), Accessible {
     override var env: Environment?
@@ -25,8 +27,8 @@ data class ConditionalEffect(
     }
 
     override fun findDependencies(): List<String> {
-        return ifCond.mapNotNull{ it.characterAttribute } +
-                ifFalseCond.mapNotNull { it.characterAttribute } +
+        return (ifCond?.mapNotNull{ it.characterAttribute } ?: listOf()) +
+                (ifNotCond?.mapNotNull { it.characterAttribute } ?: listOf()) +
                 effects.flatMap { it.dependencies!! }
     }
 

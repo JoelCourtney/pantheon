@@ -38,12 +38,15 @@ data class Spell(
     @JsonProperty("display in combat")
     val displayInCombat: Boolean,
     @JsonProperty("display in roleplay")
-    val displayInRoleplay: Boolean
-): Prototype(standardEffects()) {
+    val displayInRoleplay: Boolean,
+
     @JsonProperty("available to")
-    val availableTo: Array<String> = arrayOf()
+    val availableTo: Array<String>?,
     @JsonProperty("material description")
-    val materialDescription: String = ""
+    val materialDescription: String?,
+    @JsonProperty("reaction to")
+    val reactionTo: String?
+): Prototype(standardEffects()) {
 
     override fun get(id: String): Any {
         TODO("Not yet implemented")

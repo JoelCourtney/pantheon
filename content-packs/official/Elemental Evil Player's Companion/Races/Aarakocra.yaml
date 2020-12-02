@@ -1,20 +1,20 @@
 name: Aarakocra
 
-results:
+effects:
   - modify: character[dexterity]
     add: 2
   - modify: character[wisdom]
     add: 1
-  - set: character[size]
-    to: medium
-  - set: character[walking speed]
-    to: 25 feet
+  - modify: character[size]
+    set: medium
+  - modify: character[walking speed]
+    set: 25 feet
   - if not:
       - character[wearing heavy armor]
       - character[wearing medium armor]
-    success results:
-      - set: character[flying speed]
-        to: 50 feet
+    effects:
+      - modify: character[flying speed]
+        set: 50 feet
   - modify: character[weapons]
     add: Talons
   - modify: character[known languages]

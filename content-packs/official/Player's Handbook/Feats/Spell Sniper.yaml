@@ -26,10 +26,9 @@ effects:
           - modify: character[known spells]
             add: parent[choice]
   - for each: character[known spells]
-    results:
-      - if: parent[value][requires attack roll]
+    effects:
+      - if:
+          - parent[value][requires attack roll]
         effects:
           - modify: parent[parent][value][range]
             multiply: 2
-
-# TODO("this spell ignores cover and I don't know what do")

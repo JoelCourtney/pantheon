@@ -25,28 +25,6 @@ material description: a tiny ball of bat guano and sulfur
 duration: instant
 concentration: false # true or false
 
-#properties:
-#  - key: hit self
-#    type: boolean
-#    ask: Did you hit yourself?
-#    choices: # choice: value
-#      - Yes: true
-#      - No: false
-
-results:
-  - if:
-      - this[hit self]
-    success results:
-      - saving throw: dexterity
-        dc: character[spell save dc]
-        fail results:
-          - modify once: character[health]
-            subtract: 8d6 + (this[cast level] - this[level]) * 1d6 fire
-        success results:
-          - modify once: character[health]
-            subtract: (8d6 + (this[cast level] - this[level]) * 1d6) /- 2 fire
-        half damage on success: true
-
 # Fun stuff
 description: >
   A bright streak flashes from your pointing finger to a point you choose within range and then blossoms with a low
