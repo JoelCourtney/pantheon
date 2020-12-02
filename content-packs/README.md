@@ -39,3 +39,4 @@ To add more official or playtest content (or to add homebrew stuff once it is su
 - The file must parse correctly when running `gradle test`.
 - For official and playtest material, the content must behave as accurately as possible given the limitations of this software.
 - For official and playtest material, `description` attribute strings must be nicely formatted in Markdown.
+- Put your GitHub name at the top of the file in a comment of the form `# File by <YOUR NAME>`
