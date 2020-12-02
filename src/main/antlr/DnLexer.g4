@@ -41,7 +41,7 @@ REACTION : R E A C T I O N S?;
 ROUND : R O U N D S?;
 SECOND : S E C (O N D)? S?;
 MINUTE : M I N (U T E)? S?;
-HOUR : H O U R S? | H R S?;
+HOUR : H (O U)? R S?;
 DAY : D A Y S?;
 LONG_REST
     : L R
@@ -102,8 +102,8 @@ DICE : DIGIT+ D DIGIT+;
 PLUS : '+';
 MINUS : '-';
 TIMES : '*';
-DIVIDE_DOWN : '/' | '/-';
-DIVIDE_UP : '/+';
+DIVIDE_DOWN : '/';
+DIVIDE_UP : '/^';
 OPEN_PAREN : '(';
 CLOSE_PAREN : ')';
 DEFAULT_OPEN_BRACKET : '[' -> type(OPEN_BRACKET), pushMode(PLAINTEXT);

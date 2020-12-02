@@ -15,7 +15,7 @@ effects:
     add: 1
   - modify: character[size]
     set: medium
-  - modify: character[walkingSpeed]
+  - modify: character[walking speed]
     set: 30 feet
   - modify: character[known languages]
     set: Common

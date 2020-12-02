@@ -2,7 +2,7 @@ name: Rogue
 
 hit dice: 8
 
-features:
+effects:
   # Level 1
   - results:
       - modify: character[proficiencies]
@@ -71,7 +71,7 @@ features:
   - results:
       - modify: character[bonus actions]
         append:
-          - [Dash](lonk)
+          - Dash
           - Disengage
           - Hide
   # Level 3
@@ -100,7 +100,7 @@ features:
   # Level 5
   - results:
       - modify: character[reactions]
-        add: [Uncanny Dodge](Rogue#Uncanny Dodge)
+        add: Uncanny Dodge
   # TODO("finish this")
 
 description: |

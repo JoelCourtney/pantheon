@@ -4,6 +4,7 @@ import io.FileSystemWrapper.getAllContentOfType
 import model.gameObjects.Feat
 import model.gameObjects.Race
 import model.gameObjects.Spell
+import model.gameObjects.Class
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
@@ -34,6 +35,14 @@ class TestAllRead {
         }
     }
 
+//    @ParameterizedTest(name = "parse class file {1}")
+//    @MethodSource
+//    fun parseClassFile(dir: String, file: String) {
+//        assertDoesNotThrow {
+//            JacksonWrapper.readFile<Class>(dir, file)
+//        }
+//    }
+
     companion object {
         @JvmStatic
         fun parseSpellFile(): List<Arguments> {
@@ -48,6 +57,11 @@ class TestAllRead {
         @JvmStatic
         fun parseFeatFile(): List<Arguments> {
             return getAllContentOfType("Feats").map { Arguments.of(it.parent.toString(), it.fileName.toString()) }
+        }
+
+        @JvmStatic
+        fun parseClassFile(): List<Arguments> {
+            return getAllContentOfType("Classes").map { Arguments.of(it.parent.toString(), it.fileName.toString()) }
         }
     }
 }

@@ -64,6 +64,8 @@ object FileSystemWrapper {
      *     - Races
      *     - Spells
      *     - Languages
+     *     - Classes
+     *     - Feats
      * @return A [List] of Paths, each to a file of that content type.
      */
     fun getAllContentOfType(type: String): List<Path> {
