@@ -5,6 +5,7 @@ import os
 
 def main():
     here = os.path.abspath(os.getcwd())
+    print('Creating uikit symlink')
     os.symlink(here + '/src/www/uikit-custom', here + '/uikit/custom', True)
 
 
