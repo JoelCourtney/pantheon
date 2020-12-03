@@ -6,7 +6,8 @@ import os
 def main():
     print('Setting up uikit')
     os.chdir('uikit')
-    os.system('git pull')
+    os.system('git submodule init')
+    os.system('git submodule update')
     os.system('yarn install')
 
     os.chdir('..')
