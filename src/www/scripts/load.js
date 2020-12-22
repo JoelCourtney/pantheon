@@ -54,7 +54,6 @@ function liftZIndices() {
     let drops = document.getElementsByClassName("uk-dropdown");
     for (var e of drops) {
         let z = window.getComputedStyle(e).zIndex;
-        console.log(z);
         while (e.parentElement.id != "sheet") {
             e = e.parentElement;
         }
