@@ -20,7 +20,7 @@
             <p>Half-Elf<br/>Rogue 4 - Warlock 1</p>
         </div>
         <div class="uk-text-right uk-padding">
-            <ul class="uk-nav uk-nav-default">
+            <ul class="uk-nav uk-nav-primary">
                 <li><a href="#">Overview</a></li>
                 <li><a href="#">Combat</a></li>
                 <li><a href="#">Roleplay</a></li>
@@ -31,7 +31,7 @@
             </ul>
         </div>
     </div>
-    <div class="uk-padding uk-width-expand" uk-grid="masonry: true">
+    <div class="uk-padding uk-width-expand uk-grid-small" uk-grid="masonry: true">
         <div class="viewclassesgohere">
             <div class="sheet-box">
                 <h1 class="sheet-box-title-small">Armor Class</h1>
@@ -158,13 +158,50 @@
                 <div uk-grid>
                     <div class="uk-inline">
                         <h1 class="sheet-box-title-small">Left Hand</h1>
-                        <button class="uk-button uk-button-default" type="button">Thicc Click</button>
-                        <div uk-dropdown="mode: click; duration: 0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</div>
+                        <button class="uk-button uk-button-default" type="button">Shield</button>
+                        <div uk-dropdown="mode: click; duration: 0" class="uk-dropdown-default">
+                            <ul class="uk-nav uk-dropdown-nav uk-text-left uk-nav-default">
+                                <li><a>Swap</a></li>
+                                <li><a>Stow</a></li>
+                                <li><a>Drop</a></li>
+                                <li class="uk-nav-header">Weapons</li>
+                                <li><a>Dagger</a></li>
+                                <li><a>Shortbow</a></li>
+<!--                                <li class="uk-nav-header">Shields</li>-->
+<!--                                <li class="uk-nav-header">Other</li>-->
+                            </ul>
+                        </div>
                     </div>
-                    <div class="uk-inline">
+                    <div class="uk-inline uk-padding-remove-left">
                         <h1 class="sheet-box-title-small">Right Hand</h1>
-                        <button class="uk-button uk-button-default" type="button">Click</button>
-                        <div uk-dropdown="mode: click; duration: 0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</div>
+                        <button class="uk-button uk-button-default" type="button">Rapier</button>
+                        <div uk-dropdown="mode: click; duration: 0">
+                            <ul class="uk-nav uk-dropdown-nav uk-text-left uk-nav-default">
+                                <li><a>Swap</a></li>
+                                <li><a>Stow</a></li>
+                                <li><a>Drop</a></li>
+                                <li class="uk-nav-header">Weapons</li>
+                                <li><a>Dagger</a></li>
+                                <li><a>Shortbow</a></li>
+                                <!--                                <li class="uk-nav-header">Shields</li>-->
+                                <!--                                <li class="uk-nav-header">Other</li>-->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="viewclassesgohere">
+            <div class="sheet-box uk-width-auto">
+                <div class="uk-inline">
+                    <h1 class="sheet-box-title-small">Armor</h1>
+                    <button class="uk-button uk-button-default" type="button">Studded Leather</button>
+                    <div uk-dropdown="mode: click; duration: 0">
+                        <ul class="uk-nav uk-dropdown-nav uk-text-left uk-nav-default">
+                            <li><a>Doff</a></li>
+<!--                            <li class="uk-nav-header">Armor</li>-->
+<!--                            <li><a>Studded Leather</a></li>-->
+                        </ul>
                     </div>
                 </div>
             </div>
