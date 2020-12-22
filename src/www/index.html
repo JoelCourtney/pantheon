@@ -10,11 +10,11 @@
     <script src="../../uikit/dist/js/uikit.min.js"></script>
     <script src="../../uikit/dist/js/uikit-icons.min.js"></script>
 
-    <script src="scripts/include.js"></script>
+    <script src="scripts/load.js"></script>
 
     <title>Avral - DnFree</title>
 </head>
-<body>
+<body onload="load();">
 <div class="uk-flex" id="all-content">
     <div class="uk-width-medium">
         <div class="uk-text-center uk-padding">
@@ -34,7 +34,7 @@
             </ul>
         </div>
     </div>
-    <div class="uk-padding uk-width-expand uk-grid-small" uk-grid="masonry: true">
+    <div class="uk-padding uk-width-expand uk-grid-small" uk-grid="masonry: true" id="sheet">
         <div class="viewclassesgohere" include-html="armor-class"></div>
         <div class="viewclassesgohere" include-html="proficiency-bonus"></div>
         <div class="viewclassesgohere" include-html="initiative"></div>
@@ -49,8 +49,5 @@
         <div class="viewclassesgohere" include-html="currency"></div>
     </div>
 </div>
-<script>
-includeHTML();
-</script>
 </body>
 </html>

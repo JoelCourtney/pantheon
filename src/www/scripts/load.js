@@ -4,6 +4,11 @@ https://www.w3schools.com/howto/howto_html_include.asp
 
 modified to query all includes at time of calling, so the requests are parallel.
 */
+
+function load() {
+    includeHTML();
+};
+
 var includesRequested = 0;
 var includesReceived = 0;
 function includeHTML() {
@@ -35,4 +40,25 @@ function includeHTML() {
             includesRequested++;
         }
     }
+    if (includesRequested == 0) {
+        contentLoaded()
+    }
 };
+
+function contentLoaded() {
+    liftZIndices();
+};
+
+function liftZIndices() {
+    var offset = 0;
+    let drops = document.getElementsByClassName("uk-dropdown");
+    for (var e of drops) {
+        let z = window.getComputedStyle(e).zIndex;
+        console.log(z);
+        while (e.parentElement.id != "sheet") {
+            e = e.parentElement;
+        }
+        e.style.zIndex = z - offset;
+        offset++;
+    }
+}
