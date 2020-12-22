@@ -10,10 +10,12 @@
     <script src="../../uikit/dist/js/uikit.min.js"></script>
     <script src="../../uikit/dist/js/uikit-icons.min.js"></script>
 
+    <script src="scripts/include.js"></script>
+
     <title>Avral - DnFree</title>
 </head>
 <body>
-<div class="uk-flex">
+<div class="uk-flex" id="all-content">
     <div class="uk-width-medium">
         <div class="uk-text-center uk-padding">
             <h1>Avral</h1>
@@ -24,7 +26,7 @@
                 <li><a href="#">Overview</a></li>
                 <li><a href="#">Combat</a></li>
                 <li><a href="#">Roleplay</a></li>
-                <li><a href="#">Inventory</a></li>
+                <li><a href="#">Equipment</a></li>
                 <li><a href="#">Skills & Proficiencies</a></li>
                 <li><a href="#">Description</a></li>
                 <li><a href="#">Notes</a></li>
@@ -33,206 +35,22 @@
         </div>
     </div>
     <div class="uk-padding uk-width-expand uk-grid-small" uk-grid="masonry: true">
-        <div class="viewclassesgohere">
-            <div class="sheet-box">
-                <h1 class="sheet-box-title-small">Armor Class</h1>
-                <p class="sheet-box-number">14</p>
-            </div>
-        </div>
-        <div class="viewclassesgohere">
-            <div class="sheet-box">
-                <h1 class="sheet-box-title-small">Proficiency Bonus</h1>
-                <p class="sheet-box-number">+3</p>
-            </div>
-        </div>
-        <div class="viewclassesgohere">
-            <div class="sheet-box">
-                <h1 class="sheet-box-title-small">Initiative</h1>
-                <p class="sheet-box-number">+2</p>
-            </div>
-        </div>
-        <div class="viewclassesgohere">
-            <div class="sheet-box">
-                <h1 class="sheet-box-title-small">Walking Speed</h1>
-                <p class="sheet-box-number">30 ft</p>
-            </div>
-        </div>
-        <div class="viewclassesgohere">
-            <div class="sheet-box">
-                <h1 class="sheet-box-title-small">Inspiration</h1>
-                <p class="sheet-box-icon"><span uk-icon="icon: ban; ratio: 2;"></span></p>
-            </div>
-        </div>
-        <div class="viewclassesgohere">
-            <div class="sheet-box uk-width-medium uk-column-1-3">
-                <h1 class="sheet-box-title-small">Health</h1>
-                <p class="sheet-box-number">38</p>
-                <h1 class="sheet-box-title-small">Max</h1>
-                <p class="sheet-box-number">38</p>
-                <h1 class="sheet-box-title-small">Temp</h1>
-                <p class="sheet-box-number">0</p>
-            </div>
-        </div>
-        <div class="viewclassesgohere">
-            <div class="sheet-box uk-width-large">
-                <div uk-grid class="uk-child-width-1-3 uk-grid-row-medium">
-                    <div>
-                        <h1 class="sheet-box-title-small uk-margin-remove">Strength</h1>
-                        <p class="sheet-box-number uk-margin-small">9|-1</p>
-                    </div>
-                    <div>
-                        <h1 class="sheet-box-title-small">Dexterity</h1>
-                        <p class="sheet-box-number uk-margin-small">15|+2</p>
-                    </div>
-                    <div>
-                        <h1 class="sheet-box-title-small">Constitution</h1>
-                        <p class="sheet-box-number uk-margin-small">12|+1</p>
-                    </div>
-                    <div>
-                        <p class="sheet-box-number">12|+1</p>
-                        <h1 class="sheet-box-title-small uk-margin-remove">Intelligence</h1>
-                    </div>
-                    <div>
-                        <p class="sheet-box-number">13|+1</p>
-                        <h1 class="sheet-box-title-small uk-margin-remove">Wisdom</h1>
-                    </div>
-                    <div>
-                        <p class="sheet-box-number">20|+5</p>
-                        <h1 class="sheet-box-title-small uk-margin-remove">Charisma</h1>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="viewclassesgohere">
-            <div class="sheet-box uk-width-auto">
-                <h1 class="sheet-box-title-small">Skillz</h1>
-                <div uk-grid class="uk-grid-small">
-                    <div class="uk-width-auto uk-text-right">
-                        <ul class="uk-list uk-list-collapse">
-                            <li>Acrobatics</li>
-                            <li>Animal Handling</li>
-                            <li>Arcana</li>
-                            <li>Athletics</li>
-                            <li class="skill-expert">Deception</li>
-                            <li>History</li>
-                            <li class="skill-proficient">Insight</li>
-                            <li class="skill-proficient">Intimidation</li>
-                            <li class="skill-proficient">Investigation</li>
-                            <li>Medicine</li>
-                            <li>Nature</li>
-                            <li class="skill-proficient">Perception</li>
-                            <li class="skill-proficient">Performance</li>
-                            <li class="skill-proficient">Persuasion</li>
-                            <li>Religion</li>
-                            <li>Sleight of Hand</li>
-                            <li class="skill-expert">Stealth</li>
-                            <li>Survival</li>
-                        </ul>
-                    </div>
-                    <div class="uk-width-auto uk-text-left">
-                        <ul class="uk-list uk-list-collapse">
-                            <li>+2</li>
-                            <li>+1</li>
-                            <li>+1</li>
-                            <li>-1</li>
-                            <li>+11</li>
-                            <li>+1</li>
-                            <li>+4</li>
-                            <li>+8</li>
-                            <li>+4</li>
-                            <li>+1</li>
-                            <li>+1</li>
-                            <li>+4</li>
-                            <li>+8</li>
-                            <li>+8</li>
-                            <li>+1</li>
-                            <li>+2</li>
-                            <li>+8</li>
-                            <li>+1</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="viewclassesgohere">
-            <div class="sheet-box uk-width-auto">
-                <div uk-grid>
-                    <div class="uk-inline">
-                        <h1 class="sheet-box-title-small">Left Hand</h1>
-                        <button class="uk-button uk-button-default" type="button">Shield</button>
-                        <div uk-dropdown="mode: click; duration: 0" class="uk-dropdown-default">
-                            <ul class="uk-nav uk-dropdown-nav uk-text-left uk-nav-default">
-                                <li><a>Swap</a></li>
-                                <li><a>Stow</a></li>
-                                <li><a>Drop</a></li>
-                                <li class="uk-nav-header">Weapons</li>
-                                <li><a>Dagger</a></li>
-                                <li><a>Shortbow</a></li>
-<!--                                <li class="uk-nav-header">Shields</li>-->
-<!--                                <li class="uk-nav-header">Other</li>-->
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="uk-inline uk-padding-remove-left">
-                        <h1 class="sheet-box-title-small">Right Hand</h1>
-                        <button class="uk-button uk-button-default" type="button">Rapier</button>
-                        <div uk-dropdown="mode: click; duration: 0">
-                            <ul class="uk-nav uk-dropdown-nav uk-text-left uk-nav-default">
-                                <li><a>Swap</a></li>
-                                <li><a>Stow</a></li>
-                                <li><a>Drop</a></li>
-                                <li class="uk-nav-header">Weapons</li>
-                                <li><a>Dagger</a></li>
-                                <li><a>Shortbow</a></li>
-                                <!--                                <li class="uk-nav-header">Shields</li>-->
-                                <!--                                <li class="uk-nav-header">Other</li>-->
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="viewclassesgohere">
-            <div class="sheet-box uk-width-auto">
-                <div class="uk-inline">
-                    <h1 class="sheet-box-title-small">Armor</h1>
-                    <button class="uk-button uk-button-default" type="button">Studded Leather</button>
-                    <div uk-dropdown="mode: click; duration: 0">
-                        <ul class="uk-nav uk-dropdown-nav uk-text-left uk-nav-default">
-                            <li><a>Doff</a></li>
-<!--                            <li class="uk-nav-header">Armor</li>-->
-<!--                            <li><a>Studded Leather</a></li>-->
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="viewclassesgohere">
-            <div class="sheet-box uk-width-auto">
-                <h1 class="sheet-box-title-small">Currency</h1>
-                <div uk-grid class="uk-grid-small">
-                    <div class="uk-width-auto uk-text-right">
-                        <ul class="uk-list uk-list-collapse">
-                            <li>Platinum</li>
-                            <li>Gold</li>
-                            <li>Electrum</li>
-                            <li>Silver</li>
-                            <li>Copper</li>
-                        </ul>
-                    </div>
-                    <div class="uk-width-auto uk-text-left">
-                        <ul class="uk-list uk-list-collapse">
-                            <li>0</li>
-                            <li>1,163</li>
-                            <li>0</li>
-                            <li>0</li>
-                            <li>0</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div class="viewclassesgohere" include-html="armor-class"></div>
+        <div class="viewclassesgohere" include-html="proficiency-bonus"></div>
+        <div class="viewclassesgohere" include-html="initiative"></div>
+        <div class="viewclassesgohere" include-html="speed"></div>
+        <div class="viewclassesgohere" include-html="inspiration"></div>
+        <div class="viewclassesgohere" include-html="health"></div>
+        <div class="viewclassesgohere" include-html="abilities"></div>
+        <div class="viewclassesgohere" include-html="skills"></div>
+        <div class="viewclassesgohere" include-html="hands"></div>
+        <div class="viewclassesgohere" include-html="armor"></div>
+        <div class="viewclassesgohere" include-html="inventory"></div>
+        <div class="viewclassesgohere" include-html="currency"></div>
     </div>
 </div>
+<script>
+includeHTML();
+</script>
 </body>
 </html>
