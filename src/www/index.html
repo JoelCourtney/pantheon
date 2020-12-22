@@ -15,26 +15,28 @@
     <title>Avral - DnFree</title>
 </head>
 <body onload="load();">
-<div class="uk-flex" id="all-content">
-    <div class="uk-width-medium">
-        <div class="uk-text-center uk-padding">
-            <h1>Avral</h1>
-            <p>Half-Elf<br/>Rogue 4 - Warlock 1</p>
-        </div>
-        <div class="uk-text-right uk-padding">
-            <ul class="uk-nav uk-nav-primary">
-                <li><a href="#">Overview</a></li>
-                <li><a href="#">Combat</a></li>
-                <li><a href="#">Roleplay</a></li>
-                <li><a href="#">Equipment</a></li>
-                <li><a href="#">Skills & Proficiencies</a></li>
-                <li><a href="#">Description</a></li>
-                <li><a href="#">Notes</a></li>
-                <li><a href="#">Everything</a></li>
-            </ul>
+<div class="uk-flex" id="all-content" style="float:left">
+    <div class="uk-width-medium uk-padding-remove uk-margin-remove">
+        <div class="uk-width-medium" uk-sticky>
+            <div class="uk-text-right uk-padding">
+                <h1>Avral</h1>
+                <p>Half-Elf<br/>Rogue 4 | Warlock 1</p>
+            </div>
+            <div class="uk-text-right uk-padding">
+                <ul class="uk-nav uk-nav-primary">
+                    <li><a href="#">Overview</a></li>
+                    <li><a href="#">Combat</a></li>
+                    <li><a href="#">Roleplay</a></li>
+                    <li><a href="#">Equipment</a></li>
+                    <li><a href="#">Skills & Proficiencies</a></li>
+                    <li><a href="#">Description</a></li>
+                    <li><a href="#">Notes</a></li>
+                    <li><a href="#">Everything</a></li>
+                </ul>
+            </div>
         </div>
     </div>
-    <div class="uk-padding uk-width-expand uk-grid-small" uk-grid="masonry: true" id="sheet">
+    <div class="uk-padding uk-width-expand uk-grid-small" uk-grid="masonry: true" id="sheet" style="float:left;">
         <div class="viewclassesgohere" include-html="armor-class"></div>
         <div class="viewclassesgohere" include-html="proficiency-bonus"></div>
         <div class="viewclassesgohere" include-html="initiative"></div>
