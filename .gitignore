@@ -37,3 +37,7 @@ src/main/gen/
 
 # Mac
 .DS_Store
+
+# Dokka
+doc/*
+!doc/*.md
