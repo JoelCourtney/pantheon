@@ -1,14 +1,17 @@
 package model.gameObjects
 
-import model.access.Environment
+import exceptions.GameObjectParseException
+import model.access.Identifier
+import model.access.StringLiteral
+import model.effects.ConditionalEffect
 import model.effects.Effect
 
 class Class(
     val name: String,
     val description: String,
     val hitDice: Int,
-    effects: List<Effect>
-): Prototype(standardEffects() + effects) {
+    levels: List<List<Effect>>
+): Prototype(standardEffects() + flattenLevelEffects(levels)) {
     override fun get(id: String): Any {
         TODO("Not yet implemented")
     }
@@ -19,5 +22,17 @@ class Class(
 
     companion object {
         fun standardEffects() = listOf<Effect>()
+
+        fun flattenLevelEffects(levels: List<List<Effect>>): List<Effect> {
+            if (levels.size != 20) {
+                throw GameObjectParseException()
+            }
+            return levels.mapIndexed { i, it -> ConditionalEffect(
+                listOf(Identifier("root", listOf(StringLiteral("level ${i+1}+")))),
+                null,
+                it
+            )
+            }
+        }
     }
 }

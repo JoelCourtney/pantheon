@@ -1,7 +1,7 @@
 package io
 
 import io.FileSystemWrapper.getAllContentOfType
-import model.gameObjects.Feat
+import model.gameObjects.Feature
 import model.gameObjects.Race
 import model.gameObjects.Spell
 import model.gameObjects.Class
@@ -31,17 +31,17 @@ class TestAllRead {
     @MethodSource
     fun parseFeatFile(dir: String, file: String) {
         assertDoesNotThrow {
-            JacksonWrapper.readFile<Feat>(dir, file)
+            JacksonWrapper.readFile<Feature>(dir, file)
         }
     }
 
-//    @ParameterizedTest(name = "parse class file {1}")
-//    @MethodSource
-//    fun parseClassFile(dir: String, file: String) {
-//        assertDoesNotThrow {
-//            JacksonWrapper.readFile<Class>(dir, file)
-//        }
-//    }
+    @ParameterizedTest(name = "parse class file {1}")
+    @MethodSource
+    fun parseClassFile(dir: String, file: String) {
+        assertDoesNotThrow {
+            JacksonWrapper.readFile<Class>(dir, file)
+        }
+    }
 
     companion object {
         @JvmStatic
@@ -56,7 +56,7 @@ class TestAllRead {
         
         @JvmStatic
         fun parseFeatFile(): List<Arguments> {
-            return getAllContentOfType("Feats").map { Arguments.of(it.parent.toString(), it.fileName.toString()) }
+            return getAllContentOfType("Features").map { Arguments.of(it.parent.toString(), it.fileName.toString()) }
         }
 
         @JvmStatic

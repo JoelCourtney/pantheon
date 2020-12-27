@@ -1,4 +1,4 @@
-import errors.EffectGridlockException
+import exceptions.EffectGridlockException
 import model.access.Environment
 import model.effects.Effect
 import model.gameObjects.BaseCharacter

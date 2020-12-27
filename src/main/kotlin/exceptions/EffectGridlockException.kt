@@ -1,4 +1,4 @@
-package errors
+package exceptions
 
 class EffectGridlockException: Throwable() {
 }

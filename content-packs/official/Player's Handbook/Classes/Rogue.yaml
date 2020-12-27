@@ -4,105 +4,83 @@ name: Rogue
 
 hit dice: 8
 
-effects:
+levels:
   # Level 1
-  - results:
-      - modify: character[proficiencies]
-        add: light armor
-      - modify: character[proficiencies]
-        append:
-          - simple weapon
-          - hand crossbow
-          - longsword
-          - rapier
-          - shortsword
-      - modify: character[proficiencies]
-        add: thieves' tools
-      - modify: character[proficiencies]
-        append:
-          - dexterity
-          - intelligence
-      - choose: skill
-        choices: 4
-        unique: true
-        results:
-          - modify: character[skill proficiencies]
-            add: parent[choice]
-      - choose: proficiency
-        choices: 2
-        unique: true
-        filter except: character[proficiencies]
-        filter out: character[expertise]
-        filter except list:
-          - acrobatics
-          - animal handling
-          - arcana
-          - athletics
-          - deception
-          - history
-          - insight
-          - intimidation
-          - investigation
-          - medicine
-          - nature
-          - perception
-          - performance
-          - persuasion
-          - religion
-          - sleight of hand
-          - stealth
-          - survival
-          - theives' tools
-        results:
-          - modify: character[expertise]
-            add: parent[choice]
-      - for each: character[weapons]
-        results:
-          - if:
-              - parent[value][finesse]
-              - parent[value][ranged]
-            type: any
-            results:
-              - modify: parent[parent][value][possible damage]
-                add: (root[level] /+ 2) * 1d6 parent[parent][value][damage type]
-              - modify: parent[parent][value][possible damage notes]
-                add: see [Sneak Attack](Rogue#Sneak Attack)
-      - modify: character[languages]
-        add: Thieves' Cant
+  - - proficiency: Light Armor
+      type: armor
+    - proficiency: Simple Weapons
+      type: weapon
+    - proficiency: Hand Crossbow
+      type: weapon
+    - proficiency: Longsword
+      type: weapon
+    - proficiency: Rapier
+      type: weapon
+    - proficiency: Shortsword
+      type: weapon
+    - proficiency: Thieves' Tools
+      type: tool
+    - proficiency: Dexterity
+      type: saving throw
+    - proficiency: Intelligence
+      type: saving throw
+    - choose: skill
+      choices: 4
+      unique: true
+      effects:
+        - modify: character[skill proficiencies]
+          add: parent[choice]
+    - feature: Expertise
+      effects:
+        - choose: string
+          filter except list:
+            - Two skills
+            - One skill and Thieves' Tools
+          effects:
+            - if:
+                - parent[0]
+              effects:
+                - choose: skill
+                  number of choices: 2
+                  unique: true
+                  effects:
+                    - proficiency: parent[value]
+                      type: skill
+                      double: true
+            - if:
+                - parent[1]
+              effects:
+                - choose: skill
+                  effects:
+                    - proficiency: parent[value]
+                      type: skill
+                      double: true
+                - proficiency: Thieves' Tools
+                  type: skill
+                  double: true
+      description: Your proficiency bonus is doubled for any ability check you make for two chosen proficiencies. [6th] Choose two additional proficiencies.
+    - feature: Thieves' Cant
+      effects:
+        - proficiency: Thieves' Cant
+          type: language
+      description: You have learned thieves’ cant, a secret mix of dialect, jargon, and code that allows you to hide messages in seemingly normal conversation. Only another creature that knows thieves’ cant understands such messages. It takes four times longer to convey such a message than it does to speak the same idea plainly.
+    - feature: Sneak Attack
+      effects: []
+      description: Once per turn, you can deal an extra 2d6 damage to one creature you hit with an attack with a finesse or ranged weapon if you have advantage on the attack roll. You don’t need advantage on the attack roll if another enemy of the target is within 5 ft. of it, that enemy isn’t incapacitated, and you don’t have disadvantage on the attack roll.
   # Level 2
-  - results:
-      - modify: character[bonus actions]
-        append:
-          - Dash
-          - Disengage
-          - Hide
+  - - modify: character[bonus actions]
+      append:
+        - Dash
+        - Disengage
+        - Hide
   # Level 3
-  - effects:
-      - subclass: Roguish Archetype
+  - - subclass: Roguish Archetype
   # Level 4
-  - results:
-      - choose from:
-          - Ability Score Increase
-          - Feat
-        effects:
-          - if: parent[choice]
-            equals: Ability Score Increase
-            effects:
-              - choose: ability
-                number of choices: 2
-                unique: false
-                effects:
-                  - modify: character[parent[choice]]
-                    add: 1
-            else effects:
-              - choose: feat
-                effects:
-                  - modify: character[feats]
-                    add: parent[choice]
+  - - asi or feat: ""
   # Level 5
-  - results:
-      - modify: character[reactions]
-        add: Uncanny Dodge
+  - - feature: Uncanny Dodge
+      effects: []
+      description: You can take a bonus action on each of your turns to take the Dash, Disengage, or Hide action.
   # TODO("finish this")
 
 description: |

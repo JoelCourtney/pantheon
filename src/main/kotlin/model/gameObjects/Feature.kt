@@ -2,7 +2,7 @@ package model.gameObjects
 
 import model.effects.Effect
 
-class Feat(
+class Feature(
         val name: String,
         val description: String,
         effects: List<Effect>
