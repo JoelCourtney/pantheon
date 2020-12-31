@@ -17,6 +17,10 @@ class EffectDeserializer : StdDeserializer<Effect>(Effect::class.java) {
             "choose" -> ChoiceEffect::class.java
             "modify" -> ModifyEffect::class.java
             "for each" -> ForEachEffect::class.java
+            "proficiency" -> ProficiencyEffect::class.java
+            "feature" -> FeatureEffect::class.java
+            "asi or feat" -> ASIOrFeatEffect::class.java
+            "subclass" -> SubclassEffect::class.java
             else -> throw IllegalArgumentException("Unrecognized result key: ${keys[0]}")
         }
         val parser = tn.traverse()

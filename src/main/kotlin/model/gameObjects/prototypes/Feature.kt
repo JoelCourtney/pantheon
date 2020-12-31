@@ -1,4 +1,4 @@
-package model.gameObjects
+package model.gameObjects.prototypes
 
 import model.effects.Effect
 

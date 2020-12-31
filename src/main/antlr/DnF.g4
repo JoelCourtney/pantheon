@@ -107,6 +107,7 @@ identifier returns [Identifier<? extends Object> result]
     (
         OPEN_BRACKET (
             n2=NAME { keys.add(new StringLiteral($n2.getText())); }
+            | n2=NUMBER { keys.add(new StringLiteral($n2.getText())); }
             | id=identifier { keys.add((Identifier<String>) $id.result); }
         ) CLOSE_BRACKET
     )+ { $result = new Identifier<Object>($n1.getText(), keys, height); };

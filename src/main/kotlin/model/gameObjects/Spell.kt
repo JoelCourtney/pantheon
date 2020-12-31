@@ -6,8 +6,8 @@ import io.deserializers.DistanceDeserializer
 import model.access.Expression
 import model.quantities.QuantityType.*
 import io.deserializers.TimeDeserializer
-import model.access.Environment
 import model.effects.Effect
+import model.gameObjects.prototypes.Prototype
 import model.quantities.Quantity
 
 data class Spell(

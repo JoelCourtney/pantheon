@@ -1,19 +1,18 @@
-package model.gameObjects
+package model.gameObjects.prototypes
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import io.deserializers.FileNameDeserializer.RaceFileNameDeserializer
-import model.access.Environment
 import model.effects.Effect
 
 class Race (
-        val name: String,
-        val description: String,
-        val selectable: Boolean = true,
-        @JsonProperty("variant of")
-        @JsonDeserialize(using = RaceFileNameDeserializer::class)
-        val variantOf: Race? = null,
-        effects: List<Effect>
+    val name: String,
+    val description: String,
+    val selectable: Boolean = true,
+    @JsonProperty("variant of")
+    @JsonDeserialize(using = RaceFileNameDeserializer::class)
+    val variantOf: Race? = null,
+    effects: List<Effect>
 ): Prototype(standardEffects() + effects) {
     override fun get(id: String): Any {
         TODO("Not yet implemented")

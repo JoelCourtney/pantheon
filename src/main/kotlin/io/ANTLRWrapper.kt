@@ -7,8 +7,10 @@ import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
 import model.quantities.amounts.Amount
 import model.access.Identifier
+import model.access.StringLiteral
 import model.quantities.*
 import model.quantities.QuantityType.*
+import org.antlr.v4.runtime.RecognitionException
 
 /**
  * Parses Strings into [Quantity]'s and [Identifier]'s using ANTLR.
@@ -21,6 +23,16 @@ object ANTLRWrapper {
         val lexer = DnLexer(input)
         val tokens = CommonTokenStream(lexer)
         return DnF(tokens)
+    }
+
+    private fun makeSilentParser(s: String): DnF {
+        val input = CharStreams.fromString(s)
+        val lexer = DnLexer(input)
+        lexer.removeErrorListeners()
+        val tokens = CommonTokenStream(lexer)
+        val parser = DnF(tokens)
+        parser.removeErrorListeners()
+        return parser
     }
 
     /**
@@ -101,5 +113,14 @@ object ANTLRWrapper {
 
     fun parseIdentifier(s: String): Identifier<*> {
         return makeParser(s).identifier().result
+    }
+
+    fun parseStringExpression(s: String): Expression<String> {
+        val id = makeSilentParser(s).identifier().result
+        return if (id != null) {
+            id as Expression<String>
+        } else {
+            StringLiteral(s)
+        }
     }
 }

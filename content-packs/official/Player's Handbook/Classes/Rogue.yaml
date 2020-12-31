@@ -25,11 +25,11 @@ levels:
     - proficiency: Intelligence
       type: saving throw
     - choose: skill
-      choices: 4
+      number of choices: 4
       unique: true
       effects:
-        - modify: character[skill proficiencies]
-          add: parent[choice]
+        - proficiency: parent[value]
+          type: skill
     - feature: Expertise
       effects:
         - choose: string
@@ -56,7 +56,7 @@ levels:
                       type: skill
                       double: true
                 - proficiency: Thieves' Tools
-                  type: skill
+                  type: tool
                   double: true
       description: Your proficiency bonus is doubled for any ability check you make for two chosen proficiencies. [6th] Choose two additional proficiencies.
     - feature: Thieves' Cant
@@ -81,7 +81,6 @@ levels:
   - - feature: Uncanny Dodge
       effects: []
       description: You can take a bonus action on each of your turns to take the Dash, Disengage, or Hide action.
-  # TODO("finish this")
 
 description: |
   # Rogue

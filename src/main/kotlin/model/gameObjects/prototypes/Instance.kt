@@ -1,4 +1,4 @@
-package model.gameObjects
+package model.gameObjects.prototypes
 
 import model.access.Accessible
 import model.access.Environment

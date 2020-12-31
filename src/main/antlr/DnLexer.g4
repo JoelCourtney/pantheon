@@ -116,6 +116,7 @@ WS : [ \t\u000c]+ -> skip;
 
 mode PLAINTEXT;
 
-NEW_NAME : LETTER (LETTER | DIGIT | ' ')* -> type(NAME);
+NEW_NAME : LETTER (LETTER | DIGIT | ' ' | PLUS)* -> type(NAME);
+NEW_NUMBER: DIGIT+ -> type(NUMBER);
 NEW_OPEN_BRACKET : '[' -> type(OPEN_BRACKET), pushMode(PLAINTEXT);
 NEW_CLOSE_BRACKET : ']' -> type(CLOSE_BRACKET), popMode;

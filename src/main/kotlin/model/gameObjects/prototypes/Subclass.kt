@@ -1,4 +1,4 @@
-package model.gameObjects
+package model.gameObjects.prototypes
 
 import exceptions.GameObjectParseException
 import model.access.Identifier
@@ -6,11 +6,11 @@ import model.access.StringLiteral
 import model.effects.ConditionalEffect
 import model.effects.Effect
 
-class Class(
+class Subclass(
     val name: String,
-    val description: String,
-    val hitDice: Int,
-    levels: List<List<Effect>>
+    val type: String,
+    levels: List<List<Effect>>,
+    val description: String
 ): Prototype(standardEffects() + flattenLevelEffects(levels)) {
     override fun get(id: String): Any {
         TODO("Not yet implemented")

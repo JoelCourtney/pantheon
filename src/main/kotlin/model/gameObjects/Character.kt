@@ -4,25 +4,29 @@ import model.access.Accessible
 import model.gameObjects.moves.Move
 import model.gameObjects.items.Armor
 import model.gameObjects.items.Item
+import model.gameObjects.prototypes.Background
+import model.gameObjects.prototypes.Class
+import model.gameObjects.prototypes.Instance
+import model.gameObjects.prototypes.Race
 import model.quantities.Quantity
 import model.quantities.QuantityType
 
 data class Character(
-        val name: String,
-        val race: Instance<Race>,
-        val classes: List<Instance<Class>>,
-        val background: Instance<Background>,
-        val strBase: Int,
-        val dexBase: Int,
-        val conBase: Int,
-        val intBase: Int,
-        val wisBase: Int,
-        val chaBase: Int,
-        val HP: Int,
-        val tempHP: Int,
-        val inventory: MutableList<Item>,
-        val equipped: MutableList<Item>,
-        val inspired: Boolean
+    val name: String,
+    val race: Instance<Race>,
+    val classes: List<Instance<Class>>,
+    val background: Instance<Background>,
+    val strBase: Int,
+    val dexBase: Int,
+    val conBase: Int,
+    val intBase: Int,
+    val wisBase: Int,
+    val chaBase: Int,
+    val HP: Int,
+    val tempHP: Int,
+    val inventory: MutableList<Item>,
+    val equipped: MutableList<Item>,
+    val inspired: Boolean
 ): Accessible {
     constructor(base: BaseCharacter): this(
             base.name,
@@ -63,58 +67,58 @@ data class Character(
     val swimmingSpeed: Quantity<QuantityType.Distance>? = null
 
     val acrobaticsBonus: Int? = null
-    val acrobaticsProficiencyType: ProficiencyType? = null
+    val acrobaticsProficiencyMultiplier: ProficiencyMultiplier? = null
 
     val animalHandlingBonus: Int? = null
-    val animalHandlingProficiencyType: ProficiencyType? = null
+    val animalHandlingProficiencyMultiplier: ProficiencyMultiplier? = null
 
     val arcanaBonus: Int? = null
-    val arcanaProficiencyType: ProficiencyType? = null
+    val arcanaProficiencyMultiplier: ProficiencyMultiplier? = null
 
     val athleticsBonus: Int? = null
-    val athleticsProficiencyType: ProficiencyType? = null
+    val athleticsProficiencyMultiplier: ProficiencyMultiplier? = null
 
     val deceptionBonus: Int? = null
-    val deceptionProficiencyType: ProficiencyType? = null
+    val deceptionProficiencyMultiplier: ProficiencyMultiplier? = null
 
     val historyBonus: Int? = null
-    val historyProficiencyType: ProficiencyType? = null
+    val historyProficiencyMultiplier: ProficiencyMultiplier? = null
 
     val insightBonus: Int? = null
-    val insightProficiencyType: ProficiencyType? = null
+    val insightProficiencyMultiplier: ProficiencyMultiplier? = null
 
     val intimidationBonus: Int? = null
-    val intimidationProficiencyType: ProficiencyType? = null
+    val intimidationProficiencyMultiplier: ProficiencyMultiplier? = null
 
     val investigationBonus: Int? = null
-    val investigationProficiencyType: ProficiencyType? = null
+    val investigationProficiencyMultiplier: ProficiencyMultiplier? = null
 
     val medicineBonus: Int? = null
-    val medicineProficiencyType: ProficiencyType? = null
+    val medicineProficiencyMultiplier: ProficiencyMultiplier? = null
 
     val natureBonus: Int? = null
-    val natureProficiencyType: ProficiencyType? = null
+    val natureProficiencyMultiplier: ProficiencyMultiplier? = null
 
     val perceptionBonus: Int? = null
-    val perceptionProficiencyType: ProficiencyType? = null
+    val perceptionProficiencyMultiplier: ProficiencyMultiplier? = null
 
     val performanceBonus: Int? = null
-    val performanceProficiencyType: ProficiencyType? = null
+    val performanceProficiencyMultiplier: ProficiencyMultiplier? = null
 
     val persuasionBonus: Int? = null
-    val persuasionProficiencyType: ProficiencyType? = null
+    val persuasionProficiencyMultiplier: ProficiencyMultiplier? = null
 
     val religionBonus: Int? = null
-    val religionProficiencyType: ProficiencyType? = null
+    val religionProficiencyMultiplier: ProficiencyMultiplier? = null
 
     val sleightOfHandBonus: Int? = null
-    val sleightOfHandProficiencyType: ProficiencyType? = null
+    val sleightOfHandProficiencyMultiplier: ProficiencyMultiplier? = null
 
     val stealthBonus: Int? = null
-    val stealthProficiencyType: ProficiencyType? = null
+    val stealthProficiencyMultiplier: ProficiencyMultiplier? = null
 
     val survivalBonus: Int? = null
-    val survivalProficiencyType: ProficiencyType? = null
+    val survivalProficiencyMultiplier: ProficiencyMultiplier? = null
 
     // COMBAT
 

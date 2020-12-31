@@ -1,6 +1,9 @@
 package model.gameObjects
 
 import model.access.Evaluated
+import model.access.Expression
+import model.access.Identifier
+import model.access.StringLiteral
 
 enum class Skill(val identity: String): Evaluated<Skill> {
     ACROBATICS("acrobatics"),
@@ -42,6 +45,20 @@ enum class Skill(val identity: String): Evaluated<Skill> {
             INTIMIDATION,
             PERFORMANCE,
             PERSUASION -> Ability.CHARISMA
+        }
+    }
+
+    companion object {
+        private fun fromString(s: String): Skill {
+            return valueOf(s.toUpperCase().replace(' ', '_'))
+        }
+
+        fun fromStringExpression(e: Expression<String>): Expression<Skill> {
+            return when (e) {
+                is StringLiteral -> fromString(e.string)
+                is Identifier<String> -> e as Identifier<Skill>
+                else -> TODO("make an error for this")
+            }
         }
     }
 }

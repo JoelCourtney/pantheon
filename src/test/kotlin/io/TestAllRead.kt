@@ -1,10 +1,10 @@
 package io
 
 import io.FileSystemWrapper.getAllContentOfType
-import model.gameObjects.Feature
-import model.gameObjects.Race
+import model.gameObjects.prototypes.Feature
+import model.gameObjects.prototypes.Race
 import model.gameObjects.Spell
-import model.gameObjects.Class
+import model.gameObjects.prototypes.Class
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
@@ -56,7 +56,7 @@ class TestAllRead {
         
         @JvmStatic
         fun parseFeatFile(): List<Arguments> {
-            return getAllContentOfType("Features").map { Arguments.of(it.parent.toString(), it.fileName.toString()) }
+            return getAllContentOfType("Feats").map { Arguments.of(it.parent.toString(), it.fileName.toString()) }
         }
 
         @JvmStatic

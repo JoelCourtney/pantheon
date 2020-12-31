@@ -1,6 +1,5 @@
-package model.gameObjects
+package model.gameObjects.prototypes
 
-import model.access.Environment
 import model.effects.Effect
 
 class Background(

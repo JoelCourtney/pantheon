@@ -7,7 +7,7 @@ import model.access.Identifier
 
 data class ConditionalEffect(
         @JsonProperty("if")
-        val ifCond: List<Identifier<Boolean>>,
+        val ifCond: List<Identifier<Boolean>>?,
         @JsonProperty("if not")
         val ifNotCond: List<Identifier<Boolean>>?,
         val effects: List<Effect>

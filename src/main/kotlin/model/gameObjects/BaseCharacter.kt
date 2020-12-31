@@ -1,6 +1,10 @@
 package model.gameObjects
 
 import model.gameObjects.items.Item
+import model.gameObjects.prototypes.Background
+import model.gameObjects.prototypes.Class
+import model.gameObjects.prototypes.Instance
+import model.gameObjects.prototypes.Race
 
 data class BaseCharacter(
         val name: String,
