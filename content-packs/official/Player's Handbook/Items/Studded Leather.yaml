@@ -1,0 +1,18 @@
+# File by JoelCourtney
+
+name: Studded Leather
+
+rarity: common
+weight: 13
+price: 45
+magical: false
+
+description: >
+  Made from tough but flexible leather, studded leather is reinforced
+  with close-set rivets or spikes.
+
+type: armor
+subtype: light
+
+ac: 12
+

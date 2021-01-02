@@ -1,13 +1,13 @@
 import io.JacksonWrapper
+import model.gameObjects.items.Item
 import model.gameObjects.prototypes.Class
 
 fun main() {
-    val rogue = JacksonWrapper.readFile<Class>(
-        "content-packs/official/Player's Handbook/Classes/",
-        "Rogue.yaml"
+    val dagger = JacksonWrapper.readFile<Item>(
+        "content-packs/official/Player's Handbook/Items/",
+        "Dagger.yaml"
     )
-    println(rogue.name)
-    println(rogue)
+    println(dagger.name)
 //    val input = CharStreams.fromString("character[health] min ; 2d3 meh[erty]")
 //    val lexer = DnLexer(input)
 //    val tokens = CommonTokenStream(lexer) 

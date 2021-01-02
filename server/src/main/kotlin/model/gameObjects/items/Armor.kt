@@ -1,14 +1,18 @@
 package model.gameObjects.items
 
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.annotation.JsonTypeName
+
+@JsonTypeName("armor")
 class Armor(
     name: String,
-    weight: Double,
-    cost: Double,
     rarity: Rarity,
-    intrinsic: Boolean,
+    weight: Double,
+    price: Double,
     magical: Boolean,
     description: String,
-    type: ArmorType,
-    ac: Int
-): Item(name, weight, cost, rarity, intrinsic, magical, description) {
+    @JsonProperty("subtype")
+    val type: ArmorType,
+    val ac: Int
+): Item(name, rarity, weight, price, magical, description, false) {
 }

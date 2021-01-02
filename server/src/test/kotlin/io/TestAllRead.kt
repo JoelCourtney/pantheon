@@ -1,9 +1,10 @@
 package io
 
 import io.FileSystemWrapper.getAllContentOfType
-import model.gameObjects.prototypes.Feature
+import model.gameObjects.prototypes.Feat
 import model.gameObjects.prototypes.Race
 import model.gameObjects.Spell
+import model.gameObjects.items.Item
 import model.gameObjects.prototypes.Class
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.params.ParameterizedTest
@@ -31,7 +32,7 @@ class TestAllRead {
     @MethodSource
     fun parseFeatFile(dir: String, file: String) {
         assertDoesNotThrow {
-            JacksonWrapper.readFile<Feature>(dir, file)
+            JacksonWrapper.readFile<Feat>(dir, file)
         }
     }
 
@@ -40,6 +41,14 @@ class TestAllRead {
     fun parseClassFile(dir: String, file: String) {
         assertDoesNotThrow {
             JacksonWrapper.readFile<Class>(dir, file)
+        }
+    }
+
+    @ParameterizedTest(name = "parse item file {1}")
+    @MethodSource
+    fun parseItemFile(dir: String, file: String) {
+        assertDoesNotThrow {
+            JacksonWrapper.readFile<Item>(dir, file)
         }
     }
 
@@ -62,6 +71,11 @@ class TestAllRead {
         @JvmStatic
         fun parseClassFile(): List<Arguments> {
             return getAllContentOfType("Classes").map { Arguments.of(it.parent.toString(), it.fileName.toString()) }
+        }
+
+        @JvmStatic
+        fun parseItemFile(): List<Arguments> {
+            return getAllContentOfType("Items").map { Arguments.of(it.parent.toString(), it.fileName.toString()) }
         }
     }
 }
