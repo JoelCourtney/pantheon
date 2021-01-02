@@ -3,7 +3,6 @@ package model.effects
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import io.deserializers.IdentifierDeserializer
-import model.access.Environment
 import model.access.Identifier
 
 class ModifyEffect(

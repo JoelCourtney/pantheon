@@ -54,5 +54,5 @@ tasks.withType(Test).configureEach {
 
 dokka {
     outputFormat = 'html'
-    outputDirectory = 'doc'
+    outputDirectory = 'server/doc'
 }

@@ -1,0 +1,12 @@
+def inputFiles = project.fileTree(dir: "src/uikit-custom", include: "**/*.less")
+def outputDir = "${project.projectDir}/uikit/dist"
+
+task build(type: Exec) {
+    inputs.files(inputFiles)
+    outputs.dir(outputDir)
+
+    workingDir 'uikit'
+
+    commandLine 'yarn', 'compile'
+}
+

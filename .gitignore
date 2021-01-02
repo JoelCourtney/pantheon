@@ -31,7 +31,7 @@ build/
 gradle/
 
 # ANTLR
-src/main/gen/
+server/src/main/gen/
 *.interp
 *.tokens
 
@@ -39,5 +39,5 @@ src/main/gen/
 .DS_Store
 
 # Dokka
-doc/*
-!doc/*.md
+server/doc/*
+!server/doc/*.md

@@ -1,7 +1,5 @@
-import io.ANTLRWrapper
 import io.JacksonWrapper
 import model.gameObjects.prototypes.Class
-import model.gameObjects.prototypes.Race
 
 fun main() {
     val rogue = JacksonWrapper.readFile<Class>(

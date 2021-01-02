@@ -10,7 +10,6 @@ import model.access.Identifier
 import model.access.StringLiteral
 import model.quantities.*
 import model.quantities.QuantityType.*
-import org.antlr.v4.runtime.RecognitionException
 
 /**
  * Parses Strings into [Quantity]'s and [Identifier]'s using ANTLR.

@@ -1,7 +1,6 @@
 package model.gameObjects.prototypes
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import exceptions.GameObjectParseException
 import model.access.Identifier
 import model.access.StringLiteral
 import model.effects.ConditionalEffect

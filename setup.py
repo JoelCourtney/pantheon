@@ -5,7 +5,7 @@ import os
 
 def main():
     print('Setting up uikit')
-    os.chdir('uikit')
+    os.chdir('client/uikit')
     os.system('git submodule init')
     os.system('git submodule update')
     os.system('yarn install')
@@ -13,7 +13,7 @@ def main():
     os.chdir('..')
     here = os.path.abspath(os.getcwd())
     print('\nCreating uikit symlink')
-    os.symlink(here + '/src/www/uikit-custom', here + '/uikit/custom', True)
+    os.symlink(here + '/src/uikit-custom', here + '/uikit/custom', True)
 
 
 

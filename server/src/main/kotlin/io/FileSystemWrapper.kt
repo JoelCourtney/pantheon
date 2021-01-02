@@ -69,7 +69,7 @@ object FileSystemWrapper {
      * @return A [List] of Paths, each to a file of that content type.
      */
     fun getAllContentOfType(type: String): List<Path> {
-        val contentSources = getDirectories("content-packs")
+        val contentSources = getDirectories("../content-packs")
         val packs: MutableList<Path> = mutableListOf()
         for (source in contentSources) {
             packs.addAll(getDirectories(source.toString()))
