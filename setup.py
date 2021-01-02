@@ -12,8 +12,14 @@ def main():
 
     os.chdir('..')
     here = os.path.abspath(os.getcwd())
-    print('\nCreating uikit symlink')
-    os.symlink(here + '/src/uikit-custom', here + '/uikit/custom', True)
+    src = here + '/src/uikit-custom'
+    dst = here + '/uikit/custom'
+    if os.path.exists(dst):
+        print('\nReplacing old symlink')
+        os.remove(dst)
+    else:
+        print('\nCreating uikit symlink')
+    os.symlink(src, dst, True)
 
 
 
