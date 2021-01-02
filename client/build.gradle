@@ -10,3 +10,8 @@ task build(type: Exec) {
     commandLine 'yarn', 'compile'
 }
 
+task clean(type: Exec) {
+    workingDir 'uikit/dist/css'
+
+    commandLine 'rm', 'uikit.dndcent-theme.css', 'uikit.dndcent-theme.min.css'
+}
