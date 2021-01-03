@@ -1,6 +1,5 @@
 import io.JacksonWrapper
 import model.gameObjects.items.Item
-import model.gameObjects.prototypes.Class
 
 fun main() {
     val dagger = JacksonWrapper.readFile<Item>(

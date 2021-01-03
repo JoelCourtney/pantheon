@@ -3,12 +3,11 @@ package model.gameObjects
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import io.deserializers.DistanceDeserializer
-import model.access.Expression
-import model.quantities.QuantityType.*
 import io.deserializers.TimeDeserializer
 import model.effects.Effect
 import model.gameObjects.prototypes.Prototype
-import model.quantities.Quantity
+import model.quantities.Distance
+import model.quantities.Time
 
 data class Spell(
     @JsonProperty("name")
@@ -19,18 +18,18 @@ data class Spell(
 
     @JsonProperty("casting time")
     @JsonDeserialize(using = TimeDeserializer::class)
-    val castingTime: Expression<Quantity<Time>>,
+    val castingTime: Time,
     val ritual: Boolean,
 
     @JsonDeserialize(using = DistanceDeserializer::class)
-    val range: Expression<Quantity<Distance>>,
+    val range: Distance,
 
     val verbal: Boolean,
     val somatic: Boolean,
     val material: Boolean,
 
     @JsonDeserialize(using = TimeDeserializer::class)
-    val duration: Expression<Quantity<Time>>,
+    val duration: Time,
     val concentration: Boolean,
 
     val description: String,

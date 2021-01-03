@@ -1,15 +1,14 @@
 package io
 
-import DnLexer
 import DnF
+import DnLexer
 import model.access.Expression
-import org.antlr.v4.runtime.CharStreams
-import org.antlr.v4.runtime.CommonTokenStream
-import model.quantities.amounts.Amount
 import model.access.Identifier
 import model.access.StringLiteral
 import model.quantities.*
-import model.quantities.QuantityType.*
+import model.quantities.amounts.Amount
+import org.antlr.v4.runtime.CharStreams
+import org.antlr.v4.runtime.CommonTokenStream
 
 /**
  * Parses Strings into [Quantity]'s and [Identifier]'s using ANTLR.
@@ -40,7 +39,7 @@ object ANTLRWrapper {
      * @param [s] String to parse.
      * @return [Time] object containing the same data.
      */
-    fun parseTime(s: String): Expression<Quantity<Time>> {
+    fun parseTime(s: String): Expression<Time> {
         return makeParser(s).time().result
     }
 
@@ -51,7 +50,7 @@ object ANTLRWrapper {
      * @param [s] String to parse.
      * @return [Distance] object containing the same data.
      */
-    fun parseDistance(s: String): Expression<Quantity<Distance>> {
+    fun parseDistance(s: String): Expression<Distance> {
         return makeParser(s).distance().result
     }
 
@@ -62,7 +61,7 @@ object ANTLRWrapper {
      * @param [s] String to parse.
      * @return [Damage] object containing the same data.
      */
-    fun parseDamage(s: String): Expression<Quantity<Damage>> {
+    fun parseDamage(s: String): Expression<Damage> {
         return makeParser(s).damage().result
     }
 
@@ -73,7 +72,7 @@ object ANTLRWrapper {
      * @param [s] String to parse.
      * @return [DamageUnit] object containing the same data.
      */
-    fun parseDamageUnit(s: String): Expression<QuantityUnit<Damage>> {
+    fun parseDamageUnit(s: String): Expression<QuantityUnit<QuantityType.Damage>> {
         return makeParser(s).damage_unit().result
     }
 
@@ -84,7 +83,7 @@ object ANTLRWrapper {
      * @param [s] String to parse.
      * @return [DistanceUnit] object containing the same data.
      */
-    fun parseDistanceUnit(s: String): Expression<QuantityUnit<Distance>> {
+    fun parseDistanceUnit(s: String): Expression<QuantityUnit<QuantityType.Distance>> {
         return makeParser(s).distance_unit().result
     }
 
@@ -95,7 +94,7 @@ object ANTLRWrapper {
      * @param [s] String to parse.
      * @return [TimeUnit] object containing the same data.
      */
-    fun parseTimeUnit(s: String): Expression<QuantityUnit<Time>> {
+    fun parseTimeUnit(s: String): Expression<QuantityUnit<QuantityType.Time>> {
         return makeParser(s).time_unit().result
     }
 

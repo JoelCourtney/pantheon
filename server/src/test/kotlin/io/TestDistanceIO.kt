@@ -1,11 +1,12 @@
 package io
 
-import model.quantities.amounts.Dice
-import model.quantities.amounts.NumberLiteral
 import model.quantities.DistanceKeyword
 import model.quantities.DistanceUnit
 import model.quantities.Quantity
 import model.quantities.QuantityComponent
+import model.quantities.QuantityType.Distance
+import model.quantities.amounts.Dice
+import model.quantities.amounts.NumberLiteral
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
@@ -13,7 +14,6 @@ import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.EnumSource
 import org.junit.jupiter.params.provider.MethodSource
 import java.util.stream.Stream
-import model.quantities.QuantityType.Distance
 
 class TestDistanceIO {
     @Test

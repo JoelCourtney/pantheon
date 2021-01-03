@@ -1,9 +1,9 @@
 package model.gameObjects
 
 import model.access.Accessible
-import model.gameObjects.moves.Move
 import model.gameObjects.items.Armor
 import model.gameObjects.items.Item
+import model.gameObjects.moves.Move
 import model.gameObjects.prototypes.Background
 import model.gameObjects.prototypes.Class
 import model.gameObjects.prototypes.Instance

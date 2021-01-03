@@ -1,12 +1,12 @@
 package io.deserializers
 
-import io.ANTLRWrapper
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer
-import model.quantities.amounts.Amount
+import io.ANTLRWrapper
 import io.JacksonWrapper
 import model.access.Expression
+import model.quantities.amounts.Amount
 
 /**
  * Deserializes objects of the [Amount] hierarchy from YAML.

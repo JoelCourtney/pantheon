@@ -1,14 +1,14 @@
 package io.deserializers
 
-import io.ANTLRWrapper
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer
+import io.ANTLRWrapper
 import io.JacksonWrapper
 import model.access.Expression
 import model.quantities.DistanceUnit
-import model.quantities.QuantityUnit
 import model.quantities.QuantityType.Distance
+import model.quantities.QuantityUnit
 
 /**
  * Deserializes [DistanceUnit] from YAML.

@@ -1,8 +1,11 @@
 package io
 
+import model.quantities.amounts.AmountBinary
+import model.quantities.amounts.AmountBinaryOp
+import model.quantities.amounts.Dice
+import model.quantities.amounts.NumberLiteral
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import model.quantities.amounts.*
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 

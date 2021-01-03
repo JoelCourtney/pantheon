@@ -11,10 +11,10 @@ data class Quantity<T: QuantityType>(
     
     companion object {
         inline fun<reified T: QuantityType> empty(): Quantity<T> =
-            Quantity<T>(arrayListOf())
+            Quantity(arrayListOf())
     }
 }
 
-//typealias Damage = Quantity<QuantityType.Damage>
-//typealias Distance = Quantity<QuantityType.Distance>
-//typealias Time = Quantity<QuantityType.Time>
+typealias Damage = Quantity<QuantityType.Damage>
+typealias Distance = Quantity<QuantityType.Distance>
+typealias Time = Quantity<QuantityType.Time>

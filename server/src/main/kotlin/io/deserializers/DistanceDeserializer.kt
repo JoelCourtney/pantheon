@@ -1,11 +1,11 @@
 package io.deserializers
 
-import io.ANTLRWrapper
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer
-import model.access.Expression
+import io.ANTLRWrapper
 import io.JacksonWrapper
+import model.access.Expression
 import model.quantities.Quantity
 import model.quantities.QuantityType
 

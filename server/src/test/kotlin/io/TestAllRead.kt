@@ -1,11 +1,11 @@
 package io
 
 import io.FileSystemWrapper.getAllContentOfType
-import model.gameObjects.prototypes.Feat
-import model.gameObjects.prototypes.Race
 import model.gameObjects.Spell
 import model.gameObjects.items.Item
 import model.gameObjects.prototypes.Class
+import model.gameObjects.prototypes.Feat
+import model.gameObjects.prototypes.Race
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments

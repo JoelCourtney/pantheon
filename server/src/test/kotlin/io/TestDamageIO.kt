@@ -3,6 +3,7 @@ package io
 import model.access.Identifier
 import model.access.StringLiteral
 import model.quantities.*
+import model.quantities.QuantityType.Damage
 import model.quantities.amounts.AmountBinary
 import model.quantities.amounts.AmountBinaryOp
 import model.quantities.amounts.Dice
@@ -11,7 +12,6 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
-import model.quantities.QuantityType.Damage
 
 class TestDamageIO {
     @Test

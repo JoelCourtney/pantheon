@@ -6,8 +6,8 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer
 import io.FileSystemWrapper
 import io.JacksonWrapper
 import model.gameObjects.Language
-import model.gameObjects.prototypes.Race
 import model.gameObjects.Spell
+import model.gameObjects.prototypes.Race
 
 sealed class FileNameDeserializer<T>(val type: String, val cls: Class<T>): StdDeserializer<T>(cls) {
     fun getFile(p: JsonParser?): Pair<String,String> {

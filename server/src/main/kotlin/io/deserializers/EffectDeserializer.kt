@@ -1,12 +1,11 @@
 package io.deserializers
 
-import io.JacksonWrapper
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.core.TreeNode
 import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer
+import io.JacksonWrapper
 import model.effects.*
-import java.lang.IllegalArgumentException
 
 class EffectDeserializer : StdDeserializer<Effect>(Effect::class.java) {
     override fun deserialize(p: JsonParser?, ctxt: DeserializationContext?): Effect {
