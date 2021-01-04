@@ -26,18 +26,8 @@ hs_err_pid*
 .idea/
 build/
 
-# Gradle
-.gradle/
-gradle/
-
-# ANTLR
-server/src/main/gen/
-*.interp
-*.tokens
-
 # Mac
 .DS_Store
 
-# Dokka
-server/doc/*
-!server/doc/*.md
+# Cargo
+target/
