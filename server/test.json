@@ -1,0 +1,11 @@
+{
+  "name": "Test Boi",
+  "health": 40,
+  "temp_health": 0,
+  "base_strength": 10,
+  "base_dexterity": 10,
+  "base_constitution": 10,
+  "base_intelligence": 10,
+  "base_wisdom": 10,
+  "base_charisma": 10
+}
