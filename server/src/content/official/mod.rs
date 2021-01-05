@@ -1,1 +1,1 @@
-macros::registry!(("", "official"));
+macros::registry!("/official");
