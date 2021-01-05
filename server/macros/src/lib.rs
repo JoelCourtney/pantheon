@@ -89,7 +89,6 @@ pub fn registry(input: TokenStream) -> TokenStream {
 }
 
 fn list_imports(dir_str: String) -> TokenStream {
-    dbg!(&dir_str);
     let paths = match std::fs::read_dir(dir_str) {
         Ok(p) => p,
         Err(_e) => {
