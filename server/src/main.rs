@@ -18,7 +18,7 @@
 extern crate macros;
 
 mod character;
-mod modifier;
+mod modify;
 mod content;
 
 use character::{StoredCharacter};
