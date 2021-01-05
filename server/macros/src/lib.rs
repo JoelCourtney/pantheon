@@ -9,11 +9,14 @@
 
 extern crate proc_macro;
 
+mod helpers;
+
 use proc_macro::TokenStream;
 use quote::quote;
 use quote::format_ident;
 use syn;
 use syn::Expr;
+use helpers::*;
 
 /// Generates auto-imports and registry entries for the contents of a directory.
 ///
@@ -55,27 +58,12 @@ pub fn registry(input: TokenStream) -> TokenStream {
     let ast: syn::Expr = syn::parse(input).unwrap();
     let gen = match ast {
         Expr::Tuple(t) => {
-            let size = t.elems.len();
-            if size != 2 {
-                (quote! {
-                    compile_error!("expected str literal or tuple (str, str)");
-                }).into()
-            } else {
-                let first = t.elems.first().unwrap();
-                let last = t.elems.last().unwrap();
-                let (dir_str, name) = match (first, last) {
-                    (
-                        Expr::Lit(syn::ExprLit{lit: syn::Lit::Str(lit1),..}),
-                        Expr::Lit(syn::ExprLit{lit: syn::Lit::Str(lit2),..})
-                    ) => (lit1.value(),lit2.value()),
-                    _ => {
-                        return quote! ({
-                            compile_error!("both arguments must be str");
-                        }).into()
-                    }
-                };
-                let dir_str = format!("./src/content{}/{}", dir_str.as_str(), convert_to_fs(&*name));
-                list_imports(dir_str)
+            match unwrap_string_tuple(t) {
+                Ok((dir_str, name)) => {
+                    let dir_str = format!("./src/content{}/{}", dir_str.as_str(), convert_to_fs(&*name));
+                    list_imports(dir_str)
+                }
+                Err(e) => e
             }
         }
         Expr::Lit(syn::ExprLit{lit: syn::Lit::Str(lit),..}) => {
@@ -87,43 +75,50 @@ pub fn registry(input: TokenStream) -> TokenStream {
     gen
 }
 
-fn list_imports(dir_str: String) -> TokenStream {
-    let paths = match std::fs::read_dir(dir_str) {
-        Ok(p) => p,
-        Err(_e) => {
-            return quote! {
-                compile_error("args must be path to a directory");
-                compile_error(#{e.to_string()})
-            }.into()
-        }
-    };
-    let mut acc = quote! {};
-    for path in paths {
-        let path = path.unwrap().path();
-        if !path.ends_with("mod.rs") {
-            let endpoint = path.file_name().unwrap().to_str().unwrap();
-            if endpoint.ends_with(".rs") {
-                let endpoint = format_ident!("{}", &endpoint[..endpoint.len()-3]);
-                acc = quote! {
-                    #acc
-                    pub mod #endpoint;
-                };
-            } else {
-                let endpoint = format_ident!("{}", endpoint);
-                acc = quote! {
-                    #acc
-                    pub mod #endpoint;
-                };
+/// Adds some boilerplate code for a Modify Implementor, and adds it to the registry.
+///
+/// Boilerplate includes Character and everything in modify.rs. It also automatically adds an `impl`
+/// for the trait associated with the "kind" argument.
+///
+/// # Input
+///
+/// Input expects a 2-tuple of strings: ("Name", "Kind"), where Name is the name of the object as
+/// displayed to the User and Kind is one of:
+///
+/// - Race
+/// - Class
+/// - Subclass
+/// - Background
+/// - Feat
+/// - TODO("finish this")
+///
+/// Kind is case insensitive, but prefer the given capitalization anyway.
+///
+/// # Examples
+///
+/// ```
+/// macros::register!(("Human", "Race"));
+/// ```
+#[proc_macro]
+pub fn register(input: TokenStream) -> TokenStream {
+    let ast: syn::Expr = syn::parse(input).unwrap();
+    if let Expr::Tuple(t) = ast {
+        match unwrap_string_tuple(t) {
+            Ok((name, kind)) => {
+                let name_ident = format_ident!("{}", name);
+                let kind_ident = format_ident!("{}{}", &kind[0..1].to_uppercase(), &kind[1..].to_lowercase());
+                (quote! {
+                    use crate::modify::*;
+                    use crate::character::Character;
+
+                    impl #kind_ident for #name_ident {}
+                }).into()
             }
+            Err(e) => e
         }
+    } else {
+        (quote! {
+            compile_error!("expected 2-tuple of strings");
+        }).into()
     }
-    acc.into()
-}
-
-fn convert_to_fs(name: &str) -> String {
-    strip_characters(&*name.to_owned().to_lowercase(), "'").replace(' ',"_")
-}
-
-fn strip_characters(original : &str, to_strip : &str) -> String {
-    original.chars().filter(|&c| !to_strip.contains(c)).collect()
 }

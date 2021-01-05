@@ -21,7 +21,7 @@ mod character;
 mod modify;
 mod content;
 
-use character::{StoredCharacter};
+use character::StoredCharacter;
 
 fn main() {
     let json = std::fs::read_to_string("test.json").unwrap();
