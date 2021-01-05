@@ -41,8 +41,7 @@ use syn::Expr;
 /// When using the tuple input, the name arg is the name of the dir *that contains the mod.rs file
 /// you are registering*. Make this string exactly equal to the name of the book, including capitalization,
 /// spaces, and punctuation. Don't include that directory in the path arg. Make sure the name of the dir
-/// matches the name of the book with the scheme: all lower case, no punctuation, and spaces are replaced
-/// with underscores.
+/// matches the name of the book, in lower snake case with no punctuation.
 ///
 /// When using the single-string path input, make it the path of the current dir.
 ///
