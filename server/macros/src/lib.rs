@@ -108,10 +108,10 @@ pub fn register(input: TokenStream) -> TokenStream {
                 let name_ident = format_ident!("{}", name);
                 let kind_ident = format_ident!("{}{}", &kind[0..1].to_uppercase(), &kind[1..].to_lowercase());
                 (quote! {
-                    use crate::modify::*;
-                    use crate::character::Character;
+                    // use crate::modify::*;
+                    // use crate::character::*;
 
-                    impl #kind_ident for #name_ident {}
+                    // impl #kind_ident for #name_ident {}
                 }).into()
             }
             Err(e) => e

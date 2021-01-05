@@ -1,4 +1,5 @@
-use super::character::Character;
+use crate::character::Character;
+use crate::feature::*;
 
 /// Any object that alters the character at some point during resolution.
 ///
@@ -35,7 +36,9 @@ pub(crate) trait Modify {
     fn finalize(&self, _: &mut Character) {}
 }
 
-pub(crate) trait Race: Modify {}
+pub(crate) trait Race: Modify {
+    fn traits(&mut self) -> Vec<Feature>;
+}
 pub(crate) trait Class: Modify {}
 pub(crate) trait Subclass: Modify {}
 pub(crate) trait Background: Modify {}

@@ -7,5 +7,6 @@
   "base_constitution": 10,
   "base_intelligence": 10,
   "base_wisdom": 10,
-  "base_charisma": 10
+  "base_charisma": 10,
+  "alignment": "ChaoticNeutral"
 }

@@ -20,19 +20,18 @@ extern crate macros;
 mod character;
 mod modify;
 mod content;
+mod feature;
 
 use character::StoredCharacter;
 
 fn main() {
     let json = std::fs::read_to_string("test.json").unwrap();
-    println!("{}", json);
+    // println!("{}", json);
     let char: StoredCharacter = serde_json::from_str(&json).unwrap();
-    println!("{:?}", char);
+    // println!("{:?}", char);
 
-    let res = char.resolve();
-    println!("{:?}", res);
-
-    let h = content::official::players_handbook::races::human::Human {};
-    dbg!(h);
+    let mut res = char.copy_to_full_character();
+    res.resolve();
+    dbg!(&res);
 }
 
