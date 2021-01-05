@@ -16,8 +16,8 @@ pub(crate) struct StoredCharacter {
 }
 
 impl StoredCharacter {
-    pub fn copy_to_resolved(self) -> ResolvedCharacter {
-        ResolvedCharacter {
+    pub fn resolve(self) -> Character {
+        let char = Character {
             name: self.name,
             health: self.health,
             temp_health: self.temp_health,
@@ -30,12 +30,13 @@ impl StoredCharacter {
             charisma: self.base_charisma,
 
             ..Default::default()
-        }
+        };
+        char
     }
 }
 
 #[derive(Debug, Deserialize, Serialize, Default)]
-pub(crate) struct ResolvedCharacter {
+pub(crate) struct Character {
     name: String,
 
     health: u64,
