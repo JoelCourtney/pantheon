@@ -1,13 +1,14 @@
 [package]
-name = "dndcent"
+name = "macros"
 version = "0.1.0"
 authors = ["Joel Courtney <joel.e.courtney@gmail.com>"]
 edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
-[dependencies]
-serde = { version = "1", features = ["derive"] }
-serde_json = "1"
+[lib]
+proc-macro = true
 
-macros = { path = "macros" }
+[dependencies]
+syn = { version="1.0", features=["full"] }
+quote = "1.0"
