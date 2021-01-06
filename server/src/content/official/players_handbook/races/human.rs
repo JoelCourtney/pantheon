@@ -10,8 +10,8 @@ impl Modify for Human {
         c.size = CreatureSize::Medium;
         c.walking_speed = 30;
 
-        c.proficiencies.push(Proficiency::Language(Language::Common));
-        c.proficiencies.push(Proficiency::Language(self.extra_language.clone()));
+        c.languages.push(Language::Common);
+        c.languages.push(self.extra_language.clone());
     }
     fn modify(&self, c: &mut Character) {
         c.strength += 1;

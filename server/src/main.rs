@@ -44,7 +44,7 @@ fn main() {
     dbg!(&char);
     let mut res = char.resolve();
     dbg!(&res);
-    match res.traits[1].choice {
+    match res.traits.last_mut().unwrap().choice {
         Choice::Language(ref mut l) => {
             **l = Language::Auran; // YEAH BOIIIIIIIIIIIIIIIIIIII
         }

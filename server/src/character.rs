@@ -78,8 +78,9 @@ pub struct Character<'a> {
     // ALIGNMENT
     pub alignment: Alignment,
 
-    // PROFICIENCIES
-    pub proficiencies: Vec<Proficiency>,
+    // PROFICIENCIES AND LANGUAGES
+    pub skill_proficiencies: Vec<(Skill, ProficiencyType)>,
+    pub languages: Vec<Language>,
 
     // SPEED
     pub walking_speed: u8,
@@ -174,22 +175,11 @@ pub enum SavingThrow {
 }
 
 #[derive(Debug, Deserialize, Serialize)]
-pub enum ProficiencyBoost {
+pub enum ProficiencyType {
     NONE,
     HALF,
     SINGLE,
     DOUBLE
-}
-
-// TODO("update String types later")
-#[derive(Debug, Deserialize, Serialize)]
-pub enum Proficiency {
-    Skill(Skill, ProficiencyBoost),
-    Tool(String, ProficiencyBoost),
-    Language(Language),
-    SavingThrow(SavingThrow),
-    Armor(String),
-    Weapon(String)
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
