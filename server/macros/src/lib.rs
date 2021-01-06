@@ -102,9 +102,18 @@ pub fn race(input: TokenStream) -> TokenStream {
         use crate::character::*;
         use crate::modify::*;
         use crate::feature::*;
+        use macros::{def};
         use serde::{Serialize, Deserialize};
 
         #[typetag::serde]
         impl Race for #name_ident {}
+    }).into()
+}
+
+/// I'm lazy. Seriously, I'm this lazy.
+#[proc_macro]
+pub fn def(_: TokenStream) -> TokenStream {
+    (quote! {
+        Default::default()
     }).into()
 }

@@ -5,23 +5,6 @@ pub struct Human {
     pub extra_language: Language
 }
 
-impl Featured for Human {
-    fn features(&mut self) -> Vec<Trait> {
-        vec![
-            Trait {
-                name: "Age",
-                description: "Humans reach adulthood in their late teens and live less than a century.",
-                ..Default::default()
-            },
-            Trait {
-                name: "Languages",
-                description: "You can speak, read, and write Common and one extra language of your choice. Humans typically learn the languages of other peoples they deal with, including obscure dialects. They are fond of sprinkling their speech with words borrowed from other tongues: Orc curses, Elvish musical expressions, Dwarvish military phrases, and so on.",
-                choice: Choice::Language(&mut self.extra_language)
-            }
-        ]
-    }
-}
-
 impl Modify for Human {
     fn initialize(&self, c: &mut Character) {
         c.size = CreatureSize::Medium;
@@ -37,5 +20,42 @@ impl Modify for Human {
         c.intelligence += 1;
         c.wisdom += 1;
         c.charisma += 1;
+    }
+}
+
+impl Featured for Human {
+    fn features(&mut self) -> Vec<Trait> {
+        vec![
+            Trait {
+                name: "Ability Score Increase",
+                description: "Your ability scores each increase by 1.",
+                ..def!()
+            },
+            Trait {
+                name: "Age",
+                description: "Humans reach adulthood in their late teens and live less than a century.",
+                ..def!()
+            },
+            Trait {
+                name: "Alignment",
+                description: "Humans tend toward no particular alignment. The best and the worst are found among them.",
+                ..def!()
+            },
+            Trait {
+                name: "Size",
+                description: "Humans vary widely in height and build, from barely 5 feet to well over 6 feet tall. Regardless of your position in that range, your size is Medium.",
+                ..def!()
+            },
+            Trait {
+                name: "Speed",
+                description: "Your base walking speed is 30 feet.",
+                ..def!()
+            },
+            Trait {
+                name: "Languages",
+                description: "You can speak, read, and write Common and one extra language of your choice. Humans typically learn the languages of other peoples they deal with, including obscure dialects. They are fond of sprinkling their speech with words borrowed from other tongues: Orc curses, Elvish musical expressions, Dwarvish military phrases, and so on.",
+                choice: Choice::Language(&mut self.extra_language)
+            }
+        ]
     }
 }
