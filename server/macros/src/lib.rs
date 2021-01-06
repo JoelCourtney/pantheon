@@ -185,7 +185,7 @@ pub fn describe(input: TokenStream) -> TokenStream {
         }
         None => {
             (quote! {
-                compile_error!("description start with include H1 with name.");
+                compile_error!("description must start with H1 with name, such as: # Example Title");
             }).into()
         }
     }
