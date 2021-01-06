@@ -5,10 +5,10 @@ pub trait Featured {
     fn features(&mut self) -> Vec<Feature> { vec![] }
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, Default)]
 pub struct Feature<'a> {
-    pub name: String,
-    pub description: String,
+    pub name: &'static str,
+    pub description: &'static str,
     pub choice: Choice<'a>
 }
 
@@ -19,4 +19,10 @@ pub enum Choice<'a> {
     Language(&'a mut Language),
     // Skill(*mut Skill),
     None
+}
+
+impl Default for Choice<'_> {
+    fn default() -> Self {
+        Choice::None
+    }
 }

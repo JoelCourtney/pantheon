@@ -9,13 +9,13 @@ impl Featured for Human {
     fn features(&mut self) -> Vec<Trait> {
         vec![
             Trait {
-                name: "Age".to_string(),
-                description: "Humans reach adulthood in their late teens and live less than a century.".to_string(),
-                choice: Choice::None
+                name: "Age",
+                description: "Humans reach adulthood in their late teens and live less than a century.",
+                ..Default::default()
             },
             Trait {
-                name: "Languages".to_string(),
-                description: "You can speak, read, and write Common and one extra language of your choice. Humans typically learn the languages of other peoples they deal with, including obscure dialects. They are fond of sprinkling their speech with words borrowed from other tongues: Orc curses, Elvish musical expressions, Dwarvish military phrases, and so on.".to_string(),
+                name: "Languages",
+                description: "You can speak, read, and write Common and one extra language of your choice. Humans typically learn the languages of other peoples they deal with, including obscure dialects. They are fond of sprinkling their speech with words borrowed from other tongues: Orc curses, Elvish musical expressions, Dwarvish military phrases, and so on.",
                 choice: Choice::Language(&mut self.extra_language)
             }
         ]
