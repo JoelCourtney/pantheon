@@ -102,6 +102,8 @@ pub fn race(input: TokenStream) -> TokenStream {
         use crate::character::*;
         use crate::modify::*;
         use crate::feature::*;
+        use crate::misc::*;
+        use crate::describe::*;
         use macros::{def, describe};
         use serde::{Serialize, Deserialize};
         use indoc::indoc;

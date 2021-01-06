@@ -1,5 +1,5 @@
-use crate::character::*;
 use serde::Serialize;
+use crate::misc::*;
 
 pub trait Featured {
     fn features(&mut self) -> Vec<Feature> { vec![] }
@@ -27,6 +27,3 @@ impl Default for Choice<'_> {
     }
 }
 
-pub trait Describe {
-    fn describe() -> String;
-}

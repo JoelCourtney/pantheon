@@ -21,10 +21,12 @@ mod character;
 mod modify;
 mod content;
 mod feature;
+mod describe;
+mod misc;
 
 use character::StoredCharacter;
 use crate::feature::Choice;
-use crate::character::Language;
+use crate::misc::Language;
 
 fn main() {
     let json = std::fs::read_to_string("test.json").unwrap();

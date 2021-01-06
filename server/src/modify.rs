@@ -1,6 +1,4 @@
 use crate::character::Character;
-use crate::feature::*;
-use std::fmt::Debug;
 
 /// Any object that alters the character at some point during resolution.
 ///
@@ -36,13 +34,3 @@ pub trait Modify {
     fn modify(&self, _: &mut Character) {}
     fn finalize(&self, _: &mut Character) {}
 }
-
-
-#[typetag::serde]
-pub trait Race: Modify + Featured + Debug {}
-
-pub trait Class: Modify {}
-pub trait Subclass: Modify {}
-pub trait Background: Modify {}
-pub trait Feat: Modify {}
-pub trait Item: Modify {}
