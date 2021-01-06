@@ -12,13 +12,14 @@ extern crate inflector;
 
 mod helpers;
 
-use proc_macro::TokenStream;
+use proc_macro::{TokenStream};
 use quote::quote;
 use quote::format_ident;
 use syn;
-use syn::Expr;
+use syn::{Expr, Data};
 use helpers::*;
 use inflector::Inflector;
+use syn::export::TokenStream2;
 
 /// Generates auto-imports and registry entries for the contents of a directory.
 ///
@@ -191,4 +192,60 @@ pub fn describe(input: TokenStream) -> TokenStream {
             }).into()
         }
     }
+}
+
+#[proc_macro_derive(Choose)]
+pub fn derive_choose(input: TokenStream) -> TokenStream {
+    let ast: syn::DeriveInput = syn::parse(input).unwrap();
+    let ident = ast.ident;
+    (match ast.data {
+        Data::Enum(syn::DataEnum { variants, .. }) => {
+            let vars = variants.iter().map( |var| {
+                var.ident.to_string()
+            }).collect();
+            process_derive_choose(ident.to_string(), vars)
+        }
+        _ => quote! {
+            compile_error("Choose derive only valid for enums");
+        }
+    }).into()
+}
+
+fn process_derive_choose(name: String, vars: Vec<String>) -> TokenStream2 {
+    let enum_ident = format_ident!("{}", name);
+    let choice_ident = format_ident!("{}Choice", name);
+    let mut acc = quote! {
+        impl Default for #enum_ident {
+            fn default() -> Self {
+                #enum_ident::Unknown
+            }
+        }
+
+        impl Choose for #enum_ident {
+            fn choice<'a>(loc : &'a mut Self) -> Box<dyn Choice + 'a> {
+                Box::new( #choice_ident { loc } )
+            }
+        }
+
+        #[derive(Debug)]
+        pub struct #choice_ident <'a> {
+            loc: &'a mut #enum_ident
+        }
+    };
+    let mut text = format!("impl Choice for {}Choice<'_> {{\n", name);
+    text.extend("fn choices(&self) -> Vec<&str> {\nvec![".chars());
+    for var in &vars {
+        text.extend(format!(r#""{}","#, var).chars());
+    }
+    text.extend("\n]}\nfn choose(&mut self, choice: &str) { \n *self.loc = match choice {\n".chars());
+    for var in vars {
+        text.extend(format!(r#""{}" => {}::{},"#, var, name, var).chars());
+    }
+    text.extend("_ => unimplemented!() }}}".chars());
+    let rest: TokenStream2 = text.parse().unwrap();
+    acc = quote! {
+        #acc
+        #rest
+    };
+    acc
 }

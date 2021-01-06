@@ -1,9 +1,10 @@
 use serde::{Deserialize, Serialize};
 use crate::feature::{Choice, Choose};
+use macros::Choose;
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Choose)]
 pub enum CreatureSize {
-    Unspecified,
+    Unknown,
     Fine,
     Diminutive,
     Tiny,
@@ -15,11 +16,7 @@ pub enum CreatureSize {
     Colossal
 }
 
-impl Default for CreatureSize {
-    fn default() -> Self { CreatureSize::Unspecified }
-}
-
-#[derive(Debug, Deserialize, Serialize, Copy, Clone)]
+#[derive(Debug, Deserialize, Serialize, Copy, Clone, Choose)]
 pub enum Alignment {
     LawfulGood,
     LawfulNeutral,
@@ -30,25 +27,22 @@ pub enum Alignment {
     ChaoticGood,
     ChaoticNeutral,
     ChaoticEvil,
-    Unspecified,
+    Unknown,
     ItsComplicated
 }
 
-impl Default for Alignment {
-    fn default() -> Self { Alignment::Unspecified }
-}
-
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Choose)]
 pub enum Ability {
     Strength,
     Dexterity,
     Constitution,
     Intelligence,
     Wisdom,
-    Charisma
+    Charisma,
+    Unknown
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Choose)]
 pub enum Skill {
     Acrobatics,
     AnimalHandling,
@@ -67,10 +61,11 @@ pub enum Skill {
     Religion,
     SleightOfHand,
     Stealth,
-    Survival
+    Survival,
+    Unknown
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Choose)]
 pub enum SavingThrow {
     Strength,
     Dexterity,
@@ -78,18 +73,20 @@ pub enum SavingThrow {
     Intelligence,
     Wisdom,
     Charisma,
-    Death
+    Death,
+    Unknown,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Choose)]
 pub enum ProficiencyType {
     NONE,
     HALF,
     SINGLE,
-    DOUBLE
+    DOUBLE,
+    Unknown
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone)]
+#[derive(Choose, Debug, Deserialize, Serialize, Clone)]
 pub enum Language {
     Abyssal,
     Aquan,
@@ -113,35 +110,5 @@ pub enum Language {
     Sylvan,
     Terran,
     Undercommon,
-    Unspecified,
-}
-
-impl Choose for Language {
-    fn choice<'a>(loc : &'a mut Self) -> Box<dyn Choice + 'a> {
-        Box::new( LanguageChoice { loc } )
-    }
-}
-
-#[derive(Debug)]
-pub struct LanguageChoice<'a> {
-    loc: &'a mut Language
-}
-
-impl Choice for LanguageChoice<'_> {
-    fn choices(&self) -> Vec<&str> {
-        vec!["Common", "Terran"]
-    }
-    fn choose(&mut self, choice: &str) {
-        *self.loc = match choice {
-            "Common" => Language::Common,
-            "Terran" => Language::Terran,
-            _ => Language::Unspecified
-        }
-    }
-}
-
-impl Default for Language {
-    fn default() -> Self {
-        Language::Unspecified
-    }
+    Unknown,
 }
