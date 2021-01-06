@@ -3,12 +3,14 @@ macros::register!(("Human", "Race"));
 use crate::modify::*;
 use crate::character::*;
 use crate::feature::*;
+use serde::{Serialize,Deserialize};
 
-#[derive(Debug,Default)]
+#[derive(Debug,Default,Serialize,Deserialize)]
 pub struct Human {
     pub extra_language: Language
 }
 
+#[typetag::serde]
 impl Race for Human {
     fn traits(&mut self) -> Vec<Feature> {
         vec![
@@ -32,6 +34,7 @@ impl Modify for Human {
         c.walking_speed = 30;
 
         c.proficiencies.push(Proficiency::Language(Language::Common));
+        c.proficiencies.push(Proficiency::Language(self.extra_language.clone()));
     }
     fn modify(&self, c: &mut Character) {
         c.strength += 1;

@@ -3,9 +3,7 @@ use serde::{Deserialize, Serialize};
 use crate::modify::*;
 use crate::feature::Feature;
 
-use crate::content::official::players_handbook::races::human::Human;
-
-#[derive(Debug, Default, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct StoredCharacter {
     name: String,
 
@@ -21,8 +19,7 @@ pub struct StoredCharacter {
 
     alignment: Alignment,
 
-    #[serde(skip)]
-    human: Human
+    race: Box<dyn Race>
 }
 
 impl StoredCharacter {
@@ -43,10 +40,10 @@ impl StoredCharacter {
 
             ..Default::default()
         };
-        self.human.initialize(&mut char);
-        self.human.modify(&mut char);
-        self.human.finalize(&mut char);
-        char.traits.extend(self.human.traits());
+        self.race.initialize(&mut char);
+        self.race.modify(&mut char);
+        self.race.finalize(&mut char);
+        char.traits.extend(self.race.traits());
         char
     }
 }
@@ -195,7 +192,7 @@ pub enum Proficiency {
     Weapon(String)
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub enum Language {
     Abyssal,
     Aquan,

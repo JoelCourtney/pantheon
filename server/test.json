@@ -8,5 +8,10 @@
   "base_intelligence": 10,
   "base_wisdom": 10,
   "base_charisma": 10,
-  "alignment": "ChaoticNeutral"
+  "alignment": "ChaoticNeutral",
+  "race": {
+    "Human": {
+      "extra_language": "Abyssal"
+    }
+  }
 }

@@ -38,16 +38,20 @@ fn main() {
     // char.human. Note this is the ORIGINAL STOREDCHARACTER. Thus, when a request comes in
     // to change the choice for a feature kept in the RESOLVED character, you can easily edit
     // and save the value in the original StoredCharacter.
+    //
+    // Then you have to trash the old Character and re-resolve one from the now-edited StoredCharacter.
+    // It sounds dumb, but this is actually really cool.
     dbg!(&char);
     let mut res = char.resolve();
     dbg!(&res);
     match res.traits[1].choice {
         Choice::Language(ref mut l) => {
-            **l = Language::Auran; // YEAH BOIIIIIII
+            **l = Language::Auran; // YEAH BOIIIIIIIIIIIIIIIIIIII
         }
         _ => {}
     }
-    dbg!(&res);
+    let res = char.resolve();
+    dbg!(res);
     dbg!(&char);
 }
 
