@@ -1,25 +1,19 @@
-macros::register!(("Human", "Race"));
+macros::race!("Human");
 
-use crate::modify::*;
-use crate::character::*;
-use crate::feature::*;
-use serde::{Serialize,Deserialize};
-
-#[derive(Debug,Default,Serialize,Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct Human {
     pub extra_language: Language
 }
 
-#[typetag::serde]
-impl Race for Human {
-    fn traits(&mut self) -> Vec<Feature> {
+impl Featured for Human {
+    fn features(&mut self) -> Vec<Trait> {
         vec![
-            Feature {
+            Trait {
                 name: "Age".to_string(),
                 description: "Humans reach adulthood in their late teens and live less than a century.".to_string(),
                 choice: Choice::None
             },
-            Feature {
+            Trait {
                 name: "Languages".to_string(),
                 description: "You can speak, read, and write Common and one extra language of your choice. Humans typically learn the languages of other peoples they deal with, including obscure dialects. They are fond of sprinkling their speech with words borrowed from other tongues: Orc curses, Elvish musical expressions, Dwarvish military phrases, and so on.".to_string(),
                 choice: Choice::Language(&mut self.extra_language)

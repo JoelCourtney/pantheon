@@ -8,15 +8,17 @@
 #[deny(missing_docs)]
 
 extern crate proc_macro;
+extern crate inflector;
 
 mod helpers;
 
 use proc_macro::TokenStream;
 use quote::quote;
-// use quote::format_ident;
+use quote::format_ident;
 use syn;
 use syn::Expr;
 use helpers::*;
+use inflector::Inflector;
 
 /// Generates auto-imports and registry entries for the contents of a directory.
 ///
@@ -75,50 +77,34 @@ pub fn registry(input: TokenStream) -> TokenStream {
     gen
 }
 
-/// Adds some boilerplate code for a Modify Implementor, and adds it to the registry.
+/// Registers a race struct and pastes some boilerplate code.
 ///
-/// Boilerplate includes Character and everything in modify.rs. It also automatically adds an `impl`
-/// for the trait associated with the "kind" argument.
+/// Calling this macro at the top of the file is required for all content races. The only argument is
+/// the string name of the race, is you want it displayed to the user. (I.E. "Variant Human", not "VariantHuman"
+/// or "variant_human".
 ///
-/// # Input
+/// It makes the race implement the Race trait, which does nothing except require that the dev implements
+/// Featured, Modify, Debug, Deserialize, and Serialize. Note that you must also implement Default,
+/// but it is required through other means, and the error message may be a little esoteric if you don't.
 ///
-/// Input expects a 2-tuple of strings: ("Name", "Kind"), where Name is the name of the object as
-/// displayed to the User and Kind is one of:
+/// For almost all races, Debug, Deserialize, Serialize, and Default can be implemented with the
+/// derive macro.
 ///
-/// - Race
-/// - Class
-/// - Subclass
-/// - Background
-/// - Feat
-/// - TODO("finish this")
-///
-/// Kind is case insensitive, but prefer the given capitalization anyway.
-///
-/// # Examples
-///
-/// ```
-/// macros::register!(("Human", "Race"));
-/// ```
+/// This also pastes in some use declarations for character, modify, feature, Deserialze, and Serialize.
 #[proc_macro]
-pub fn register(input: TokenStream) -> TokenStream {
-    let ast: syn::Expr = syn::parse(input).unwrap();
-    if let Expr::Tuple(t) = ast {
-        match unwrap_string_tuple(t) {
-            Ok((_name, _kind)) => {
-                // let name_ident = format_ident!("{}", name);
-                // let kind_ident = format_ident!("{}{}", &kind[0..1].to_uppercase(), &kind[1..].to_lowercase());
-                (quote! {
-                    // use crate::modify::*;
-                    // use crate::character::*;
+pub fn race(input: TokenStream) -> TokenStream {
+    let ast: syn::LitStr = syn::parse(input).unwrap();
+    let pretty_name = ast.value();
+    let snake_name = convert_to_fs(&pretty_name);
+    let pascal_name = snake_name.to_pascal_case();
+    let name_ident = format_ident!("{}", pascal_name);
+    (quote! {
+        use crate::character::*;
+        use crate::modify::*;
+        use crate::feature::*;
+        use serde::{Serialize, Deserialize};
 
-                    // impl #kind_ident for #name_ident {}
-                }).into()
-            }
-            Err(e) => e
-        }
-    } else {
-        (quote! {
-            compile_error!("expected 2-tuple of strings");
-        }).into()
-    }
+        #[typetag::serde]
+        impl Race for #name_ident {}
+    }).into()
 }

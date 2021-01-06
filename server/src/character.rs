@@ -43,7 +43,7 @@ impl StoredCharacter {
         self.race.initialize(&mut char);
         self.race.modify(&mut char);
         self.race.finalize(&mut char);
-        char.traits.extend(self.race.traits());
+        char.traits.extend(self.race.features());
         char
     }
 }

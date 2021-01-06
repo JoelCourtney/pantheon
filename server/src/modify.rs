@@ -37,10 +37,9 @@ pub trait Modify {
     fn finalize(&self, _: &mut Character) {}
 }
 
+
 #[typetag::serde]
-pub trait Race: Modify + Debug {
-    fn traits(&mut self) -> Vec<Feature>;
-}
+pub trait Race: Modify + Featured + Debug {}
 
 pub trait Class: Modify {}
 pub trait Subclass: Modify {}
