@@ -1,8 +1,8 @@
 macros::race!("Human");
 
 #[derive(Debug, Serialize, Deserialize, Default)]
-pub struct Human {
-    pub extra_language: Language
+struct Human {
+    extra_language: Language
 }
 
 impl Modify for Human {
