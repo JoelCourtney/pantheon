@@ -6,7 +6,7 @@ use crate::feature::Feature;
 use crate::content::official::players_handbook::races::human::Human;
 
 #[derive(Debug, Default, Deserialize)]
-pub(crate) struct StoredCharacter {
+pub struct StoredCharacter {
     name: String,
 
     health: u64,
@@ -52,7 +52,7 @@ impl StoredCharacter {
 }
 
 #[derive(Debug, Default, Serialize)]
-pub(crate) struct Character<'a> {
+pub struct Character<'a> {
     pub name: String,
 
     // HEALTH
@@ -97,7 +97,7 @@ pub(crate) struct Character<'a> {
 }
 
 #[derive(Debug, Deserialize, Serialize)]
-pub(crate) enum CreatureSize {
+pub enum CreatureSize {
     Unspecified,
     Fine,
     Diminutive,
@@ -115,7 +115,7 @@ impl Default for CreatureSize {
 }
 
 #[derive(Debug, Deserialize, Serialize, Copy, Clone)]
-pub(crate) enum Alignment {
+pub enum Alignment {
     LawfulGood,
     LawfulNeutral,
     LawfulEvil,
@@ -134,7 +134,7 @@ impl Default for Alignment {
 }
 
 #[derive(Debug, Deserialize, Serialize)]
-pub(crate) enum Ability {
+pub enum Ability {
     Strength,
     Dexterity,
     Constitution,
@@ -144,7 +144,7 @@ pub(crate) enum Ability {
 }
 
 #[derive(Debug, Deserialize, Serialize)]
-pub(crate) enum Skill {
+pub enum Skill {
     Acrobatics,
     AnimalHandling,
     Arcana,
@@ -166,7 +166,7 @@ pub(crate) enum Skill {
 }
 
 #[derive(Debug, Deserialize, Serialize)]
-pub(crate) enum SavingThrow {
+pub enum SavingThrow {
     Strength,
     Dexterity,
     Constitution,
@@ -177,7 +177,7 @@ pub(crate) enum SavingThrow {
 }
 
 #[derive(Debug, Deserialize, Serialize)]
-pub(crate) enum ProficiencyBoost {
+pub enum ProficiencyBoost {
     NONE,
     HALF,
     SINGLE,
@@ -186,7 +186,7 @@ pub(crate) enum ProficiencyBoost {
 
 // TODO("update String types later")
 #[derive(Debug, Deserialize, Serialize)]
-pub(crate) enum Proficiency {
+pub enum Proficiency {
     Skill(Skill, ProficiencyBoost),
     Tool(String, ProficiencyBoost),
     Language(Language),
@@ -196,7 +196,7 @@ pub(crate) enum Proficiency {
 }
 
 #[derive(Debug, Deserialize, Serialize)]
-pub(crate) enum Language {
+pub enum Language {
     Abyssal,
     Aquan,
     Auran,

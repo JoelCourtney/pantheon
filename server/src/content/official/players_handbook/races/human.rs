@@ -6,7 +6,7 @@ use crate::feature::*;
 
 #[derive(Debug,Default)]
 pub struct Human {
-    pub(crate) extra_language: Language
+    pub extra_language: Language
 }
 
 impl Race for Human {

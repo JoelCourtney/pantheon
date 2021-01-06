@@ -30,17 +30,17 @@ use crate::feature::*;
 /// There are `initialize_rules` and `finalize_rules` that are not alterable. These are common effects
 /// that apply to all characters regardless of build, and are run before and after the three Modify
 /// phases respectively.
-pub(crate) trait Modify {
+pub trait Modify {
     fn initialize(&self, _: &mut Character) {}
     fn modify(&self, _: &mut Character) {}
     fn finalize(&self, _: &mut Character) {}
 }
 
-pub(crate) trait Race: Modify {
+pub trait Race: Modify {
     fn traits(&mut self) -> Vec<Feature>;
 }
-pub(crate) trait Class: Modify {}
-pub(crate) trait Subclass: Modify {}
-pub(crate) trait Background: Modify {}
-pub(crate) trait Feat: Modify {}
-pub(crate) trait Item: Modify {}
+pub trait Class: Modify {}
+pub trait Subclass: Modify {}
+pub trait Background: Modify {}
+pub trait Feat: Modify {}
+pub trait Item: Modify {}
