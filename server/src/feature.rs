@@ -1,5 +1,5 @@
 use serde::Serialize;
-use crate::misc::*;
+use std::fmt::Debug;
 
 pub trait Featured {
     fn features(&mut self) -> Vec<Feature> { vec![] }
@@ -9,21 +9,30 @@ pub trait Featured {
 pub struct Feature<'a> {
     pub name: &'static str,
     pub description: &'static str,
-    pub choice: Choice<'a>
+
+    #[serde(skip)]
+    pub choice: Box<dyn Choice + 'a>
+}
+
+impl Default for Box<dyn Choice> {
+    fn default() -> Self {
+        Box::new(
+            EmptyChoice {}
+        )
+    }
 }
 
 pub type Trait<'a> = Feature<'a>;
 
-#[derive(Debug, Serialize)]
-pub enum Choice<'a> {
-    Language(&'a mut Language),
-    // Skill(*mut Skill),
-    None
+pub trait Choice: Debug {
+    fn choices(&self) -> Vec<&str> { vec![] }
+    fn choose(&mut self, _choice: &str) {}
 }
 
-impl Default for Choice<'_> {
-    fn default() -> Self {
-        Choice::None
-    }
+pub trait Choose {
+    fn choice<'a>(_: &'a mut Self) -> Box<dyn Choice + 'a>;
 }
 
+#[derive(Debug)]
+pub struct EmptyChoice;
+impl Choice for EmptyChoice {}

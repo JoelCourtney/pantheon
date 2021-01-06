@@ -25,8 +25,6 @@ mod describe;
 mod misc;
 
 use character::StoredCharacter;
-use crate::feature::Choice;
-use crate::misc::Language;
 
 fn main() {
     let json = std::fs::read_to_string("test.json").unwrap();
@@ -44,16 +42,13 @@ fn main() {
     // Then you have to trash the old Character and re-resolve one from the now-edited StoredCharacter.
     // It sounds dumb, but this is actually really cool.
     dbg!(&char);
-    let mut res = char.resolve();
-    dbg!(&res);
-    match res.traits.last_mut().unwrap().choice {
-        Choice::Language(ref mut l) => {
-            **l = Language::Auran; // YEAH BOIIIIIIIIIIIIIIIIIIII
-        }
-        _ => {}
+    {
+        let mut res = char.resolve();
+        dbg!(&res);
+        dbg!(&res.traits.last().unwrap().choice.choices());
+        res.traits.last_mut().unwrap().choice.choose("Terran");
     }
     let res = char.resolve();
     dbg!(res);
     dbg!(&char);
 }
-

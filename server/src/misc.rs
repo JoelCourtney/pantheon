@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use crate::feature::{Choice, Choose};
 
 #[derive(Debug, Deserialize, Serialize)]
 pub enum CreatureSize {
@@ -113,7 +114,30 @@ pub enum Language {
     Terran,
     Undercommon,
     Unspecified,
-    Other(String)
+}
+
+impl Choose for Language {
+    fn choice<'a>(loc : &'a mut Self) -> Box<dyn Choice + 'a> {
+        Box::new( LanguageChoice { loc } )
+    }
+}
+
+#[derive(Debug)]
+pub struct LanguageChoice<'a> {
+    loc: &'a mut Language
+}
+
+impl Choice for LanguageChoice<'_> {
+    fn choices(&self) -> Vec<&str> {
+        vec!["Common", "Terran"]
+    }
+    fn choose(&mut self, choice: &str) {
+        *self.loc = match choice {
+            "Common" => Language::Common,
+            "Terran" => Language::Terran,
+            _ => Language::Unspecified
+        }
+    }
 }
 
 impl Default for Language {
