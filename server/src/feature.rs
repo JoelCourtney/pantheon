@@ -26,3 +26,7 @@ impl Default for Choice<'_> {
         Choice::None
     }
 }
+
+pub trait Describe {
+    fn describe() -> String;
+}

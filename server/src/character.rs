@@ -19,7 +19,7 @@ pub struct StoredCharacter {
 
     alignment: Alignment,
 
-    race: Box<dyn Race>
+    pub(crate) race: Box<dyn Race>
 }
 
 impl StoredCharacter {

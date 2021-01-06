@@ -102,8 +102,9 @@ pub fn race(input: TokenStream) -> TokenStream {
         use crate::character::*;
         use crate::modify::*;
         use crate::feature::*;
-        use macros::{def};
+        use macros::{def, describe};
         use serde::{Serialize, Deserialize};
+        use indoc::indoc;
 
         #[typetag::serde]
         impl Race for #name_ident {}
@@ -116,4 +117,36 @@ pub fn def(_: TokenStream) -> TokenStream {
     (quote! {
         Default::default()
     }).into()
+}
+
+#[proc_macro]
+pub fn describe(input: TokenStream) -> TokenStream {
+    let text: String = syn::parse::<syn::LitStr>(input).unwrap().value();
+    let h1 = text.find('#');
+    match h1 {
+        Some(mut i) => {
+            i += 1;
+            while text.chars().nth(i) == Some(' ') {
+                i += 1;
+            }
+            let newline = match &text[i..].find('\n') {
+                Some(j) => j + i,
+                None => text.len()
+            };
+            let pretty_name: String = text[i..newline].to_string();
+            let snake_name = convert_to_fs(&pretty_name);
+            let pascal_name = snake_name.to_pascal_case();
+
+            // BOW BEFORE MY RAW STRINGS
+            format!(r##"impl Describe for {} {{
+                fn describe() -> String {{ (indoc! {{r#"{}"#}}).to_string()}} }}"##,
+                    pascal_name, text
+            ).parse().unwrap()
+        }
+        None => {
+            (quote! {
+                compile_error!("description start with include H1 with name.");
+            }).into()
+        }
+    }
 }
