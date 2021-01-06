@@ -13,7 +13,7 @@ mod helpers;
 
 use proc_macro::TokenStream;
 use quote::quote;
-use quote::format_ident;
+// use quote::format_ident;
 use syn;
 use syn::Expr;
 use helpers::*;
@@ -104,9 +104,9 @@ pub fn register(input: TokenStream) -> TokenStream {
     let ast: syn::Expr = syn::parse(input).unwrap();
     if let Expr::Tuple(t) = ast {
         match unwrap_string_tuple(t) {
-            Ok((name, kind)) => {
-                let name_ident = format_ident!("{}", name);
-                let kind_ident = format_ident!("{}{}", &kind[0..1].to_uppercase(), &kind[1..].to_lowercase());
+            Ok((_name, _kind)) => {
+                // let name_ident = format_ident!("{}", name);
+                // let kind_ident = format_ident!("{}{}", &kind[0..1].to_uppercase(), &kind[1..].to_lowercase());
                 (quote! {
                     // use crate::modify::*;
                     // use crate::character::*;

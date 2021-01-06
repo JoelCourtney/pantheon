@@ -23,15 +23,31 @@ mod content;
 mod feature;
 
 use character::StoredCharacter;
+use crate::feature::Choice;
+use crate::character::Language;
 
 fn main() {
     let json = std::fs::read_to_string("test.json").unwrap();
     // println!("{}", json);
-    let char: StoredCharacter = serde_json::from_str(&json).unwrap();
+    let mut char: StoredCharacter = serde_json::from_str(&json).unwrap();
     // println!("{:?}", char);
 
-    let mut res = char.copy_to_full_character();
-    res.resolve();
+    // EXAMPLE OF FEATURE CHOICES
+    // StoredCharacter is resolved into Character. Then the extra language choice given by human
+    // is dereferenced and changed from Unspecified to Auran. This edits the value stored in
+    // char.human. Note this is the ORIGINAL STOREDCHARACTER. Thus, when a request comes in
+    // to change the choice for a feature kept in the RESOLVED character, you can easily edit
+    // and save the value in the original StoredCharacter.
+    dbg!(&char);
+    let mut res = char.resolve();
     dbg!(&res);
+    match res.traits[1].choice {
+        Choice::Language(ref mut l) => {
+            **l = Language::Auran; // YEAH BOIIIIIII
+        }
+        _ => {}
+    }
+    dbg!(&res);
+    dbg!(&char);
 }
 

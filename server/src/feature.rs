@@ -1,17 +1,16 @@
 use crate::character::*;
 use serde::Serialize;
-use std::rc::Rc;
 
-#[derive(Debug)]
-pub(crate) struct Feature {
+#[derive(Debug, Serialize)]
+pub(crate) struct Feature<'a> {
     pub name: String,
     pub description: String,
-    pub choice: Choice
+    pub choice: Choice<'a>
 }
 
-#[derive(Debug)]
-pub(crate) enum Choice {
-    Language(*mut Language),
-    Skill(*mut Skill),
+#[derive(Debug, Serialize)]
+pub(crate) enum Choice<'a> {
+    Language(&'a mut Language),
+    // Skill(*mut Skill),
     None
 }

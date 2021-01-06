@@ -3,8 +3,6 @@ macros::register!(("Human", "Race"));
 use crate::modify::*;
 use crate::character::*;
 use crate::feature::*;
-use serde::Deserialize;
-use std::rc::Rc;
 
 #[derive(Debug,Default)]
 pub struct Human {

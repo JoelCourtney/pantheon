@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 use crate::modify::*;
-use crate::feature::{Choice, Feature};
+use crate::feature::Feature;
 
 use crate::content::official::players_handbook::races::human::Human;
 
@@ -26,9 +26,9 @@ pub(crate) struct StoredCharacter {
 }
 
 impl StoredCharacter {
-    pub fn copy_to_full_character(self) -> Character {
+    pub fn resolve(&mut self) -> Character {
         let mut char = Character {
-            name: self.name,
+            name: self.name.clone(),
             health: self.health,
             temp_health: self.temp_health,
 
@@ -46,15 +46,13 @@ impl StoredCharacter {
         self.human.initialize(&mut char);
         self.human.modify(&mut char);
         self.human.finalize(&mut char);
-        char.human = self.human;
-
+        char.traits.extend(self.human.traits());
         char
     }
 }
 
-#[derive(Debug, Default)]
-pub(crate) struct Character {
-    pub human: Human,
+#[derive(Debug, Default, Serialize)]
+pub(crate) struct Character<'a> {
     pub name: String,
 
     // HEALTH
@@ -94,21 +92,8 @@ pub(crate) struct Character {
     pub burrowing_speed: u8,
 
     // FEATURES AND TRAITS
-    pub traits: Vec<Feature>,
-    pub features: Vec<Feature>,
-}
-
-impl Character {
-    pub(crate) fn resolve(&mut self) {
-        self.traits.append(&mut self.human.traits());
-        let mut traits = self.human.traits();
-        match traits[1].choice {
-            Choice::Language(ref mut l) => unsafe {
-                **l = Language::Common;
-            }
-            _ => {}
-        }
-    }
+    pub traits: Vec<Feature<'a>>,
+    pub features: Vec<Feature<'a>>,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -129,7 +114,7 @@ impl Default for CreatureSize {
     fn default() -> Self { CreatureSize::Unspecified }
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Copy, Clone)]
 pub(crate) enum Alignment {
     LawfulGood,
     LawfulNeutral,
