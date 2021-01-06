@@ -112,6 +112,18 @@ pub fn race(input: TokenStream) -> TokenStream {
 }
 
 /// I'm lazy. Seriously, I'm this lazy.
+///
+/// It expands into `Default::default()`. Because I'm lazy.
+///
+/// ## Example
+///
+/// ```
+/// Trait {
+///     name: "Example Trait",
+///     description: "It doesn't do anything other than be a described trait.",
+///     ..def!()
+/// }
+/// ```
 #[proc_macro]
 pub fn def(_: TokenStream) -> TokenStream {
     (quote! {
@@ -119,6 +131,34 @@ pub fn def(_: TokenStream) -> TokenStream {
     }).into()
 }
 
+/// Wraps a description string in a trait impl, because I'm lazy.
+///
+/// In doing so, it forces all descriptions to begin with "# NAME", where name is the pretty-print
+/// version of the name; so there's some consistency at least.
+///
+/// The input string is wrapped in an `indoc! {}` call, so you can rely on that logic for formatting.
+///
+/// ## Examples
+///
+/// See `/official/players_handbook/races/human.rs` for a full example. Small example:
+///
+/// ```
+/// describe! { r#"
+///     # Example Description
+/// "# }
+/// ```
+///
+/// Would turn into:
+///
+/// ```
+/// impl Describe for ExampleDescription {
+///     fn describe() -> String {
+///         (indoc! { r#"
+///             # Example Description
+///         "# }).to_string()
+///     }
+/// }
+/// ```
 #[proc_macro]
 pub fn describe(input: TokenStream) -> TokenStream {
     let text: String = syn::parse::<syn::LitStr>(input).unwrap().value();
