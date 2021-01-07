@@ -120,10 +120,20 @@ pub fn registry(input: TokenStream) -> TokenStream {
 /// "# }
 /// ```
 #[proc_macro_attribute]
-pub fn race(_args: TokenStream, input: TokenStream) -> TokenStream {
+pub fn race(_: TokenStream, input: TokenStream) -> TokenStream {
+    content_prelude("Race", input)
+}
+
+#[proc_macro_attribute]
+pub fn feat(_: TokenStream, input: TokenStream) -> TokenStream {
+    content_prelude("Feat", input)
+}
+
+fn content_prelude(kind: &str, input: TokenStream) -> TokenStream {
     // TODO("accept pretty name arg")
     let ast: syn::DeriveInput = syn::parse(input).unwrap();
     let pascal_name_ident = ast.ident.clone();
+    let kind_ident = format_ident!("{}", kind);
     (quote! {
         use crate::character::*;
         use crate::modify::*;
@@ -135,7 +145,7 @@ pub fn race(_args: TokenStream, input: TokenStream) -> TokenStream {
         use indoc::indoc;
 
         #[typetag::serde]
-        impl Race for #pascal_name_ident {}
+        impl #kind_ident for #pascal_name_ident {}
 
         #[derive(Debug, Serialize, Deserialize, Default)]
         #ast
@@ -207,12 +217,18 @@ pub fn describe(input: TokenStream) -> TokenStream {
             let pretty_name: String = text[i..newline].to_string();
             let snake_name = convert_to_fs(&pretty_name);
             let pascal_name = snake_name.to_pascal_case();
+            let pascal_ident = format_ident!("{}", pascal_name);
 
-            // BOW BEFORE MY RAW STRINGS
-            format!(r##"impl Describe for {} {{
-                fn describe() -> String {{ (indoc! {{r#"{}"#}}).to_string()}} }}"##,
-                    pascal_name, text
-            ).parse().unwrap()
+            let string_part: TokenStream2 = format!(r##"(indoc! {{r#"{}"#}})"##,
+                    text
+            ).parse().unwrap();
+            (quote! {
+                impl Describe for #pascal_ident {
+                    fn describe() -> &'static str {
+                        #string_part
+                    }
+                }
+            }).into()
         }
         None => {
             (quote! {
