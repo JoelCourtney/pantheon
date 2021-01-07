@@ -1,1 +1,1 @@
-macros::registry!("/official/players_handbook/feats");
+macros::register!("/official/players_handbook/feats");

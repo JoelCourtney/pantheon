@@ -1,5 +1,5 @@
 #[macros::race]
-struct Human {
+pub struct Human {
     extra_language: Language,
 }
 

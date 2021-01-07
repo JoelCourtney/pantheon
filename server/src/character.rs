@@ -6,7 +6,8 @@ use crate::misc::*;
 use std::fmt::Debug;
 
 #[typetag::serde]
-pub trait Race: Modify + Featured + Debug {}
+pub trait Race: Modify + Featured + Debug {
+}
 
 #[typetag::serde]
 pub trait Class: Modify + Featured + Debug {}
@@ -18,7 +19,8 @@ pub trait Subclass: Modify + Featured + Debug {}
 pub trait Background: Modify + Featured + Debug {}
 
 #[typetag::serde]
-pub trait Feat: Modify + Featured + Debug {}
+pub trait Feat: Modify + Featured + Debug {
+}
 
 #[typetag::serde]
 pub trait Item: Modify + Featured + Debug {}

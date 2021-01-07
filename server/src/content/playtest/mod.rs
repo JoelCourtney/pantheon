@@ -1,1 +1,1 @@
-macros::registry!("/playtest");
+macros::register!("/playtest");

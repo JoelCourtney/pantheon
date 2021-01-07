@@ -4,7 +4,7 @@ use quote::format_ident;
 use syn;
 use syn::Expr;
 
-pub(crate) fn list_imports(dir_str: String) -> TokenStream {
+pub fn list_imports(dir_str: String) -> TokenStream {
     let paths = match std::fs::read_dir(dir_str) {
         Ok(p) => p,
         Err(_e) => {
@@ -37,15 +37,15 @@ pub(crate) fn list_imports(dir_str: String) -> TokenStream {
     acc.into()
 }
 
-pub(crate) fn convert_to_fs(name: &str) -> String {
+pub fn convert_to_fs(name: &str) -> String {
     strip_characters(&*name.to_owned().to_lowercase(), "'").replace(' ',"_")
 }
 
-pub(crate) fn strip_characters(original : &str, to_strip : &str) -> String {
+pub fn strip_characters(original : &str, to_strip : &str) -> String {
     original.chars().filter(|&c| !to_strip.contains(c)).collect()
 }
 
-pub(crate) fn unwrap_string_tuple(t: syn::ExprTuple) -> Result<(String, String), TokenStream> {
+pub fn unwrap_string_tuple(t: syn::ExprTuple) -> Result<(String, String), TokenStream> {
     let size = t.elems.len();
     if size != 2 {
         Err((quote! {
@@ -66,4 +66,35 @@ pub(crate) fn unwrap_string_tuple(t: syn::ExprTuple) -> Result<(String, String),
             }
         }
     }
+}
+
+pub fn content_prelude(kind: &str, input: TokenStream) -> TokenStream {
+    // TODO("accept pretty name arg")
+    let ast: syn::DeriveInput = syn::parse(input).unwrap();
+    let pascal_name_ident = ast.ident.clone();
+    let kind_ident = format_ident!("{}", kind);
+    (quote! {
+        use crate::character::*;
+        use crate::modify::*;
+        use crate::feature::*;
+        use crate::misc::*;
+        use crate::describe::*;
+        use macros::{def, describe, choose};
+        use serde::{Serialize, Deserialize};
+        use indoc::indoc;
+
+        #[typetag::serde]
+        impl #kind_ident for #pascal_name_ident {
+
+        }
+
+        pub fn new() -> Box<dyn #kind_ident> {
+            Box::new( #pascal_name_ident {
+                ..def!()
+            } )
+        }
+
+        #[derive(Debug, Serialize, Deserialize, Default)]
+        #ast
+    }).into()
 }

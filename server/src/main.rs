@@ -26,6 +26,7 @@ mod misc;
 
 use crate::describe::Describe;
 use character::StoredCharacter;
+use content::Registry;
 
 fn main() {
     let json = std::fs::read_to_string("test.json").unwrap();
@@ -52,4 +53,6 @@ fn main() {
     dbg!(res);
     dbg!(&char);
     dbg!(crate::content::official::players_handbook::feats::alert::Alert::description());
+    let reg = Registry::new();
+    dbg!(reg);
 }

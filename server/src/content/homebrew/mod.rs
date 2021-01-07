@@ -1,1 +1,1 @@
-macros::registry!("/homebrew");
+macros::register!("/homebrew");

@@ -1,1 +1,1 @@
-macros::registry!("/official/players_handbook/races");
+macros::register!("/official/players_handbook/races");

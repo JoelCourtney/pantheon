@@ -21,7 +21,8 @@ use helpers::*;
 use inflector::Inflector;
 use syn::export::TokenStream2;
 
-/// Generates auto-imports and registry entries for the contents of a directory.
+/// Generates auto-imports for the contents of a directory, and registers the directory under
+/// a pretty-print name.
 ///
 /// Works for both dirs that have directory children and dirs that have file children. It is assumed
 /// that no directory has BOTH, other than the obligitory mod.rs, which is ignored. It should still
@@ -32,24 +33,24 @@ use syn::export::TokenStream2;
 /// Input is either a 2-tuple of strings, containing a path and a name, or a single string path. Such as:
 ///
 /// ```
-/// macros::registry!("/official/players_handbook/races");
+/// macros::register!("/official/players_handbook/races");
 /// ```
 ///
 /// Or:
 ///
 /// ```
-/// macros::registry!(("/official", "Player's Handbook"));
+/// macros::register!(("/official", "Player's Handbook"));
 /// ```
 ///
 /// Use the tuple version only for Book directories that require pretty printing. See
 /// `/content/mod.rs` for file structure and naming convention. I'll repeat some here:
 ///
-/// When using the tuple input, the name arg is the name of the dir *that contains the mod.rs file
+/// When using the tuple input, the second arg is the name of the dir *that contains the mod.rs file
 /// you are registering*. Make this string exactly equal to the name of the book, including capitalization,
-/// spaces, and punctuation. Don't include that directory in the path arg. Make sure the name of the dir
-/// matches the name of the book, in lower snake case with no punctuation.
+/// spaces, and punctuation. Do include that directory in the path arg.
 ///
-/// When using the single-string path input, make it the path of the current dir.
+/// When using the single-string path input, make it the path of the current dir. This will autogenerate
+/// a name to be registered, based on the name of the directory.
 ///
 /// Always start one level down from `content`. I.E., the path will *always* start with one of:
 ///
@@ -57,13 +58,13 @@ use syn::export::TokenStream2;
 /// - "/playtest"
 /// - "/homebrew"
 #[proc_macro]
-pub fn registry(input: TokenStream) -> TokenStream {
+pub fn register(input: TokenStream) -> TokenStream {
     let ast: syn::Expr = syn::parse(input).unwrap();
     let gen = match ast {
         Expr::Tuple(t) => {
             match unwrap_string_tuple(t) {
-                Ok((dir_str, name)) => {
-                    let dir_str = format!("./src/content{}/{}", dir_str.as_str(), convert_to_fs(&*name));
+                Ok((dir_str, _name)) => {
+                    let dir_str = format!("./src/content{}", dir_str.as_str());
                     list_imports(dir_str)
                 }
                 Err(e) => e
@@ -127,29 +128,6 @@ pub fn race(_: TokenStream, input: TokenStream) -> TokenStream {
 #[proc_macro_attribute]
 pub fn feat(_: TokenStream, input: TokenStream) -> TokenStream {
     content_prelude("Feat", input)
-}
-
-fn content_prelude(kind: &str, input: TokenStream) -> TokenStream {
-    // TODO("accept pretty name arg")
-    let ast: syn::DeriveInput = syn::parse(input).unwrap();
-    let pascal_name_ident = ast.ident.clone();
-    let kind_ident = format_ident!("{}", kind);
-    (quote! {
-        use crate::character::*;
-        use crate::modify::*;
-        use crate::feature::*;
-        use crate::misc::*;
-        use crate::describe::*;
-        use macros::{def, describe, choose};
-        use serde::{Serialize, Deserialize};
-        use indoc::indoc;
-
-        #[typetag::serde]
-        impl #kind_ident for #pascal_name_ident {}
-
-        #[derive(Debug, Serialize, Deserialize, Default)]
-        #ast
-    }).into()
 }
 
 /// I'm lazy. Seriously, I'm this lazy.

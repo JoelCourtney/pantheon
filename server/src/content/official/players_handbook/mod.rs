@@ -1,1 +1,1 @@
-macros::registry!(("/official", "Player's Handbook"));
+macros::register!(("/official/players_handbook", "Player's Handbook"));
