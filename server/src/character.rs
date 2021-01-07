@@ -39,7 +39,7 @@ pub struct StoredCharacter {
 
     alignment: Alignment,
 
-    pub(crate) race: Box<dyn Race>
+    race: Box<dyn Race>
 }
 
 impl StoredCharacter {
@@ -91,6 +91,9 @@ pub struct Character<'a> {
     pub intelligence_modifier: i8,
     pub wisdom_modifier: i8,
     pub charisma_modifier: i8,
+
+    // INITIATIVE
+    pub initiative: i8,
 
     // SIZE
     pub size: CreatureSize,

@@ -29,7 +29,7 @@ use character::StoredCharacter;
 fn main() {
     let json = std::fs::read_to_string("test.json").unwrap();
     // println!("{}", json);
-    let mut char: StoredCharacter = serde_json::from_str(&json).unwrap();
+    let mut char: StoredCharacter = serde_json::from_str(&json).expect("DESERIALIZATION FAILED");
     // println!("{:?}", char);
 
     // EXAMPLE OF FEATURE CHOICES
