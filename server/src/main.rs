@@ -45,8 +45,7 @@ fn main() {
     {
         let mut res = char.resolve();
         dbg!(&res);
-        dbg!(&res.traits.last().unwrap().choice.choices());
-        res.traits.last_mut().unwrap().choice.choose("Terran");
+        res.traits.last_mut().unwrap().choice.choose("Terran", 0);
     }
     let res = char.resolve();
     dbg!(res);

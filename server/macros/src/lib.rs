@@ -300,30 +300,43 @@ fn process_choose_attribute(name: String, vars: Vec<String>) -> TokenStream2 {
         }
 
         impl Choose for #enum_ident {
-            fn choice<'a>(loc : &'a mut Self) -> Box<dyn Choice + 'a> {
-                Box::new( #choice_ident { loc } )
+            fn choose<'a>(loc: &'a mut Self) -> Box<dyn Choice + 'a> {
+                Box::new( #choice_ident { locs: vec![ loc ] } )
+            }
+            fn choose_multiple<'a>(locs: Vec<&'a mut Self>) -> Box<dyn Choice + 'a> {
+                Box::new( #choice_ident { locs } )
             }
         }
 
         #[derive(Debug)]
-        pub struct #choice_ident <'a> {
-            loc: &'a mut #enum_ident
+        pub struct #choice_ident<'a> {
+            locs: Vec<&'a mut #enum_ident>
         }
     };
-    let mut text = format!("impl Choice for {}Choice<'_> {{\n", name);
-    text.extend("fn choices(&self) -> Vec<&str> {\nvec![".chars());
+    let mut choices = "".to_string();
     for var in &vars {
-        text.extend(format!(r#""{}","#, var).chars());
+        choices.extend(format!(r#""{}","#, var).chars());
     }
-    text.extend("\n]}\nfn choose(&mut self, choice: &str) { \n *self.loc = match choice {\n".chars());
-    for var in vars {
-        text.extend(format!(r#""{}" => {}::{},"#, var, name, var).chars());
+    let choices_tokens: TokenStream2 = choices.parse().unwrap();
+    let mut match_rules = "".to_string();
+    for var in &vars {
+        match_rules.extend(format!(r#""{}" => {}::{},"#, var, name, var).chars());
     }
-    text.extend("_ => unimplemented!() }}}".chars());
-    let rest: TokenStream2 = text.parse().unwrap();
+    let match_rules_tokens: TokenStream2 = match_rules.parse().unwrap();
     acc = quote! {
         #acc
-        #rest
+
+        impl Choice for #choice_ident<'_> {
+            fn choices(&self) -> Vec<&'static str> {
+                vec![ #choices_tokens ]
+            }
+            fn choose(&mut self, choice: &str, index: usize) {
+                **self.locs.get_mut(index).unwrap() = match choice {
+                    #match_rules_tokens
+                    _ => unimplemented!()
+                }
+            }
+        }
     };
     acc
 }
