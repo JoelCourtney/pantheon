@@ -24,7 +24,6 @@ mod feature;
 mod describe;
 mod misc;
 
-use crate::describe::Describe;
 use character::StoredCharacter;
 use content::Registry;
 
@@ -52,7 +51,8 @@ fn main() {
     let res = char.resolve();
     dbg!(res);
     dbg!(&char);
-    dbg!(crate::content::official::players_handbook::feats::alert::Alert::description());
     let reg = Registry::new();
-    dbg!(reg);
+    dbg!(&reg);
+    let human = reg.race("Human");
+    dbg!(human);
 }

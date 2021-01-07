@@ -13,3 +13,4 @@ proc-macro = true
 syn = { version="1.0", features=["full"] }
 quote = "1.0"
 Inflector = {version="*", default-features=false}
+walkdir = "*"
