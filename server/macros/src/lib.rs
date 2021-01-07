@@ -78,7 +78,7 @@ pub fn registry(input: TokenStream) -> TokenStream {
     gen
 }
 
-/// Registers a race struct and pastes some boilerplate code.
+/// Registers a race struct and pastes some boilerplate code. Must be the first line of the file.
 ///
 /// If no name argument is given, the name will be registered as the name of the struct. Otherwise
 /// it will be registered under the name given. This is needed when the name contains spaces, dashes,
@@ -103,6 +103,8 @@ pub fn registry(input: TokenStream) -> TokenStream {
 /// ```
 ///
 /// This will require the dev to impl the Modify, Featured, and Describe traits. See their docs for deats.
+/// While the `macros::` prefix is a little ugly, this macro includes a `use` for all other relevant
+/// macros, so you don't have to do that for future macros used in this file.
 ///
 /// ```
 /// impl Modify for Human {
@@ -128,7 +130,7 @@ pub fn race(_args: TokenStream, input: TokenStream) -> TokenStream {
         use crate::feature::*;
         use crate::misc::*;
         use crate::describe::*;
-        use macros::{def, describe};
+        use macros::{def, describe, choose};
         use serde::{Serialize, Deserialize};
         use indoc::indoc;
 
@@ -232,7 +234,7 @@ pub fn describe(input: TokenStream) -> TokenStream {
 /// two skills or one skill and Thieves' Tools).
 ///
 /// ```
-/// #[class("Example Rogue")]
+/// #[macros::class("Example Rogue")]
 /// struct ExampleRogue {
 ///     choice: ExpertiseChoice
 /// }
