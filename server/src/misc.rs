@@ -1,8 +1,8 @@
 use serde::{Deserialize, Serialize};
 use crate::feature::{Choice, Choose};
-use macros::Choose;
+use macros::choose;
 
-#[derive(Debug, Deserialize, Serialize, Choose)]
+#[choose]
 pub enum CreatureSize {
     Unknown,
     Fine,
@@ -16,7 +16,7 @@ pub enum CreatureSize {
     Colossal
 }
 
-#[derive(Debug, Deserialize, Serialize, Copy, Clone, Choose)]
+#[choose]
 pub enum Alignment {
     LawfulGood,
     LawfulNeutral,
@@ -31,7 +31,7 @@ pub enum Alignment {
     ItsComplicated
 }
 
-#[derive(Debug, Deserialize, Serialize, Choose)]
+#[choose]
 pub enum Ability {
     Strength,
     Dexterity,
@@ -42,7 +42,7 @@ pub enum Ability {
     Unknown
 }
 
-#[derive(Debug, Deserialize, Serialize, Choose)]
+#[choose]
 pub enum Skill {
     Acrobatics,
     AnimalHandling,
@@ -65,7 +65,7 @@ pub enum Skill {
     Unknown
 }
 
-#[derive(Debug, Deserialize, Serialize, Choose)]
+#[choose]
 pub enum SavingThrow {
     Strength,
     Dexterity,
@@ -77,7 +77,7 @@ pub enum SavingThrow {
     Unknown,
 }
 
-#[derive(Debug, Deserialize, Serialize, Choose)]
+#[choose]
 pub enum ProficiencyType {
     NONE,
     HALF,
@@ -86,7 +86,7 @@ pub enum ProficiencyType {
     Unknown
 }
 
-#[derive(Choose, Debug, Deserialize, Serialize, Clone)]
+#[choose]
 pub enum Language {
     Abyssal,
     Aquan,

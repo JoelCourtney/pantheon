@@ -1,6 +1,4 @@
-macros::race!("Human");
-
-#[derive(Debug, Serialize, Deserialize, Default)]
+#[macros::race]
 struct Human {
     extra_language: Language,
 }

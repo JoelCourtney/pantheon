@@ -80,25 +80,48 @@ pub fn registry(input: TokenStream) -> TokenStream {
 
 /// Registers a race struct and pastes some boilerplate code.
 ///
-/// Calling this macro at the top of the file is required for all content races. The only argument is
-/// the string name of the race, is you want it displayed to the user. (I.E. "Variant Human", not "VariantHuman"
-/// or "variant_human".
+/// If no name argument is given, the name will be registered as the name of the struct. Otherwise
+/// it will be registered under the name given. This is needed when the name contains spaces, dashes,
+/// or other fancy characters.
 ///
-/// It makes the race implement the Race trait, which does nothing except require that the dev implements
-/// Featured, Modify, Debug, Deserialize, and Serialize. Note that you must also implement Default,
-/// but it is required through other means, and the error message may be a little esoteric if you don't.
+/// Calling this macro is required for all race structs. Your race will not be useable by the user
+/// otherwise. It applies the derive macro for Debug, Serialize, Deserialize, and Default for you.
+/// If you want to provide your own impls for those four, you can't. That feature will be implemented
+/// later if needed.
 ///
-/// For almost all races, Debug, Deserialize, Serialize, and Default can be implemented with the
-/// derive macro.
+/// This also pastes in common and required use declarations.
 ///
-/// This also pastes in some use declarations for character, modify, feature, Deserialze, and Serialize.
-#[proc_macro]
-pub fn race(input: TokenStream) -> TokenStream {
-    let ast: syn::LitStr = syn::parse(input).unwrap();
-    let pretty_name = ast.value();
-    let snake_name = convert_to_fs(&pretty_name);
-    let pascal_name = snake_name.to_pascal_case();
-    let name_ident = format_ident!("{}", pascal_name);
+/// # Example
+///
+/// Copied from players_handbook/races/human.rs:
+///
+/// ```
+/// #[macros::race]
+/// struct Human {
+///     extra_language: Language
+/// }
+/// ```
+///
+/// This will require the dev to impl the Modify, Featured, and Describe traits. See their docs for deats.
+///
+/// ```
+/// impl Modify for Human {
+///     // ...
+/// }
+/// impl Featured for Human {
+///     // ...
+/// }
+/// describe! { r"#
+///     # Human
+///
+///     yes hello i am human
+/// "# }
+/// ```
+#[proc_macro_attribute]
+pub fn race(_args: TokenStream, input: TokenStream) -> TokenStream {
+    // TODO("accept pretty name arg")
+    let ast: syn::DeriveInput = syn::parse(input).unwrap();
+    let pascal_name_ident = ast.ident.clone();
     (quote! {
         use crate::character::*;
         use crate::modify::*;
@@ -110,7 +133,10 @@ pub fn race(input: TokenStream) -> TokenStream {
         use indoc::indoc;
 
         #[typetag::serde]
-        impl Race for #name_ident {}
+        impl Race for #pascal_name_ident {}
+
+        #[derive(Debug, Serialize, Deserialize, Default)]
+        #ast
     }).into()
 }
 
@@ -194,16 +220,66 @@ pub fn describe(input: TokenStream) -> TokenStream {
     }
 }
 
-#[proc_macro_derive(Choose)]
-pub fn derive_choose(input: TokenStream) -> TokenStream {
+/// Derives a bunch of boilerplate to make the enum chooseable through the Choose trait.
+///
+/// This allows an enum to be displayed as a dropdown for the user to pick something from. It would
+/// be a derive macro, but I also wanted to apply a derive macro to the input, so its an attribute.
+///
+///
+/// # Example
+///
+/// Suppose the dev wants to give the user a choice (for example Rogue expertise: choice between
+/// two skills or one skill and Thieves' Tools).
+///
+/// ```
+/// #[class("Example Rogue")]
+/// struct ExampleRogue {
+///     choice: ExpertiseChoice
+/// }
+/// ```
+///
+/// Below is the definition of ExpertiseChoice. Note the `Unknown` variant, which is **required**.
+///
+/// ```
+/// #[choose]
+/// enum ExpertiseChoice {
+///     TwoSkills,
+///     OnePlusThievesTools,
+///     Unknown
+/// }
+/// ```
+///
+/// The enum can now be used to give the user a choice in the Featured trait.
+///
+/// ```
+/// impl Featured for ExampleRogue {
+///     fn features(&self) -> Vec<Feature> {
+///         let mut features = vec![
+///             Feature {
+///                 name: "Expertise",
+///                 description: "do the expertise thing",
+///                 choice: ExpertiseChoice::choose(&mut self.choice)
+///             },
+///         ];
+///         // ... add more choice features depending on the result. See rogue.rs for full example.
+///     }
+/// }
+/// ```
+#[proc_macro_attribute]
+pub fn choose(_: TokenStream, input: TokenStream) -> TokenStream {
     let ast: syn::DeriveInput = syn::parse(input).unwrap();
-    let ident = ast.ident;
-    (match ast.data {
+    let ident = ast.ident.clone();
+    (match ast.data.clone() {
         Data::Enum(syn::DataEnum { variants, .. }) => {
             let vars = variants.iter().map( |var| {
                 var.ident.to_string()
             }).collect();
-            process_derive_choose(ident.to_string(), vars)
+            let process = process_choose_attribute(ident.to_string(), vars);
+            quote! {
+                #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
+                #ast
+                #process
+            }
         }
         _ => quote! {
             compile_error("Choose derive only valid for enums");
@@ -211,7 +287,7 @@ pub fn derive_choose(input: TokenStream) -> TokenStream {
     }).into()
 }
 
-fn process_derive_choose(name: String, vars: Vec<String>) -> TokenStream2 {
+fn process_choose_attribute(name: String, vars: Vec<String>) -> TokenStream2 {
     let enum_ident = format_ident!("{}", name);
     let choice_ident = format_ident!("{}Choice", name);
     let mut acc = quote! {
