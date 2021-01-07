@@ -224,7 +224,7 @@ pub fn describe(input: TokenStream) -> TokenStream {
             ).parse().unwrap();
             (quote! {
                 impl Describe for #pascal_ident {
-                    fn describe() -> &'static str {
+                    fn description_with_title() -> &'static str {
                         #string_part
                     }
                 }

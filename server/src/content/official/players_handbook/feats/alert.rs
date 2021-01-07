@@ -1,5 +1,5 @@
 #[macros::feat]
-struct Alert;
+pub struct Alert;
 
 impl Modify for Alert {
     fn modify(&self, c: &mut Character) {
@@ -12,7 +12,7 @@ impl Featured for Alert {
         vec![
             Feature {
                 name: "Alert",
-                description: Self::describe_titleless(),
+                description: Self::description(),
                 ..def!()
             }
         ]

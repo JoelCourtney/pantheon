@@ -24,6 +24,7 @@ mod feature;
 mod describe;
 mod misc;
 
+use crate::describe::Describe;
 use character::StoredCharacter;
 
 fn main() {
@@ -50,4 +51,5 @@ fn main() {
     let res = char.resolve();
     dbg!(res);
     dbg!(&char);
+    dbg!(crate::content::official::players_handbook::feats::alert::Alert::description());
 }
