@@ -11,7 +11,7 @@ pub struct Feature<'a> {
     pub description: &'static str,
 
     #[serde(skip)]
-    pub choice: Box<dyn Choice + 'a>
+    pub choose: Box<dyn Choice + 'a>
 }
 
 pub type Trait<'a> = Feature<'a>;

@@ -79,10 +79,10 @@ pub enum SavingThrow {
 
 #[choose]
 pub enum ProficiencyType {
-    NONE,
-    HALF,
-    SINGLE,
-    DOUBLE,
+    None,
+    Half,
+    Single,
+    Double,
     Unknown
 }
 

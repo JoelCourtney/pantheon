@@ -1,6 +1,6 @@
 macros::register!("/");
 
-macros::registry!(4);
+macros::registry!(5);
 
 /// Contains where to find a particular file.
 ///

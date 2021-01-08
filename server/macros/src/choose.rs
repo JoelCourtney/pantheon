@@ -11,7 +11,7 @@ pub(crate) fn choose(ast: syn::DeriveInput) -> TokenStream {
             }).collect();
             let process = process_choose_attribute(ident.to_string(), vars);
             quote! {
-                #[derive(Debug, Serialize, Deserialize, Copy, Clone)]
+                #[derive(Debug, Serialize, Deserialize, Copy, Clone, Hash)]
                 #ast
                 #process
             }
@@ -102,7 +102,9 @@ pub(crate) fn dynamic_choose(ast: syn::ItemTrait) -> TokenStream {
                 content::#get_all_ident()
             }
             fn choose(&mut self, choice: &str, index: usize) {
-                **self.locs.get_mut(index).unwrap() = content::#lower_ident(choice).unwrap()
+                **self.locs.get_mut(index).unwrap() = content::#lower_ident(choice).expect(
+                    &format!("content not found: {}", choice)
+                )
             }
         }
 

@@ -46,7 +46,7 @@ fn main() {
     {
         let mut res = char.resolve();
         dbg!(&res);
-        res.traits.last_mut().unwrap().choice.choose("Terran", 0);
+        res.traits.last_mut().unwrap().choose.choose("Terran", 0);
     }
     let res = char.resolve();
     dbg!(res);
@@ -59,7 +59,7 @@ fn main() {
     use feature::Choose;
     let mut choice = Box::<dyn Race>::choose(&mut race);
     dbg!(choice.choices());
-    choice.choose("Human", 0);
+    choice.choose("Variant Human", 0);
     dbg!(choice);
     dbg!(race);
 }

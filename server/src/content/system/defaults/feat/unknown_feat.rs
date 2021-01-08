@@ -1,4 +1,4 @@
-#[macros::feat]
+#[macros::feat("Unknown Feat")]
 pub struct UnknownFeat;
 
 impl Modify for UnknownFeat {}
