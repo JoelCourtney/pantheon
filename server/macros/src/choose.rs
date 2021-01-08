@@ -73,3 +73,43 @@ fn process_choose_attribute(name: String, vars: Vec<String>) -> TokenStream2 {
     };
     acc
 }
+
+pub(crate) fn dynamic_choose(ast: syn::ItemTrait) -> TokenStream {
+    let ident = ast.ident.clone();
+    let lower_ident = format_ident!("{}", ident.to_string().to_lowercase());
+    let get_all_ident = format_ident!("get_all_{}", lower_ident);
+    let choice_ident = format_ident!("{}Choice", ident);
+    let unknown_string = format!("Unknown{}", ident.to_string());
+    (quote! {
+        #[typetag::serde]
+        #ast
+        impl Choose for Box<dyn #ident> {
+            fn choose<'a>(loc: &'a mut Self) -> Box<dyn Choice + 'a> {
+                Box::new( #choice_ident { locs: vec![ loc ] } )
+            }
+            fn choose_multiple<'a>(locs: Vec<&'a mut Self>) -> Box<dyn Choice + 'a> {
+                Box::new( #choice_ident { locs } )
+            }
+        }
+
+        #[derive(Debug)]
+        struct #choice_ident<'a> {
+            pub locs: Vec<&'a mut Box<dyn #ident>>
+        }
+
+        impl Choice for #choice_ident<'_> {
+            fn choices(&self) -> Vec<&'static str> {
+                content::#get_all_ident()
+            }
+            fn choose(&mut self, choice: &str, index: usize) {
+                **self.locs.get_mut(index).unwrap() = content::#lower_ident(choice).unwrap()
+            }
+        }
+
+        impl Default for Box<dyn #ident> {
+            fn default() -> Self {
+                content::#lower_ident(#unknown_string).expect(&format!("{} cant be found", #unknown_string))
+            }
+        }
+    }).into()
+}

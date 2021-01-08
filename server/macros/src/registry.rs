@@ -1,6 +1,7 @@
 use std::collections::{HashMap, HashSet};
 use proc_macro::TokenStream;
 use quote::{quote, format_ident};
+use inflector::Inflector;
 
 pub(crate) fn registry(declared_content_files: usize) -> TokenStream {
     let mut counted_content_files: usize = 0;
@@ -10,14 +11,13 @@ pub(crate) fn registry(declared_content_files: usize) -> TokenStream {
     let mut content_functions = quote! {};
     let mut registry_statics = quote! {};
     for (key, entries) in &registration {
-        let type_ident_plural = format_ident!("{}", key);
-        let type_string_upper = string_to_content_type(&key);
+        let type_string_upper = key.to_pascal_case();
         let type_ident_upper = format_ident!("{}", type_string_upper);
-        let type_string_lower = type_string_upper.to_lowercase();
+        let type_string_lower = key.to_string();
         let type_ident_lower= format_ident!("{}", type_string_lower);
         let static_ident = format_ident!("{}", key.to_uppercase());
 
-        let get_all_ident = format_ident!("get_all_{}", type_ident_plural);
+        let get_all_ident = format_ident!("get_all_{}", type_ident_lower);
         content_functions = quote! {
             #content_functions
             pub fn #type_ident_lower(search_name: &str) -> Option<Box<dyn #type_ident_upper>> {
@@ -41,12 +41,12 @@ pub(crate) fn registry(declared_content_files: usize) -> TokenStream {
 
             registry_static_entries = quote! {
                 #registry_static_entries
-                #collection_ident::#source_ident::#type_ident_plural::#content_ident::CONTENT_NAME => (
+                #collection_ident::#source_ident::#type_ident_lower::#content_ident::CONTENT_NAME => (
                     Registration {
                         collection: #collection_ident::COLLECTION_NAME,
                         source: #collection_ident::#source_ident::COLLECTION_NAME
                     },
-                    #collection_ident::#source_ident::#type_ident_plural::#content_ident::new as fn() -> Box<dyn #type_ident_upper>
+                    #collection_ident::#source_ident::#type_ident_lower::#content_ident::new as fn() -> Box<dyn #type_ident_upper>
                 ),
             }
         }
@@ -60,21 +60,16 @@ pub(crate) fn registry(declared_content_files: usize) -> TokenStream {
     }
     if counted_content_files == declared_content_files {
         (quote! {
-            #[derive(Debug)]
-            pub struct Registry;
-
-            lazy_static! {
-                #registry_statics
-            }
-
             use std::collections::HashMap;
             use crate::character::*;
             use maplit::hashmap;
             use lazy_static::lazy_static;
 
-            impl Registry {
-                #content_functions
+            lazy_static! {
+                #registry_statics
             }
+
+            #content_functions
         }).into()
     } else {
         format!(
@@ -83,14 +78,6 @@ pub(crate) fn registry(declared_content_files: usize) -> TokenStream {
             counted_content_files
         ).parse().unwrap()
     }
-}
-
-fn string_to_content_type(str: &str) -> String {
-    (match str {
-        "races" => "Race",
-        "feats" => "Feat",
-        _ => panic!("unknown content type")
-    }).to_string()
 }
 
 fn collect_registration() -> HashMap<
@@ -106,27 +93,29 @@ fn collect_registration() -> HashMap<
 
     let mut result: HashMap<String, HashSet<(String, String, String)>> = HashMap::new();
     for entry in WalkDir::new("src/content") {
-        let entry = entry.unwrap();
-        let file_name = entry.file_name().to_str().unwrap();
+        let entry = entry.expect("expected dir entry");
+        let file_name = entry.file_name().to_str().expect("bad os str");
         if file_name.rfind(".rs") != None && file_name != "mod.rs" {
             let comps: Vec<std::path::Component> = entry.path().components().collect();
-            let collection = match comps.get(2).unwrap() {
-                Normal(s) => s.to_str().unwrap().to_owned(),
+            let collection = match comps.get(2).expect("not enough components: 2") {
+                Normal(s) => s.to_str().expect("bad os str: 2").to_owned(),
                 _ => panic!()
             };
-            let source = match comps.get(3).unwrap() {
-                Normal(s) => s.to_str().unwrap().to_owned(),
+            let source = match comps.get(3).expect("not enough components: 3") {
+                Normal(s) => s.to_str().expect("bad os str: 3").to_owned(),
                 _ => panic!()
             };
-            let typ = match comps.get(4).unwrap() {
-                Normal(s) => s.to_str().unwrap().to_owned(),
+            let typ = match comps.get(4).expect("not enough components: 4") {
+                Normal(s) => s.to_str().expect("bad os str: 4").to_owned(),
                 _ => panic!()
             };
             let content = file_name[..file_name.len()-3].to_string();
             if !result.contains_key(&typ) {
                 result.insert(typ.to_owned(), HashSet::new());
             }
-            result.get_mut(&typ).unwrap().insert((collection.to_owned(), source.to_owned(), content.to_owned()));
+            result.get_mut(&typ)
+                .expect("how did we get here")
+                .insert((collection.to_owned(), source.to_owned(), content.to_owned()));
         }
     }
     result

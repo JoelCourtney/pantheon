@@ -33,8 +33,8 @@ use quote::quote;
 /// # Example
 ///
 /// Don't use this macro yourself. It should only be used in `content/mod.rs`.
-#[proc_macro_attribute]
-pub fn registry(args: TokenStream, _: TokenStream) -> TokenStream {
+#[proc_macro]
+pub fn registry(args: TokenStream) -> TokenStream {
     let declared_content_files: usize = syn::parse::<syn::LitInt>(args).unwrap().base10_parse::<usize>().unwrap();
     registry::registry(declared_content_files)
 }
@@ -51,7 +51,7 @@ pub fn registry(args: TokenStream, _: TokenStream) -> TokenStream {
 /// Input is either a 2-tuple of strings, containing a path and a name, or a single string path. Such as:
 ///
 /// ```
-/// macros::register!("/official/players_handbook/races");
+/// macros::register!("/official/players_handbook/race");
 /// ```
 ///
 /// Or:
@@ -75,6 +75,7 @@ pub fn registry(args: TokenStream, _: TokenStream) -> TokenStream {
 /// - "/official"
 /// - "/playtest"
 /// - "/homebrew"
+/// - "/system"
 #[proc_macro]
 pub fn register(input: TokenStream) -> TokenStream {
     let ast: syn::Expr = syn::parse(input).unwrap();
@@ -96,7 +97,7 @@ pub fn register(input: TokenStream) -> TokenStream {
 ///
 /// # Example
 ///
-/// Copied from players_handbook/races/human.rs:
+/// Copied from players_handbook/race/human.rs:
 ///
 /// ```
 /// #[macros::race]
@@ -163,7 +164,7 @@ pub fn def(_: TokenStream) -> TokenStream {
 ///
 /// ## Examples
 ///
-/// See `/official/players_handbook/races/human.rs` for a full example. Small example:
+/// See `/official/players_handbook/race/human.rs` for a full example. Small example:
 ///
 /// ```
 /// describe! { r#"
@@ -237,4 +238,10 @@ pub fn describe(input: TokenStream) -> TokenStream {
 pub fn choose(_: TokenStream, input: TokenStream) -> TokenStream {
     let ast: syn::DeriveInput = syn::parse(input).unwrap();
     choose::choose(ast)
+}
+
+#[proc_macro_attribute]
+pub fn dynamic_choose(_: TokenStream, input: TokenStream) -> TokenStream {
+    let ast: syn::ItemTrait = syn::parse(input).expect("expected trait declaration");
+    choose::dynamic_choose(ast)
 }

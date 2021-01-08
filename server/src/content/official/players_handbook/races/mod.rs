@@ -1,1 +1,0 @@
-macros::register!("/official/players_handbook/races");

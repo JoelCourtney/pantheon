@@ -25,7 +25,6 @@ mod describe;
 mod misc;
 
 use character::StoredCharacter;
-use content::Registry;
 use crate::character::Race;
 
 fn main() {
@@ -52,11 +51,11 @@ fn main() {
     let res = char.resolve();
     dbg!(res);
     dbg!(&char);
-    let human = Registry::race("Human");
+    let human = content::race("Human");
     dbg!(human);
-    dbg!(Registry::get_all_races());
+    dbg!(content::get_all_race());
 
-    let mut race: Box<dyn Race> = Box::new(content::system::defaults::races::unknown_race::UnknownRace {} );
+    let mut race: Box<dyn Race> = Box::default();
     use feature::Choose;
     let mut choice = Box::<dyn Race>::choose(&mut race);
     dbg!(choice.choices());

@@ -4,7 +4,8 @@ use crate::modify::*;
 use crate::feature::{Featured, Feature, Choose, Choice};
 use crate::misc::*;
 use std::fmt::Debug;
-use crate::content::Registry;
+use crate::content;
+use macros::dynamic_choose;
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct StoredCharacter {
@@ -100,33 +101,8 @@ pub struct Character<'a> {
     pub features: Vec<Feature<'a>>,
 }
 
-#[typetag::serde]
+#[dynamic_choose]
 pub trait Race: Modify + Featured + Debug {}
 
-impl Choose for Box<dyn Race> {
-    fn choose<'a>(loc: &'a mut Self) -> Box<dyn Choice + 'a> {
-        Box::new( RaceChoice { locs: vec![ loc ] } )
-    }
-
-    fn choose_multiple<'a>(locs: Vec<&'a mut Self>) -> Box<dyn Choice + 'a> {
-        Box::new( RaceChoice { locs } )
-    }
-}
-
-#[derive(Debug)]
-struct RaceChoice<'a> {
-    pub locs: Vec<&'a mut Box<dyn Race>>
-}
-
-impl Choice for RaceChoice<'_> {
-    fn choices(&self) -> Vec<&'static str> {
-        Registry::get_all_races()
-    }
-
-    fn choose(&mut self, choice: &str, index: usize) {
-        **self.locs.get_mut(index).unwrap() = Registry::race(choice).unwrap();
-    }
-}
-
-#[typetag::serde]
+#[dynamic_choose]
 pub trait Feat: Modify + Featured + Debug {}
