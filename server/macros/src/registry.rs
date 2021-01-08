@@ -7,32 +7,31 @@ pub(crate) fn registry(declared_content_files: usize) -> TokenStream {
 
     let registration = collect_registration();
 
-    let mut registry_struct_fields = quote! {};
-    let mut content_constructor_functions = quote! {};
-    let mut registry_constructor_fields = quote! {};
+    let mut content_functions = quote! {};
+    let mut registry_statics = quote! {};
     for (key, entries) in &registration {
         let type_ident_plural = format_ident!("{}", key);
         let type_string_upper = string_to_content_type(&key);
         let type_ident_upper = format_ident!("{}", type_string_upper);
         let type_string_lower = type_string_upper.to_lowercase();
         let type_ident_lower= format_ident!("{}", type_string_lower);
+        let static_ident = format_ident!("{}", key.to_uppercase());
 
-        registry_struct_fields = quote! {
-            #registry_struct_fields
-            #type_ident_plural: HashMap<&'static str, (Registration, fn() -> Box<dyn #type_ident_upper>)>,
-        };
-
-        content_constructor_functions = quote! {
-            #content_constructor_functions
-            pub fn #type_ident_lower(&self, search_name: &str) -> Option<Box<dyn #type_ident_upper>> {
-                match self.#type_ident_plural.get(search_name) {
+        let get_all_ident = format_ident!("get_all_{}", type_ident_plural);
+        content_functions = quote! {
+            #content_functions
+            pub fn #type_ident_lower(search_name: &str) -> Option<Box<dyn #type_ident_upper>> {
+                match #static_ident.get(search_name) {
                     Some((_, construct)) => Some(construct()),
                     None => None
                 }
             }
+            pub fn #get_all_ident() -> Vec<&'static str> {
+                #static_ident.keys().copied().collect()
+            }
         };
 
-        let mut registry_constructor_field_entries = quote! {};
+        let mut registry_static_entries = quote! {};
         for (collection, source, content) in entries {
             counted_content_files += 1;
 
@@ -40,8 +39,8 @@ pub(crate) fn registry(declared_content_files: usize) -> TokenStream {
             let source_ident = format_ident!("{}", source);
             let content_ident = format_ident!("{}", content);
 
-            registry_constructor_field_entries = quote! {
-                #registry_constructor_field_entries
+            registry_static_entries = quote! {
+                #registry_static_entries
                 #collection_ident::#source_ident::#type_ident_plural::#content_ident::CONTENT_NAME => (
                     Registration {
                         collection: #collection_ident::COLLECTION_NAME,
@@ -51,32 +50,30 @@ pub(crate) fn registry(declared_content_files: usize) -> TokenStream {
                 ),
             }
         }
-        registry_constructor_fields = quote! {
-            #registry_constructor_fields
-            #type_ident_plural: hashmap! {
-                #registry_constructor_field_entries
-            },
+        registry_statics = quote! {
+            #registry_statics
+            #[derive(Debug)]
+            static ref #static_ident: HashMap<&'static str, (Registration, fn() -> Box<dyn #type_ident_upper>)> = hashmap! {
+                #registry_static_entries
+            };
         };
     }
     if counted_content_files == declared_content_files {
         (quote! {
             #[derive(Debug)]
-            pub struct Registry {
-                #registry_struct_fields
+            pub struct Registry;
+
+            lazy_static! {
+                #registry_statics
             }
 
             use std::collections::HashMap;
             use crate::character::*;
             use maplit::hashmap;
+            use lazy_static::lazy_static;
 
             impl Registry {
-                pub fn new() -> Self {
-                    Registry {
-                        #registry_constructor_fields
-                    }
-                }
-
-                #content_constructor_functions
+                #content_functions
             }
         }).into()
     } else {

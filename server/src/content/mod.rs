@@ -100,5 +100,5 @@ struct Registration {
 /// Content created this way will have default values for all of their fields. The only other way
 /// to create these objects is through deserialization from a json file, which can contain
 /// non-default values.
-#[macros::registry(2)]
+#[macros::registry(4)]
 pub struct Registry;

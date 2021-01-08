@@ -21,6 +21,7 @@ name = "dndcent"
 version = "0.1.0"
 dependencies = [
  "indoc",
+ "lazy_static",
  "macros",
  "maplit",
  "serde",

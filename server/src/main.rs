@@ -26,6 +26,7 @@ mod misc;
 
 use character::StoredCharacter;
 use content::Registry;
+use crate::character::Race;
 
 fn main() {
     let json = std::fs::read_to_string("test.json").unwrap();
@@ -51,8 +52,15 @@ fn main() {
     let res = char.resolve();
     dbg!(res);
     dbg!(&char);
-    let reg = Registry::new();
-    dbg!(&reg);
-    let human = reg.race("Human");
+    let human = Registry::race("Human");
     dbg!(human);
+    dbg!(Registry::get_all_races());
+
+    let mut race: Box<dyn Race> = Box::new(content::system::defaults::races::unknown_race::UnknownRace {} );
+    use feature::Choose;
+    let mut choice = Box::<dyn Race>::choose(&mut race);
+    dbg!(choice.choices());
+    choice.choose("Human", 0);
+    dbg!(choice);
+    dbg!(race);
 }

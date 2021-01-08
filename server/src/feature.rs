@@ -17,8 +17,8 @@ pub struct Feature<'a> {
 pub type Trait<'a> = Feature<'a>;
 
 pub trait Choice: Debug {
-    fn choices(&self) -> Vec<&'static str> { vec![] }
-    fn choose(&mut self, _choice: &str, _index: usize) {}
+    fn choices(&self) -> Vec<&'static str>;
+    fn choose(&mut self, choice: &str, index: usize);
 }
 
 impl Default for Box<dyn Choice> {
@@ -31,7 +31,10 @@ impl Default for Box<dyn Choice> {
 
 #[derive(Debug)]
 pub struct EmptyChoice;
-impl Choice for EmptyChoice {}
+impl Choice for EmptyChoice {
+    fn choices(&self) -> Vec<&'static str> { vec![] }
+    fn choose(&mut self, _choice: &str, _index: usize) {}
+}
 
 pub trait Choose {
     fn choose<'a>(_: &'a mut Self) -> Box<dyn Choice + 'a>;

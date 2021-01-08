@@ -12,5 +12,6 @@ serde_json = "1"
 typetag = "0.1.6"
 indoc = "1.0"
 maplit = "*"
+lazy_static = "1.4.0"
 
 macros = { path = "macros" }

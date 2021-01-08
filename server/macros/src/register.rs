@@ -35,8 +35,8 @@ fn list_imports(dir_str: String) -> TokenStream2 {
         Ok(p) => p,
         Err(_e) => {
             return quote! {
-                compile_error("args must be path to a directory");
-                compile_error(#{e.to_string()})
+                compile_error!("args must be path to a directory");
+                compile_error!(#{e.to_string()});
             }
         }
     };

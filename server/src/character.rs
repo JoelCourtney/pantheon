@@ -1,28 +1,10 @@
 use serde::{Deserialize, Serialize};
 
 use crate::modify::*;
-use crate::feature::{Featured, Feature};
+use crate::feature::{Featured, Feature, Choose, Choice};
 use crate::misc::*;
 use std::fmt::Debug;
-
-#[typetag::serde]
-pub trait Race: Modify + Featured + Debug {}
-
-#[typetag::serde]
-pub trait Class: Modify + Featured + Debug {}
-
-#[typetag::serde]
-pub trait Subclass: Modify + Featured + Debug {}
-
-#[typetag::serde]
-pub trait Background: Modify + Featured + Debug {}
-
-#[typetag::serde]
-pub trait Feat: Modify + Featured + Debug {
-}
-
-#[typetag::serde]
-pub trait Item: Modify + Featured + Debug {}
+use crate::content::Registry;
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct StoredCharacter {
@@ -117,3 +99,34 @@ pub struct Character<'a> {
     pub traits: Vec<Feature<'a>>,
     pub features: Vec<Feature<'a>>,
 }
+
+#[typetag::serde]
+pub trait Race: Modify + Featured + Debug {}
+
+impl Choose for Box<dyn Race> {
+    fn choose<'a>(loc: &'a mut Self) -> Box<dyn Choice + 'a> {
+        Box::new( RaceChoice { locs: vec![ loc ] } )
+    }
+
+    fn choose_multiple<'a>(locs: Vec<&'a mut Self>) -> Box<dyn Choice + 'a> {
+        Box::new( RaceChoice { locs } )
+    }
+}
+
+#[derive(Debug)]
+struct RaceChoice<'a> {
+    pub locs: Vec<&'a mut Box<dyn Race>>
+}
+
+impl Choice for RaceChoice<'_> {
+    fn choices(&self) -> Vec<&'static str> {
+        Registry::get_all_races()
+    }
+
+    fn choose(&mut self, choice: &str, index: usize) {
+        **self.locs.get_mut(index).unwrap() = Registry::race(choice).unwrap();
+    }
+}
+
+#[typetag::serde]
+pub trait Feat: Modify + Featured + Debug {}
