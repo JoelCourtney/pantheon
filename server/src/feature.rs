@@ -39,4 +39,7 @@ impl Choice for EmptyChoice {
 
 pub trait Choose {
     fn choose<'a>(&'a mut self) -> Box<dyn Choice + 'a>;
+    fn choose_unique<'a>(&'a mut self) -> Box<dyn Choice + 'a>;
+    // fn choose_from<'a>(&'a mut self, from: Vec<&'static str>) -> Box<dyn Choice + 'a>;
+    // fn choose_except<'a>(&'a mut self, except: Vec<&'static str>) -> Box<dyn Choice + 'a>;
 }

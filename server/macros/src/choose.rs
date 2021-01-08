@@ -11,7 +11,7 @@ pub(crate) fn choose(ast: syn::DeriveInput) -> TokenStream {
             }).collect();
             let process = process_choose_attribute(ident.to_string(), vars);
             quote! {
-                #[derive(Debug, Serialize, Deserialize, Copy, Clone, Hash)]
+                #[derive(Debug, Serialize, Deserialize, Copy, Clone, Hash, Eq, PartialEq)]
                 #ast
                 #process
             }
@@ -38,6 +38,9 @@ fn process_choose_attribute(name: String, vars: Vec<String>) -> TokenStream2 {
             fn choose<'a>(&'a mut self) -> Box<dyn Choice + 'a> {
                 Box::new( #choice_ident { loc: self } )
             }
+            fn choose_unique<'a>(&'a mut self) -> Box<dyn Choice + 'a> {
+                self.choose()
+            }
         }
 
         #[derive(Debug)]
@@ -47,7 +50,8 @@ fn process_choose_attribute(name: String, vars: Vec<String>) -> TokenStream2 {
 
         #[derive(Debug)]
         pub struct #choice_array_ident<'a> {
-            locs: Vec<&'a mut #enum_ident>
+            locs: Vec<&'a mut #enum_ident>,
+            unique: bool
         }
     };
     for i in 2..max_length+1 {
@@ -56,7 +60,16 @@ fn process_choose_attribute(name: String, vars: Vec<String>) -> TokenStream2 {
             #acc
             impl Choose for [#enum_ident; #size] {
                 fn choose<'a>(&'a mut self) -> Box<dyn Choice + 'a> {
-                    Box::new( #choice_array_ident { locs: self.iter_mut().collect() } )
+                    Box::new( #choice_array_ident {
+                        locs: self.iter_mut().collect(),
+                        unique: false
+                    } )
+                }
+                fn choose_unique<'a>(&'a mut self) -> Box<dyn Choice + 'a> {
+                    Box::new( #choice_array_ident {
+                        locs: self.iter_mut().collect(),
+                        unique: true
+                    } )
                 }
             }
         };
@@ -69,12 +82,15 @@ fn process_choose_attribute(name: String, vars: Vec<String>) -> TokenStream2 {
     }
     let choices_tokens: TokenStream2 = choices.parse().unwrap();
     let mut match_rules = "".to_string();
+    let mut reverse_match_rules = "".to_string();
     for var in &vars {
         if var != "Unknown" {
-            match_rules.extend(format!(r#""{}" => {}::{},"#, var, name, var).chars());
+            match_rules.extend(format!(r#""{}" => {}::{},{}"#, var, name, var, "\n").chars());
         }
+        reverse_match_rules.extend(format!(r#"{}::{} => "{}",{}"#, name, var, var, "\n").chars());
     }
     let match_rules_tokens: TokenStream2 = match_rules.parse().unwrap();
+    let reverse_match_rules_tokens: TokenStream2 = reverse_match_rules.parse().unwrap();
     acc = quote! {
         #acc
 
@@ -100,7 +116,29 @@ fn process_choose_attribute(name: String, vars: Vec<String>) -> TokenStream2 {
         impl Choice for #choice_array_ident<'_> {
             fn choices(&self, index: usize) -> Vec<&'static str> {
                 if index < self.locs.len() {
-                    vec! [ #choices_tokens ]
+                    if !self.unique {
+                        vec! [ #choices_tokens ]
+                    } else {
+                        let current_choices: Vec<&'static str> = self.locs.iter().filter_map(
+                            |v| {
+                                if *v != self.locs[index] {
+                                    Some(match *v {
+                                        #reverse_match_rules_tokens
+                                        _ => unimplemented!()
+                                    })
+                                } else {
+                                    None
+                                }
+                            }
+                        ).collect();
+                        vec! [ #choices_tokens ].iter().filter_map(
+                            |v| if current_choices.iter().all(|w| v != w) {
+                                Some(*v)
+                            } else {
+                                None
+                            }
+                        ).collect()
+                    }
                 } else {
                     unimplemented!()
                 }
@@ -131,19 +169,35 @@ pub(crate) fn dynamic_choose(ast: syn::ItemTrait) -> TokenStream {
         #ast
         impl Choose for Box<dyn #ident> {
             fn choose<'a>(&'a mut self) -> Box<dyn Choice + 'a> {
-                Box::new( #choice_ident { locs: vec![ self ] } )
+                Box::new( #choice_ident {
+                    locs: vec![ self ],
+                    unique: false,
+                } )
+            }
+            fn choose_unique<'a>(&'a mut self) -> Box<dyn Choice + 'a> {
+                Box::new( #choice_ident {
+                    locs: vec![ self ],
+                    unique: true
+                })
             }
         }
 
         #[derive(Debug)]
         struct #choice_ident<'a> {
-            pub locs: Vec<&'a mut Box<dyn #ident>>
+            pub locs: Vec<&'a mut Box<dyn #ident>>,
+            unique: bool
         }
 
         impl Choice for #choice_ident<'_> {
             fn choices(&self, index: usize) -> Vec<&'static str> {
                 match index {
-                    0 => content::#get_all_ident(),
+                    0 => {
+                        if !self.unique {
+                            content::#get_all_ident()
+                        } else {
+                            content::#get_all_ident()
+                        }
+                    }
                     _ => unimplemented!()
                 }
             }

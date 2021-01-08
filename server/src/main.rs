@@ -32,7 +32,7 @@ fn main() {
     // println!("{}", json);
     let mut char: StoredCharacter = serde_json::from_str(&json).expect("DESERIALIZATION FAILED");
     // println!("{:?}", char);
-
+    //
     // EXAMPLE OF FEATURE CHOICES
     // StoredCharacter is resolved into Character. Then the extra language choice given by human
     // is dereferenced and changed from Unspecified to Auran. This edits the value stored in
@@ -42,28 +42,38 @@ fn main() {
     //
     // Then you have to trash the old Character and re-resolve one from the now-edited StoredCharacter.
     // It sounds dumb, but this is actually really cool.
-    dbg!(&char);
+    // dbg!(&char);
     {
         let mut res = char.resolve();
-        dbg!(&res);
+        // dbg!(&res);
         res.traits.last_mut().unwrap().choose.choose("Terran", 0);
     }
     let res = char.resolve();
-    dbg!(res);
-    dbg!(&char);
-    let human = content::race("Human");
-    dbg!(human);
-    dbg!(content::get_all_race());
+    // dbg!(res);
+    std::mem::drop(res);
+    // dbg!(&char);
+    let _human = content::race("Human");
+    // dbg!(human);
+    // dbg!(content::get_all_race());
 
     let mut race: Box<dyn Race> = Box::default();
     use feature::Choose;
     let mut choice = Box::<dyn Race>::choose(&mut race);
-    dbg!(choice.choices(0));
+    // dbg!(choice.choices(0));
     choice.choose("Variant Human", 0);
-    dbg!(choice);
-    dbg!(&race);
+    std::mem::drop(choice);
+    // dbg!(choice);
+    // dbg!(&race);
     race.features().get_mut(0).unwrap().choose.choose("Dexterity", 1);
-    dbg!(&race);
+    // dbg!(&race);
 
-    dbg!(&race.features().get_mut(0).unwrap().choose.choices(0));
+    // dbg!(&race.features().get_mut(0).unwrap().choose.choices(0));
+    let mut abilities: [misc::Ability; 2] = Default::default();
+    let mut choice = abilities.choose_unique();
+    dbg!(&choice);
+    dbg!(choice.choices(0));
+    choice.choose("Dexterity", 1);
+    dbg!(choice.choices(0));
+    choice.choose("Strength", 0);
+    dbg!(choice.choices(1));
 }

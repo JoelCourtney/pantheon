@@ -23,7 +23,7 @@ impl Featured for VariantHuman {
             Trait {
                 name: "Ability Score Increase",
                 description: "Two different ability scores of your choice increase by 1.",
-                choose: self.abilities.choose()
+                choose: self.abilities.choose_unique()
             },
             Trait {
                 name: "Skills",
