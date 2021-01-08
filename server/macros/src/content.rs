@@ -39,11 +39,14 @@ pub(crate) fn describe(text: String) -> TokenStream {
     }
 }
 
-pub(crate) fn prelude(kind: &str, ast: syn::DeriveInput) -> TokenStream {
+pub(crate) fn prelude(kind: &str, ast: syn::DeriveInput, pretty_name: String) -> TokenStream {
     // TODO("accept pretty name arg")
     let pascal_name_ident = ast.ident.clone();
     let kind_ident = format_ident!("{}", kind);
-    let pretty_name_string = pascal_name_ident.to_string(); // TODO("allow customization")
+    let pretty_name_string = match pretty_name.as_str() {
+        "" => pascal_name_ident.to_string(),
+        _ => pretty_name
+    };
     (quote! {
         use crate::character::*;
         use crate::modify::*;
@@ -78,4 +81,11 @@ fn to_fs_friendly(name: &str) -> String {
 
 fn strip_characters(original : &str, to_strip : &str) -> String {
     original.chars().filter(|&c| !to_strip.contains(c)).collect()
+}
+
+pub(crate) fn pretty_name(args: TokenStream) -> String {
+    match syn::parse::<syn::LitStr>(args) {
+        Ok(s) => s.value(),
+        Err(_) => "".to_string()
+    }
 }

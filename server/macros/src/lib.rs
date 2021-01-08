@@ -124,15 +124,17 @@ pub fn register(input: TokenStream) -> TokenStream {
 /// "# }
 /// ```
 #[proc_macro_attribute]
-pub fn race(_: TokenStream, input: TokenStream) -> TokenStream {
+pub fn race(args: TokenStream, input: TokenStream) -> TokenStream {
+    let pretty = content::pretty_name(args);
     let ast: syn::DeriveInput = syn::parse(input).unwrap();
-    content::prelude("Race", ast)
+    content::prelude("Race", ast, pretty)
 }
 
 #[proc_macro_attribute]
-pub fn feat(_: TokenStream, input: TokenStream) -> TokenStream {
+pub fn feat(args: TokenStream, input: TokenStream) -> TokenStream {
+    let pretty = content::pretty_name(args);
     let ast: syn::DeriveInput = syn::parse(input).unwrap();
-    content::prelude("Feat", ast)
+    content::prelude("Feat", ast, pretty)
 }
 
 /// I'm lazy. Seriously, I'm this lazy.

@@ -1,4 +1,4 @@
-#[macros::race]
+#[macros::race("Unknown Race")]
 pub struct UnknownRace;
 
 impl Modify for UnknownRace {}

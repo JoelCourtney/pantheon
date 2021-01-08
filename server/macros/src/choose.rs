@@ -79,7 +79,7 @@ pub(crate) fn dynamic_choose(ast: syn::ItemTrait) -> TokenStream {
     let lower_ident = format_ident!("{}", ident.to_string().to_lowercase());
     let get_all_ident = format_ident!("get_all_{}", lower_ident);
     let choice_ident = format_ident!("{}Choice", ident);
-    let unknown_string = format!("Unknown{}", ident.to_string());
+    let unknown_string = format!("Unknown {}", ident.to_string());
     (quote! {
         #[typetag::serde]
         #ast
