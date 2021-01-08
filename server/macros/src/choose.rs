@@ -23,8 +23,10 @@ pub(crate) fn choose(ast: syn::DeriveInput) -> TokenStream {
 }
 
 fn process_choose_attribute(name: String, vars: Vec<String>) -> TokenStream2 {
+    let max_length = 2;
     let enum_ident = format_ident!("{}", name);
     let choice_ident = format_ident!("{}Choice", name);
+    let choice_array_ident = format_ident!("{}ArrayChoice", name);
     let mut acc = quote! {
         impl Default for #enum_ident {
             fn default() -> Self {
@@ -33,19 +35,32 @@ fn process_choose_attribute(name: String, vars: Vec<String>) -> TokenStream2 {
         }
 
         impl Choose for #enum_ident {
-            fn choose<'a>(loc: &'a mut Self) -> Box<dyn Choice + 'a> {
-                Box::new( #choice_ident { locs: vec![ loc ] } )
-            }
-            fn choose_multiple<'a>(locs: Vec<&'a mut Self>) -> Box<dyn Choice + 'a> {
-                Box::new( #choice_ident { locs } )
+            fn choose<'a>(&'a mut self) -> Box<dyn Choice + 'a> {
+                Box::new( #choice_ident { loc: self } )
             }
         }
 
         #[derive(Debug)]
         pub struct #choice_ident<'a> {
+            loc: &'a mut #enum_ident
+        }
+
+        #[derive(Debug)]
+        pub struct #choice_array_ident<'a> {
             locs: Vec<&'a mut #enum_ident>
         }
     };
+    for i in 2..max_length+1 {
+        let size: usize = i;
+        acc = quote! {
+            #acc
+            impl Choose for [#enum_ident; #size] {
+                fn choose<'a>(&'a mut self) -> Box<dyn Choice + 'a> {
+                    Box::new( #choice_array_ident { locs: self.iter_mut().collect() } )
+                }
+            }
+        };
+    }
     let mut choices = "".to_string();
     for var in &vars {
         choices.extend(format!(r#""{}","#, var).chars());
@@ -64,7 +79,23 @@ fn process_choose_attribute(name: String, vars: Vec<String>) -> TokenStream2 {
                 vec![ #choices_tokens ]
             }
             fn choose(&mut self, choice: &str, index: usize) {
-                **self.locs.get_mut(index).unwrap() = match choice {
+                match index {
+                    0 => {
+                        *self.loc = match choice {
+                            #match_rules_tokens
+                            _ => unimplemented!()
+                        }
+                    }
+                    _ => unimplemented!()
+                }
+            }
+        }
+        impl Choice for #choice_array_ident<'_> {
+            fn choices(&self) -> Vec<&'static str> {
+                vec! [ #choices_tokens ]
+            }
+            fn choose(&mut self, choice: &str, index: usize) {
+                *self.locs[index] = match choice {
                     #match_rules_tokens
                     _ => unimplemented!()
                 }
@@ -84,12 +115,12 @@ pub(crate) fn dynamic_choose(ast: syn::ItemTrait) -> TokenStream {
         #[typetag::serde]
         #ast
         impl Choose for Box<dyn #ident> {
-            fn choose<'a>(loc: &'a mut Self) -> Box<dyn Choice + 'a> {
-                Box::new( #choice_ident { locs: vec![ loc ] } )
+            fn choose<'a>(&'a mut self) -> Box<dyn Choice + 'a> {
+                Box::new( #choice_ident { locs: vec![ self ] } )
             }
-            fn choose_multiple<'a>(locs: Vec<&'a mut Self>) -> Box<dyn Choice + 'a> {
-                Box::new( #choice_ident { locs } )
-            }
+            // fn choose_multiple<'a>(locs: Vec<&'a mut Self>) -> Box<dyn Choice + 'a> {
+            //     Box::new( #choice_ident { locs } )
+            // }
         }
 
         #[derive(Debug)]

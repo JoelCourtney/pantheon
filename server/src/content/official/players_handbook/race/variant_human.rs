@@ -1,7 +1,6 @@
 #[macros::race("Variant Human")]
 pub struct VariantHuman {
-    ability1: Ability,
-    ability2: Ability,
+    abilities: [Ability; 2],
     skill: Skill,
     feat: Box<dyn Feat>,
     language: Language
@@ -24,22 +23,22 @@ impl Featured for VariantHuman {
             Trait {
                 name: "Ability Score Increase",
                 description: "Two different ability scores of your choice increase by 1.",
-                choose: Ability::choose_multiple(vec![ &mut self.ability1, &mut self.ability2 ])
+                choose: self.abilities.choose()
             },
             Trait {
                 name: "Skills",
                 description: "You gain proficiency in one skill of your choice.",
-                choose: Skill::choose(&mut self.skill)
+                choose: self.skill.choose()
             },
             Trait {
                 name: "Languages",
                 description: "You can speak, read, and write Common and one extra language of your choice. Humans typically learn the languages of other peoples they deal with, including obscure dialects. They are fond of sprinkling their speech with words borrowed from other tongues: Orc curses, Elvish musical expressions, Dwarvish military phrases, and so on.",
-                choose: Language::choose(&mut self.language)
+                choose: self.language.choose()
             },
             Trait {
                 name: "Feat",
                 description: "You gain one Feat of your choice.",
-                choose: Box::choose(&mut self.feat)
+                choose: self.feat.choose()
             }
         ]
     }

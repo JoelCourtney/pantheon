@@ -31,12 +31,12 @@ impl Default for Box<dyn Choice> {
 
 #[derive(Debug)]
 pub struct EmptyChoice;
+
 impl Choice for EmptyChoice {
     fn choices(&self) -> Vec<&'static str> { vec![] }
     fn choose(&mut self, _choice: &str, _index: usize) {}
 }
 
 pub trait Choose {
-    fn choose<'a>(_: &'a mut Self) -> Box<dyn Choice + 'a>;
-    fn choose_multiple<'a>(_: Vec<&'a mut Self>) -> Box<dyn Choice + 'a>;
+    fn choose<'a>(&'a mut self) -> Box<dyn Choice + 'a>;
 }

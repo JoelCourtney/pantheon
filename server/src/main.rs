@@ -61,5 +61,7 @@ fn main() {
     dbg!(choice.choices());
     choice.choose("Variant Human", 0);
     dbg!(choice);
-    dbg!(race);
+    dbg!(&race);
+    race.features().get_mut(0).unwrap().choose.choose("Dexterity", 1);
+    dbg!(&race);
 }
