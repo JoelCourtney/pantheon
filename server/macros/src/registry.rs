@@ -18,6 +18,8 @@ pub(crate) fn registry(declared_content_files: usize) -> TokenStream {
         let static_ident = format_ident!("{}", key.to_uppercase());
 
         let get_all_ident = format_ident!("get_all_{}", type_ident_lower);
+        let default_ident = format_ident!("default_{}", type_ident_lower);
+        let unknown_ident = format_ident!("unknown_{}", type_ident_lower);
         content_functions = quote! {
             #content_functions
             pub fn #type_ident_lower(search_name: &str) -> Option<Box<dyn #type_ident_upper>> {
@@ -29,25 +31,28 @@ pub(crate) fn registry(declared_content_files: usize) -> TokenStream {
             pub fn #get_all_ident() -> Vec<&'static str> {
                 #static_ident.keys().copied().collect()
             }
+            pub fn #default_ident() -> Box<dyn #type_ident_upper> {
+                system::defaults::#type_ident_lower::#unknown_ident::new()
+            }
         };
 
         let mut registry_static_entries = quote! {};
         for (collection, source, content) in entries {
             counted_content_files += 1;
-
-            let collection_ident = format_ident!("{}", collection);
-            let source_ident = format_ident!("{}", source);
-            let content_ident = format_ident!("{}", content);
-
-            registry_static_entries = quote! {
-                #registry_static_entries
-                #collection_ident::#source_ident::#type_ident_lower::#content_ident::CONTENT_NAME => (
-                    Registration {
-                        collection: #collection_ident::COLLECTION_NAME,
-                        source: #collection_ident::#source_ident::COLLECTION_NAME
-                    },
-                    #collection_ident::#source_ident::#type_ident_lower::#content_ident::new as fn() -> Box<dyn #type_ident_upper>
-                ),
+            if collection != "system" || source != "defaults" {
+                let collection_ident = format_ident!("{}", collection);
+                let source_ident = format_ident!("{}", source);
+                let content_ident = format_ident!("{}", content);
+                registry_static_entries = quote! {
+                    #registry_static_entries
+                    #collection_ident::#source_ident::#type_ident_lower::#content_ident::CONTENT_NAME => (
+                        Registration {
+                            collection: #collection_ident::COLLECTION_NAME,
+                            source: #collection_ident::#source_ident::COLLECTION_NAME
+                        },
+                        #collection_ident::#source_ident::#type_ident_lower::#content_ident::new as fn() -> Box<dyn #type_ident_upper>
+                    ),
+                }
             }
         }
         registry_statics = quote! {

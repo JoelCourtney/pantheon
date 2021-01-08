@@ -64,4 +64,6 @@ fn main() {
     dbg!(&race);
     race.features().get_mut(0).unwrap().choose.choose("Dexterity", 1);
     dbg!(&race);
+
+    dbg!(&race.features().get_mut(0).unwrap().choose.choices(0));
 }

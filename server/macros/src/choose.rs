@@ -63,12 +63,16 @@ fn process_choose_attribute(name: String, vars: Vec<String>) -> TokenStream2 {
     }
     let mut choices = "".to_string();
     for var in &vars {
-        choices.extend(format!(r#""{}","#, var).chars());
+        if var != "Unknown" {
+            choices.extend(format!(r#""{}","#, var).chars());
+        }
     }
     let choices_tokens: TokenStream2 = choices.parse().unwrap();
     let mut match_rules = "".to_string();
     for var in &vars {
-        match_rules.extend(format!(r#""{}" => {}::{},"#, var, name, var).chars());
+        if var != "Unknown" {
+            match_rules.extend(format!(r#""{}" => {}::{},"#, var, name, var).chars());
+        }
     }
     let match_rules_tokens: TokenStream2 = match_rules.parse().unwrap();
     acc = quote! {
@@ -121,7 +125,7 @@ pub(crate) fn dynamic_choose(ast: syn::ItemTrait) -> TokenStream {
     let lower_ident = format_ident!("{}", ident.to_string().to_lowercase());
     let get_all_ident = format_ident!("get_all_{}", lower_ident);
     let choice_ident = format_ident!("{}Choice", ident);
-    let unknown_string = format!("Unknown {}", ident.to_string());
+    let default_ident = format_ident!("default_{}", lower_ident);
     (quote! {
         #[typetag::serde]
         #ast
@@ -152,7 +156,7 @@ pub(crate) fn dynamic_choose(ast: syn::ItemTrait) -> TokenStream {
 
         impl Default for Box<dyn #ident> {
             fn default() -> Self {
-                content::#lower_ident(#unknown_string).expect(&format!("{} cant be found", #unknown_string))
+                content::#default_ident()
             }
         }
     }).into()
