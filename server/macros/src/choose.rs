@@ -75,8 +75,11 @@ fn process_choose_attribute(name: String, vars: Vec<String>) -> TokenStream2 {
         #acc
 
         impl Choice for #choice_ident<'_> {
-            fn choices(&self) -> Vec<&'static str> {
-                vec![ #choices_tokens ]
+            fn choices(&self, index: usize) -> Vec<&'static str> {
+                match index {
+                    0 => vec![ #choices_tokens ],
+                    _ => unimplemented!()
+                }
             }
             fn choose(&mut self, choice: &str, index: usize) {
                 match index {
@@ -91,13 +94,21 @@ fn process_choose_attribute(name: String, vars: Vec<String>) -> TokenStream2 {
             }
         }
         impl Choice for #choice_array_ident<'_> {
-            fn choices(&self) -> Vec<&'static str> {
-                vec! [ #choices_tokens ]
+            fn choices(&self, index: usize) -> Vec<&'static str> {
+                if index < self.locs.len() {
+                    vec! [ #choices_tokens ]
+                } else {
+                    unimplemented!()
+                }
             }
             fn choose(&mut self, choice: &str, index: usize) {
-                *self.locs[index] = match choice {
-                    #match_rules_tokens
-                    _ => unimplemented!()
+                if index < self.locs.len() {
+                    *self.locs[index] = match choice {
+                        #match_rules_tokens
+                        _ => unimplemented!()
+                    }
+                } else {
+                    unimplemented!()
                 }
             }
         }
@@ -118,9 +129,6 @@ pub(crate) fn dynamic_choose(ast: syn::ItemTrait) -> TokenStream {
             fn choose<'a>(&'a mut self) -> Box<dyn Choice + 'a> {
                 Box::new( #choice_ident { locs: vec![ self ] } )
             }
-            // fn choose_multiple<'a>(locs: Vec<&'a mut Self>) -> Box<dyn Choice + 'a> {
-            //     Box::new( #choice_ident { locs } )
-            // }
         }
 
         #[derive(Debug)]
@@ -129,8 +137,11 @@ pub(crate) fn dynamic_choose(ast: syn::ItemTrait) -> TokenStream {
         }
 
         impl Choice for #choice_ident<'_> {
-            fn choices(&self) -> Vec<&'static str> {
-                content::#get_all_ident()
+            fn choices(&self, index: usize) -> Vec<&'static str> {
+                match index {
+                    0 => content::#get_all_ident(),
+                    _ => unimplemented!()
+                }
             }
             fn choose(&mut self, choice: &str, index: usize) {
                 **self.locs.get_mut(index).unwrap() = content::#lower_ident(choice).expect(

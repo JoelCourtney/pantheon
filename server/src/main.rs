@@ -58,7 +58,7 @@ fn main() {
     let mut race: Box<dyn Race> = Box::default();
     use feature::Choose;
     let mut choice = Box::<dyn Race>::choose(&mut race);
-    dbg!(choice.choices());
+    dbg!(choice.choices(0));
     choice.choose("Variant Human", 0);
     dbg!(choice);
     dbg!(&race);
