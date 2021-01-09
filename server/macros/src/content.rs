@@ -93,14 +93,14 @@ pub(crate) fn pretty_name(args: TokenStream) -> String {
 }
 
 pub(crate) fn features(ast: syn::ExprArray) -> TokenStream {
-    let mut text_exprs: Vec<syn::FieldValue> = vec![];
-    let mut choice_exprs: Vec<Option<syn::Expr>> = vec![];
+    /* text, choice, unique */
+    let mut entries: Vec<(syn::FieldValue, Option<syn::Expr>, bool)> = vec![];
     for elem in &ast.elems {
         match elem {
             syn::Expr::Struct(s) => {
                 let mut text: Option<syn::FieldValue> = None;
                 let mut choice: Option<syn::Expr> = None;
-                // let mut unique = false;
+                let mut unique = false;
                 for field in &s.fields {
                     match field.member {
                         syn::Member::Named(ref name) => {
@@ -109,7 +109,17 @@ pub(crate) fn features(ast: syn::ExprArray) -> TokenStream {
                                     text = Some(field.clone());
                                 }
                                 "choice" => {
-                                    choice = Some(field.expr.clone());
+                                    match choice {
+                                        None => choice = Some(field.expr.clone()),
+                                        Some(_) => unimplemented!()
+                                    }
+                                }
+                                "unique_choice" => {
+                                    match choice {
+                                        None => choice = Some(field.expr.clone()),
+                                        Some(_) => unimplemented!()
+                                    }
+                                    unique = true;
                                 }
                                 _ => unimplemented!()
                             }
@@ -119,18 +129,15 @@ pub(crate) fn features(ast: syn::ExprArray) -> TokenStream {
                 }
                 match text {
                     None => unimplemented!(),
-                    Some(f) => text_exprs.push(f)
+                    Some(f) => entries.push((f, choice, unique))
                 }
-                choice_exprs.push(choice);
             }
             _ => unimplemented!()
         }
     }
     let mut serials_acc = quote! {};
     let mut choices_acc = quote! {};
-    for i in 0..text_exprs.len() {
-        let text = &text_exprs[i];
-        let choice = &choice_exprs[i];
+    for (i,(text, choice, unique)) in entries.iter().enumerate() {
         match choice {
             None => {
                 serials_acc = quote! {
@@ -149,7 +156,7 @@ pub(crate) fn features(ast: syn::ExprArray) -> TokenStream {
                     #serials_acc
                     FeatureSerial {
                         #text,
-                        choose: #c.to_choose_serial()
+                        choose: #c.to_choose_serial(#unique)
                     },
                 };
                 choices_acc = quote! {

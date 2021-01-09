@@ -22,7 +22,7 @@ impl Featured for VariantHuman {
         Trait {
             text: "# Ability Score Increase\n\nTwo different ability scores of your choice increase by 1.",
             #[choice(unique)]
-            choice: self.abilities
+            unique_choice: self.abilities
         },
         Trait {
             text: "# Skills\n\nYou gain proficiency in one skill of your choice.",
@@ -34,7 +34,7 @@ impl Featured for VariantHuman {
         },
         Trait {
             text: "# Feat\n\nYou gain one feat of your choice.",
-            choice: self.feat
+            choice: self.feat,
         }
     ]);
 }

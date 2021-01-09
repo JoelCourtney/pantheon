@@ -38,6 +38,7 @@ fn main() {
     dbg!(&race);
     let serials = race.write_features();
     dbg!(&serials);
-    race.receive_choice("Alert", 3, 0);
+    race.receive_choice("Dexterity", 0, 0);
+    dbg!(&race);
     dbg!(race.write_features());
 }

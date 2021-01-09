@@ -62,7 +62,7 @@ fn process_choose_attribute(name: String, vars: Vec<String>) -> TokenStream2 {
                     unimplemented!()
                 }
             }
-            fn to_choose_serial(&self) -> crate::feature::ChooseSerial {
+            fn to_choose_serial(&self, _unique: bool) -> crate::feature::ChooseSerial {
                 crate::feature::ChooseSerial {
                     current_choices: vec! [match &self {
                         #reverse_match_rules_tokens
@@ -85,7 +85,7 @@ fn process_choose_attribute(name: String, vars: Vec<String>) -> TokenStream2 {
                         }
                     }
                 }
-                fn to_choose_serial(&self) -> crate::feature::ChooseSerial {
+                fn to_choose_serial(&self, unique: bool) -> crate::feature::ChooseSerial {
                     crate::feature::ChooseSerial {
                         current_choices: self.iter().map(|v| match v {
                             #reverse_match_rules_tokens
@@ -94,9 +94,9 @@ fn process_choose_attribute(name: String, vars: Vec<String>) -> TokenStream2 {
                         all_choices: {
                             (0..#size).map(
                                 |index| {
-                                    // if !self.unique {
-                                    //     vec! [ #choices_tokens ]
-                                    // } else {
+                                    if !unique {
+                                        vec! [ #choices_tokens ]
+                                    } else {
                                         let current_choices: Vec<&'static str> = self.iter().filter_map(
                                             |v| {
                                                 if *v != self[index] {
@@ -116,7 +116,7 @@ fn process_choose_attribute(name: String, vars: Vec<String>) -> TokenStream2 {
                                                 None
                                             }
                                         ).collect()
-                                    // }
+                                    }
                                 }
                             ).collect()
                         }
@@ -144,12 +144,16 @@ pub(crate) fn dynamic_choose(ast: syn::ItemTrait) -> TokenStream {
                     unimplemented!()
                 }
             }
-            fn to_choose_serial(&self) -> crate::feature::ChooseSerial {
-                crate::feature::ChooseSerial {
-                    current_choices: vec! [ self.content_name() ],
-                    all_choices: vec! [
-                        content::#get_all_ident()
-                    ]
+            fn to_choose_serial(&self, unique: bool) -> crate::feature::ChooseSerial {
+                if !unique {
+                    crate::feature::ChooseSerial {
+                        current_choices: vec! [ self.content_name() ],
+                        all_choices: vec! [
+                            content::#get_all_ident()
+                        ]
+                    }
+                } else {
+                    unimplemented!()
                 }
             }
         }

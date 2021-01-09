@@ -20,5 +20,5 @@ pub struct ChooseSerial {
 
 pub trait Choose {
     fn choose(&mut self, choice: &str, index: usize);
-    fn to_choose_serial(&self) -> ChooseSerial;
+    fn to_choose_serial(&self, unique: bool) -> ChooseSerial;
 }
