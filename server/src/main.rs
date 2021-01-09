@@ -40,5 +40,6 @@ fn main() {
     dbg!(&serials);
     race.receive_choice("Dexterity", 0, 0);
     dbg!(&race);
+    // dbg!(race.description_with_title());
     dbg!(race.write_features());
 }

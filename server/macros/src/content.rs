@@ -47,13 +47,19 @@ pub(crate) fn prelude(kind: &str, ast: syn::DeriveInput, pretty_name: String) ->
         "" => pascal_name_ident.to_string(),
         _ => pretty_name
     };
+    let feat_gen = match kind {
+        "Race" | "Class" => quote! {
+            pub const FEAT_GENERATOR: FeatGenerator = FeatGenerator::#kind_ident;
+        },
+        _ => quote !{}
+    };
     (quote! {
         use crate::character::*;
         use crate::modify::*;
         use crate::feature::*;
         use crate::misc::*;
         use crate::describe::*;
-        use macros::{def, describe, choose, traits, features};
+        use macros::{def, describe, choose, traits, features, feats};
         use serde::{Serialize, Deserialize};
         use indoc::indoc;
 
@@ -71,6 +77,8 @@ pub(crate) fn prelude(kind: &str, ast: syn::DeriveInput, pretty_name: String) ->
         }
 
         pub const CONTENT_NAME: &'static str = #pretty_name_string;
+
+        #feat_gen
 
         #[derive(Debug, Serialize, Deserialize, Default)]
         #ast
@@ -176,6 +184,33 @@ pub(crate) fn features(ast: syn::ExprArray) -> TokenStream {
 
         fn write_features(&self) -> Vec<FeatureSerial> {
             vec! [ #serials_acc ]
+        }
+    }).into()
+}
+
+pub(crate) fn feats(ast: syn::ExprArray) -> TokenStream {
+    let mut list_acc = quote! {};
+    let mut receive_acc = quote! {};
+    for (i,elem) in ast.elems.iter().enumerate() {
+        list_acc = quote! {
+            #list_acc
+            #elem.write_features()
+        };
+        receive_acc = quote! {
+            #receive_acc
+            #i => #elem.receive_choice(choice, feature_index, choice_index),
+        }
+    }
+    (quote! {
+        fn receive_feat_choice(&mut self, choice: &str, feat_index: usize, feature_index: usize, choice_index: usize) {
+            match feat_index {
+                #receive_acc
+                _ => panic!(format!("feat index out of bounds: {}", feat_index))
+            }
+        }
+
+        fn write_feats(&self) -> Vec<Vec<FeatureSerial>> {
+            vec![ #list_acc ]
         }
     }).into()
 }

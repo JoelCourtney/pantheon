@@ -47,7 +47,7 @@ impl StoredCharacter {
         self.race.initialize(&mut char);
         self.race.modify(&mut char);
         self.race.finalize(&mut char);
-        char.traits.extend(self.race.write_features());
+        char.race_traits.extend(self.race.write_features());
         char
     }
 }
@@ -97,8 +97,8 @@ pub struct Character {
     pub burrowing_speed: u8,
 
     // FEATURES AND TRAITS
-    pub traits: Vec<FeatureSerial>,
-    pub features: Vec<FeatureSerial>,
+    pub race_traits: Vec<FeatureSerial>,
+    pub class_features: Vec<FeatureSerial>,
 }
 
 #[dynamic_choose]

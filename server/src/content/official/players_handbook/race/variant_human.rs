@@ -37,6 +37,10 @@ impl Featured for VariantHuman {
             choice: self.feat,
         }
     ]);
+
+    feats!([
+        self.feat
+    ]);
 }
 
 describe! { r#"
