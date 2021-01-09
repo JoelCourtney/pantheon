@@ -8,15 +8,11 @@ impl Modify for Alert {
 }
 
 impl Featured for Alert {
-    fn features(&mut self) -> Vec<Feature> {
-        vec![
-            Feature {
-                name: "Alert",
-                description: Self::description(),
-                ..def!()
-            }
-        ]
-    }
+    features!([
+        Feature {
+            text: Alert::description_without_title(),
+        }
+    ]);
 }
 
 describe! { r#"

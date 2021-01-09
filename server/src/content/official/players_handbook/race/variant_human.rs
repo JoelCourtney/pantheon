@@ -18,30 +18,25 @@ impl Modify for VariantHuman {
 }
 
 impl Featured for VariantHuman {
-    fn features(&mut self) -> Vec<Trait> {
-        vec![
-            Trait {
-                name: "Ability Score Increase",
-                description: "Two different ability scores of your choice increase by 1.",
-                choose: self.abilities.choose_unique()
-            },
-            Trait {
-                name: "Skills",
-                description: "You gain proficiency in one skill of your choice.",
-                choose: self.skill.choose()
-            },
-            Trait {
-                name: "Languages",
-                description: "You can speak, read, and write Common and one extra language of your choice. Humans typically learn the languages of other peoples they deal with, including obscure dialects. They are fond of sprinkling their speech with words borrowed from other tongues: Orc curses, Elvish musical expressions, Dwarvish military phrases, and so on.",
-                choose: self.language.choose()
-            },
-            Trait {
-                name: "Feat",
-                description: "You gain one Feat of your choice.",
-                choose: self.feat.choose()
-            }
-        ]
-    }
+    traits!([
+        Trait {
+            text: "# Ability Score Increase\n\nTwo different ability scores of your choice increase by 1.",
+            #[choice(unique)]
+            choice: self.abilities
+        },
+        Trait {
+            text: "# Skills\n\nYou gain proficiency in one skill of your choice.",
+            choice: self.skill
+        },
+        Trait {
+            text: "# Languages\n\nYou can speak, read, and write Common and one extra language of your choice. Humans typically learn the languages of other peoples they deal with, including obscure dialects. They are fond of sprinkling their speech with words borrowed from other tongues: Orc curses, Elvish musical expressions, Dwarvish military phrases, and so on.",
+            choice: self.language
+        },
+        Trait {
+            text: "# Feat\n\nYou gain one feat of your choice.",
+            choice: self.feat
+        }
+    ]);
 }
 
 describe! { r#"

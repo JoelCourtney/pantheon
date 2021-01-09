@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 use crate::modify::*;
-use crate::feature::{Featured, Feature, Choose, Choice};
+use crate::feature::{Featured, FeatureSerial, Choose};
 use crate::misc::*;
 use std::fmt::Debug;
 use crate::content;
@@ -47,13 +47,13 @@ impl StoredCharacter {
         self.race.initialize(&mut char);
         self.race.modify(&mut char);
         self.race.finalize(&mut char);
-        char.traits.extend(self.race.features());
+        char.traits.extend(self.race.write_features());
         char
     }
 }
 
 #[derive(Debug, Default, Serialize)]
-pub struct Character<'a> {
+pub struct Character {
     pub name: String,
 
     // HEALTH
@@ -97,12 +97,16 @@ pub struct Character<'a> {
     pub burrowing_speed: u8,
 
     // FEATURES AND TRAITS
-    pub traits: Vec<Feature<'a>>,
-    pub features: Vec<Feature<'a>>,
+    pub traits: Vec<FeatureSerial>,
+    pub features: Vec<FeatureSerial>,
 }
 
 #[dynamic_choose]
-pub trait Race: Modify + Featured + Debug {}
+pub trait Race: Modify + Featured + Debug {
+    fn content_name(&self) -> &'static str;
+}
 
 #[dynamic_choose]
-pub trait Feat: Modify + Featured + Debug {}
+pub trait Feat: Modify + Featured + Debug {
+    fn content_name(&self) -> &'static str;
+}

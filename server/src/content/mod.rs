@@ -11,3 +11,4 @@ struct Registration {
     collection: &'static str,
     source: &'static str,
 }
+

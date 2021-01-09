@@ -2,44 +2,23 @@ use serde::Serialize;
 use std::fmt::Debug;
 
 pub trait Featured {
-    fn features(&mut self) -> Vec<Feature> { vec![] }
+    fn receive_choice(&mut self, _choice: &str, _feature_index: usize, _choice_index: usize) {}
+    fn write_features(&self) -> Vec<FeatureSerial> { vec![] }
 }
 
 #[derive(Debug, Serialize, Default)]
-pub struct Feature<'a> {
-    pub name: &'static str,
-    pub description: &'static str,
-
-    #[serde(skip)]
-    pub choose: Box<dyn Choice + 'a>
+pub struct FeatureSerial {
+    pub text: &'static str,
+    pub choose: ChooseSerial
 }
 
-pub type Trait<'a> = Feature<'a>;
-
-pub trait Choice: Debug {
-    fn choices(&self, index: usize) -> Vec<&'static str>;
-    fn choose(&mut self, choice: &str, index: usize);
-}
-
-impl Default for Box<dyn Choice> {
-    fn default() -> Self {
-        Box::new(
-            EmptyChoice {}
-        )
-    }
-}
-
-#[derive(Debug)]
-pub struct EmptyChoice;
-
-impl Choice for EmptyChoice {
-    fn choices(&self, _index: usize) -> Vec<&'static str> { vec![] }
-    fn choose(&mut self, _choice: &str, _index: usize) {}
+#[derive(Debug, Serialize, Default)]
+pub struct ChooseSerial {
+    pub current_choices: Vec<&'static str>,
+    pub all_choices: Vec<Vec<&'static str>>
 }
 
 pub trait Choose {
-    fn choose<'a>(&'a mut self) -> Box<dyn Choice + 'a>;
-    fn choose_unique<'a>(&'a mut self) -> Box<dyn Choice + 'a>;
-    // fn choose_from<'a>(&'a mut self, from: Vec<&'static str>) -> Box<dyn Choice + 'a>;
-    // fn choose_except<'a>(&'a mut self, except: Vec<&'static str>) -> Box<dyn Choice + 'a>;
+    fn choose(&mut self, choice: &str, index: usize);
+    fn to_choose_serial(&self) -> ChooseSerial;
 }

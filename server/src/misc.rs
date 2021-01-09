@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use crate::feature::{Choice, Choose};
+use crate::feature::Choose;
 use macros::choose;
 
 #[choose]

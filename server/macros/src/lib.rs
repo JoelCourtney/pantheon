@@ -247,3 +247,15 @@ pub fn dynamic_choose(_: TokenStream, input: TokenStream) -> TokenStream {
     let ast: syn::ItemTrait = syn::parse(input).expect("expected trait declaration");
     choose::dynamic_choose(ast)
 }
+
+#[proc_macro]
+pub fn traits(input: TokenStream) -> TokenStream {
+    let ast: syn::ExprArray = syn::parse(input).expect("expected array");
+    content::features(ast)
+}
+
+#[proc_macro]
+pub fn features(input: TokenStream) -> TokenStream {
+    let ast: syn::ExprArray = syn::parse(input).expect("expected array");
+    content::features(ast)
+}
