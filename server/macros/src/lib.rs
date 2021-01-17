@@ -131,6 +131,13 @@ pub fn race(args: TokenStream, input: TokenStream) -> TokenStream {
 }
 
 #[proc_macro_attribute]
+pub fn class(args: TokenStream, input: TokenStream) -> TokenStream {
+    let pretty = content::pretty_name(args);
+    let ast: syn::DeriveInput = syn::parse(input).unwrap();
+    content::prelude("Class", ast, pretty)
+}
+
+#[proc_macro_attribute]
 pub fn feat(args: TokenStream, input: TokenStream) -> TokenStream {
     let pretty = content::pretty_name(args);
     let ast: syn::DeriveInput = syn::parse(input).unwrap();

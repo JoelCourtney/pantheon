@@ -107,6 +107,11 @@ pub trait Race: Modify + Featured + Debug {
 }
 
 #[dynamic_choose]
+pub trait Class: Modify + Featured + Debug {
+    fn content_name(&self) -> &'static str;
+}
+
+#[dynamic_choose]
 pub trait Feat: Modify + Featured + Debug {
     fn content_name(&self) -> &'static str;
 }
