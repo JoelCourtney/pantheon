@@ -1,8 +1,7 @@
 #[macros::class("Unknown Class")]
 pub struct UnknownClass;
 
-impl Modify for UnknownClass {}
-impl Featured for UnknownClass {}
+impl Content for UnknownClass {}
 
 describe! { r#"
     # Unknown Class

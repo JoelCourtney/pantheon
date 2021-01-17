@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
-use crate::modify::*;
-use crate::feature::{Featured, FeatureSerial, Choose};
+use crate::feature::{FeatureSerial, Choose};
+use crate::content::Content;
 use crate::misc::*;
 use std::fmt::Debug;
 use crate::content;
@@ -96,22 +96,24 @@ pub struct Character {
     pub swimming_speed: u8,
     pub burrowing_speed: u8,
 
-    // FEATURES AND TRAITS
+    // FEATURES, TRAITS, AND FEATS
     pub race_traits: Vec<FeatureSerial>,
     pub class_features: Vec<FeatureSerial>,
+    pub background_features: Vec<FeatureSerial>,
+    pub feats: Vec<Vec<FeatureSerial>>,
 }
 
 #[dynamic_choose]
-pub trait Race: Modify + Featured + Debug {
+pub trait Race: Content + Debug {
     fn content_name(&self) -> &'static str;
 }
 
 #[dynamic_choose]
-pub trait Class: Modify + Featured + Debug {
+pub trait Class: Content + Debug {
     fn content_name(&self) -> &'static str;
 }
 
 #[dynamic_choose]
-pub trait Feat: Modify + Featured + Debug {
+pub trait Feat: Content + Debug {
     fn content_name(&self) -> &'static str;
 }

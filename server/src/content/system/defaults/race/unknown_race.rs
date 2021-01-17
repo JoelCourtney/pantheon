@@ -1,8 +1,7 @@
 #[macros::race("Unknown Race")]
 pub struct UnknownRace;
 
-impl Modify for UnknownRace {}
-impl Featured for UnknownRace {}
+impl Content for UnknownRace {}
 
 describe! { r#"
     # Unknown Race

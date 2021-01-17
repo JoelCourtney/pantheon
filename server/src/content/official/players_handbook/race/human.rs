@@ -3,7 +3,7 @@ pub struct Human {
     extra_language: Language,
 }
 
-impl Modify for Human {
+impl Content for Human {
     fn initialize(&self, c: &mut Character) {
         c.size = CreatureSize::Medium;
         c.walking_speed = 30;
@@ -19,46 +19,57 @@ impl Modify for Human {
         c.wisdom += 1;
         c.charisma += 1;
     }
-}
 
-impl Featured for Human {
-    traits!([
-        Trait {
-            text: indoc! { r"
-                # Ability Score Increase
-
-                Your ability scores each increase by 1."
-            }
-        },
-        Trait {
-            text: indoc! { r"
-                # Age
-
-                Humans reach adulthood in their late teens and live less than a century"
-            }
-        },
-        Trait {
-            text: indoc! { r"
-                # Alignment
-
-                Humans tend toward no particular alignment. The best and the worst are found among them."
-            }
-        },
-        Trait {
-            text: indoc! { r"
-                # Size
-
-                Humans vary widely in height and build, from barely 5 feet to well over 6 feet tall. Regardless of your position in that range, your size is Medium."
-            }
-        },
-        Trait {
-            text: "# Speed\n\nYour base walking speed is 30 feet."
-        },
-        Trait {
-            text: "# Languages\n\nYou can speak, read, and write Common and one extra language of your choice. Humans typically learn the languages of other peoples they deal with, including obscure dialects. They are fond of sprinkling their speech with words borrowed from other tongues: Orc curses, Elvish musical expressions, Dwarvish military phrases, and so on.",
-            choice: self.extra_language
+    fn receive_choice(&mut self, choice: &str, feature_index: usize, choice_index: usize) {
+        match feature_index {
+            5 => self.extra_language.choose(choice, choice_index),
+            _ => unimplemented!()
         }
-    ]);
+    }
+    fn write_features(&self) -> Vec<FeatureSerial> {
+        vec! [
+            FeatureSerial {
+                text: indoc! { r"
+                    # Ability Score Increase
+
+                    Your ability scores each increase by 1."
+                },
+                ..def!()
+            },
+            FeatureSerial {
+                text: indoc! { r"
+                    # Alignment
+
+                    Humans tend toward no particular alignment. The best and the worst are found among them."
+                },
+                ..def!()
+            },
+            FeatureSerial {
+                text: indoc! { r"
+                    # Age
+
+                    Humans reach adulthood in their late teens and live less than a century"
+                },
+                ..def!()
+            },
+            FeatureSerial {
+                text: indoc! { r"
+                    # Size
+
+                    Humans vary widely in height and build, from barely 5 feet to well over 6 feet tall. Regardless of your position in that range, your size is Medium."
+                },
+                ..def!()
+            },
+            FeatureSerial {
+                text: "# Speed\n\nYour base walking speed is 30 feet.",
+                ..def!()
+            },
+            FeatureSerial {
+                text: "# Languages\n\nYou can speak, read, and write Common and one extra language of your choice. Humans typically learn the languages of other peoples they deal with, including obscure dialects. They are fond of sprinkling their speech with words borrowed from other tongues: Orc curses, Elvish musical expressions, Dwarvish military phrases, and so on.",
+                choose: self.extra_language.to_choose_serial(false)
+            }
+        ]
+    }
 }
 
 describe! { r#"

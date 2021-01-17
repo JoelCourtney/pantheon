@@ -47,19 +47,13 @@ pub(crate) fn prelude(kind: &str, ast: syn::DeriveInput, pretty_name: String) ->
         "" => pascal_name_ident.to_string(),
         _ => pretty_name
     };
-    let feat_gen = match kind {
-        "Race" | "Class" => quote! {
-            pub const FEAT_GENERATOR: FeatGenerator = FeatGenerator::#kind_ident;
-        },
-        _ => quote !{}
-    };
     (quote! {
         use crate::character::*;
-        use crate::modify::*;
         use crate::feature::*;
         use crate::misc::*;
         use crate::describe::*;
-        use macros::{def, describe, choose, traits, features, feats};
+        use crate::content::Content;
+        use macros::{def, describe, choose};
         use serde::{Serialize, Deserialize};
         use indoc::indoc;
 
@@ -77,8 +71,6 @@ pub(crate) fn prelude(kind: &str, ast: syn::DeriveInput, pretty_name: String) ->
         }
 
         pub const CONTENT_NAME: &'static str = #pretty_name_string;
-
-        #feat_gen
 
         #[derive(Debug, Serialize, Deserialize, Default)]
         #ast
@@ -98,119 +90,4 @@ pub(crate) fn pretty_name(args: TokenStream) -> String {
         Ok(s) => s.value(),
         Err(_) => "".to_string()
     }
-}
-
-pub(crate) fn features(ast: syn::ExprArray) -> TokenStream {
-    /* text, choice, unique */
-    let mut entries: Vec<(syn::FieldValue, Option<syn::Expr>, bool)> = vec![];
-    for elem in &ast.elems {
-        match elem {
-            syn::Expr::Struct(s) => {
-                let mut text: Option<syn::FieldValue> = None;
-                let mut choice: Option<syn::Expr> = None;
-                let mut unique = false;
-                for field in &s.fields {
-                    match field.member {
-                        syn::Member::Named(ref name) => {
-                            match name.to_string().as_str() {
-                                "text" => {
-                                    text = Some(field.clone());
-                                }
-                                "choice" => {
-                                    match choice {
-                                        None => choice = Some(field.expr.clone()),
-                                        Some(_) => unimplemented!()
-                                    }
-                                }
-                                "unique_choice" => {
-                                    match choice {
-                                        None => choice = Some(field.expr.clone()),
-                                        Some(_) => unimplemented!()
-                                    }
-                                    unique = true;
-                                }
-                                _ => unimplemented!()
-                            }
-                        }
-                        _ => unimplemented!()
-                    }
-                }
-                match text {
-                    None => unimplemented!(),
-                    Some(f) => entries.push((f, choice, unique))
-                }
-            }
-            _ => unimplemented!()
-        }
-    }
-    let mut serials_acc = quote! {};
-    let mut choices_acc = quote! {};
-    for (i,(text, choice, unique)) in entries.iter().enumerate() {
-        match choice {
-            None => {
-                serials_acc = quote! {
-                    #serials_acc
-                    FeatureSerial {
-                        #text,
-                        choose: ChooseSerial {
-                            current_choices: vec![],
-                            all_choices: vec![ vec![] ]
-                        }
-                    },
-                };
-            },
-            Some(c) => {
-                serials_acc = quote! {
-                    #serials_acc
-                    FeatureSerial {
-                        #text,
-                        choose: #c.to_choose_serial(#unique)
-                    },
-                };
-                choices_acc = quote! {
-                    #choices_acc
-                    #i => #c.choose(choice, choice_index),
-                }
-            }
-        }
-    }
-    (quote! {
-        fn receive_choice(&mut self, choice: &str, feature_index: usize, choice_index: usize) {
-            match feature_index {
-                #choices_acc
-                _ => panic!(format!("feature at index {} does not have a choice associated with it", feature_index))
-            }
-        }
-
-        fn write_features(&self) -> Vec<FeatureSerial> {
-            vec! [ #serials_acc ]
-        }
-    }).into()
-}
-
-pub(crate) fn feats(ast: syn::ExprArray) -> TokenStream {
-    let mut list_acc = quote! {};
-    let mut receive_acc = quote! {};
-    for (i,elem) in ast.elems.iter().enumerate() {
-        list_acc = quote! {
-            #list_acc
-            #elem.write_features()
-        };
-        receive_acc = quote! {
-            #receive_acc
-            #i => #elem.receive_choice(choice, feature_index, choice_index),
-        }
-    }
-    (quote! {
-        fn receive_feat_choice(&mut self, choice: &str, feat_index: usize, feature_index: usize, choice_index: usize) {
-            match feat_index {
-                #receive_acc
-                _ => panic!(format!("feat index out of bounds: {}", feat_index))
-            }
-        }
-
-        fn write_feats(&self) -> Vec<Vec<FeatureSerial>> {
-            vec![ #list_acc ]
-        }
-    }).into()
 }

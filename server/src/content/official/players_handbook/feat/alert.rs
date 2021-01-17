@@ -1,18 +1,19 @@
 #[macros::feat]
 pub struct Alert;
 
-impl Modify for Alert {
+impl Content for Alert {
     fn modify(&self, c: &mut Character) {
         c.initiative += 5;
     }
-}
 
-impl Featured for Alert {
-    features!([
-        Feature {
-            text: Alert::description_without_title(),
-        }
-    ]);
+    fn write_features(&self) -> Vec<FeatureSerial> {
+        vec! [
+            FeatureSerial {
+                text: Alert::description_without_title(),
+                ..def!()
+            }
+        ]
+    }
 }
 
 describe! { r#"
