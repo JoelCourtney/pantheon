@@ -7,3 +7,8 @@ use crate::feature::Choose;
 pub trait HalflingSubrace: Content + Debug {
     fn content_name(&self) -> &'static str;
 }
+
+#[dynamic_choose]
+pub trait EldritchInvocation: Content + Debug {
+    fn content_name(&self) -> &'static str;
+}

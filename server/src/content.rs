@@ -8,7 +8,7 @@ use custom_traits::*;
 use crate::feature::Feature;
 use crate::character::Character;
 
-macros::registry!(10);
+macros::registry!(11);
 
 /// Contains where to find a particular file.
 ///

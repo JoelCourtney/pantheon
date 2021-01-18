@@ -1,4 +1,4 @@
-#[macros::subrace("Halfling")]
+#[macros::custom_content("HalflingSubrace")]
 pub struct Stout;
 
 impl Content for Stout {
