@@ -58,6 +58,7 @@ pub(crate) fn prelude(kind: &str, ast: syn::DeriveInput, pretty_name: String) ->
         use indoc::indoc;
         use std::fmt::Debug;
         use crate::content::custom_traits::*;
+        use crate::content::common::*;
 
         #[typetag::serde]
         impl #kind_ident for #pascal_name_ident {

@@ -10,15 +10,15 @@ use crate::content::Content;
 pub struct StoredCharacter {
     name: String,
 
-    health: u64,
-    temp_health: u64,
+    health: usize,
+    temp_health: usize,
 
-    base_strength: u8,
-    base_dexterity: u8,
-    base_constitution: u8,
-    base_intelligence: u8,
-    base_wisdom: u8,
-    base_charisma: u8,
+    base_strength: usize,
+    base_dexterity: usize,
+    base_constitution: usize,
+    base_intelligence: usize,
+    base_wisdom: usize,
+    base_charisma: usize,
 
     alignment: Alignment,
 
@@ -56,27 +56,27 @@ pub struct Character {
     pub name: String,
 
     // HEALTH
-    pub health: u64,
-    pub temp_health: u64,
-    pub max_health: u64,
+    pub health: usize,
+    pub temp_health: usize,
+    pub max_health: usize,
 
     // ABILITIES
-    pub strength: u8,
-    pub dexterity: u8,
-    pub constitution: u8,
-    pub intelligence: u8,
-    pub wisdom: u8,
-    pub charisma: u8,
+    pub strength: usize,
+    pub dexterity: usize,
+    pub constitution: usize,
+    pub intelligence: usize,
+    pub wisdom: usize,
+    pub charisma: usize,
 
-    pub strength_modifier: i8,
-    pub dexterity_modifier: i8,
-    pub constitution_modifier: i8,
-    pub intelligence_modifier: i8,
-    pub wisdom_modifier: i8,
-    pub charisma_modifier: i8,
+    pub strength_modifier: i32,
+    pub dexterity_modifier: i32,
+    pub constitution_modifier: i32,
+    pub intelligence_modifier: i32,
+    pub wisdom_modifier: i32,
+    pub charisma_modifier: i32,
 
     // INITIATIVE
-    pub initiative: i8,
+    pub initiative: i32,
 
     // SIZE
     pub size: CreatureSize,
@@ -89,11 +89,11 @@ pub struct Character {
     pub languages: Vec<Language>,
 
     // SPEED
-    pub walking_speed: u8,
-    pub flying_speed: u8,
-    pub climbing_speed: u8,
-    pub swimming_speed: u8,
-    pub burrowing_speed: u8,
+    pub walking_speed: usize,
+    pub flying_speed: usize,
+    pub climbing_speed: usize,
+    pub swimming_speed: usize,
+    pub burrowing_speed: usize,
 
     // FEATURES, TRAITS, AND FEATS
     pub race_traits: Vec<Feature>,

@@ -3,12 +3,13 @@ mod official;
 mod playtest;
 mod homebrew;
 mod custom_traits;
+mod common;
 
 use custom_traits::*;
 use crate::feature::Feature;
 use crate::character::Character;
 
-macros::registry!(11);
+macros::registry!(12);
 
 /// Contains where to find a particular file.
 ///

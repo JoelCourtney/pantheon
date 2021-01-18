@@ -100,27 +100,29 @@ fn collect_registration() -> HashMap<
     for entry in WalkDir::new("src/content") {
         let entry = entry.expect("expected dir entry");
         let file_name = entry.file_name().to_str().expect("bad os str");
-        if file_name.rfind(".rs") != None && file_name != "mod.rs" && file_name != "custom_traits.rs" {
+        if file_name.rfind(".rs") != None && file_name != "mod.rs" {
             let comps: Vec<std::path::Component> = entry.path().components().collect();
-            let collection = match comps.get(2).expect("not enough components: 2") {
-                Normal(s) => s.to_str().expect("bad os str: 2").to_owned(),
-                _ => panic!()
-            };
-            let source = match comps.get(3).expect("not enough components: 3") {
-                Normal(s) => s.to_str().expect("bad os str: 3").to_owned(),
-                _ => panic!()
-            };
-            let typ = match comps.get(4).expect("not enough components: 4") {
-                Normal(s) => s.to_str().expect("bad os str: 4").to_owned(),
-                _ => panic!()
-            };
-            let content = file_name[..file_name.len()-3].to_string();
-            if !result.contains_key(&typ) {
-                result.insert(typ.to_owned(), HashSet::new());
+            if comps.len() == 6 {
+                let collection = match comps.get(2).expect("not enough components: 2") {
+                    Normal(s) => s.to_str().expect("bad os str: 2").to_owned(),
+                    _ => panic!()
+                };
+                let source = match comps.get(3).expect("not enough components: 3") {
+                    Normal(s) => s.to_str().expect("bad os str: 3").to_owned(),
+                    _ => panic!()
+                };
+                let typ = match comps.get(4).expect("not enough components: 4") {
+                    Normal(s) => s.to_str().expect("bad os str: 4").to_owned(),
+                    _ => panic!()
+                };
+                let content = file_name[..file_name.len() - 3].to_string();
+                if !result.contains_key(&typ) {
+                    result.insert(typ.to_owned(), HashSet::new());
+                }
+                result.get_mut(&typ)
+                    .expect("how did we get here")
+                    .insert((collection.to_owned(), source.to_owned(), content.to_owned()));
             }
-            result.get_mut(&typ)
-                .expect("how did we get here")
-                .insert((collection.to_owned(), source.to_owned(), content.to_owned()));
         }
     }
     result
