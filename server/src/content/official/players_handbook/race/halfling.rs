@@ -8,6 +8,8 @@ impl Content for Halfling {
         c.size = CreatureSize::Small;
         c.walking_speed = 25;
 
+        c.saving_throw_notes.push("*Adv* against being frightened");
+
         self.subrace.initialize(c);
     }
     fn modify(&self, c: &mut Character) {

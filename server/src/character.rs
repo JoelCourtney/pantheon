@@ -100,6 +100,9 @@ pub struct Character {
     pub class_features: Vec<Feature>,
     pub background_features: Vec<Feature>,
     pub feats: Vec<Vec<Feature>>,
+
+    // NOTES
+    pub saving_throw_notes: Vec<&'static str>
 }
 
 #[dynamic_choose]
