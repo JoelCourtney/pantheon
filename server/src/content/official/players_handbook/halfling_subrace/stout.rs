@@ -6,24 +6,24 @@ impl Content for Stout {
         c.constitution += 1;
     }
 
-    fn write_features(&self) -> Vec<FeatureSerial> {
+    fn features(&self) -> Vec<Feature> {
         vec![
-            FeatureSerial {
-                text: indoc! {r"
+            Feature (
+                indoc! {r"
                     # Ability Score Increase
 
                     Your Constitution score increases by 1.
                 "},
-                ..def!()
-            },
-            FeatureSerial {
-                text: indoc! {r"
+                None
+            ),
+            Feature (
+                indoc! {r"
                     # Stout Resilience
 
                     You have advantage on saving throws against poison, and you have resistance against poison damage.
                 "},
-                ..def!()
-            }
+                None
+            )
         ]
     }
 }

@@ -26,90 +26,90 @@ impl Content for Halfling {
             _ => self.subrace.receive_choice(choice, feature_index - 10, choice_index)
         }
     }
-    fn write_features(&self) -> Vec<FeatureSerial> {
+    fn features(&self) -> Vec<Feature> {
         let mut features = vec! [
-            FeatureSerial {
-                text: indoc! {r"
+            Feature (
+                indoc! {r"
                     # Ability Score Increase
 
                     Your Dexterity score increases by 2.
                 "},
-                ..def!()
-            },
-            FeatureSerial {
-                text: indoc! {r"
+                None
+            ),
+            Feature (
+                indoc! {r"
                     # Age
 
                     A halfling reaches adulthood at the age of 20 and generally lives into the middle of his or her second century.
                 "},
-                ..def!()
-            },
-            FeatureSerial {
-                text: indoc! {r"
+                None
+            ),
+            Feature (
+                indoc! {r"
                     # Alignment
 
                     Most halflings are lawful good. As a rule, they are good-hearted and kind, hate to see others in pain, and have no tolerance for oppression. They are also very orderly and traditional, leaning heavily on the support of their community and the comfort of their old ways.
                 "},
-                ..def!()
-            },
-            FeatureSerial {
-                text: indoc! {r"
+                None
+            ),
+            Feature (
+                indoc! {r"
                     # Size
 
                     Halflings average about 3 feet tall and weigh about 40 pounds. Your size is Small.
                 "},
-                ..def!()
-            },
-            FeatureSerial {
-                text: indoc! {r"
+                None
+            ),
+            Feature (
+                indoc! {r"
                     # Speed
 
                     Your base walking speed is 25 feel.
                 "},
-                ..def!()
-            },
-            FeatureSerial {
-                text: indoc! {r"
+                None
+            ),
+            Feature (
+                indoc! {r"
                     # Lucky
 
                     When you roll a 1 on an attack roll, ability check, or saving throw, you can reroll the die and must use the new roll.
                 "},
-                ..def!()
-            },
-            FeatureSerial {
-                text: indoc! {r"
+                None
+            ),
+            Feature (
+                indoc! {r"
                     # Brave
 
                     You have advantage on saving throws against being frightened.
                 "},
-                ..def!()
-            },
-            FeatureSerial {
-                text: indoc! {r"
+                None
+            ),
+            Feature (
+                indoc! {r"
                     # Halfling Nimbleness
 
                     You can move through the space of any creature that is of a size larger than yours.
                 "},
-                ..def!()
-            },
-            FeatureSerial {
-                text: indoc! {r"
+                None
+            ),
+            Feature (
+                indoc! {r"
                     # Languages
 
                     Vou can speak, read, and write Common and Halfling. The Halfling language isn't secret, but halflings are loath to share it with others. They write very little, so they don't have a rich body of literature. Their oral tradition. however, is very strong. Almost all halflings speak Common to converse with the people in whose lands they dwell or through which they are traveling.
                 "},
-                ..def!()
-            },
-            FeatureSerial {
-                text: indoc! {r"
+                None
+            ),
+            Feature (
+                indoc! {r"
                     # Subrace
 
                     Choose a subrace.
                 "},
-                choose: self.subrace.to_choose_serial(false)
-            }
+                Some(self.subrace.to_choice(false))
+            )
         ];
-        features.extend(self.subrace.write_features());
+        features.extend(self.subrace.features());
         features
     }
 }

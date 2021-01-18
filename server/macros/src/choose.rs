@@ -63,8 +63,8 @@ fn process_choose_attribute(name: String, vars: Vec<String>) -> TokenStream2 {
                     unimplemented!()
                 }
             }
-            fn to_choose_serial(&self, _unique: bool) -> crate::feature::ChooseSerial {
-                crate::feature::ChooseSerial {
+            fn to_choice(&self, _unique: bool) -> crate::feature::Choice {
+                crate::feature::Choice {
                     current_choices: vec! [match &self {
                         #reverse_match_rules_tokens
                     }],
@@ -86,8 +86,8 @@ fn process_choose_attribute(name: String, vars: Vec<String>) -> TokenStream2 {
                         }
                     }
                 }
-                fn to_choose_serial(&self, unique: bool) -> crate::feature::ChooseSerial {
-                    crate::feature::ChooseSerial {
+                fn to_choice(&self, unique: bool) -> crate::feature::Choice {
+                    crate::feature::Choice {
                         current_choices: self.iter().map(|v| match v {
                             #reverse_match_rules_tokens
                             _ => unimplemented!()
@@ -145,9 +145,9 @@ pub(crate) fn dynamic_choose(ast: syn::ItemTrait) -> TokenStream {
                     unimplemented!()
                 }
             }
-            fn to_choose_serial(&self, unique: bool) -> crate::feature::ChooseSerial {
+            fn to_choice(&self, unique: bool) -> crate::feature::Choice {
                 if !unique {
-                    crate::feature::ChooseSerial {
+                    crate::feature::Choice {
                         current_choices: vec! [ self.content_name() ],
                         all_choices: vec! [
                             crate::content::#get_all_ident()

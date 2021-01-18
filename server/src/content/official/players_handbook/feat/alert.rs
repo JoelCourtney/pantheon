@@ -6,12 +6,12 @@ impl Content for Alert {
         c.initiative += 5;
     }
 
-    fn write_features(&self) -> Vec<FeatureSerial> {
+    fn features(&self) -> Vec<Feature> {
         vec! [
-            FeatureSerial {
-                text: Alert::description_without_title(),
-                ..def!()
-            }
+            Feature (
+                Alert::description_without_title(),
+                None
+            )
         ]
     }
 }

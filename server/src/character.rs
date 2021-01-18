@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::feature::{FeatureSerial, Choose};
+use crate::feature::{Feature, Choose};
 use crate::misc::*;
 use std::fmt::Debug;
 use macros::dynamic_choose;
@@ -46,7 +46,7 @@ impl StoredCharacter {
         self.race.initialize(&mut char);
         self.race.modify(&mut char);
         self.race.finalize(&mut char);
-        char.race_traits.extend(self.race.write_features());
+        char.race_traits.extend(self.race.features());
         char
     }
 }
@@ -96,10 +96,10 @@ pub struct Character {
     pub burrowing_speed: u8,
 
     // FEATURES, TRAITS, AND FEATS
-    pub race_traits: Vec<FeatureSerial>,
-    pub class_features: Vec<FeatureSerial>,
-    pub background_features: Vec<FeatureSerial>,
-    pub feats: Vec<Vec<FeatureSerial>>,
+    pub race_traits: Vec<Feature>,
+    pub class_features: Vec<Feature>,
+    pub background_features: Vec<Feature>,
+    pub feats: Vec<Vec<Feature>>,
 }
 
 #[dynamic_choose]

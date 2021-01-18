@@ -25,24 +25,24 @@ impl Content for VariantHuman {
             _ => unimplemented!()
         }
     }
-    fn write_features(&self) -> Vec<FeatureSerial> {
+    fn features(&self) -> Vec<Feature> {
         vec! [
-            FeatureSerial {
-                text: "# Ability Score Increase\n\nTwo different ability scores of your choice increase by 1.",
-                choose: self.abilities.to_choose_serial(true)
-            },
-            FeatureSerial {
-                text: "# Skills\n\nYou gain proficiency in one skill of your choice.",
-                choose: self.skill.to_choose_serial(false)
-            },
-            FeatureSerial {
-                text: "# Languages\n\nYou can speak, read, and write Common and one extra language of your choice. Humans typically learn the languages of other peoples they deal with, including obscure dialects. They are fond of sprinkling their speech with words borrowed from other tongues: Orc curses, Elvish musical expressions, Dwarvish military phrases, and so on.",
-                choose: self.language.to_choose_serial(false)
-            },
-            FeatureSerial {
-                text: "# Feat\n\nYou gain one feat of your choice.",
-                choose: self.feat.to_choose_serial(false)
-            }
+            Feature (
+                "# Ability Score Increase\n\nTwo different ability scores of your choice increase by 1.",
+                Some(self.abilities.to_choice(true))
+            ),
+            Feature (
+                "# Skills\n\nYou gain proficiency in one skill of your choice.",
+                Some(self.skill.to_choice(false))
+            ),
+            Feature (
+                "# Languages\n\nYou can speak, read, and write Common and one extra language of your choice. Humans typically learn the languages of other peoples they deal with, including obscure dialects. They are fond of sprinkling their speech with words borrowed from other tongues: Orc curses, Elvish musical expressions, Dwarvish military phrases, and so on.",
+                Some(self.language.to_choice(false))
+            ),
+            Feature (
+                "# Feat\n\nYou gain one feat of your choice.",
+                Some(self.feat.to_choice(false))
+            )
         ]
     }
 
@@ -55,8 +55,8 @@ impl Content for VariantHuman {
             _ => Err(())
         }
     }
-    fn write_feats(&self) -> Vec<Vec<FeatureSerial>> {
-        vec![ self.feat.write_features() ]
+    fn feats(&self) -> Vec<Vec<Feature>> {
+        vec![ self.feat.features() ]
     }
 }
 

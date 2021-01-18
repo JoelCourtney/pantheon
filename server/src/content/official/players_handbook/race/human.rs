@@ -26,48 +26,48 @@ impl Content for Human {
             _ => unimplemented!()
         }
     }
-    fn write_features(&self) -> Vec<FeatureSerial> {
+    fn features(&self) -> Vec<Feature> {
         vec! [
-            FeatureSerial {
-                text: indoc! { r"
+            Feature (
+                indoc! { r"
                     # Ability Score Increase
 
                     Your ability scores each increase by 1."
                 },
-                ..def!()
-            },
-            FeatureSerial {
-                text: indoc! { r"
+                None
+            ),
+            Feature (
+                indoc! { r"
                     # Alignment
 
                     Humans tend toward no particular alignment. The best and the worst are found among them."
                 },
-                ..def!()
-            },
-            FeatureSerial {
-                text: indoc! { r"
+                None
+            ),
+            Feature (
+                indoc! { r"
                     # Age
 
                     Humans reach adulthood in their late teens and live less than a century"
                 },
-                ..def!()
-            },
-            FeatureSerial {
-                text: indoc! { r"
+                None
+            ),
+            Feature (
+                indoc! { r"
                     # Size
 
                     Humans vary widely in height and build, from barely 5 feet to well over 6 feet tall. Regardless of your position in that range, your size is Medium."
                 },
-                ..def!()
-            },
-            FeatureSerial {
-                text: "# Speed\n\nYour base walking speed is 30 feet.",
-                ..def!()
-            },
-            FeatureSerial {
-                text: "# Languages\n\nYou can speak, read, and write Common and one extra language of your choice. Humans typically learn the languages of other peoples they deal with, including obscure dialects. They are fond of sprinkling their speech with words borrowed from other tongues: Orc curses, Elvish musical expressions, Dwarvish military phrases, and so on.",
-                choose: self.extra_language.to_choose_serial(false)
-            }
+                None
+            ),
+            Feature (
+                "# Speed\n\nYour base walking speed is 30 feet.",
+                None
+            ),
+            Feature (
+                "# Languages\n\nYou can speak, read, and write Common and one extra language of your choice. Humans typically learn the languages of other peoples they deal with, including obscure dialects. They are fond of sprinkling their speech with words borrowed from other tongues: Orc curses, Elvish musical expressions, Dwarvish military phrases, and so on.",
+                Some(self.extra_language.to_choice(false))
+            )
         ]
     }
 }

@@ -5,7 +5,7 @@ mod homebrew;
 mod custom_traits;
 
 use custom_traits::*;
-use crate::feature::FeatureSerial;
+use crate::feature::Feature;
 use crate::character::Character;
 
 macros::registry!(10);
@@ -24,12 +24,12 @@ pub trait Content {
     fn receive_choice(&mut self, _choice: &str, _feature_index: usize, _choice_index: usize) {
         unimplemented!()
     }
-    fn write_features(&self) -> Vec<FeatureSerial> { vec! [] }
+    fn features(&self) -> Vec<Feature> { vec! [] }
 
     fn receive_feat_choice(&mut self, _choice: &str, _feat_index: usize, _feature_index: usize, _choice_index: usize) -> Result<(),()> {
         Err(())
     }
-    fn write_feats(&self) -> Vec<Vec<FeatureSerial>> { vec! [] }
+    fn feats(&self) -> Vec<Vec<Feature>> { vec! [] }
 
     fn initialize(&self, _: &mut Character) {}
     fn modify(&self, _: &mut Character) {}
