@@ -1,7 +1,7 @@
 #[macros::subrace("Halfling")]
 pub struct Lightfoot;
 
-impl Content for Lightfoot{
+impl Content for Lightfoot {
     fn modify(&self, c: &mut Character) {
         c.charisma += 1;
     }

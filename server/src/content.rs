@@ -1,6 +1,3 @@
-use crate::feature::FeatureSerial;
-use crate::character::Character;
-
 mod system;
 mod official;
 mod playtest;
@@ -8,8 +5,10 @@ mod homebrew;
 mod custom_traits;
 
 use custom_traits::*;
+use crate::feature::FeatureSerial;
+use crate::character::Character;
 
-macros::registry!(9);
+macros::registry!(10);
 
 /// Contains where to find a particular file.
 ///

@@ -35,6 +35,8 @@ fn main() {
 
     let mut race = content::race("Halfling").unwrap();
     dbg!(&race);
+    dbg!(race.write_features());
     race.receive_choice("Lightfoot", 9, 0);
     dbg!(&race);
+    dbg!(race.write_features());
 }
