@@ -1,6 +1,7 @@
 use proc_macro::TokenStream;
 use syn::export::TokenStream2;
 use quote::{quote, format_ident};
+use inflector::Inflector;
 
 pub(crate) fn choose(ast: syn::DeriveInput) -> TokenStream {
     let ident = ast.ident.clone();
@@ -130,7 +131,7 @@ fn process_choose_attribute(name: String, vars: Vec<String>) -> TokenStream2 {
 
 pub(crate) fn dynamic_choose(ast: syn::ItemTrait) -> TokenStream {
     let ident = ast.ident.clone();
-    let lower_ident = format_ident!("{}", ident.to_string().to_lowercase());
+    let lower_ident = format_ident!("{}", ident.to_string().to_snake_case());
     let get_all_ident = format_ident!("get_all_{}", lower_ident);
     let default_ident = format_ident!("default_{}", lower_ident);
     (quote! {
@@ -139,7 +140,7 @@ pub(crate) fn dynamic_choose(ast: syn::ItemTrait) -> TokenStream {
         impl Choose for Box<dyn #ident> {
             fn choose(&mut self, choice: &str, index: usize) {
                 if index == 0 {
-                    *self = content::#lower_ident(choice).expect(&format!("choice not found: {}", choice));
+                    *self = crate::content::#lower_ident(choice).expect(&format!("choice not found: {}", choice));
                 } else {
                     unimplemented!()
                 }
@@ -149,7 +150,7 @@ pub(crate) fn dynamic_choose(ast: syn::ItemTrait) -> TokenStream {
                     crate::feature::ChooseSerial {
                         current_choices: vec! [ self.content_name() ],
                         all_choices: vec! [
-                            content::#get_all_ident()
+                            crate::content::#get_all_ident()
                         ]
                     }
                 } else {
@@ -160,7 +161,7 @@ pub(crate) fn dynamic_choose(ast: syn::ItemTrait) -> TokenStream {
 
         impl Default for Box<dyn #ident> {
             fn default() -> Self {
-                content::#default_ident()
+                crate::content::#default_ident()
             }
         }
     }).into()

@@ -100,7 +100,7 @@ fn collect_registration() -> HashMap<
     for entry in WalkDir::new("src/content") {
         let entry = entry.expect("expected dir entry");
         let file_name = entry.file_name().to_str().expect("bad os str");
-        if file_name.rfind(".rs") != None && file_name != "mod.rs" {
+        if file_name.rfind(".rs") != None && file_name != "mod.rs" && file_name != "custom_traits.rs" {
             let comps: Vec<std::path::Component> = entry.path().components().collect();
             let collection = match comps.get(2).expect("not enough components: 2") {
                 Normal(s) => s.to_str().expect("bad os str: 2").to_owned(),

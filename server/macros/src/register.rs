@@ -63,7 +63,7 @@ fn list_imports(dir_str: String) -> TokenStream2 {
     acc
 }
 
-fn unwrap_string_tuple(t: syn::ExprTuple) -> Result<(String, String), TokenStream2> {
+pub(crate) fn unwrap_string_tuple(t: syn::ExprTuple) -> Result<(String, String), TokenStream2> {
     use syn::Expr;
 
     let size = t.elems.len();

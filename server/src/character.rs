@@ -1,11 +1,10 @@
 use serde::{Deserialize, Serialize};
 
 use crate::feature::{FeatureSerial, Choose};
-use crate::content::Content;
 use crate::misc::*;
 use std::fmt::Debug;
-use crate::content;
 use macros::dynamic_choose;
+use crate::content::Content;
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct StoredCharacter {

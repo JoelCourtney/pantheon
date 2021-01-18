@@ -53,9 +53,11 @@ pub(crate) fn prelude(kind: &str, ast: syn::DeriveInput, pretty_name: String) ->
         use crate::misc::*;
         use crate::describe::*;
         use crate::content::Content;
-        use macros::{def, describe, choose};
+        use macros::{def, describe, choose, dynamic_choose};
         use serde::{Serialize, Deserialize};
         use indoc::indoc;
+        use std::fmt::Debug;
+        use crate::content::custom_traits::*;
 
         #[typetag::serde]
         impl #kind_ident for #pascal_name_ident {
@@ -84,6 +86,23 @@ fn to_fs_friendly(name: &str) -> String {
 fn strip_characters(original : &str, to_strip : &str) -> String {
     original.chars().filter(|&c| !to_strip.contains(c)).collect()
 }
+
+pub(crate) fn subtype_and_pretty_name(args: TokenStream) -> Result<(String, String), TokenStream2> {
+    match syn::parse::<syn::LitStr>(args.clone()) {
+        Ok(s) => Ok((s.value(), "".to_string())),
+        Err(_) => {
+            match syn::parse::<syn::ExprTuple>(args) {
+                Ok(t) => {
+                    crate::register::unwrap_string_tuple(t)
+                }
+                Err(_) => Err(quote!({
+                    compile_error!("bad subtype argument");
+                }))
+            }
+        }
+    }
+}
+
 
 pub(crate) fn pretty_name(args: TokenStream) -> String {
     match syn::parse::<syn::LitStr>(args) {

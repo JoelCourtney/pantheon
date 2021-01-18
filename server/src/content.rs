@@ -1,8 +1,15 @@
 use crate::feature::FeatureSerial;
 use crate::character::Character;
-macros::register!("/");
 
-macros::registry!(6);
+mod system;
+mod official;
+mod playtest;
+mod homebrew;
+mod custom_traits;
+
+use custom_traits::*;
+
+macros::registry!(9);
 
 /// Contains where to find a particular file.
 ///
@@ -15,7 +22,9 @@ struct Registration {
 }
 
 pub trait Content {
-    fn receive_choice(&mut self, _choice: &str, _feature_index: usize, _choice_index: usize) {}
+    fn receive_choice(&mut self, _choice: &str, _feature_index: usize, _choice_index: usize) {
+        unimplemented!()
+    }
     fn write_features(&self) -> Vec<FeatureSerial> { vec! [] }
 
     fn receive_feat_choice(&mut self, _choice: &str, _feat_index: usize, _feature_index: usize, _choice_index: usize) -> Result<(),()> {

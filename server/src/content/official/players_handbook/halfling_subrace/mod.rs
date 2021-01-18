@@ -1,0 +1,1 @@
+macros::register!("/official/players_handbook/halfling_subrace");

@@ -33,12 +33,8 @@ fn main() {
 
     let _better_char = char.resolve();
 
-    let mut race = content::race("Variant Human").unwrap();
+    let mut race = content::race("Halfling").unwrap();
     dbg!(&race);
-    let serials = race.write_features();
-    dbg!(&serials);
-    race.receive_choice("Dexterity", 0, 0);
+    race.receive_choice("Lightfoot", 9, 0);
     dbg!(&race);
-    // dbg!(race.description_with_title());
-    dbg!(race.write_features());
 }

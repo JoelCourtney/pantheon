@@ -131,6 +131,16 @@ pub fn race(args: TokenStream, input: TokenStream) -> TokenStream {
 }
 
 #[proc_macro_attribute]
+pub fn subrace(args: TokenStream, input: TokenStream) -> TokenStream {
+    let (subtype, pretty) = match content::subtype_and_pretty_name(args) {
+        Ok(t) => t,
+        Err(s) => return s.into()
+    };
+    let ast: syn::DeriveInput = syn::parse(input).unwrap();
+    content::prelude(&format!("{}Subrace", subtype), ast, pretty)
+}
+
+#[proc_macro_attribute]
 pub fn class(args: TokenStream, input: TokenStream) -> TokenStream {
     let pretty = content::pretty_name(args);
     let ast: syn::DeriveInput = syn::parse(input).unwrap();
