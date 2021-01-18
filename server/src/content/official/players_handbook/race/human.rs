@@ -48,7 +48,7 @@ impl Content for Human {
                 indoc! { r"
                     # Age
 
-                    Humans reach adulthood in their late teens and live less than a century"
+                    Humans reach adulthood in their late teens and live less than a century."
                 },
                 None
             ),
