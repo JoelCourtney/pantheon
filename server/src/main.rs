@@ -27,11 +27,11 @@ use character::StoredCharacter;
 
 fn main() {
     let json = std::fs::read_to_string("test.json").unwrap();
-    dbg!(&json);
+    // dbg!(&json);
     let mut char: StoredCharacter = serde_json::from_str(&json).expect("DESERIALIZATION FAILED");
-    dbg!(&char);
+    // dbg!(&char);
     let better_char = char.resolve().unwrap();
-    dbg!(&better_char);
+    // dbg!(&better_char);
     let final_char = better_char.finalize();
     dbg!(&final_char);
 

@@ -5,6 +5,7 @@ use crate::misc::*;
 use std::fmt::Debug;
 use macros::{dynamic_choose, FinalizeCharacter};
 use crate::content::Content;
+use crate::content::common::CommonRules;
 use std::ops::{Deref, DerefMut};
 use std::collections::HashSet;
 use maplit::hashset;
@@ -48,6 +49,7 @@ impl StoredCharacter {
             ..Default::default()
         };
 
+        CommonRules::declare(&mut char);
         self.race.declare(&mut char);
         for class in &self.classes {
             class.declare(&mut char);
@@ -55,16 +57,21 @@ impl StoredCharacter {
 
         let mut old_count: i64  = -2;
         let mut count: i64 = -1;
+        let mut modify_iterations = 0;
         while count != 0 && old_count != count {
             old_count = count;
 
+            CommonRules::modify(&mut char);
             self.race.modify(&mut char);
             for class in &self.classes {
                 class.modify(&mut char);
             }
 
             count = char.count_unresolved().into();
+
+            modify_iterations += 1;
         }
+        dbg!(modify_iterations);
         if count != 0 {
             dbg!(&char);
             println!("modifer deadlock");

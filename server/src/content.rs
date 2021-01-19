@@ -3,7 +3,7 @@ mod official;
 mod playtest;
 mod homebrew;
 mod custom_traits;
-mod common;
+pub(crate) mod common;
 
 use custom_traits::*;
 use crate::feature::Feature;
