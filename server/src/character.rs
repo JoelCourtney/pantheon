@@ -31,7 +31,7 @@ pub struct StoredCharacter {
 }
 
 impl StoredCharacter {
-    pub fn resolve(&self) -> Result<FinalCharacter, ()> {
+    pub fn resolve(&mut self) -> Result<Character<'_>, ()> {
         let mut char = Character {
             name: Staged::new(self.name.clone()),
             health: Staged::new(self.health),
@@ -78,20 +78,24 @@ impl StoredCharacter {
             // Err(TODO("make an error for this"))
             Err(())
         } else {
-            char.race_traits.extend(self.race.features());
-            char.feats.extend(self.race.feats());
-            for class in &self.classes {
-                char.class_features.extend(class.features());
-                char.feats.extend(class.feats());
-            }
+            // char.race_traits.extend(self.race.features());
+            // char.feats.extend(self.race.feats());
+            // for class in &self.classes {
+            //     char.class_features.extend(class.features());
+            //     char.feats.extend(class.feats());
+            // }
             // char.background_features
-            Ok(char.finalize())
+            self.race.last(&mut char);
+            for class in &mut self.classes {
+                class.last(&mut char);
+            }
+            Ok(char)
         }
     }
 }
 
 #[derive(Debug, Default, FinalizeCharacter)]
-pub struct Character {
+pub struct Character<'a> {
     pub name: Staged<String>,
 
     // HEALTH
@@ -139,10 +143,10 @@ pub struct Character {
     // DO NOT MODIFY FIELDS AFTER THIS POINT
 
     // FEATURES, TRAITS, AND FEATS
-    race_traits: Vec<Feature>,
-    class_features: Vec<Feature>,
-    background_features: Vec<Feature>,
-    feats: Vec<Vec<Feature>>,
+    pub race_traits: Vec<Feature<'a>>,
+    pub class_features: Vec<Feature<'a>>,
+    pub background_features: Vec<Feature<'a>>,
+    pub feats: Vec<Feature<'a>>,
 
     // ALIGNMENT
     alignment: Alignment,

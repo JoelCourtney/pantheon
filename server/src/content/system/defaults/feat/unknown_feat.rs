@@ -1,10 +1,7 @@
 #[macros::feat("Unknown Feat")]
 pub struct UnknownFeat;
 
-impl Content for UnknownFeat {
-    fn declare(&self, _: &mut Character) {}
-    fn iterate(&self, _: &mut Character) {}
-}
+impl Content for UnknownFeat {}
 
 describe! {r#"
     # Unknown Feat

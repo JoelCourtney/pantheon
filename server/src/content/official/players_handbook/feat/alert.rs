@@ -11,14 +11,14 @@ impl Content for Alert {
         }
     }
 
-    fn features(&self) -> Vec<Feature> {
-        vec! [
-            Feature (
-                Alert::description_without_title(),
-                None
-            )
-        ]
-    }
+    // fn features(&self) -> Vec<Feature> {
+    //     vec! [
+    //         Feature (
+    //             Alert::description_without_title(),
+    //             None
+    //         )
+    //     ]
+    // }
 }
 
 describe! { r#"

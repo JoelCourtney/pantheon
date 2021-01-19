@@ -11,26 +11,26 @@ impl Content for Lightfoot {
         }
     }
 
-    fn features(&self) -> Vec<Feature> {
-        vec![
-            Feature (
-                indoc! {r"
-                    # Ability Score Increase
-
-                    Your Charisma score increases by 1.
-                "},
-                None
-            ),
-            Feature (
-                indoc! {r"
-                    # Naturally Stealthy
-
-                    You can attempt to hide even when you are obscured only by a creature that is at least one size larger than you.
-                "},
-                None
-            )
-        ]
-    }
+    // fn features(&self) -> Vec<Feature> {
+    //     vec![
+    //         Feature (
+    //             indoc! {r"
+    //                 # Ability Score Increase
+    //
+    //                 Your Charisma score increases by 1.
+    //             "},
+    //             None
+    //         ),
+    //         Feature (
+    //             indoc! {r"
+    //                 # Naturally Stealthy
+    //
+    //                 You can attempt to hide even when you are obscured only by a creature that is at least one size larger than you.
+    //             "},
+    //             None
+    //         )
+    //     ]
+    // }
 }
 
 describe! {r#"

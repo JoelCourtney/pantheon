@@ -11,6 +11,8 @@ impl Content for VariantHuman {
         c.size.declare_initializer(NAME);
         c.languages.declare_initializer(NAME);
         c.skill_proficiencies.declare_initializer(NAME);
+
+        self.feat.declare(c);
     }
     fn iterate(&self, c: &mut Character) {
         if c.size.initialize(NAME) {
@@ -25,50 +27,45 @@ impl Content for VariantHuman {
         if c.skill_proficiencies.initialize(NAME) {
             (*c.skill_proficiencies).push((self.skill, ProficiencyType::Single));
         }
+
+        self.feat.iterate(c);
     }
 
-    fn receive_choice(&mut self, choice: &str, feature_index: usize, choice_index: usize) {
-        match feature_index {
-            0 => self.abilities.choose(choice, choice_index),
-            1 => self.skill.choose(choice, choice_index),
-            2 => self.language.choose(choice, choice_index),
-            3 => self.feat.choose(choice, choice_index),
-            _ => unimplemented!()
-        }
-    }
-    fn features(&self) -> Vec<Feature> {
-        vec! [
+    fn last<'a>(&'a mut self, c: &mut Character<'a>) {
+        c.race_traits.extend(vec! [
             Feature (
                 "# Ability Score Increase\n\nTwo different ability scores of your choice increase by 1.",
-                Some(self.abilities.to_choice(true))
+                Some(&mut self.abilities)
             ),
             Feature (
                 "# Skills\n\nYou gain proficiency in one skill of your choice.",
-                Some(self.skill.to_choice(false))
+                Some(&mut self.skill)
             ),
             Feature (
                 "# Languages\n\nYou can speak, read, and write Common and one extra language of your choice. Humans typically learn the languages of other peoples they deal with, including obscure dialects. They are fond of sprinkling their speech with words borrowed from other tongues: Orc curses, Elvish musical expressions, Dwarvish military phrases, and so on.",
-                Some(self.language.to_choice(false))
+                Some(&mut self.language)
             ),
             Feature (
                 "# Feat\n\nYou gain one feat of your choice.",
-                Some(self.feat.to_choice(false))
+                Some(&mut self.feat)
             )
-        ]
-    }
+        ]);
 
-    fn receive_feat_choice(&mut self, choice: &str, feat_index: usize, feature_index: usize, choice_index: usize) -> Result<(),()> {
-        match feat_index {
-            0 => {
-                self.feat.receive_choice(choice, feature_index, choice_index);
-                Ok(())
-            }
-            _ => Err(())
-        }
+        // self.feat.last(c);
     }
-    fn feats(&self) -> Vec<Vec<Feature>> {
-        vec![ self.feat.features() ]
-    }
+    //
+    // fn receive_feat_choice(&mut self, choice: &str, feat_index: usize, feature_index: usize, choice_index: usize) -> Result<(),()> {
+    //     match feat_index {
+    //         0 => {
+    //             self.feat.receive_choice(choice, feature_index, choice_index);
+    //             Ok(())
+    //         }
+    //         _ => Err(())
+    //     }
+    // }
+    // fn feats(&self) -> Vec<Vec<Feature>> {
+    //     vec![ self.feat.features() ]
+    // }
 }
 
 describe! { r#"

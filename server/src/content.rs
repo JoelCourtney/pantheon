@@ -6,7 +6,6 @@ mod custom_traits;
 pub(crate) mod common;
 
 use custom_traits::*;
-use crate::feature::Feature;
 use crate::character::Character;
 
 macros::registry!(14);
@@ -22,31 +21,33 @@ struct Registration {
 }
 
 pub trait Content {
-    fn receive_choice(&mut self, _choice: &str, _feature_index: usize, _choice_index: usize) {
-        unimplemented!()
-    }
-    fn features(&self) -> Vec<Feature> { vec! [] }
+    // fn receive_choice(&mut self, _choice: &str, _feature_index: usize, _choice_index: usize) {
+    //     unimplemented!()
+    // }
+    // fn features(&self) -> Vec<Feature> { vec! [] }
+    //
+    // fn receive_feat_choice(&mut self, _choice: &str, _feat_index: usize, _feature_index: usize, _choice_index: usize) -> Result<(),()> {
+    //     Err(())
+    // }
+    // fn feats(&self) -> Vec<Vec<Feature>> { vec! [] }
 
-    fn receive_feat_choice(&mut self, _choice: &str, _feat_index: usize, _feature_index: usize, _choice_index: usize) -> Result<(),()> {
-        Err(())
-    }
-    fn feats(&self) -> Vec<Vec<Feature>> { vec! [] }
-
-    fn declare(&self, c: &mut Character);
-    fn iterate(&self, c: &mut Character);
+    fn declare(&self, _c: &mut Character) {}
+    fn iterate(&self, _c: &mut Character) {}
+    fn last<'a>(&'a mut self, _c: &mut Character<'a>) {}
 }
 
 pub trait LeveledContent {
-    fn receive_choice(&mut self, _choice: &str, _feature_index: usize, _choice_index: usize) {
-    unimplemented!()
-    }
-    fn features(&self, _level: usize) -> Vec<Feature> { vec! [] }
+    // fn receive_choice(&mut self, _choice: &str, _feature_index: usize, _choice_index: usize) {
+    // unimplemented!()
+    // }
+    // fn features(&self, _level: usize) -> Vec<Feature> { vec! [] }
+    //
+    // fn receive_feat_choice(&mut self, _choice: &str, _feat_index: usize, _feature_index: usize, _choice_index: usize) -> Result<(),()> {
+    //     Err(())
+    // }
+    // fn feats(&self, _level: usize) -> Vec<Vec<Feature>> { vec! [] }
 
-    fn receive_feat_choice(&mut self, _choice: &str, _feat_index: usize, _feature_index: usize, _choice_index: usize) -> Result<(),()> {
-        Err(())
-    }
-    fn feats(&self, _level: usize) -> Vec<Vec<Feature>> { vec! [] }
-
-    fn declare(&self, c: &mut Character, level: usize);
-    fn iterate(&self, c: &mut Character, level: usize);
+    fn declare(&self, _c: &mut Character, _level: usize) {}
+    fn iterate(&self, _c: &mut Character, _level: usize) {}
+    fn last<'a>(&'a mut self, _c: &mut Character<'a>, _level: usize) {}
 }

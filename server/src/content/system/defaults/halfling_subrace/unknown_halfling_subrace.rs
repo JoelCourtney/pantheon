@@ -1,10 +1,7 @@
 #[macros::custom_content("HalflingSubrace")]
 pub struct UnknownHalflingSubrace;
 
-impl Content for UnknownHalflingSubrace {
-    fn declare(&self, _: &mut Character) {}
-    fn iterate(&self, _: &mut Character) {}
-}
+impl Content for UnknownHalflingSubrace {}
 
 describe! { r#"
     # Unknown Halfling Subrace

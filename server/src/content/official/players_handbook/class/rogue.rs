@@ -14,12 +14,12 @@ impl Content for Rogue {
         self.subclass.iterate(c, self.common.level);
     }
 
-    fn receive_choice(&mut self, choice: &str, feature_index: usize, choice_index: usize) {
-        match feature_index {
-            0 => self.subclass.choose(choice, choice_index),
-            _ => unimplemented!()
-        }
-    }
+    // fn receive_choice(&mut self, choice: &str, feature_index: usize, choice_index: usize) {
+    //     match feature_index {
+    //         0 => self.subclass.choose(choice, choice_index),
+    //         _ => unimplemented!()
+    //     }
+    // }
 }
 
 describe! {r#"

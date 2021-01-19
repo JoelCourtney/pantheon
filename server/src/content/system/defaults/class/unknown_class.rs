@@ -1,10 +1,7 @@
 #[macros::class("Unknown Class")]
 pub struct UnknownClass;
 
-impl Content for UnknownClass {
-    fn declare(&self, _: &mut Character) {}
-    fn iterate(&self, _: &mut Character) {}
-}
+impl Content for UnknownClass {}
 
 describe! { r#"
     # Unknown Class

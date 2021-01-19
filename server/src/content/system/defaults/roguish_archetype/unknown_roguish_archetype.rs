@@ -1,10 +1,7 @@
 #[macros::custom_content("RoguishArchetype")]
 pub struct UnknownRoguishArchetype;
 
-impl LeveledContent for UnknownRoguishArchetype {
-    fn declare(&self, _: &mut Character, _: usize) {}
-    fn iterate(&self, _: &mut Character, _: usize) {}
-}
+impl LeveledContent for UnknownRoguishArchetype {}
 
 describe! { r#"
     # Unknown Roguish Archetype

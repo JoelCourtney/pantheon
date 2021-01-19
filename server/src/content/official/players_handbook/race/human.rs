@@ -50,14 +50,8 @@ impl Content for Human {
         }
     }
 
-    fn receive_choice(&mut self, choice: &str, feature_index: usize, choice_index: usize) {
-        match feature_index {
-            5 => self.extra_language.choose(choice, choice_index),
-            _ => unimplemented!()
-        }
-    }
-    fn features(&self) -> Vec<Feature> {
-        vec! [
+    fn last<'a>(&'a mut self, c: &mut Character<'a>) {
+        c.race_traits.extend(vec! [
             Feature (
                 indoc! { r"
                     # Ability Score Increase
@@ -96,9 +90,9 @@ impl Content for Human {
             ),
             Feature (
                 "# Languages\n\nYou can speak, read, and write Common and one extra language of your choice. Humans typically learn the languages of other peoples they deal with, including obscure dialects. They are fond of sprinkling their speech with words borrowed from other tongues: Orc curses, Elvish musical expressions, Dwarvish military phrases, and so on.",
-                Some(self.extra_language.to_choice(false))
+                Some(&mut self.extra_language)
             )
-        ]
+        ]);
     }
 }
 

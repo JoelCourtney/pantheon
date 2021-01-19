@@ -65,7 +65,7 @@ pub(crate) fn finalize(ast: syn::DeriveInput) -> TokenStream {
                             };
                             final_character_acc = quote! {
                                 #final_character_acc
-                                #id: #target,
+                                pub #id: #target,
                             };
                             finalize_acc = quote! {
                                 #finalize_acc
@@ -74,7 +74,7 @@ pub(crate) fn finalize(ast: syn::DeriveInput) -> TokenStream {
                         } else {
                             final_character_acc = quote! {
                                 #final_character_acc
-                                #id: #ty,
+                                pub #id: #ty,
                             };
                             finalize_acc = quote! {
                                 #finalize_acc
@@ -87,11 +87,11 @@ pub(crate) fn finalize(ast: syn::DeriveInput) -> TokenStream {
                 }
             }
             (quote! {
-                impl Character {
+                impl<'a> Character<'a> {
                     fn count_unresolved(&self) -> u32 {
                         #count_unresolved_acc
                     }
-                    pub fn finalize(self) -> FinalCharacter {
+                    pub fn finalize(self) -> FinalCharacter<'a> {
                         FinalCharacter {
                             #finalize_acc
                         }
@@ -99,7 +99,7 @@ pub(crate) fn finalize(ast: syn::DeriveInput) -> TokenStream {
                 }
 
                 #[derive(Serialize, Debug, Default)]
-                pub struct FinalCharacter {
+                pub struct FinalCharacter<'a> {
                     #final_character_acc
                 }
             }).into()

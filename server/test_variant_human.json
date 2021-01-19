@@ -1,0 +1,38 @@
+{
+	"name": "Test Boi",
+	"health": 40,
+	"temp_health": 0,
+	"base_strength": 12,
+	"base_dexterity": 12,
+	"base_constitution": 12,
+	"base_intelligence": 12,
+	"base_wisdom": 12,
+	"base_charisma": 12,
+	"alignment": "ChaoticNeutral",
+	"race": {
+		"VariantHuman": {
+			"abilities": [
+				"Strength",
+				"Dexterity"
+			],
+			"skill": "Persuasion",
+			"feat": {
+				"Alert": null
+			},
+			"language": "Auran"
+		}
+	},
+	"classes": [
+		{
+			"Rogue": {
+				"subclass": {
+					"Assassin": null
+				},
+				"common": {
+						"level": 3,
+						"first_class": true
+				}
+			}
+		}
+	]
+}
