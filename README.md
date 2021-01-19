@@ -2,6 +2,8 @@
 
 Its like DnDBeyond, but worse, and probably illegal.
 
+Currently under development, doesn't do anything useful.
+
 ## Setup
 
 You need [yarn](https://yarnpkg.com/) and [Cargo](https://doc.rust-lang.org/cargo/index.html) nightly installed. If you are on Linux and run into an error that says `'rustc' is not installed for the toolchain nightly-...` you might need to run:
