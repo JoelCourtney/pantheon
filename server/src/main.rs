@@ -13,7 +13,10 @@
 //! That is a very (very) involved process and is the whole reason why this project is insane.
 //! More deats can be found in the documentation for other files.
 
+#![feature(proc_macro_hygiene, decl_macro)]
 #[deny(missing_docs)]
+
+#[macro_use] extern crate rocket;
 
 extern crate macros;
 
@@ -23,38 +26,16 @@ mod feature;
 mod describe;
 mod misc;
 
-use character::StoredCharacter;
+use rocket_contrib::serve::StaticFiles;
+
+#[get("/")]
+fn index() -> &'static str {
+    "Hello, world!"
+}
 
 fn main() {
-    let in_json = std::fs::read_to_string("test_variant_human.json").unwrap();
-    let mut stored_char: StoredCharacter = serde_json::from_str(&in_json).expect("DESERIALIZATION FAILED");
-    let char = stored_char.resolve().unwrap();
-    let final_char = char.finalize();
-    match final_char.race_traits[0].1 {
-        Some(c) => unsafe {
-            (*c).choose("Constitution", 1);
-        }
-        None => {}
-    }
-    let out_json = serde_json::to_string(&final_char).expect("SERIALIZATION FAILED");
-    let _back_json = serde_json::to_string(&stored_char).expect("SERIALIZATION FAILED");
-    dbg!(&stored_char);
-    println!("{}",&out_json);
-    // final_char.race_traits[0].1.as_deref_mut().unwrap().choose("Terran", 0);
-    // dbg!(&final_char);
-    // dbg!(&stored_char);
-    // let json = serde_json::to_string(&final_char).unwrap();
-    // dbg!(json);
-
-    // let mut class = content::class("Rogue").unwrap();
-    // class.receive_choice("Assassin",0, 0);
-    // dbg!(serde_json::to_string(&class).unwrap());
-
-
-    // let mut race = content::race("Halfling").unwrap();
-    // dbg!(&race);
-    // dbg!(race.features());
-    // race.receive_choice("Lightfoot", 9, 0);
-    // dbg!(&race);
-    // dbg!(race.features());
+    rocket::ignite()
+        .mount("/", StaticFiles::from("client/src"))
+        .mount("/uikit", StaticFiles::from("client/uikit").rank(-1))
+        .launch();
 }

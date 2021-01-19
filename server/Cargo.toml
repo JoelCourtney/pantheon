@@ -13,5 +13,11 @@ typetag = "0.1.6"
 indoc = "1.0"
 maplit = "*"
 lazy_static = "1.4.0"
+rocket = "0.4.6"
 
 macros = { path = "macros" }
+
+[dependencies.rocket_contrib]
+version = "0.4.6"
+default-features = false
+features = ["json", "serve"]
