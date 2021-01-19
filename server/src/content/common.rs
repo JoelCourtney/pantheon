@@ -34,11 +34,12 @@ impl CommonRules {
             *c.charisma_modifier = (*c.charisma as i32 - 10) / 2;
         }
     }
+    pub fn last(_c: &mut Character) {}
 }
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct CommonClassContent<const HD: usize> {
-    pub level: usize,
+    pub lvl: usize,
     first_class: bool
 }
 
@@ -51,11 +52,12 @@ impl<const HD: usize> CommonClassContent<HD> {
     pub fn iterate(&self, c: &mut Character) {
         if c.constitution_modifier.finalized() && c.max_health.finalize(Self::NAME) {
             let mut res: i32 = 0;
-            if self.first_class && self.level >= 1 {
+            if self.first_class && self.lvl >= 1 {
                 res += (HD / 2 - 1) as i32;
             }
-            res += ((HD / 2 + 1) as i32 + *c.constitution_modifier) * self.level as i32;
+            res += ((HD / 2 + 1) as i32 + *c.constitution_modifier) * self.lvl as i32;
             *c.max_health += res as usize;
         }
     }
+    pub fn last(&mut self, _c: &mut Character) {}
 }

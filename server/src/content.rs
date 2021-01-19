@@ -21,33 +21,13 @@ struct Registration {
 }
 
 pub trait Content {
-    // fn receive_choice(&mut self, _choice: &str, _feature_index: usize, _choice_index: usize) {
-    //     unimplemented!()
-    // }
-    // fn features(&self) -> Vec<Feature> { vec! [] }
-    //
-    // fn receive_feat_choice(&mut self, _choice: &str, _feat_index: usize, _feature_index: usize, _choice_index: usize) -> Result<(),()> {
-    //     Err(())
-    // }
-    // fn feats(&self) -> Vec<Vec<Feature>> { vec! [] }
-
     fn declare(&self, _c: &mut Character) {}
     fn iterate(&self, _c: &mut Character) {}
-    fn last<'a>(&'a mut self, _c: &mut Character<'a>) {}
+    fn last(&mut self, _c: &mut Character) {}
 }
 
 pub trait LeveledContent {
-    // fn receive_choice(&mut self, _choice: &str, _feature_index: usize, _choice_index: usize) {
-    // unimplemented!()
-    // }
-    // fn features(&self, _level: usize) -> Vec<Feature> { vec! [] }
-    //
-    // fn receive_feat_choice(&mut self, _choice: &str, _feat_index: usize, _feature_index: usize, _choice_index: usize) -> Result<(),()> {
-    //     Err(())
-    // }
-    // fn feats(&self, _level: usize) -> Vec<Vec<Feature>> { vec! [] }
-
-    fn declare(&self, _c: &mut Character, _level: usize) {}
-    fn iterate(&self, _c: &mut Character, _level: usize) {}
-    fn last<'a>(&'a mut self, _c: &mut Character<'a>, _level: usize) {}
+    fn declare(&self, _c: &mut Character, _lvl: usize) {}
+    fn iterate(&self, _c: &mut Character, _lvl: usize) {}
+    fn last(&mut self, _c: &mut Character, _lvl: usize) {}
 }

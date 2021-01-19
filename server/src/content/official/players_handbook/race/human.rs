@@ -49,8 +49,7 @@ impl Content for Human {
             *c.charisma += 1;
         }
     }
-
-    fn last<'a>(&'a mut self, c: &mut Character<'a>) {
+    fn last(&mut self, c: &mut Character) {
         c.race_traits.extend(vec! [
             Feature (
                 indoc! { r"

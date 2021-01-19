@@ -10,15 +10,14 @@ impl Content for Alert {
             *c.initiative += 5;
         }
     }
-
-    // fn features(&self) -> Vec<Feature> {
-    //     vec! [
-    //         Feature (
-    //             Alert::description_without_title(),
-    //             None
-    //         )
-    //     ]
-    // }
+    fn last(&mut self, c: &mut Character) {
+        c.feat_features.extend(vec! [
+            Feature (
+                Alert::description_without_title(),
+                None
+            )
+        ]);
+    }
 }
 
 describe! { r#"

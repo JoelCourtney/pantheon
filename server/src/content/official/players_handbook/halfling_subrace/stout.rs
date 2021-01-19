@@ -11,26 +11,26 @@ impl Content for Stout {
         }
     }
 
-    // fn features(&self) -> Vec<Feature> {
-    //     vec![
-    //         Feature (
-    //             indoc! {r"
-    //                 # Ability Score Increase
-    //
-    //                 Your Constitution score increases by 1.
-    //             "},
-    //             None
-    //         ),
-    //         Feature (
-    //             indoc! {r"
-    //                 # Stout Resilience
-    //
-    //                 You have advantage on saving throws against poison, and you have resistance against poison damage.
-    //             "},
-    //             None
-    //         )
-    //     ]
-    // }
+    fn last(&mut self, c: &mut Character) {
+        c.race_traits.extend(vec![
+            Feature (
+                indoc! {r"
+                    # Ability Score Increase
+
+                    Your Constitution score increases by 1.
+                "},
+                None
+            ),
+            Feature (
+                indoc! {r"
+                    # Stout Resilience
+
+                    You have advantage on saving throws against poison, and you have resistance against poison damage.
+                "},
+                None
+            )
+        ]);
+    }
 }
 
 describe! {r#"

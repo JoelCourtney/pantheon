@@ -2,17 +2,27 @@
 pub struct Assassin;
 
 impl LeveledContent for Assassin {
-    fn declare(&self, c: &mut Character, level: usize) {
-        if level >= 3 {
+    fn declare(&self, c: &mut Character, lvl: usize) {
+        if lvl >= 3 {
             c.tool_proficiencies.declare_modifier(NAME);
         }
     }
-    fn iterate(&self, c: &mut Character, level: usize) {
-        if level >= 3 {
+    fn iterate(&self, c: &mut Character, lvl: usize) {
+        if lvl >= 3 {
             if c.tool_proficiencies.modify(NAME) {
                 (*c.tool_proficiencies).push(("Disguise Kit", ProficiencyType::Single));
                 (*c.tool_proficiencies).push(("Poisoner's Kit", ProficiencyType::Single));
             }
+        }
+    }
+    fn last(&mut self, c: &mut Character, lvl: usize) {
+        if lvl >= 3 {
+            c.class_features.push(
+                Feature (
+                    "# Bonus Proficiencies\n\nWhen you choose this archetype at 3rd level, you gain proficiency with the disguise kit and poisoner's kit.",
+                    None
+                )
+            );
         }
     }
 }

@@ -1,25 +1,22 @@
 #[macros::class]
 pub struct Rogue {
+    common: CommonClassContent<8>,
     subclass: Box<dyn RoguishArchetype>,
-    common: CommonClassContent<8>
 }
 
 impl Content for Rogue {
     fn declare(&self, c: &mut Character) {
         self.common.declare(c);
-        self.subclass.declare(c, self.common.level);
+        self.subclass.declare(c, self.common.lvl);
     }
     fn iterate(&self, c: &mut Character) {
         self.common.iterate(c);
-        self.subclass.iterate(c, self.common.level);
+        self.subclass.iterate(c, self.common.lvl);
     }
-
-    // fn receive_choice(&mut self, choice: &str, feature_index: usize, choice_index: usize) {
-    //     match feature_index {
-    //         0 => self.subclass.choose(choice, choice_index),
-    //         _ => unimplemented!()
-    //     }
-    // }
+    fn last(&mut self, c: &mut Character) {
+        self.common.last(c);
+        self.subclass.last(c, self.common.lvl);
+    }
 }
 
 describe! {r#"

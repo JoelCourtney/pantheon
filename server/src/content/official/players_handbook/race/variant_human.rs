@@ -30,8 +30,7 @@ impl Content for VariantHuman {
 
         self.feat.iterate(c);
     }
-
-    fn last<'a>(&'a mut self, c: &mut Character<'a>) {
+    fn last(&mut self, c: &mut Character) {
         c.race_traits.extend(vec! [
             Feature (
                 "# Ability Score Increase\n\nTwo different ability scores of your choice increase by 1.",
@@ -51,21 +50,8 @@ impl Content for VariantHuman {
             )
         ]);
 
-        // self.feat.last(c);
+        self.feat.last(c);
     }
-    //
-    // fn receive_feat_choice(&mut self, choice: &str, feat_index: usize, feature_index: usize, choice_index: usize) -> Result<(),()> {
-    //     match feat_index {
-    //         0 => {
-    //             self.feat.receive_choice(choice, feature_index, choice_index);
-    //             Ok(())
-    //         }
-    //         _ => Err(())
-    //     }
-    // }
-    // fn feats(&self) -> Vec<Vec<Feature>> {
-    //     vec![ self.feat.features() ]
-    // }
 }
 
 describe! { r#"
