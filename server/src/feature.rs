@@ -2,7 +2,7 @@ use serde::{Serialize, Serializer};
 use std::fmt::Debug;
 use serde::ser::SerializeTupleStruct;
 
-#[derive(Debug, Default)]
+#[derive(Debug)]
 pub struct Feature(pub &'static str, pub Option<*mut dyn Choose>);
 
 impl Serialize for Feature {
