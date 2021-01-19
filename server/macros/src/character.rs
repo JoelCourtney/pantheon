@@ -36,7 +36,7 @@ pub(crate) fn finalize(ast: syn::DeriveInput) -> TokenStream {
                     ) => {
                         let ty = &field.ty;
                         let first = &seg.first().unwrap();
-                        if &first.ident.to_string() == "Modifiable" {
+                        if &first.ident.to_string() == "Staged" {
                             let target = match &first.arguments {
                                 syn::PathArguments::AngleBracketed(
                                     syn::AngleBracketedGenericArguments {

@@ -33,16 +33,16 @@ pub struct StoredCharacter {
 impl StoredCharacter {
     pub fn resolve(&self) -> Result<FinalCharacter, ()> {
         let mut char = Character {
-            name: Modifiable::new(self.name.clone()),
-            health: Modifiable::new(self.health),
-            temp_health: Modifiable::new(self.temp_health),
+            name: Staged::new(self.name.clone()),
+            health: Staged::new(self.health),
+            temp_health: Staged::new(self.temp_health),
 
-            strength: Modifiable::new(self.base_strength),
-            dexterity: Modifiable::new(self.base_dexterity),
-            constitution: Modifiable::new(self.base_constitution),
-            intelligence: Modifiable::new(self.base_intelligence),
-            wisdom: Modifiable::new(self.base_wisdom),
-            charisma: Modifiable::new(self.base_charisma),
+            strength: Staged::new(self.base_strength),
+            dexterity: Staged::new(self.base_dexterity),
+            constitution: Staged::new(self.base_constitution),
+            intelligence: Staged::new(self.base_intelligence),
+            wisdom: Staged::new(self.base_wisdom),
+            charisma: Staged::new(self.base_charisma),
 
             alignment: self.alignment,
 
@@ -92,49 +92,49 @@ impl StoredCharacter {
 
 #[derive(Debug, Default, FinalizeCharacter)]
 pub struct Character {
-    pub name: Modifiable<String>,
+    pub name: Staged<String>,
 
     // HEALTH
-    pub health: Modifiable<usize>,
-    pub temp_health: Modifiable<usize>,
-    pub max_health: Modifiable<usize>,
+    pub health: Staged<usize>,
+    pub temp_health: Staged<usize>,
+    pub max_health: Staged<usize>,
 
     // ABILITIES
-    pub strength: Modifiable<usize>,
-    pub dexterity: Modifiable<usize>,
-    pub constitution: Modifiable<usize>,
-    pub intelligence: Modifiable<usize>,
-    pub wisdom: Modifiable<usize>,
-    pub charisma: Modifiable<usize>,
+    pub strength: Staged<usize>,
+    pub dexterity: Staged<usize>,
+    pub constitution: Staged<usize>,
+    pub intelligence: Staged<usize>,
+    pub wisdom: Staged<usize>,
+    pub charisma: Staged<usize>,
 
-    pub strength_modifier: Modifiable<i32>,
-    pub dexterity_modifier: Modifiable<i32>,
-    pub constitution_modifier: Modifiable<i32>,
-    pub intelligence_modifier: Modifiable<i32>,
-    pub wisdom_modifier: Modifiable<i32>,
-    pub charisma_modifier: Modifiable<i32>,
+    pub strength_modifier: Staged<i32>,
+    pub dexterity_modifier: Staged<i32>,
+    pub constitution_modifier: Staged<i32>,
+    pub intelligence_modifier: Staged<i32>,
+    pub wisdom_modifier: Staged<i32>,
+    pub charisma_modifier: Staged<i32>,
 
     // INITIATIVE
-    pub initiative: Modifiable<i32>,
+    pub initiative: Staged<i32>,
 
     // SIZE
-    pub size: Modifiable<CreatureSize>,
+    pub size: Staged<CreatureSize>,
 
 
     // PROFICIENCIES AND LANGUAGES
-    pub skill_proficiencies: Modifiable<Vec<(Skill, ProficiencyType)>>,
-    pub tool_proficiencies: Modifiable<Vec<(&'static str, ProficiencyType)>>,
-    pub languages: Modifiable<Vec<Language>>,
+    pub skill_proficiencies: Staged<Vec<(Skill, ProficiencyType)>>,
+    pub tool_proficiencies: Staged<Vec<(&'static str, ProficiencyType)>>,
+    pub languages: Staged<Vec<Language>>,
 
     // SPEED
-    pub walking_speed: Modifiable<usize>,
-    pub flying_speed: Modifiable<usize>,
-    pub climbing_speed: Modifiable<usize>,
-    pub swimming_speed: Modifiable<usize>,
-    pub burrowing_speed: Modifiable<usize>,
+    pub walking_speed: Staged<usize>,
+    pub flying_speed: Staged<usize>,
+    pub climbing_speed: Staged<usize>,
+    pub swimming_speed: Staged<usize>,
+    pub burrowing_speed: Staged<usize>,
 
     // NOTES
-    pub saving_throw_notes: Modifiable<Vec<&'static str>>,
+    pub saving_throw_notes: Staged<Vec<&'static str>>,
 
     // DO NOT MODIFY FIELDS AFTER THIS POINT
 
@@ -149,7 +149,7 @@ pub struct Character {
 }
 
 #[derive(Default, Debug)]
-pub struct Modifiable<T>
+pub struct Staged<T>
     where T: Default + Debug + Serialize {
     value: T,
     initializers: HashSet<&'static str>,
@@ -157,11 +157,11 @@ pub struct Modifiable<T>
     finalizers: HashSet<&'static str>
 }
 
-impl<T> Modifiable<T>
+impl<T> Staged<T>
     where T: Serialize + Default + Debug {
 
     fn new(v: T) -> Self {
-        Modifiable {
+        Staged {
             value: v,
             initializers: hashset! {},
             modifiers: hashset! {},
@@ -207,7 +207,7 @@ impl<T> Modifiable<T>
     }
 }
 
-impl<T> Deref for Modifiable<T>
+impl<T> Deref for Staged<T>
     where T: Debug + Default + Serialize {
     type Target = T;
 
@@ -216,7 +216,7 @@ impl<T> Deref for Modifiable<T>
     }
 }
 
-impl<T> DerefMut for Modifiable<T>
+impl<T> DerefMut for Staged<T>
     where T: Debug + Default + Serialize {
     fn deref_mut(&mut self) -> &mut Self::Target {
         &mut self.value
