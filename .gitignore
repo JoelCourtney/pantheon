@@ -31,3 +31,7 @@ build/
 
 # Cargo
 target/
+
+# Vim
+*.swp
+*.swo
