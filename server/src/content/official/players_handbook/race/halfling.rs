@@ -4,21 +4,33 @@ pub struct Halfling {
 }
 
 impl Content for Halfling {
-    fn initialize(&self, c: &mut Character) {
-        c.size = CreatureSize::Small;
-        c.walking_speed = 25;
+    fn declare(&self, c: &mut Character) {
+        c.size.declare_initializer(NAME);
+        c.walking_speed.declare_initializer(NAME);
 
-        c.saving_throw_notes.push("*Adv* against being frightened");
+        c.saving_throw_notes.declare_initializer(NAME);
 
-        self.subrace.initialize(c);
+        c.dexterity.declare_modifier(NAME);
+
+        self.subrace.declare(c);
     }
     fn modify(&self, c: &mut Character) {
-        c.dexterity += 2;
+        if c.size.initialize(NAME) {
+            *c.size = CreatureSize::Small;
+        }
+        if c.walking_speed.initialize(NAME) {
+            *c.walking_speed = 25;
+        }
+
+        if c.saving_throw_notes.initialize(NAME) {
+            (*c.saving_throw_notes).push("*Adv* against being frightened");
+        }
+
+        if c.dexterity.modify(NAME) {
+            *c.dexterity += 2;
+        }
 
         self.subrace.modify(c);
-    }
-    fn finalize(&self, c: &mut Character) {
-        self.subrace.finalize(c);
     }
 
     fn receive_choice(&mut self, choice: &str, feature_index: usize, choice_index: usize) {

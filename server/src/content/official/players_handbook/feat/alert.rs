@@ -2,8 +2,13 @@
 pub struct Alert;
 
 impl Content for Alert {
+    fn declare(&self, c: &mut Character) {
+        c.initiative.declare_modifier(NAME);
+    }
     fn modify(&self, c: &mut Character) {
-        c.initiative += 5;
+        if c.initiative.modify(NAME) {
+            *c.initiative += 5;
+        }
     }
 
     fn features(&self) -> Vec<Feature> {

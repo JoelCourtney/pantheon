@@ -45,7 +45,7 @@ pub(crate) fn registry(declared_content_files: usize) -> TokenStream {
                 let content_ident = format_ident!("{}", content);
                 registry_static_entries = quote! {
                     #registry_static_entries
-                    #collection_ident::#source_ident::#type_ident_lower::#content_ident::CONTENT_NAME => (
+                    #collection_ident::#source_ident::#type_ident_lower::#content_ident::NAME => (
                         Registration {
                             collection: #collection_ident::COLLECTION_NAME,
                             source: #collection_ident::#source_ident::COLLECTION_NAME

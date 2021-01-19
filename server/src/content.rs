@@ -32,7 +32,6 @@ pub trait Content {
     }
     fn feats(&self) -> Vec<Vec<Feature>> { vec! [] }
 
-    fn initialize(&self, _: &mut Character) {}
-    fn modify(&self, _: &mut Character) {}
-    fn finalize(&self, _: &mut Character) {}
+    fn declare(&self, _: &mut Character);
+    fn modify(&self, _: &mut Character);
 }

@@ -11,6 +11,7 @@ mod choose;
 mod content;
 mod register;
 mod registry;
+mod character;
 
 use proc_macro::TokenStream;
 use quote::quote;
@@ -263,4 +264,10 @@ pub fn choose(_: TokenStream, input: TokenStream) -> TokenStream {
 pub fn dynamic_choose(_: TokenStream, input: TokenStream) -> TokenStream {
     let ast: syn::ItemTrait = syn::parse(input).expect("expected trait declaration");
     choose::dynamic_choose(ast)
+}
+
+#[proc_macro_derive(FinalizeCharacter)]
+pub fn derive_finalize(input: TokenStream) -> TokenStream {
+    let ast: syn::DeriveInput = syn::parse(input).expect("expected derive input");
+    character::finalize(ast)
 }

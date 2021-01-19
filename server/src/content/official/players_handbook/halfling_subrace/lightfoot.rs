@@ -2,8 +2,13 @@
 pub struct Lightfoot;
 
 impl Content for Lightfoot {
+    fn declare(&self, c: &mut Character) {
+        c.charisma.declare_modifier(NAME);
+    }
     fn modify(&self, c: &mut Character) {
-        c.charisma += 1;
+        if c.charisma.modify(NAME) {
+            *c.charisma += 1;
+        }
     }
 
     fn features(&self) -> Vec<Feature> {

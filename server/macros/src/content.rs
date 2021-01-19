@@ -63,7 +63,7 @@ pub(crate) fn prelude(kind: &str, ast: syn::DeriveInput, pretty_name: String) ->
         #[typetag::serde]
         impl #kind_ident for #pascal_name_ident {
             fn content_name(&self) -> &'static str {
-                CONTENT_NAME
+                NAME
             }
         }
 
@@ -73,7 +73,7 @@ pub(crate) fn prelude(kind: &str, ast: syn::DeriveInput, pretty_name: String) ->
             } )
         }
 
-        pub const CONTENT_NAME: &'static str = #pretty_name_string;
+        pub const NAME: &'static str = #pretty_name_string;
 
         #[derive(Debug, Serialize, Deserialize, Default)]
         #ast

@@ -4,14 +4,11 @@ pub struct Rogue {
 }
 
 impl Content for Rogue {
-    fn initialize(&self, c: &mut Character) {
-        self.common.initialize(c);
+    fn declare(&self, c: &mut Character) {
+        self.common.declare(c);
     }
     fn modify(&self, c: &mut Character) {
         self.common.modify(c);
-    }
-    fn finalize(&self, c: &mut Character) {
-        self.common.finalize(c);
     }
 }
 

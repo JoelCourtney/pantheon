@@ -2,8 +2,13 @@
 pub struct Stout;
 
 impl Content for Stout {
+    fn declare(&self, c: &mut Character) {
+        c.constitution.declare_modifier(NAME);
+    }
     fn modify(&self, c: &mut Character) {
-        c.constitution += 1;
+        if c.constitution.modify(NAME) {
+            *c.constitution += 1;
+        }
     }
 
     fn features(&self) -> Vec<Feature> {

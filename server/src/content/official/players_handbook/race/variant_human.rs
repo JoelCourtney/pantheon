@@ -7,13 +7,24 @@ pub struct VariantHuman {
 }
 
 impl Content for VariantHuman {
-    fn initialize(&self, c: &mut Character) {
-        c.size = CreatureSize::Medium;
+    fn declare(&self, c: &mut Character) {
+        c.size.declare_initializer(NAME);
+        c.languages.declare_initializer(NAME);
+        c.skill_proficiencies.declare_initializer(NAME);
+    }
+    fn modify(&self, c: &mut Character) {
+        if c.size.initialize(NAME) {
+            *c.size = CreatureSize::Medium;
+        }
 
-        c.languages.push(Language::Common);
-        c.languages.push(self.language);
+        if c.languages.initialize(NAME) {
+            (*c.languages).push(Language::Common);
+            (*c.languages).push(self.language);
+        }
 
-        c.skill_proficiencies.push((self.skill, ProficiencyType::Single));
+        if c.skill_proficiencies.initialize(NAME) {
+            (*c.skill_proficiencies).push((self.skill, ProficiencyType::Single));
+        }
     }
 
     fn receive_choice(&mut self, choice: &str, feature_index: usize, choice_index: usize) {

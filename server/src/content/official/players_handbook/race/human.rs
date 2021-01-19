@@ -4,20 +4,50 @@ pub struct Human {
 }
 
 impl Content for Human {
-    fn initialize(&self, c: &mut Character) {
-        c.size = CreatureSize::Medium;
-        c.walking_speed = 30;
+    fn declare(&self, c: &mut Character) {
+        c.size.declare_initializer(NAME);
+        c.walking_speed.declare_initializer(NAME);
+        c.languages.declare_initializer(NAME);
 
-        c.languages.push(Language::Common);
-        c.languages.push(self.extra_language.clone());
+        c.strength.declare_modifier(NAME);
+        c.dexterity.declare_modifier(NAME);
+        c.constitution.declare_modifier(NAME);
+        c.intelligence.declare_modifier(NAME);
+        c.wisdom.declare_modifier(NAME);
+        c.charisma.declare_modifier(NAME);
     }
     fn modify(&self, c: &mut Character) {
-        c.strength += 1;
-        c.dexterity += 1;
-        c.constitution += 1;
-        c.intelligence += 1;
-        c.wisdom += 1;
-        c.charisma += 1;
+        if c.size.initialize(NAME) {
+            *c.size = CreatureSize::Medium;
+        }
+        if c.walking_speed.initialize(NAME) {
+            *c.walking_speed = 30;
+        }
+
+        if c.languages.initialize(NAME) {
+            (*c.languages).push(Language::Common);
+            (*c.languages).push(self.extra_language.clone());
+        }
+
+        // MODIFY
+        if c.strength.modify(NAME) {
+            *c.strength += 1;
+        }
+        if c.dexterity.modify(NAME) {
+            *c.dexterity += 1;
+        }
+        if c.constitution.modify(NAME) {
+            *c.constitution += 1;
+        }
+        if c.intelligence.modify(NAME) {
+            *c.intelligence += 1;
+        }
+        if c.wisdom.modify(NAME) {
+            *c.wisdom += 1;
+        }
+        if c.charisma.modify(NAME) {
+            *c.charisma += 1;
+        }
     }
 
     fn receive_choice(&mut self, choice: &str, feature_index: usize, choice_index: usize) {
