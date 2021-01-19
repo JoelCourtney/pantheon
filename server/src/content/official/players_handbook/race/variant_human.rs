@@ -12,7 +12,7 @@ impl Content for VariantHuman {
         c.languages.declare_initializer(NAME);
         c.skill_proficiencies.declare_initializer(NAME);
     }
-    fn modify(&self, c: &mut Character) {
+    fn iterate(&self, c: &mut Character) {
         if c.size.initialize(NAME) {
             *c.size = CreatureSize::Medium;
         }

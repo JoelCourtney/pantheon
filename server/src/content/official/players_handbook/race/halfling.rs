@@ -14,7 +14,7 @@ impl Content for Halfling {
 
         self.subrace.declare(c);
     }
-    fn modify(&self, c: &mut Character) {
+    fn iterate(&self, c: &mut Character) {
         if c.size.initialize(NAME) {
             *c.size = CreatureSize::Small;
         }
@@ -30,7 +30,7 @@ impl Content for Halfling {
             *c.dexterity += 2;
         }
 
-        self.subrace.modify(c);
+        self.subrace.iterate(c);
     }
 
     fn receive_choice(&mut self, choice: &str, feature_index: usize, choice_index: usize) {

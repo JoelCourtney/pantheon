@@ -5,7 +5,7 @@ impl Content for Alert {
     fn declare(&self, c: &mut Character) {
         c.initiative.declare_modifier(NAME);
     }
-    fn modify(&self, c: &mut Character) {
+    fn iterate(&self, c: &mut Character) {
         if c.initiative.modify(NAME) {
             *c.initiative += 5;
         }

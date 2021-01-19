@@ -33,7 +33,7 @@ pub trait Content {
     fn feats(&self) -> Vec<Vec<Feature>> { vec! [] }
 
     fn declare(&self, c: &mut Character);
-    fn modify(&self, c: &mut Character);
+    fn iterate(&self, c: &mut Character);
 }
 
 pub trait LeveledContent {
@@ -48,5 +48,5 @@ pub trait LeveledContent {
     fn feats(&self, _level: usize) -> Vec<Vec<Feature>> { vec! [] }
 
     fn declare(&self, c: &mut Character, level: usize);
-    fn modify(&self, c: &mut Character, level: usize);
+    fn iterate(&self, c: &mut Character, level: usize);
 }

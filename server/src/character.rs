@@ -57,21 +57,21 @@ impl StoredCharacter {
 
         let mut old_count: i64  = -2;
         let mut count: i64 = -1;
-        let mut modify_iterations = 0;
+        let mut iterations = 0;
         while count != 0 && old_count != count {
             old_count = count;
 
-            CommonRules::modify(&mut char);
-            self.race.modify(&mut char);
+            CommonRules::iterate(&mut char);
+            self.race.iterate(&mut char);
             for class in &self.classes {
-                class.modify(&mut char);
+                class.iterate(&mut char);
             }
 
             count = char.count_unresolved().into();
 
-            modify_iterations += 1;
+            iterations += 1;
         }
-        dbg!(modify_iterations);
+        dbg!(iterations);
         if count != 0 {
             dbg!(&char);
             println!("modifier deadlock");

@@ -3,7 +3,7 @@ pub struct UnknownEldritchInvocation;
 
 impl Content for UnknownEldritchInvocation {
     fn declare(&self, _: &mut Character) {}
-    fn modify(&self, _: &mut Character) {}
+    fn iterate(&self, _: &mut Character) {}
 }
 
 describe! { r#"

@@ -7,7 +7,7 @@ impl LeveledContent for Assassin {
             c.tool_proficiencies.declare_modifier(NAME);
         }
     }
-    fn modify(&self, c: &mut Character, level: usize) {
+    fn iterate(&self, c: &mut Character, level: usize) {
         if level >= 3 {
             if c.tool_proficiencies.modify(NAME) {
                 (*c.tool_proficiencies).push(("Disguise Kit", ProficiencyType::Single));

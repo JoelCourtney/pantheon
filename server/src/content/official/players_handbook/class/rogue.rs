@@ -9,9 +9,9 @@ impl Content for Rogue {
         self.common.declare(c);
         self.subclass.declare(c, self.common.level);
     }
-    fn modify(&self, c: &mut Character) {
-        self.common.modify(c);
-        self.subclass.modify(c, self.common.level);
+    fn iterate(&self, c: &mut Character) {
+        self.common.iterate(c);
+        self.subclass.iterate(c, self.common.level);
     }
 
     fn receive_choice(&mut self, choice: &str, feature_index: usize, choice_index: usize) {

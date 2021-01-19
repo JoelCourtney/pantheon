@@ -14,7 +14,7 @@ impl CommonRules {
         c.wisdom_modifier.declare_initializer(Self::NAME);
         c.charisma_modifier.declare_initializer(Self::NAME);
     }
-    pub fn modify(c: &mut Character) {
+    pub fn iterate(c: &mut Character) {
         if c.strength.finalized() && c.strength_modifier.initialize(Self::NAME) {
             *c.strength_modifier = (*c.strength as i32 - 10) / 2;
         }
@@ -48,7 +48,7 @@ impl<const HD: usize> CommonClassContent<HD> {
     pub fn declare(&self, c: &mut Character) {
         c.max_health.declare_finalizer(Self::NAME);
     }
-    pub fn modify(&self, c: &mut Character) {
+    pub fn iterate(&self, c: &mut Character) {
         if c.constitution_modifier.finalized() && c.max_health.finalize(Self::NAME) {
             let mut res: i32 = 0;
             if self.first_class && self.level >= 1 {

@@ -5,7 +5,7 @@ impl Content for Stout {
     fn declare(&self, c: &mut Character) {
         c.constitution.declare_modifier(NAME);
     }
-    fn modify(&self, c: &mut Character) {
+    fn iterate(&self, c: &mut Character) {
         if c.constitution.modify(NAME) {
             *c.constitution += 1;
         }

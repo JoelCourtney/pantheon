@@ -16,7 +16,7 @@ impl Content for Human {
         c.wisdom.declare_modifier(NAME);
         c.charisma.declare_modifier(NAME);
     }
-    fn modify(&self, c: &mut Character) {
+    fn iterate(&self, c: &mut Character) {
         if c.size.initialize(NAME) {
             *c.size = CreatureSize::Medium;
         }

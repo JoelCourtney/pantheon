@@ -5,7 +5,7 @@ impl Content for Lightfoot {
     fn declare(&self, c: &mut Character) {
         c.charisma.declare_modifier(NAME);
     }
-    fn modify(&self, c: &mut Character) {
+    fn iterate(&self, c: &mut Character) {
         if c.charisma.modify(NAME) {
             *c.charisma += 1;
         }
