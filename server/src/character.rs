@@ -91,6 +91,7 @@ impl StoredCharacter {
 #[derive(Debug, Default, FinalizeCharacter)]
 pub struct Character {
     pub name: Staged<String>,
+    pub total_level: Staged<usize>,
 
     // HEALTH
     pub health: Staged<usize>,

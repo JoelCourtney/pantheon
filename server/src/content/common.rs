@@ -48,6 +48,7 @@ impl<const HD: usize> CommonClassContent<HD> {
 
     pub fn declare(&self, c: &mut Character) {
         c.max_health.declare_finalizer(Self::NAME);
+        c.total_level.declare_modifier(Self::NAME);
     }
     pub fn iterate(&self, c: &mut Character) {
         if c.constitution_modifier.finalized() && c.max_health.finalize(Self::NAME) {
@@ -57,6 +58,9 @@ impl<const HD: usize> CommonClassContent<HD> {
             }
             res += ((HD / 2 + 1) as i32 + *c.constitution_modifier) * self.lvl as i32;
             *c.max_health += res as usize;
+        }
+        if c.total_level.modify(Self::NAME) {
+            *c.total_level += self.lvl;
         }
     }
     pub fn last(&mut self, _c: &mut Character) {}
