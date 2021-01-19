@@ -1,14 +1,24 @@
 #[macros::class]
 pub struct Rogue {
+    subclass: Box<dyn RoguishArchetype>,
     common: CommonClassContent<8>
 }
 
 impl Content for Rogue {
     fn declare(&self, c: &mut Character) {
         self.common.declare(c);
+        self.subclass.declare(c, self.common.level);
     }
     fn modify(&self, c: &mut Character) {
         self.common.modify(c);
+        self.subclass.modify(c, self.common.level);
+    }
+
+    fn receive_choice(&mut self, choice: &str, feature_index: usize, choice_index: usize) {
+        match feature_index {
+            0 => self.subclass.choose(choice, choice_index),
+            _ => unimplemented!()
+        }
     }
 }
 

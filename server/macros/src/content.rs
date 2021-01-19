@@ -52,7 +52,7 @@ pub(crate) fn prelude(kind: &str, ast: syn::DeriveInput, pretty_name: String) ->
         use crate::feature::*;
         use crate::misc::*;
         use crate::describe::*;
-        use crate::content::Content;
+        use crate::content::{Content, LeveledContent};
         use macros::{def, describe, choose, dynamic_choose};
         use serde::{Serialize, Deserialize};
         use indoc::indoc;

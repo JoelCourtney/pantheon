@@ -31,7 +31,7 @@ pub struct StoredCharacter {
 }
 
 impl StoredCharacter {
-    pub fn resolve(&mut self) -> Result<Character, ()> {
+    pub fn resolve(&self) -> Result<FinalCharacter, ()> {
         let mut char = Character {
             name: Modifiable::new(self.name.clone()),
             health: Modifiable::new(self.health),
@@ -74,11 +74,18 @@ impl StoredCharacter {
         dbg!(modify_iterations);
         if count != 0 {
             dbg!(&char);
-            println!("modifer deadlock");
+            println!("modifier deadlock");
             // Err(TODO("make an error for this"))
             Err(())
         } else {
-            Ok(char)
+            char.race_traits.extend(self.race.features());
+            char.feats.extend(self.race.feats());
+            for class in &self.classes {
+                char.class_features.extend(class.features());
+                char.feats.extend(class.feats());
+            }
+            // char.background_features
+            Ok(char.finalize())
         }
     }
 }
@@ -116,6 +123,7 @@ pub struct Character {
 
     // PROFICIENCIES AND LANGUAGES
     pub skill_proficiencies: Modifiable<Vec<(Skill, ProficiencyType)>>,
+    pub tool_proficiencies: Modifiable<Vec<(&'static str, ProficiencyType)>>,
     pub languages: Modifiable<Vec<Language>>,
 
     // SPEED

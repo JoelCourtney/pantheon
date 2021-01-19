@@ -38,7 +38,7 @@ impl CommonRules {
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct CommonClassContent<const HD: usize> {
-    level: usize,
+    pub level: usize,
     first_class: bool
 }
 

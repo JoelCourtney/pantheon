@@ -17,6 +17,9 @@
 	"classes": [
 		{
 			"Rogue": {
+				"subclass": {
+					"Assassin": null
+				},
 				"common": {
 						"level": 3,
 						"first_class": true

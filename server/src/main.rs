@@ -28,12 +28,13 @@ use character::StoredCharacter;
 fn main() {
     let json = std::fs::read_to_string("test.json").unwrap();
     // dbg!(&json);
-    let mut char: StoredCharacter = serde_json::from_str(&json).expect("DESERIALIZATION FAILED");
+    let char: StoredCharacter = serde_json::from_str(&json).expect("DESERIALIZATION FAILED");
     // dbg!(&char);
-    let better_char = char.resolve().unwrap();
-    // dbg!(&better_char);
-    let final_char = better_char.finalize();
+    let final_char = char.resolve().unwrap();
     dbg!(&final_char);
+    // let mut class = content::class("Rogue").unwrap();
+    // class.receive_choice("Assassin",0, 0);
+    // dbg!(serde_json::to_string(&class).unwrap());
 
 
     // let mut race = content::race("Halfling").unwrap();
