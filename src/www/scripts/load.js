@@ -32,11 +32,11 @@ function loadModules() {
             /*make an HTTP request using the attribute value as the file name:*/
             let xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
-                if (this.readyState == 4) {
-                    if (this.status == 200) {
+                if (this.readyState === 4) {
+                    if (this.status === 200) {
                         elmnt.innerHTML = this.responseText;
 
-                    } else if (this.status == 404) {
+                    } else if (this.status === 404) {
                         elmnt.innerHTML = "Page not found.";
                     }
                     /*remove the attribute, and call this function once more:*/
@@ -56,14 +56,14 @@ function loadModules() {
 };
 
 function areModulesLoaded() {
-    return modulesRequested == modulesReceived && modulesRequested == displayCallbacks.length;
+    return modulesRequested === modulesReceived && modulesRequested === displayCallbacks.length;
 }
 
 var displayCallbacks = [];
 function registerDisplayCallback(func) {
     displayCallbacks.push(func);
     if (areModulesLoaded()) {
-        updateCharacter();
+        getCharacter();
     }
 }
 
@@ -71,7 +71,27 @@ function callDisplayCallbacks(character) {
     displayCallbacks.forEach(func => func(character));
 }
 
-function updateCharacter() {
-    // TODO("this, later")
+function getCharacter() {
+    const xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            callDisplayCallbacks(JSON.parse(this.responseText));
+        }
+    };
+    xhttp.open("POST", "/", true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send();
+}
+
+function editCharacter(data) {
+    const xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            callDisplayCallbacks(JSON.parse(this.responseText));
+        }
+    };
+    xhttp.open("POST", "/edit", true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(JSON.stringify(data));
 }
 

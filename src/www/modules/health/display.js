@@ -1,3 +1,4 @@
 registerDisplayCallback(function (character) {
-    // display the things
+    pasteFields(['health', 'max_health', 'temp_health'], character);
 });
+
