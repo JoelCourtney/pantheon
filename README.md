@@ -2,7 +2,7 @@
 
 Its like DnDBeyond, but worse, and probably illegal.
 
-Currently under development, doesn't do anything useful.
+Currently under development, doesn't do anything useful yet.
 
 ## Setup
 
@@ -13,7 +13,7 @@ $ rustup toolchain uninstall nightly
 $ rustup toolchain install nightly
 ```
 
-Nightly is needed for the min_const_generics feature, which will be added to stable in March, so at least this mess is temporary. Once this is done, run
+Once this is done, run
 
 ```bash
 $ ./setup.py
@@ -23,29 +23,20 @@ in the root of the repo.
 
 ## Building
 
-Currently there isn't a single build script that handles both client and server. That will happen eventually. In the meantime, build the client theme with:
+Run in the root of the repo:
 
 ```bash
-$ cd client/uikit
-$ yarn compile
-```
-
-and build the server with:
-
-```bash
-$ cd server
 $ cargo build --release
 ```
 
+This will handle both front and back end.
+
 ## Running
 
-You can view the client page by opening `client/src/index.html` in a server like that provided by Intellij. Otherwise, viewing the client is currently impossible until I add the actual server functionality to the server half.
-
-You can run the server with:
+Currently it can only be run from the root of the repo.
 
 ```bash
-$ cd server
-$ target/release/dndcent
+$ target/release/dndcent <FILE>
 ```
 
-if you're morbidly curious :)
+I use currently `test_human.json` or `test_variant_human.json` for FILE.
