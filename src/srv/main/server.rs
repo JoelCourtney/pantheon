@@ -24,7 +24,7 @@ pub(crate) fn ignite(path: String) -> Rocket {
         .manage(state)
         .mount("/", StaticFiles::from("src/www"))
         .mount("/", routes![get_character])
-        .mount("/", routes![edit_feature])
+        .mount("/", routes![edit_feature, edit_other])
 }
 
 #[post("/")]
@@ -35,36 +35,54 @@ fn get_character(state: State<SharedData>) -> content::Json<String> {
 
 #[derive(Deserialize, Debug)]
 struct EditFeatureRequest<'a> {
-    container: FeatureContainer,
+    container: &'a str,
     feature_index: usize,
     choice_index: usize,
     choice: &'a str
 }
 
-#[derive(Deserialize, Debug)]
-enum FeatureContainer {
-    Race,
-    Class,
-    Background,
-    Feat
-}
+
 
 #[post("/edit/feature", format="json", data="<data>")]
 fn edit_feature(data: Json<EditFeatureRequest>, state: State<SharedData>) -> content::Json<String> {
     let mut final_char = state.inner().final_char.write().unwrap();
     let mut stored_char = state.inner().stored_char.write().unwrap();
-    use FeatureContainer::*;
     match match data.container {
-        Race => &mut (*final_char).race_traits,
-        Class => &mut (*final_char).class_features,
-        Background => &mut (*final_char).background_features,
-        Feat => &mut (*final_char).feat_features
+        "race" => &mut (*final_char).race_traits,
+        "class" => &mut (*final_char).class_features,
+        "background" => &mut (*final_char).background_features,
+        "feat" => &mut (*final_char).feat_features,
+        _ => panic!(format!("no container found: {:?}", *data))
     }.get_mut(data.feature_index)
         .expect(&format!("feature index out of bounds: {:?}", *data)).1 {
         Some(c) => unsafe {
             (*c).choose(data.choice, data.choice_index);
         }
         None => panic!(format!("no choice here to choose from: {:?}", *data))
+    }
+    *final_char = stored_char.resolve().unwrap();
+    std::mem::drop(final_char);
+    stored_char.write(&*state.path);
+    get_character(state)
+}
+
+#[derive(Deserialize, Debug)]
+#[serde(rename_all = "snake_case", tag = "field", content = "value")]
+enum EditOtherRequest {
+    Name(String),
+    Health(usize),
+    TempHealth(usize),
+}
+
+#[post("/edit/other", format="json", data="<data>")]
+fn edit_other(data: Json<EditOtherRequest>, state: State<SharedData>) -> content::Json<String> {
+    let mut final_char = state.inner().final_char.write().unwrap();
+    let mut stored_char = state.inner().stored_char.write().unwrap();
+    use EditOtherRequest::*;
+    match data.into_inner() {
+        Name(s) => (*stored_char).name = s,
+        Health(u) => (*stored_char).health = u,
+        TempHealth(u) => (*stored_char).temp_health = u,
     }
     *final_char = stored_char.resolve().unwrap();
     std::mem::drop(final_char);

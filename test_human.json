@@ -1,7 +1,7 @@
 {
   "name": "Test Boi",
-  "health": 40,
-  "temp_health": 0,
+  "health": 3,
+  "temp_health": 3,
   "base_strength": 12,
   "base_dexterity": 12,
   "base_constitution": 12,

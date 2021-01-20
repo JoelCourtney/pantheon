@@ -12,10 +12,10 @@ use maplit::hashset;
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct StoredCharacter {
-    name: String,
+    pub(crate) name: String,
 
-    health: usize,
-    temp_health: usize,
+    pub(crate) health: usize,
+    pub(crate) temp_health: usize,
 
     base_strength: usize,
     base_dexterity: usize,
