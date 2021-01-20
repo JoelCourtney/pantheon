@@ -35,3 +35,6 @@ target/
 # Vim
 *.swp
 *.swo
+
+# Rocket
+Rocket.toml
