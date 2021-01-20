@@ -20,13 +20,13 @@ struct Registration {
     source: &'static str,
 }
 
-pub trait Content {
+pub trait Content: Sync + Send {
     fn declare(&self, _c: &mut Character) {}
     fn iterate(&self, _c: &mut Character) {}
     fn last(&mut self, _c: &mut Character) {}
 }
 
-pub trait LeveledContent {
+pub trait LeveledContent: Sync + Send {
     fn declare(&self, _c: &mut Character, _lvl: usize) {}
     fn iterate(&self, _c: &mut Character, _lvl: usize) {}
     fn last(&mut self, _c: &mut Character, _lvl: usize) {}

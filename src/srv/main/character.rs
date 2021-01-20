@@ -31,7 +31,11 @@ pub struct StoredCharacter {
 }
 
 impl StoredCharacter {
-    pub fn resolve(&mut self) -> Result<Character, ()> {
+    pub fn from(path: &str) -> StoredCharacter {
+        let json = std::fs::read_to_string(path).unwrap();
+        serde_json::from_str(&json).expect("DESERIALIZATION FAILED")
+    }
+    pub fn resolve(&mut self) -> Result<FinalCharacter, ()> {
         let mut char = Character {
             name: Staged::new(self.name.clone()),
             health: Staged::new(self.health),
@@ -83,7 +87,7 @@ impl StoredCharacter {
             for class in &mut self.classes {
                 class.last(&mut char);
             }
-            Ok(char)
+            Ok(char.finalize())
         }
     }
 }
@@ -236,3 +240,8 @@ pub trait Class: Content + Debug {
 pub trait Feat: Content + Debug {
     fn content_name(&self) -> &'static str;
 }
+
+unsafe impl Sync for StoredCharacter {}
+unsafe impl Send for StoredCharacter {}
+unsafe impl Sync for FinalCharacter {}
+unsafe impl Send for FinalCharacter {}

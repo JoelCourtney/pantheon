@@ -20,21 +20,18 @@
 
 extern crate macros;
 
+mod server;
 mod character;
 mod content;
 mod feature;
 mod describe;
 mod misc;
 
-use rocket_contrib::serve::StaticFiles;
-
-#[get("/")]
-fn index() -> &'static str {
-    "Hello, world!"
-}
-
 fn main() {
-    rocket::ignite()
-        .mount("/", StaticFiles::from("src/www"))
-        .launch();
+    let mut args = std::env::args();
+    if args.len() != 2 {
+        println!("Usage:\tdndcent [FILE]");
+    } else {
+        server::ignite(args.nth(1).unwrap().as_str()).launch();
+    }
 }
