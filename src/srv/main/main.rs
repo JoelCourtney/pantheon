@@ -32,6 +32,6 @@ fn main() {
     if args.len() != 2 {
         println!("Usage:\tdndcent [FILE]");
     } else {
-        server::ignite(args.nth(1).unwrap().as_str()).launch();
+        server::ignite(args.nth(1).unwrap()).launch();
     }
 }

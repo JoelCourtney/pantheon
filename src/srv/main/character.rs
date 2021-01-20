@@ -31,9 +31,13 @@ pub struct StoredCharacter {
 }
 
 impl StoredCharacter {
-    pub fn from(path: &str) -> StoredCharacter {
-        let json = std::fs::read_to_string(path).unwrap();
+    pub fn read(path: &str) -> StoredCharacter {
+        let json = std::fs::read_to_string(path).expect(&format!("READING FAILED: {}", path));
         serde_json::from_str(&json).expect("DESERIALIZATION FAILED")
+    }
+    pub fn write(&self, path: &str) {
+        let json = serde_json::to_string_pretty(&self).expect("SERIALIZATION FAILED");
+        std::fs::write(path, json).expect(&format!("WRITING FAILED: {}", path));
     }
     pub fn resolve(&mut self) -> Result<FinalCharacter, ()> {
         let mut char = Character {
@@ -61,7 +65,7 @@ impl StoredCharacter {
 
         let mut old_count: i64  = -2;
         let mut count: i64 = -1;
-        let mut iterations = 0;
+        // let mut iterations = 0;
         while count != 0 && old_count != count {
             old_count = count;
 
@@ -73,9 +77,9 @@ impl StoredCharacter {
 
             count = char.count_unresolved().into();
 
-            iterations += 1;
+            // iterations += 1;
         }
-        dbg!(iterations);
+        // dbg!(iterations);
         if count != 0 {
             dbg!(&char);
             println!("modifier deadlock");
