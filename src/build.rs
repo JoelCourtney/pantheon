@@ -1,7 +1,5 @@
 use std::process::{Command, Output};
 use walkdir::WalkDir;
-use std::fs::File;
-use std::io::Write;
 
 fn main() {
     compile_client();
@@ -15,15 +13,11 @@ fn compile_client() -> Output {
             .output()
             .expect("failed to execute process")
     } else {
-        let out = Command::new("sh")
+        Command::new("sh")
             .arg("-c")
             .arg("yarn --cwd src/www/uikit compile")
             .output()
-            .expect("failed to execute process");
-        let path = "build.txt";
-        let mut output = File::create(path).unwrap();
-        write!(output, "{}", out.stdout.iter().map(|c| *c as char).collect::<String>()).unwrap();
-        out
+            .expect("failed to execute process")
     }
 }
 
