@@ -38,4 +38,3 @@ fn main() {
         .mount("/", StaticFiles::from("src/www"))
         .launch();
 }
-
