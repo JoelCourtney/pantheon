@@ -1,9 +1,11 @@
-#[macros::race]
+crate::name!("Human");
+
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct Human {
     extra_language: Language,
 }
 
-#[typetag::serde]
+#[content]
 impl Race for Human {
     properties! {}
 

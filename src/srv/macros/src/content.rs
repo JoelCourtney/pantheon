@@ -39,40 +39,6 @@ pub(crate) fn describe(text: String) -> TokenStream {
     }
 }
 
-pub(crate) fn prelude(kind: &str, ast: syn::DeriveInput, pretty_name: String) -> TokenStream {
-    // TODO("accept pretty name arg")
-    let pascal_name_ident = ast.ident.clone();
-    let kind_ident = format_ident!("{}", kind);
-    let pretty_name_string = match pretty_name.as_str() {
-        "" => pascal_name_ident.to_string(),
-        _ => pretty_name
-    };
-    (quote! {
-        use crate::character::*;
-        use crate::feature::*;
-        use crate::misc::*;
-        use crate::describe::*;
-        use crate::properties;
-        use crate::content::traits::*;
-        use macros::{def, describe, choose, dynamic_choose};
-        use serde::{Serialize, Deserialize};
-        use indoc::indoc;
-        use std::fmt::Debug;
-        use crate::content::common::*;
-
-        pub fn new() -> Box<dyn #kind_ident> {
-            Box::new( #pascal_name_ident {
-                ..def!()
-            } )
-        }
-
-        pub const NAME: &'static str = #pretty_name_string;
-
-        #[derive(Debug, Serialize, Deserialize, Default)]
-        #ast
-    }).into()
-}
-
 fn to_fs_friendly(name: &str) -> String {
     strip_characters(&*name.to_owned().to_lowercase(), "'").replace(' ',"_")
 }
@@ -81,51 +47,20 @@ fn strip_characters(original : &str, to_strip : &str) -> String {
     original.chars().filter(|&c| !to_strip.contains(c)).collect()
 }
 
-pub(crate) fn subtype_and_pretty_name(args: TokenStream) -> Result<(String, String), TokenStream2> {
-    match syn::parse::<syn::LitStr>(args.clone()) {
-        Ok(s) => Ok((s.value(), "".to_string())),
-        Err(_) => {
-            match syn::parse::<syn::ExprTuple>(args) {
-                Ok(t) => {
-                    unwrap_string_tuple(t)
-                }
-                Err(_) => Err(quote!({
-                    compile_error!("bad subtype argument");
-                }))
-            }
+pub(crate) fn content(ast: syn::ItemImpl) -> TokenStream {
+    let clone = ast.clone();
+    let ty = match clone.trait_ {
+        Some((_, p, _)) => p,
+        None => panic!("must be impl for something")
+    };
+    let name = clone.self_ty;
+    (quote! {
+        pub fn new() -> Box<dyn #ty> {
+            Box::new( #name {
+                ..Default::default()
+            } )
         }
-    }
-}
-
-
-pub(crate) fn pretty_name(args: TokenStream) -> String {
-    match syn::parse::<syn::LitStr>(args) {
-        Ok(s) => s.value(),
-        Err(_) => "".to_string()
-    }
-}
-
-fn unwrap_string_tuple(t: syn::ExprTuple) -> Result<(String, String), TokenStream2> {
-    use syn::Expr;
-
-    let size = t.elems.len();
-    if size != 2 {
-        Err(quote! {
-            compile_error!("expected str literal or tuple (str, str)");
-        })
-    } else {
-        let first = t.elems.first().unwrap();
-        let last = t.elems.last().unwrap();
-        match (first, last) {
-            (
-                Expr::Lit(syn::ExprLit { lit: syn::Lit::Str(lit1), .. }),
-                Expr::Lit(syn::ExprLit { lit: syn::Lit::Str(lit2), .. })
-            ) => Ok((lit1.value(), lit2.value())),
-            _ => {
-                Err(quote!({
-                    compile_error!("both arguments must be str");
-                }))
-            }
-        }
-    }
+        #[typetag::serde]
+        #ast
+    }).into()
 }

@@ -1,7 +1,9 @@
-#[macros::custom_content("RoguishArchetype")]
+crate::name!("Unknown Roguish Archetype");
+
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct UnknownRoguishArchetype;
 
-#[typetag::serde]
+#[content]
 impl RoguishArchetype for UnknownRoguishArchetype {
     properties! {}
 }

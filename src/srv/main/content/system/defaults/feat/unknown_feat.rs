@@ -1,7 +1,9 @@
-#[macros::feat("Unknown Feat")]
+crate::name!("Unknown Feat");
+
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct UnknownFeat;
 
-#[typetag::serde]
+#[content]
 impl Feat for UnknownFeat {
     properties! {}
 }

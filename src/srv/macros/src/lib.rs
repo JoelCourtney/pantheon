@@ -39,85 +39,6 @@ pub fn registry(args: TokenStream) -> TokenStream {
     registry::registry(declared_content_files)
 }
 
-/// Registers a race struct and pastes some boilerplate code. Must be the first line of the file.
-///
-/// If no name argument is given, the name will be registered as the name of the struct. Otherwise
-/// it will be registered under the name given. This is needed when the name contains spaces, dashes,
-/// or other fancy characters.
-///
-/// Calling this macro is required for all race structs. Your race will not be useable by the user
-/// otherwise. It applies the derive macro for Debug, Serialize, Deserialize, and Default for you.
-/// If you want to provide your own impls for those four, you can't. That feature will be implemented
-/// later if needed.
-///
-/// This also pastes in common and required use declarations.
-///
-/// # Example
-///
-/// Copied from players_handbook/race/human.rs:
-///
-/// ```
-/// #[macros::race]
-/// struct Human {
-///     extra_language: Language
-/// }
-/// ```
-///
-/// This will require the dev to impl the Modify, Featured, and Describe traits. See their docs for deats.
-/// While the `macros::` prefix is a little ugly, this macro includes a `use` for all other relevant
-/// macros, so you don't have to do that for future macros used in this file.
-///
-/// ```
-/// impl Modify for Human {
-///     // ...
-/// }
-/// impl Featured for Human {
-///     // ...
-/// }
-/// describe! { r"#
-///     # Human
-///
-///     yes hello i am human
-/// "# }
-/// ```
-#[proc_macro_attribute]
-pub fn race(args: TokenStream, input: TokenStream) -> TokenStream {
-    let pretty = content::pretty_name(args);
-    let ast: syn::DeriveInput = syn::parse(input).unwrap();
-    content::prelude("Race", ast, pretty)
-}
-
-#[proc_macro_attribute]
-pub fn class(args: TokenStream, input: TokenStream) -> TokenStream {
-    let pretty = content::pretty_name(args);
-    let ast: syn::DeriveInput = syn::parse(input).unwrap();
-    content::prelude("Class", ast, pretty)
-}
-
-#[proc_macro_attribute]
-pub fn feat(args: TokenStream, input: TokenStream) -> TokenStream {
-    let pretty = content::pretty_name(args);
-    let ast: syn::DeriveInput = syn::parse(input).unwrap();
-    content::prelude("Feat", ast, pretty)
-}
-
-#[proc_macro_attribute]
-pub fn spell(args: TokenStream, input: TokenStream) -> TokenStream {
-    let pretty = content::pretty_name(args);
-    let ast: syn::DeriveInput = syn::parse(input).unwrap();
-    content::prelude("Spell", ast, pretty)
-}
-
-#[proc_macro_attribute]
-pub fn custom_content(args: TokenStream, input: TokenStream) -> TokenStream {
-    let (subtype, pretty) = match content::subtype_and_pretty_name(args) {
-        Ok(t) => t,
-        Err(s) => return s.into()
-    };
-    let ast: syn::DeriveInput = syn::parse(input).unwrap();
-    content::prelude(&subtype, ast, pretty)
-}
-
 /// I'm lazy. Seriously, I'm this lazy.
 ///
 /// It expands into `Default::default()`. Because I'm lazy.
@@ -233,4 +154,10 @@ pub fn dynamic_choose(_: TokenStream, input: TokenStream) -> TokenStream {
 pub fn derive_finalize(input: TokenStream) -> TokenStream {
     let ast: syn::DeriveInput = syn::parse(input).expect("expected derive input");
     character::finalize(ast)
+}
+
+#[proc_macro_attribute]
+pub fn content(_args: TokenStream, input: TokenStream) -> TokenStream {
+    let ast: syn::ItemImpl = syn::parse(input).unwrap();
+    content::content(ast)
 }

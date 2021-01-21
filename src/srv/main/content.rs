@@ -5,8 +5,6 @@ mod homebrew;
 pub(crate) mod traits;
 pub(crate) mod common;
 
-use std::fmt::Debug;
-
 macros::registry!(15);
 
 /// Contains where to find a particular file.
@@ -18,3 +16,4 @@ struct Registration {
     collection: &'static str,
     source: &'static str,
 }
+

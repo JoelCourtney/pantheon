@@ -1,9 +1,11 @@
-#[macros::race]
+crate::name!("Halfling");
+
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct Halfling {
     subrace: Box<dyn HalflingSubrace>
 }
 
-#[typetag::serde]
+#[content]
 impl Race for Halfling {
     properties! {}
 

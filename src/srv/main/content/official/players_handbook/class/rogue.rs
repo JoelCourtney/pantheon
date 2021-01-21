@@ -1,10 +1,12 @@
-#[macros::class]
+crate::name!("Rogue");
+
+#[derive(Debug, Default, Deserialize, Serialize)]
 pub struct Rogue {
     common: CommonClassContent<8>,
     subclass: Box<dyn RoguishArchetype>,
 }
 
-#[typetag::serde]
+#[content]
 impl Class for Rogue {
     properties! {
         hit_dice: usize = 8

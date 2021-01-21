@@ -1,4 +1,6 @@
-#[macros::race("Variant Human")]
+crate::name!("Variant Human");
+
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct VariantHuman {
     abilities: [Ability; 2],
     skill: Skill,
@@ -6,7 +8,7 @@ pub struct VariantHuman {
     language: Language
 }
 
-#[typetag::serde]
+#[content]
 impl Race for VariantHuman {
     properties! {}
 

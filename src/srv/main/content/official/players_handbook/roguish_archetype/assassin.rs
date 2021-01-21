@@ -1,7 +1,9 @@
-#[macros::custom_content("RoguishArchetype")]
+crate::name!("Assassin");
+
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct Assassin;
 
-#[typetag::serde]
+#[content]
 impl RoguishArchetype for Assassin {
     properties! {}
 

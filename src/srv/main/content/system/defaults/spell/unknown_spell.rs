@@ -1,7 +1,9 @@
-#[macros::spell("Unknown Spell")]
+crate::name!("Unknown Spell");
+
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct UnknownSpell {}
 
-#[typetag::serde]
+#[content]
 impl Spell for UnknownSpell {
     properties! {}
 }

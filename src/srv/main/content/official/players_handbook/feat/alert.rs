@@ -1,7 +1,9 @@
-#[macros::feat]
+crate::name!("Alert");
+
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct Alert;
 
-#[typetag::serde]
+#[content]
 impl Feat for Alert {
     properties! {}
 

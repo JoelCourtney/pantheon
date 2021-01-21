@@ -1,7 +1,9 @@
-#[macros::custom_content("EldritchInvocation")]
+crate::name!("Unknown Eldritch Invocation");
+
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct UnknownEldritchInvocation;
 
-#[typetag::serde]
+#[content]
 impl EldritchInvocation for UnknownEldritchInvocation {
     properties! {}
 }

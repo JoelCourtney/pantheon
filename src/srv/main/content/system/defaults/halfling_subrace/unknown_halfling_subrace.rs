@@ -1,7 +1,9 @@
-#[macros::custom_content("HalflingSubrace")]
+crate::name!("Unknown Halfling Subrace");
+
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct UnknownHalflingSubrace;
 
-#[typetag::serde]
+#[content]
 impl HalflingSubrace for UnknownHalflingSubrace {
     properties! {}
 }

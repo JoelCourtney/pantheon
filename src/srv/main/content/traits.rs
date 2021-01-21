@@ -3,6 +3,33 @@ use macros::dynamic_choose;
 use crate::feature::Choose;
 use crate::character::Character;
 
+#[macro_export]
+macro_rules! name {
+    ($name:literal) => {
+        #[allow(unused_imports)] use crate::character::*;
+        #[allow(unused_imports)] use crate::feature::*;
+        #[allow(unused_imports)] use crate::misc::*;
+        #[allow(unused_imports)] use crate::describe::*;
+        #[allow(unused_imports)] use crate::properties;
+        #[allow(unused_imports)] use crate::content::traits::*;
+        #[allow(unused_imports)] use macros::{def, describe, choose, dynamic_choose, content};
+        #[allow(unused_imports)] use serde::{Serialize, Deserialize};
+        #[allow(unused_imports)] use indoc::indoc;
+        #[allow(unused_imports)] use std::fmt::Debug;
+        #[allow(unused_imports)] use crate::content::common::*;
+
+        pub const NAME: &'static str = $name;
+    }
+}
+
+#[macro_export]
+macro_rules! properties {
+    ($($what:ident : $t:ty = $val:literal),*) => {
+        fn name(&self) -> &'static str { NAME }
+        $(fn $what(&self) -> $t { $val })*
+    }
+}
+
 #[dynamic_choose]
 pub trait Race: Debug {
     fn name(&self) -> &'static str;
@@ -34,14 +61,6 @@ pub trait Spell: Debug {
     fn declare(&self, _c: &mut Character) {}
     fn iterate(&self, _c: &mut Character) {}
     fn last(&mut self, _c: &mut Character) {}
-}
-
-#[macro_export]
-macro_rules! properties {
-    ($($what:ident : $t:ty = $val:literal),*) => {
-        fn name(&self) -> &'static str { NAME }
-        $(fn $what(&self) -> $t { $val })*
-    }
 }
 
 #[dynamic_choose]

@@ -1,7 +1,9 @@
-#[macros::race("Unknown Race")]
+crate::name!("Unknown Race");
+
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct UnknownRace;
 
-#[typetag::serde]
+#[content]
 impl Race for UnknownRace {
     properties! {}
 }

@@ -1,7 +1,9 @@
-#[macros::custom_content("HalflingSubrace")]
+crate::name!("Lightfoot");
+
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct Lightfoot;
 
-#[typetag::serde]
+#[content]
 impl HalflingSubrace for Lightfoot {
     properties! {}
 

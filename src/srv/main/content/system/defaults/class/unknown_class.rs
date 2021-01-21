@@ -1,7 +1,9 @@
-#[macros::class("Unknown Class")]
+crate::name!("Unknown Class");
+
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct UnknownClass;
 
-#[typetag::serde]
+#[content]
 impl Class for UnknownClass {
     properties! {
         hit_dice: usize = 0
