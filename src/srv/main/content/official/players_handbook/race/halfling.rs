@@ -3,7 +3,10 @@ pub struct Halfling {
     subrace: Box<dyn HalflingSubrace>
 }
 
-impl Content for Halfling {
+#[typetag::serde]
+impl Race for Halfling {
+    properties! {}
+
     fn declare(&self, c: &mut Character) {
         c.size.declare_initializer(NAME);
         c.walking_speed.declare_initializer(NAME);

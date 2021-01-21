@@ -1,7 +1,10 @@
 #[macros::custom_content("EldritchInvocation")]
 pub struct UnknownEldritchInvocation;
 
-impl Content for UnknownEldritchInvocation {}
+#[typetag::serde]
+impl EldritchInvocation for UnknownEldritchInvocation {
+    properties! {}
+}
 
 describe! { r#"
     # Unknown Eldritch Invocation

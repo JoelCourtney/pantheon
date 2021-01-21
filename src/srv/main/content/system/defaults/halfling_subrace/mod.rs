@@ -1,1 +1,1 @@
-macros::register!("/system/defaults/halfling_subrace");
+pub mod unknown_halfling_subrace;

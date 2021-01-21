@@ -1,7 +1,10 @@
 #[macros::custom_content("HalflingSubrace")]
 pub struct Stout;
 
-impl Content for Stout {
+#[typetag::serde]
+impl HalflingSubrace for Stout {
+    properties! {}
+
     fn declare(&self, c: &mut Character) {
         c.constitution.declare_modifier(NAME);
     }

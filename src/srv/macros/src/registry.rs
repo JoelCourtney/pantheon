@@ -47,8 +47,8 @@ pub(crate) fn registry(declared_content_files: usize) -> TokenStream {
                     #registry_static_entries
                     #collection_ident::#source_ident::#type_ident_lower::#content_ident::NAME => (
                         Registration {
-                            collection: #collection_ident::COLLECTION_NAME,
-                            source: #collection_ident::#source_ident::COLLECTION_NAME
+                            collection: #collection_ident::NAME,
+                            source: #collection_ident::#source_ident::NAME
                         },
                         #collection_ident::#source_ident::#type_ident_lower::#content_ident::new as fn() -> Box<dyn #type_ident_upper>
                     ),
@@ -69,6 +69,7 @@ pub(crate) fn registry(declared_content_files: usize) -> TokenStream {
             use crate::character::*;
             use maplit::hashmap;
             use lazy_static::lazy_static;
+            use crate::content::traits::*;
 
             lazy_static! {
                 #registry_statics

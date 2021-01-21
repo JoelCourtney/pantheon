@@ -1,11 +1,11 @@
 use serde::{Deserialize, Serialize};
 
-use crate::feature::{Feature, Choose};
+use crate::feature::Feature;
 use crate::misc::*;
 use std::fmt::Debug;
-use macros::{dynamic_choose, FinalizeCharacter};
-use crate::content::Content;
+use macros::FinalizeCharacter;
 use crate::content::common::CommonRules;
+use crate::content::traits::{Race, Class};
 use std::ops::{Deref, DerefMut};
 use std::collections::HashSet;
 use maplit::hashset;
@@ -230,20 +230,7 @@ impl<T> DerefMut for Staged<T>
     }
 }
 
-#[dynamic_choose]
-pub trait Race: Content + Debug {
-    fn content_name(&self) -> &'static str;
-}
 
-#[dynamic_choose]
-pub trait Class: Content + Debug {
-    fn content_name(&self) -> &'static str;
-}
-
-#[dynamic_choose]
-pub trait Feat: Content + Debug {
-    fn content_name(&self) -> &'static str;
-}
 
 unsafe impl Sync for StoredCharacter {}
 unsafe impl Send for StoredCharacter {}

@@ -6,7 +6,10 @@ pub struct VariantHuman {
     language: Language
 }
 
-impl Content for VariantHuman {
+#[typetag::serde]
+impl Race for VariantHuman {
+    properties! {}
+
     fn declare(&self, c: &mut Character) {
         c.size.declare_initializer(NAME);
         c.languages.declare_initializer(NAME);

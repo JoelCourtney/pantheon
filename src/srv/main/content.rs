@@ -2,13 +2,12 @@ mod system;
 mod official;
 mod playtest;
 mod homebrew;
-mod custom_traits;
+pub(crate) mod traits;
 pub(crate) mod common;
 
-use custom_traits::*;
-use crate::character::Character;
+use std::fmt::Debug;
 
-macros::registry!(14);
+macros::registry!(15);
 
 /// Contains where to find a particular file.
 ///
@@ -18,16 +17,4 @@ macros::registry!(14);
 struct Registration {
     collection: &'static str,
     source: &'static str,
-}
-
-pub trait Content: Sync + Send {
-    fn declare(&self, _c: &mut Character) {}
-    fn iterate(&self, _c: &mut Character) {}
-    fn last(&mut self, _c: &mut Character) {}
-}
-
-pub trait LeveledContent: Sync + Send {
-    fn declare(&self, _c: &mut Character, _lvl: usize) {}
-    fn iterate(&self, _c: &mut Character, _lvl: usize) {}
-    fn last(&mut self, _c: &mut Character, _lvl: usize) {}
 }

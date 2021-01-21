@@ -1,7 +1,10 @@
 #[macros::custom_content("RoguishArchetype")]
 pub struct UnknownRoguishArchetype;
 
-impl LeveledContent for UnknownRoguishArchetype {}
+#[typetag::serde]
+impl RoguishArchetype for UnknownRoguishArchetype {
+    properties! {}
+}
 
 describe! { r#"
     # Unknown Roguish Archetype

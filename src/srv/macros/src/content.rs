@@ -52,20 +52,13 @@ pub(crate) fn prelude(kind: &str, ast: syn::DeriveInput, pretty_name: String) ->
         use crate::feature::*;
         use crate::misc::*;
         use crate::describe::*;
-        use crate::content::{Content, LeveledContent};
+        use crate::properties;
+        use crate::content::traits::*;
         use macros::{def, describe, choose, dynamic_choose};
         use serde::{Serialize, Deserialize};
         use indoc::indoc;
         use std::fmt::Debug;
-        use crate::content::custom_traits::*;
         use crate::content::common::*;
-
-        #[typetag::serde]
-        impl #kind_ident for #pascal_name_ident {
-            fn content_name(&self) -> &'static str {
-                NAME
-            }
-        }
 
         pub fn new() -> Box<dyn #kind_ident> {
             Box::new( #pascal_name_ident {
@@ -111,3 +104,4 @@ pub(crate) fn pretty_name(args: TokenStream) -> String {
         Err(_) => "".to_string()
     }
 }
+

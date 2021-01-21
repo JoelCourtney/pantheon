@@ -1,1 +1,1 @@
-macros::register!("/official/players_handbook/roguish_archetype");
+pub mod assassin;

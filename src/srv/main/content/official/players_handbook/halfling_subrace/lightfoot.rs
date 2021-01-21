@@ -1,7 +1,10 @@
 #[macros::custom_content("HalflingSubrace")]
 pub struct Lightfoot;
 
-impl Content for Lightfoot {
+#[typetag::serde]
+impl HalflingSubrace for Lightfoot {
+    properties! {}
+
     fn declare(&self, c: &mut Character) {
         c.charisma.declare_modifier(NAME);
     }

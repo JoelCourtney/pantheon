@@ -1,1 +1,2 @@
-macros::register!("/official/players_handbook/halfling_subrace");
+pub mod lightfoot;
+pub mod stout;

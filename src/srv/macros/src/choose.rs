@@ -148,7 +148,7 @@ pub(crate) fn dynamic_choose(ast: syn::ItemTrait) -> TokenStream {
             fn to_choice(&self, unique: bool) -> crate::feature::ChoiceSerial {
                 if !unique {
                     crate::feature::ChoiceSerial {
-                        current_choices: vec! [ self.content_name() ],
+                        current_choices: vec! [ self.name() ],
                         all_choices: vec! [
                             crate::content::#get_all_ident()
                         ]

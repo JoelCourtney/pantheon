@@ -1,7 +1,10 @@
 #[macros::feat("Unknown Feat")]
 pub struct UnknownFeat;
 
-impl Content for UnknownFeat {}
+#[typetag::serde]
+impl Feat for UnknownFeat {
+    properties! {}
+}
 
 describe! {r#"
     # Unknown Feat

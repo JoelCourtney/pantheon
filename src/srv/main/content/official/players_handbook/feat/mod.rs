@@ -1,1 +1,1 @@
-macros::register!("/official/players_handbook/feat");
+pub mod alert;

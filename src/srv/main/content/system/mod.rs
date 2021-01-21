@@ -1,1 +1,1 @@
-macros::register!("/system");
+pub mod defaults;

@@ -1,7 +1,10 @@
 #[macros::feat]
 pub struct Alert;
 
-impl Content for Alert {
+#[typetag::serde]
+impl Feat for Alert {
+    properties! {}
+
     fn declare(&self, c: &mut Character) {
         c.initiative.declare_modifier(NAME);
     }

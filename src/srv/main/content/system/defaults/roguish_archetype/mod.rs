@@ -1,1 +1,1 @@
-macros::register!("/system/defaults/roguish_archetype");
+pub mod unknown_roguish_archetype;

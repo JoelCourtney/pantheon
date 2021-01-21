@@ -1,7 +1,10 @@
 #[macros::custom_content("RoguishArchetype")]
 pub struct Assassin;
 
-impl LeveledContent for Assassin {
+#[typetag::serde]
+impl RoguishArchetype for Assassin {
+    properties! {}
+
     fn declare(&self, c: &mut Character, lvl: usize) {
         if lvl >= 3 {
             c.tool_proficiencies.declare_modifier(NAME);

@@ -1,1 +1,1 @@
-macros::register!("/official/players_handbook/class");
+pub mod rogue;

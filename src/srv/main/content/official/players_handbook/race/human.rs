@@ -3,7 +3,10 @@ pub struct Human {
     extra_language: Language,
 }
 
-impl Content for Human {
+#[typetag::serde]
+impl Race for Human {
+    properties! {}
+
     fn declare(&self, c: &mut Character) {
         c.size.declare_initializer(NAME);
         c.walking_speed.declare_initializer(NAME);

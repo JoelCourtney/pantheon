@@ -1,7 +1,10 @@
 #[macros::race("Unknown Race")]
 pub struct UnknownRace;
 
-impl Content for UnknownRace {}
+#[typetag::serde]
+impl Race for UnknownRace {
+    properties! {}
+}
 
 describe! { r#"
     # Unknown Race

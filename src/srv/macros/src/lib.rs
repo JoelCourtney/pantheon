@@ -146,6 +146,13 @@ pub fn feat(args: TokenStream, input: TokenStream) -> TokenStream {
 }
 
 #[proc_macro_attribute]
+pub fn spell(args: TokenStream, input: TokenStream) -> TokenStream {
+    let pretty = content::pretty_name(args);
+    let ast: syn::DeriveInput = syn::parse(input).unwrap();
+    content::prelude("Spell", ast, pretty)
+}
+
+#[proc_macro_attribute]
 pub fn custom_content(args: TokenStream, input: TokenStream) -> TokenStream {
     let (subtype, pretty) = match content::subtype_and_pretty_name(args) {
         Ok(t) => t,

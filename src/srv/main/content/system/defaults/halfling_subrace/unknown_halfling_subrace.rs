@@ -1,7 +1,10 @@
 #[macros::custom_content("HalflingSubrace")]
 pub struct UnknownHalflingSubrace;
 
-impl Content for UnknownHalflingSubrace {}
+#[typetag::serde]
+impl HalflingSubrace for UnknownHalflingSubrace {
+    properties! {}
+}
 
 describe! { r#"
     # Unknown Halfling Subrace

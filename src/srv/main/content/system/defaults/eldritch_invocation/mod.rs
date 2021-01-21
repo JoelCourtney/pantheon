@@ -1,1 +1,1 @@
-macros::register!("/system/defaults/eldritch_invocation");
+pub mod unknown_eldritch_invocation;

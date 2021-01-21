@@ -1,1 +1,1 @@
-macros::register!("/system/defaults/race");
+pub mod unknown_race;

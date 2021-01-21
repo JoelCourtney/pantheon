@@ -1,1 +1,1 @@
-macros::register!("/system/defaults/class");
+pub mod unknown_class;
