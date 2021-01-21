@@ -4,7 +4,7 @@ use crate::feature::Feature;
 use crate::misc::*;
 use std::fmt::Debug;
 use macros::FinalizeCharacter;
-use crate::content::common::CommonRules;
+use crate::content::common::common_rules;
 use crate::content::traits::{Race, Class};
 use std::ops::{Deref, DerefMut};
 use std::collections::HashSet;
@@ -57,7 +57,7 @@ impl StoredCharacter {
             ..Default::default()
         };
 
-        CommonRules::declare(&mut char);
+        common_rules::declare(&mut char);
         self.race.declare(&mut char);
         for class in &self.classes {
             class.declare(&mut char);
@@ -69,7 +69,7 @@ impl StoredCharacter {
         while count != 0 && old_count != count {
             old_count = count;
 
-            CommonRules::iterate(&mut char);
+            common_rules::iterate(&mut char);
             self.race.iterate(&mut char);
             for class in &self.classes {
                 class.iterate(&mut char);
@@ -86,7 +86,7 @@ impl StoredCharacter {
             // Err(TODO("make an error for this"))
             Err(())
         } else {
-            CommonRules::last(&mut char);
+            common_rules::last(&mut char);
             self.race.last(&mut char);
             for class in &mut self.classes {
                 class.last(&mut char);

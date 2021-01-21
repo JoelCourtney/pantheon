@@ -2,7 +2,7 @@ crate::name!("Rogue");
 
 #[derive(Debug, Default, Deserialize, Serialize)]
 pub struct Rogue {
-    common: CommonClassContent<8>,
+    common: CommonClassContent,
     subclass: Box<dyn RoguishArchetype>,
 }
 
@@ -17,7 +17,7 @@ impl Class for Rogue {
         self.subclass.declare(c, self.common.lvl);
     }
     fn iterate(&self, c: &mut Character) {
-        self.common.iterate(c);
+        self.common.iterate(c, self);
         self.subclass.iterate(c, self.common.lvl);
     }
     fn last(&mut self, c: &mut Character) {
