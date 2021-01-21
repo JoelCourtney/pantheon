@@ -1,1 +1,1 @@
-macros::register!("/homebrew");
+// pub const NAME: &'static str = "Homebrew";

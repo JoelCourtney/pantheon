@@ -1,1 +1,1 @@
-macros::register!("/playtest");
+// pub const NAME: &'static str = "Playtest";

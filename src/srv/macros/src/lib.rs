@@ -9,7 +9,6 @@ extern crate proc_macro;
 
 mod choose;
 mod content;
-mod register;
 mod registry;
 mod character;
 
@@ -38,49 +37,6 @@ use quote::quote;
 pub fn registry(args: TokenStream) -> TokenStream {
     let declared_content_files: usize = syn::parse::<syn::LitInt>(args).unwrap().base10_parse::<usize>().unwrap();
     registry::registry(declared_content_files)
-}
-
-/// Generates auto-imports for the contents of a directory, and registers the directory under
-/// a pretty-print name.
-///
-/// Works for both dirs that have directory children and dirs that have file children. It is assumed
-/// that no directory has BOTH, other than the obligitory mod.rs, which is ignored. It should still
-/// work if a dir does have both, but I'm not testing for it.
-///
-/// # Input
-///
-/// Input is either a 2-tuple of strings, containing a path and a name, or a single string path. Such as:
-///
-/// ```
-/// macros::register!("/official/players_handbook/race");
-/// ```
-///
-/// Or:
-///
-/// ```
-/// macros::register!(("/official", "Player's Handbook"));
-/// ```
-///
-/// Use the tuple version only for Book directories that require pretty printing. See
-/// `/content/mod.rs` for file structure and naming convention. I'll repeat some here:
-///
-/// When using the tuple input, the second arg is the name of the dir *that contains the mod.rs file
-/// you are registering*. Make this string exactly equal to the name of the book, including capitalization,
-/// spaces, and punctuation. Do include that directory in the path arg.
-///
-/// When using the single-string path input, make it the path of the current dir. This will autogenerate
-/// a name to be registered, based on the name of the directory.
-///
-/// Always start one level down from `content`. I.E., the path will *always* start with one of:
-///
-/// - "/official"
-/// - "/playtest"
-/// - "/homebrew"
-/// - "/system"
-#[proc_macro]
-pub fn register(input: TokenStream) -> TokenStream {
-    let ast: syn::Expr = syn::parse(input).unwrap();
-    register::register(ast)
 }
 
 /// Registers a race struct and pastes some boilerplate code. Must be the first line of the file.

@@ -87,7 +87,7 @@ pub(crate) fn subtype_and_pretty_name(args: TokenStream) -> Result<(String, Stri
         Err(_) => {
             match syn::parse::<syn::ExprTuple>(args) {
                 Ok(t) => {
-                    crate::register::unwrap_string_tuple(t)
+                    unwrap_string_tuple(t)
                 }
                 Err(_) => Err(quote!({
                     compile_error!("bad subtype argument");
@@ -105,3 +105,27 @@ pub(crate) fn pretty_name(args: TokenStream) -> String {
     }
 }
 
+fn unwrap_string_tuple(t: syn::ExprTuple) -> Result<(String, String), TokenStream2> {
+    use syn::Expr;
+
+    let size = t.elems.len();
+    if size != 2 {
+        Err(quote! {
+            compile_error!("expected str literal or tuple (str, str)");
+        })
+    } else {
+        let first = t.elems.first().unwrap();
+        let last = t.elems.last().unwrap();
+        match (first, last) {
+            (
+                Expr::Lit(syn::ExprLit { lit: syn::Lit::Str(lit1), .. }),
+                Expr::Lit(syn::ExprLit { lit: syn::Lit::Str(lit2), .. })
+            ) => Ok((lit1.value(), lit2.value())),
+            _ => {
+                Err(quote!({
+                    compile_error!("both arguments must be str");
+                }))
+            }
+        }
+    }
+}
