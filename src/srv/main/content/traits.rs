@@ -24,7 +24,7 @@ macro_rules! name {
 
 #[macro_export]
 macro_rules! properties {
-    ($($what:ident : $t:ty = $val:literal),*) => {
+    ($($what:ident : $t:ty = $val:expr),*) => {
         fn name(&self) -> &'static str { NAME }
         $(fn $what(&self) -> $t { $val })*
     }
@@ -60,7 +60,7 @@ pub trait Spell: Debug {
     fn name(&self) -> &'static str;
     fn declare(&self, _c: &mut Character) {}
     fn iterate(&self, _c: &mut Character) {}
-    fn last(&mut self, _c: &mut Character) {}
+    fn last(&self, _c: &mut Character) {}
 }
 
 #[dynamic_choose]
@@ -84,5 +84,5 @@ pub trait EldritchInvocation: Debug {
     fn name(&self) -> &'static str;
     fn declare(&self, _c: &mut Character, _lvl: usize) {}
     fn iterate(&self, _c: &mut Character, _lvl: usize) {}
-    fn last(&mut self, _c: &mut Character, _lvl: usize) {}
+    fn last(&self, _c: &mut Character, _lvl: usize) {}
 }
