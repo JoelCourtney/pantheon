@@ -5,7 +5,11 @@ pub struct UnknownSpell {}
 
 #[content]
 impl Spell for UnknownSpell {
-    properties! {}
+    properties! {
+        level: usize = 0,
+        casting_time: CastingTime = CastingTime::Ritual("this is not a real spell"),
+        optional_ritual: bool = false
+    }
 }
 
 describe! { r#"

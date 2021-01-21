@@ -25,6 +25,7 @@ mod character;
 mod content;
 mod feature;
 mod describe;
+mod moves;
 mod misc;
 
 fn main() {

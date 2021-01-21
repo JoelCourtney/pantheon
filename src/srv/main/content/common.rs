@@ -14,6 +14,8 @@ pub(crate) mod common_rules {
         c.intelligence_modifier.declare_initializer(NAME);
         c.wisdom_modifier.declare_initializer(NAME);
         c.charisma_modifier.declare_initializer(NAME);
+
+        c.attacks_per_action.declare_initializer(NAME);
     }
     pub fn iterate(c: &mut Character) {
         if c.strength.finalized() && c.strength_modifier.initialize(NAME) {
@@ -33,6 +35,10 @@ pub(crate) mod common_rules {
         }
         if c.charisma.finalized() && c.charisma_modifier.initialize(NAME) {
             *c.charisma_modifier = (*c.charisma as i32 - 10) / 2;
+        }
+
+        if c.attacks_per_action.initialize(NAME) {
+            *c.attacks_per_action = 1;
         }
     }
     pub fn last(_c: &mut Character) {}

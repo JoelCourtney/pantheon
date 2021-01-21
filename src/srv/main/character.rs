@@ -9,6 +9,7 @@ use crate::content::traits::{Race, Class};
 use std::ops::{Deref, DerefMut};
 use std::collections::HashSet;
 use maplit::hashset;
+use crate::moves::Move;
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct StoredCharacter {
@@ -25,6 +26,8 @@ pub struct StoredCharacter {
     base_charisma: usize,
 
     alignment: Alignment,
+
+    money: [usize; 5],
 
     race: Box<dyn Race>,
     classes: Vec<Box<dyn Class>>
@@ -52,6 +55,7 @@ impl StoredCharacter {
             wisdom: Staged::new(self.base_wisdom),
             charisma: Staged::new(self.base_charisma),
 
+            // money: self.money,
             alignment: self.alignment,
 
             ..Default::default()
@@ -127,7 +131,6 @@ pub struct Character {
     // SIZE
     pub size: Staged<CreatureSize>,
 
-
     // PROFICIENCIES AND LANGUAGES
     pub skill_proficiencies: Staged<Vec<(Skill, ProficiencyType)>>,
     pub tool_proficiencies: Staged<Vec<(&'static str, ProficiencyType)>>,
@@ -140,10 +143,13 @@ pub struct Character {
     pub swimming_speed: Staged<usize>,
     pub burrowing_speed: Staged<usize>,
 
+    // ATTACKS PER ACTION
+    pub attacks_per_action: Staged<usize>,
+
     // NOTES
     pub saving_throw_notes: Staged<Vec<&'static str>>,
 
-    // DO NOT MODIFY FIELDS AFTER THIS POINT
+    // DO NOT MODIFY FIELDS AFTER THIS POINT IN THE DECLARE AND ITERATE STEPS
 
     // FEATURES, TRAITS, AND FEATS
     pub race_traits: Vec<Feature>,
@@ -151,7 +157,15 @@ pub struct Character {
     pub background_features: Vec<Feature>,
     pub feat_features: Vec<Feature>,
 
-    // ALIGNMENT
+    pub actions: Vec<Move>,
+    pub bonus_actions: Vec<Move>,
+    pub reactions: Vec<Move>,
+
+    // NOT EDITABLE BY YOU. YES, YOU.
+
+    // FINALIZE MACRO PANICS HERE
+    // money: [usize; 5],
+
     alignment: Alignment,
 }
 
