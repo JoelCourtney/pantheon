@@ -47,3 +47,7 @@ function pasteFields(fields, character) {
 function setField(field, value) {
     document.getElementById("field-"+field).innerHTML = value;
 }
+
+function signedInt(int) {
+    return (int>=0?"+":"")+int;
+}
