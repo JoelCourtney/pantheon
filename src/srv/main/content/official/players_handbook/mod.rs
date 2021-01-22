@@ -1,7 +1,8 @@
-pub const NAME: &'static str = "Player's Handbook";
-
-pub mod class;
-pub mod feat;
-pub mod halfling_subrace;
-pub mod race;
-pub mod roguish_archetype;
+crate::register!(
+    "Player's Handbook",
+    class,
+    feat,
+    halfling_subrace,
+    race,
+    roguish_archetype
+);

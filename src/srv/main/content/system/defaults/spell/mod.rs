@@ -1,1 +1,1 @@
-pub mod unknown_spell;
+crate::register!( unknown_spell );

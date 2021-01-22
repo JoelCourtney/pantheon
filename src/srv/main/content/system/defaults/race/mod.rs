@@ -1,1 +1,1 @@
-pub mod unknown_race;
+crate::register!( unknown_race );

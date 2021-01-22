@@ -1,1 +1,1 @@
-pub mod defaults;
+crate::register!( defaults );

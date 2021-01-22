@@ -1,1 +1,1 @@
-pub mod unknown_roguish_archetype;
+crate::register!( unknown_roguish_archetype );

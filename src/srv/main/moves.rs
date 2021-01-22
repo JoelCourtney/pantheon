@@ -1,4 +1,5 @@
 use serde::Serialize;
+use crate::misc::Range;
 
 #[derive(Debug, Serialize)]
 pub enum Move {
@@ -19,23 +20,3 @@ pub enum Move {
     }
 }
 
-#[derive(Debug, Serialize)]
-pub enum Range {
-    Fixed(usize),
-    Extra(usize, usize)
-}
-
-#[derive(Debug, Serialize)]
-pub enum CastingTime {
-    Action,
-    BonusAction,
-    Reaction,
-    Ritual(&'static str)
-}
-
-#[derive(Debug, Serialize)]
-pub struct CastingComponents {
-    verbal: bool,
-    somatic: bool,
-    material: Option<&'static str>
-}

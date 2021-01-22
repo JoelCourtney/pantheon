@@ -1,1 +1,1 @@
-pub mod unknown_feat;
+crate::register!( unknown_feat );

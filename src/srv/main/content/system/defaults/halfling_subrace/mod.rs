@@ -1,1 +1,1 @@
-pub mod unknown_halfling_subrace;
+crate::register!( unknown_halfling_subrace );

@@ -1,1 +1,1 @@
-pub mod unknown_class;
+crate::register!( unknown_class );
