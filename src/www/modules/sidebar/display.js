@@ -5,4 +5,6 @@ registerDisplayCallback(function (character) {
         classes += " | " + character.class_names[i];
     }
     document.getElementById("field-class_names").innerHTML = classes;
+
+    document.title = character.name + ' - DnDCent';
 });
