@@ -135,6 +135,62 @@ pub struct Character {
     pub wisdom_modifier: Staged<i32>,
     pub charisma_modifier: Staged<i32>,
 
+    // SKILLS
+    pub acrobatics: Staged<i32>,
+    pub animal_handling: Staged<i32>,
+    pub arcana: Staged<i32>,
+    pub athletics: Staged<i32>,
+    pub deception: Staged<i32>,
+    pub history: Staged<i32>,
+    pub insight: Staged<i32>,
+    pub intimidation: Staged<i32>,
+    pub investigation: Staged<i32>,
+    pub medicine: Staged<i32>,
+    pub nature: Staged<i32>,
+    pub perception: Staged<i32>,
+    pub performance: Staged<i32>,
+    pub persuasion: Staged<i32>,
+    pub religion: Staged<i32>,
+    pub sleight_of_hand: Staged<i32>,
+    pub stealth: Staged<i32>,
+    pub survival: Staged<i32>,
+
+    pub acrobatics_vantage: Staged<Vantage>,
+    pub animal_handling_vantage: Staged<Vantage>,
+    pub arcana_vantage: Staged<Vantage>,
+    pub athletics_vantage: Staged<Vantage>,
+    pub deception_vantage: Staged<Vantage>,
+    pub history_vantage: Staged<Vantage>,
+    pub insight_vantage: Staged<Vantage>,
+    pub intimidation_vantage: Staged<Vantage>,
+    pub investigation_vantage: Staged<Vantage>,
+    pub medicine_vantage: Staged<Vantage>,
+    pub nature_vantage: Staged<Vantage>,
+    pub perception_vantage: Staged<Vantage>,
+    pub performance_vantage: Staged<Vantage>,
+    pub persuasion_vantage: Staged<Vantage>,
+    pub religion_vantage: Staged<Vantage>,
+    pub sleight_of_hand_vantage: Staged<Vantage>,
+    pub stealth_vantage: Staged<Vantage>,
+    pub survival_vantage: Staged<Vantage>,
+
+    // SAVING THROWS
+    pub strength_save: Staged<i32>,
+    pub dexterity_save: Staged<i32>,
+    pub constitution_save: Staged<i32>,
+    pub intelligence_save: Staged<i32>,
+    pub wisdom_save: Staged<i32>,
+    pub charisma_save: Staged<i32>,
+
+    pub strength_save_vantage: Staged<Vantage>,
+    pub dexterity_save_vantage: Staged<Vantage>,
+    pub constitution_save_vantage: Staged<Vantage>,
+    pub intelligence_save_vantage: Staged<Vantage>,
+    pub wisdom_save_vantage: Staged<Vantage>,
+    pub charisma_save_vantage: Staged<Vantage>,
+
+    pub saving_throw_notes: Staged<Vec<&'static str>>,
+
     // SIZE
     pub size: Staged<CreatureSize>,
 
@@ -152,9 +208,6 @@ pub struct Character {
 
     // ATTACKS PER ACTION
     pub attacks_per_action: Staged<u32>,
-
-    // NOTES
-    pub saving_throw_notes: Staged<Vec<&'static str>>,
 
     // DO NOT MODIFY FIELDS AFTER THIS POINT IN THE DECLARE AND ITERATE STEPS
 
@@ -212,12 +265,6 @@ impl<T> Staged<T>
         self.finalizers.insert(who);
     }
 
-    pub fn initialized(&self) -> bool {
-        self.initializers.is_empty()
-    }
-    pub fn modified(&self) -> bool {
-        self.initializers.is_empty() && self.modifiers.is_empty()
-    }
     pub fn finalized(&self) -> bool {
         self.initializers.is_empty() && self.modifiers.is_empty() && self.finalizers.is_empty()
     }

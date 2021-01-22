@@ -5,7 +5,7 @@ mod homebrew;
 pub(crate) mod traits;
 pub(crate) mod common;
 
-macros::registry!(17);
+macros::registry!(18);
 
 /// Contains where to find a particular file.
 ///
@@ -43,6 +43,15 @@ macro_rules! properties {
         fn name(&self) -> &'static str { NAME }
         fn description(&self) -> &'static str { Self::description_with_title() }
         fn description_no_title(&self) -> &'static str { Self::description_without_title() }
+
+        $(fn $what(&self) -> $t { $val })*
+    };
+    ($($bool_bois:ident),+;$($what:ident : $t:ty = $val:expr),*) => {
+        fn name(&self) -> &'static str { NAME }
+        fn description(&self) -> &'static str { Self::description_with_title() }
+        fn description_no_title(&self) -> &'static str { Self::description_without_title() }
+
+        $(fn $bool_bois(&self) -> bool { true })*
         $(fn $what(&self) -> $t { $val })*
     }
 }

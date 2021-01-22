@@ -1,4 +1,5 @@
 crate::register!(
     "Official",
-    players_handbook
+    players_handbook,
+    basic_rules
 );

@@ -46,7 +46,7 @@ pub trait Spell: Debug {
 
     fn level(&self) -> usize;
     fn casting_time(&self) -> CastingTime;
-    fn optional_ritual(&self) -> bool;
+    fn optional_ritual(&self) -> bool { false }
     // TODO
 }
 
@@ -60,7 +60,11 @@ pub trait Item: Debug {
     fn rarity(&self) -> Rarity;
     fn weight(&self) -> Option<u32>;
     fn cost(&self) -> Option<u32>;
-    fn magical(&self) -> bool;
+    fn magical(&self) -> bool { false }
+    fn attunement(&self) -> bool { false }
+
+    fn declare(&self, _c: &mut Character) {}
+    fn iterate(&self, _c: &mut Character) {}
 }
 
 #[dynamic_choose]

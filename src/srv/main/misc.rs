@@ -4,8 +4,8 @@ use macros::choose;
 
 #[derive(Debug, Serialize)]
 pub enum Range {
-    Fixed(usize),
-    Extra(usize, usize)
+    Fixed(u32),
+    Extra(u32, u32)
 }
 
 #[derive(Debug, Serialize)]
@@ -27,6 +27,7 @@ pub struct CastingComponents {
 pub enum Equipable {
     No,
     Yes,
+    Always,
     Armor,
     Holdable(Holdable)
 }
@@ -159,3 +160,45 @@ pub enum Language {
     Unknown,
 }
 
+#[derive(Serialize, Debug)]
+pub enum Vantage {
+    Advantage,
+    None,
+    Disadvantage,
+    NoneLocked
+}
+
+impl Vantage {
+    // WILL UNCOMMENT LATER
+    // fn upgrade(&mut self) {
+    //     use Vantage::*;
+    //
+    //     match self {
+    //         None => {
+    //             *self = Advantage;
+    //         }
+    //         Disadvantage => {
+    //             *self = NoneLocked;
+    //         }
+    //         _ => {}
+    //     }
+    // }
+    //
+    // fn downgrade(&mut self) {
+    //     use Vantage::*;
+    //
+    //     match self {
+    //         None => {
+    //             *self = Disadvantage;
+    //         }
+    //         Advantage => {
+    //             *self = NoneLocked;
+    //         }
+    //         _ => {}
+    //     }
+    // }
+}
+
+impl Default for Vantage {
+    fn default() -> Self { Vantage::None }
+}
