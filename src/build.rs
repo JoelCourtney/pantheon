@@ -27,7 +27,7 @@ fn emit_rerun() {
         let entry = entry.expect("expected dir entry");
         let file_name = entry.file_name().to_str().expect("bad os str");
         if file_name.rfind(".less") != None {
-            println!("cargo:rerun-if-changed={}", entry.into_path().to_str().unwrap());
+            println!("cargo:rerun-if-changed={}", entry.into_path().to_str().expect("bad less path"));
         }
     }
 }

@@ -33,7 +33,7 @@ fn process_choose_attribute(name: String, vars: Vec<String>) -> TokenStream2 {
             choices.extend(format!(r#""{}","#, var).chars());
         }
     }
-    let choices_tokens: TokenStream2 = choices.parse().unwrap();
+    let choices_tokens: TokenStream2 = choices.parse().expect("choices parse failed");
     let mut match_rules = "".to_string();
     let mut reverse_match_rules = "".to_string();
     for var in &vars {
@@ -42,8 +42,8 @@ fn process_choose_attribute(name: String, vars: Vec<String>) -> TokenStream2 {
         }
         reverse_match_rules.extend(format!(r#"{}::{} => "{}",{}"#, name, var, var, "\n").chars());
     }
-    let match_rules_tokens: TokenStream2 = match_rules.parse().unwrap();
-    let reverse_match_rules_tokens: TokenStream2 = reverse_match_rules.parse().unwrap();
+    let match_rules_tokens: TokenStream2 = match_rules.parse().expect("match rules parse failed");
+    let reverse_match_rules_tokens: TokenStream2 = reverse_match_rules.parse().expect("reverse match rules failed");
 
     let mut acc = quote! {
         impl Default for #enum_ident {
@@ -60,7 +60,7 @@ fn process_choose_attribute(name: String, vars: Vec<String>) -> TokenStream2 {
                         _ => panic!(format!("choice not found: {}", choice))
                     }
                 } else {
-                    unimplemented!()
+                    panic!(format!("choice index should be zero for single choice, was {}", index))
                 }
             }
             fn to_choice(&self, _unique: bool) -> crate::feature::ChoiceSerial {
@@ -90,7 +90,7 @@ fn process_choose_attribute(name: String, vars: Vec<String>) -> TokenStream2 {
                     crate::feature::ChoiceSerial {
                         current_choices: self.iter().map(|v| match v {
                             #reverse_match_rules_tokens
-                            _ => unimplemented!()
+                            _ => panic!(format!("reverse match token not found: {:?}", v))
                         }).collect(),
                         all_choices: {
                             (0..#size).map(
@@ -103,7 +103,7 @@ fn process_choose_attribute(name: String, vars: Vec<String>) -> TokenStream2 {
                                                 if *v != self[index] {
                                                     Some(match *v {
                                                         #reverse_match_rules_tokens
-                                                        _ => unimplemented!()
+                                                        _ => panic!(format!("(2) reverse match token not found: {:?}", v))
                                                     })
                                                 } else {
                                                     None
@@ -140,9 +140,9 @@ pub(crate) fn dynamic_choose(ast: syn::ItemTrait) -> TokenStream {
         impl Choose for Box<dyn #ident> {
             fn choose(&mut self, choice: &str, index: usize) {
                 if index == 0 {
-                    *self = crate::content::#lower_ident(choice).expect(&format!("choice not found: {}", choice));
+                    *self = crate::content::#lower_ident(choice).expect(&format!("choice not found: {:?}", choice));
                 } else {
-                    unimplemented!()
+                    panic!(format!("index must be 0 for dynamic single choice, was {}", index))
                 }
             }
             fn to_choice(&self, unique: bool) -> crate::feature::ChoiceSerial {

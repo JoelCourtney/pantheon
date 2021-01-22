@@ -33,6 +33,6 @@ fn main() {
     if args.len() != 2 {
         println!("Usage:\tdndcent [FILE]");
     } else {
-        server::ignite(args.nth(1).unwrap()).launch();
+        server::ignite(args.nth(1).expect("get 1st arg failed")).launch();
     }
 }

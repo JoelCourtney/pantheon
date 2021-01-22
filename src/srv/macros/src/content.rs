@@ -22,7 +22,7 @@ pub(crate) fn describe(text: String) -> TokenStream {
 
             let string_part: TokenStream2 = format!(r##"(indoc! {{r#"{}"#}})"##,
                 text
-            ).parse().unwrap();
+            ).parse().expect("string part parse failed");
             (quote! {
                 impl Describe for #pascal_ident {
                     fn description_with_title() -> &'static str {

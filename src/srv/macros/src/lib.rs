@@ -35,7 +35,10 @@ use quote::quote;
 /// Don't use this macro yourself. It should only be used in `content/mod.rs`.
 #[proc_macro]
 pub fn registry(args: TokenStream) -> TokenStream {
-    let declared_content_files: usize = syn::parse::<syn::LitInt>(args).unwrap().base10_parse::<usize>().unwrap();
+    let declared_content_files: usize = syn::parse::<syn::LitInt>(args)
+        .expect("parse registry arg failed")
+        .base10_parse::<usize>()
+        .expect("parse registry usize failed");
     registry::registry(declared_content_files)
 }
 
@@ -89,7 +92,8 @@ pub fn def(_: TokenStream) -> TokenStream {
 /// ```
 #[proc_macro]
 pub fn describe(input: TokenStream) -> TokenStream {
-    let text: String = syn::parse::<syn::LitStr>(input).unwrap().value();
+    let text: String = syn::parse::<syn::LitStr>(input)
+        .expect("parse describe arg failed").value();
     content::describe(text)
 }
 
@@ -140,7 +144,8 @@ pub fn describe(input: TokenStream) -> TokenStream {
 /// ```
 #[proc_macro_attribute]
 pub fn choose(_: TokenStream, input: TokenStream) -> TokenStream {
-    let ast: syn::DeriveInput = syn::parse(input).unwrap();
+    let ast: syn::DeriveInput = syn::parse(input)
+        .expect("parse choose arg failed");
     choose::choose(ast)
 }
 
@@ -158,6 +163,7 @@ pub fn derive_finalize(input: TokenStream) -> TokenStream {
 
 #[proc_macro_attribute]
 pub fn content(_args: TokenStream, input: TokenStream) -> TokenStream {
-    let ast: syn::ItemImpl = syn::parse(input).unwrap();
+    let ast: syn::ItemImpl = syn::parse(input)
+        .expect("parse content arg failed");
     content::content(ast)
 }

@@ -14,7 +14,7 @@ struct SharedData {
 
 pub(crate) fn ignite(path: String) -> Rocket {
     let mut stored_char = StoredCharacter::read(&*path);
-    let final_char = stored_char.resolve().unwrap();
+    let final_char = stored_char.resolve().expect("ignite character resolve failed");
     let state = SharedData {
         path,
         stored_char: RwLock::new(stored_char),
@@ -29,7 +29,8 @@ pub(crate) fn ignite(path: String) -> Rocket {
 
 #[post("/")]
 fn get_character(state: State<SharedData>) -> content::Json<String> {
-    let final_char = state.inner().final_char.read().unwrap();
+    let final_char = state.inner().final_char.read()
+        .expect("could not get get final read lock");
     content::Json(serde_json::to_string(&*final_char).expect("SERIALIZATION FAILED"))
 }
 
@@ -49,8 +50,10 @@ enum EditRequest<'a> {
 
 #[post("/edit", format="json", data="<data>")]
 fn edit_character(data: Json<EditRequest>, state: State<SharedData>) -> content::Json<String> {
-    let mut final_char = state.inner().final_char.write().unwrap();
-    let mut stored_char = state.inner().stored_char.write().unwrap();
+    let mut final_char = state.inner().final_char.write()
+        .expect("could not get edit final write lock");
+    let mut stored_char = state.inner().stored_char.write()
+        .expect("could not get edit stored write lock");
     use EditRequest::*;
     match data.into_inner() {
         Name(s) => (*stored_char).name = s,
@@ -77,7 +80,7 @@ fn edit_character(data: Json<EditRequest>, state: State<SharedData>) -> content:
             }
         }
     }
-    *final_char = stored_char.resolve().unwrap();
+    *final_char = stored_char.resolve().expect("edit character resolve failed");
     std::mem::drop(final_char);
     stored_char.write(&*state.path);
     get_character(state)

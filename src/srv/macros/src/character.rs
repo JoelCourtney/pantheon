@@ -35,7 +35,8 @@ pub(crate) fn finalize(ast: syn::DeriveInput) -> TokenStream {
                             ..
                         }
                     ) => {
-                        let first = &seg.first().unwrap();
+                        let first = &seg.first()
+                            .expect("path has no segments?");
                         if &first.ident.to_string() == "Staged" {
                             let target = match &first.arguments {
                                 syn::PathArguments::AngleBracketed(
@@ -44,7 +45,7 @@ pub(crate) fn finalize(ast: syn::DeriveInput) -> TokenStream {
                                         ..
                                     }
                                 ) => {
-                                    match args.first().unwrap() {
+                                    match args.first().expect("path arg has no segments?") {
                                         syn::GenericArgument::Type(
                                             syn::Type::Path(
                                                 arg_ty @ syn::TypePath { .. }

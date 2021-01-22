@@ -82,7 +82,7 @@ pub(crate) fn registry(declared_content_files: usize) -> TokenStream {
             r#"compile_error!("content file count mismatch: expected {}, found {}");"#,
             declared_content_files,
             counted_content_files
-        ).parse().unwrap()
+        ).parse().expect("compile error parse failed")
     }
 }
 
