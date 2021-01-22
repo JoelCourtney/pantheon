@@ -1,5 +1,6 @@
 {
   "name": "Test Boi",
+  "inspiration": false,
   "health": 3,
   "temp_health": 4,
   "base_strength": 12,

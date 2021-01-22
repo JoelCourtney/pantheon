@@ -27,7 +27,9 @@ pub struct StoredCharacter {
 
     alignment: Alignment,
 
-    money: [usize; 5],
+    inspiration: bool,
+
+    // money: [usize; 5],
 
     race: Box<dyn Race>,
     classes: Vec<Box<dyn Class>>
@@ -56,6 +58,8 @@ impl StoredCharacter {
             charisma: Staged::new(self.base_charisma),
 
             // money: self.money,
+            inspiration: self.inspiration,
+
             alignment: self.alignment,
 
             ..Default::default()
@@ -104,6 +108,8 @@ impl StoredCharacter {
 pub struct Character {
     pub name: Staged<String>,
     pub total_level: Staged<usize>,
+    pub race_name: Staged<String>,
+    pub class_names: Staged<Vec<String>>,
 
     // HEALTH
     pub health: Staged<usize>,
@@ -165,6 +171,8 @@ pub struct Character {
 
     // FINALIZE MACRO PANICS HERE
     // money: [usize; 5],
+
+    inspiration: bool,
 
     alignment: Alignment,
 }

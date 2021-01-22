@@ -13,8 +13,11 @@ impl Class for Wizard {
     properties! {
         hit_dice: usize = 6
     }
-    fn declare(&self, _c: &mut Character) {
-
+    fn declare(&self, c: &mut Character) {
+        self.common.declare(c, self);
+    }
+    fn iterate(&self, c: &mut Character) {
+        self.common.iterate(c, self);
     }
 }
 

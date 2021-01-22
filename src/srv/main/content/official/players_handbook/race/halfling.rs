@@ -10,6 +10,8 @@ impl Race for Halfling {
     properties! {}
 
     fn declare(&self, c: &mut Character) {
+        common_race_rules::declare(c, self);
+
         c.size.declare_initializer(NAME);
         c.walking_speed.declare_initializer(NAME);
 
@@ -20,6 +22,8 @@ impl Race for Halfling {
         self.subrace.declare(c);
     }
     fn iterate(&self, c: &mut Character) {
+        common_race_rules::iterate(c, self);
+
         if c.size.initialize(NAME) {
             *c.size = CreatureSize::Small;
         }

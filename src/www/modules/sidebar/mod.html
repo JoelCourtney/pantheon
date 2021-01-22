@@ -1,19 +1,18 @@
 <div class="uk-width-medium uk-padding-remove uk-margin-remove">
     <div class="uk-width-medium" uk-sticky>
         <div class="uk-text-right uk-padding">
-            <h1>Avral</h1>
-            <p>Half-Elf<br/>Rogue 4 | Warlock 1</p>
+            <h1 id="field-name"></h1>
+            <p><span id="field-race_name"></span><br/><span id="field-class_names"></span></p>
         </div>
         <div class="uk-text-right uk-padding">
             <ul class="uk-nav uk-nav-primary">
-                <li><a href="#">Overview</a></li>
-                <li><a href="#">Combat</a></li>
-                <li><a href="#">Roleplay</a></li>
-                <li><a href="#">Equipment</a></li>
-                <li><a href="#">Skills & Proficiencies</a></li>
-                <li><a href="#">Description</a></li>
-                <li><a href="#">Notes</a></li>
-                <li><a href="#">Everything</a></li>
+                <li class="uk-active" id="menu-combat"><a onclick="setView('combat');">Combat</a></li>
+                <li id="menu-roleplay"><a onclick="setView('roleplay');">Roleplay</a></li>
+                <li id="menu-equipment"><a onclick="setView('equipment');">Equipment</a></li>
+                <li id="menu-skills"><a onclick="setView('skills');">Skills & Proficiencies</a></li>
+                <li id="menu-description"><a onclick="setView('description');">Description</a></li>
+                <li id="menu-notes"><a onclick="setView('notes');">Notes</a></li>
+                <li id="menu-everything"><a onclick="setView('everything');">Everything</a></li>
             </ul>
         </div>
     </div>

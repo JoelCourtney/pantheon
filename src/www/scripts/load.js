@@ -42,7 +42,7 @@ function loadModules() {
                     /*remove the attribute, and call this function once more:*/
                     modulesReceived++;
                     if (areModulesLoaded()) {
-                        updateCharacter();
+                        loaded();
                     }
                 }
             }
@@ -63,8 +63,13 @@ var displayCallbacks = [];
 function registerDisplayCallback(func) {
     displayCallbacks.push(func);
     if (areModulesLoaded()) {
-        getCharacter();
+        loaded();
     }
+}
+
+function loaded() {
+    setView("combat");
+    getCharacter();
 }
 
 function callDisplayCallbacks(character) {

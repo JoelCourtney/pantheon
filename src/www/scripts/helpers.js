@@ -1,3 +1,21 @@
+let activeView = 'combat';
+
+function setView(view) {
+    let className = "view-" + view;
+    document.getElementById("menu-" + activeView).classList.remove("uk-active");
+    activeView = view;
+    document.getElementById("menu-" + activeView).classList.add("uk-active");
+    for (let child of document.getElementById("sheet").children) {
+        if (child.classList.contains(className)) {
+            child.classList.remove("view-hidden");
+            child.classList.add("view-visible");
+        } else {
+            child.classList.remove("view-visible");
+            child.classList.add("view-hidden");
+        }
+    }
+}
+
 function getCharacter() {
     const xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
@@ -24,4 +42,8 @@ function editCharacter(data) {
 
 function pasteFields(fields, character) {
     fields.forEach(function (field) { document.getElementById('field-' + field).innerHTML = character[field] });
+}
+
+function setField(field, value) {
+    document.getElementById("field-"+field).innerHTML = value;
 }

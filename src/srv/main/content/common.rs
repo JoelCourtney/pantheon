@@ -51,15 +51,16 @@ pub struct CommonClassContent {
 }
 
 impl CommonClassContent {
-    const NAME: &'static str = "Common Class Content";
-
-    pub fn declare(&self, c: &mut Character) {
-        c.max_health.declare_finalizer(Self::NAME);
-        c.total_level.declare_modifier(Self::NAME);
+    pub fn declare(&self, c: &mut Character, class: &dyn Class) {
+        let name = class.name();
+        c.max_health.declare_finalizer(name);
+        c.total_level.declare_modifier(name);
+        c.class_names.declare_modifier(name);
     }
     pub fn iterate(&self, c: &mut Character, class: &dyn Class) {
+        let name = class.name();
         let hd = class.hit_dice();
-        if c.constitution_modifier.finalized() && c.max_health.finalize(Self::NAME) {
+        if c.constitution_modifier.finalized() && c.max_health.finalize(name) {
             let mut res: i32 = 0;
             if self.first_class && self.lvl >= 1 {
                 res += (hd / 2 - 1) as i32;
@@ -67,9 +68,26 @@ impl CommonClassContent {
             res += ((hd / 2 + 1) as i32 + *c.constitution_modifier) * self.lvl as i32;
             *c.max_health += res as usize;
         }
-        if c.total_level.modify(Self::NAME) {
+        if c.total_level.modify(name) {
             *c.total_level += self.lvl;
+        }
+        if c.class_names.modify(name) {
+            (*c.class_names).push(format!("{} {}", name, self.lvl));
         }
     }
     pub fn last(&mut self, _c: &mut Character) {}
+}
+
+pub(crate) mod common_race_rules {
+    use crate::character::Character;
+    use crate::content::traits::Race;
+
+    pub fn declare(c: &mut Character, race: &dyn Race) {
+        c.race_name.declare_initializer(race.name());
+    }
+    pub fn iterate(c: &mut Character, race: &dyn Race) {
+        if c.race_name.initialize(race.name()) {
+            *c.race_name = race.name().to_string();
+        }
+    }
 }

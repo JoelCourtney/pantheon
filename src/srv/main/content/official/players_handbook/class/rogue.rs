@@ -15,7 +15,7 @@ impl Class for Rogue {
     }
 
     fn declare(&self, c: &mut Character) {
-        self.common.declare(c);
+        self.common.declare(c, self);
         self.subclass.declare(c, self.common.lvl);
     }
     fn iterate(&self, c: &mut Character) {
