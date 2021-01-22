@@ -111,6 +111,9 @@ pub struct Character {
     pub race_name: Staged<String>,
     pub class_names: Staged<Vec<String>>,
 
+    // PROFICIENCY BONUS
+    pub proficiency_bonus: Staged<usize>,
+
     // HEALTH
     pub health: Staged<usize>,
     pub temp_health: Staged<usize>,

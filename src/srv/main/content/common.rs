@@ -16,6 +16,8 @@ pub(crate) mod common_rules {
         c.charisma_modifier.declare_initializer(NAME);
 
         c.attacks_per_action.declare_initializer(NAME);
+
+        c.proficiency_bonus.declare_initializer(NAME);
     }
     pub fn iterate(c: &mut Character) {
         if c.strength.finalized() && c.strength_modifier.initialize(NAME) {
@@ -39,6 +41,10 @@ pub(crate) mod common_rules {
 
         if c.attacks_per_action.initialize(NAME) {
             *c.attacks_per_action = 1;
+        }
+
+        if c.total_level.finalized() && c.proficiency_bonus.initialize(NAME) {
+            *c.proficiency_bonus = (*c.total_level - 1) / 4 + 2;
         }
     }
     pub fn last(_c: &mut Character) {}
