@@ -6,7 +6,7 @@ pub struct UnknownClass;
 #[content]
 impl Class for UnknownClass {
     properties! {
-        hit_dice: usize = 0
+        hit_dice: u32 = 0
     }
 }
 

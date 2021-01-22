@@ -18,6 +18,7 @@ pub(crate) mod common_rules {
         c.attacks_per_action.declare_initializer(NAME);
 
         c.proficiency_bonus.declare_initializer(NAME);
+        c.initiative.declare_initializer(NAME);
     }
     pub fn iterate(c: &mut Character) {
         if c.strength.finalized() && c.strength_modifier.initialize(NAME) {
@@ -46,33 +47,36 @@ pub(crate) mod common_rules {
         if c.total_level.finalized() && c.proficiency_bonus.initialize(NAME) {
             *c.proficiency_bonus = (*c.total_level - 1) / 4 + 2;
         }
+        if c.dexterity_modifier.finalized() && c.initiative.initialize(NAME) {
+            *c.initiative = *c.dexterity_modifier;
+        }
     }
     pub fn last(_c: &mut Character) {}
 }
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct CommonClassContent {
-    pub lvl: usize,
+    pub lvl: u32,
     first_class: bool
 }
 
 impl CommonClassContent {
     pub fn declare(&self, c: &mut Character, class: &dyn Class) {
         let name = class.name();
-        c.max_health.declare_finalizer(name);
+        c.max_health.declare_initializer(name);
         c.total_level.declare_modifier(name);
         c.class_names.declare_modifier(name);
     }
     pub fn iterate(&self, c: &mut Character, class: &dyn Class) {
         let name = class.name();
         let hd = class.hit_dice();
-        if c.constitution_modifier.finalized() && c.max_health.finalize(name) {
+        if c.constitution_modifier.finalized() && c.max_health.initialize(name) {
             let mut res: i32 = 0;
             if self.first_class && self.lvl >= 1 {
                 res += (hd / 2 - 1) as i32;
             }
             res += ((hd / 2 + 1) as i32 + *c.constitution_modifier) * self.lvl as i32;
-            *c.max_health += res as usize;
+            *c.max_health += res as u32;
         }
         if c.total_level.modify(name) {
             *c.total_level += self.lvl;

@@ -15,21 +15,21 @@ use crate::moves::Move;
 pub struct StoredCharacter {
     pub(crate) name: String,
 
-    pub(crate) health: usize,
-    pub(crate) temp_health: usize,
+    pub(crate) health: u32,
+    pub(crate) temp_health: u32,
 
-    base_strength: usize,
-    base_dexterity: usize,
-    base_constitution: usize,
-    base_intelligence: usize,
-    base_wisdom: usize,
-    base_charisma: usize,
+    base_strength: u32,
+    base_dexterity: u32,
+    base_constitution: u32,
+    base_intelligence: u32,
+    base_wisdom: u32,
+    base_charisma: u32,
 
     alignment: Alignment,
 
     inspiration: bool,
 
-    money: [usize; 5],
+    money: [u32; 5],
 
     race: Box<dyn Race>,
     classes: Vec<Box<dyn Class>>
@@ -107,25 +107,26 @@ impl StoredCharacter {
 #[derive(Debug, Default, FinalizeCharacter)]
 pub struct Character {
     pub name: Staged<String>,
-    pub total_level: Staged<usize>,
+    pub total_level: Staged<u32>,
     pub race_name: Staged<String>,
     pub class_names: Staged<Vec<String>>,
 
-    // PROFICIENCY BONUS
-    pub proficiency_bonus: Staged<usize>,
+    // PROFICIENCY BONUS AND INITIATIVE
+    pub proficiency_bonus: Staged<u32>,
+    pub initiative: Staged<i32>,
 
     // HEALTH
-    pub health: Staged<usize>,
-    pub temp_health: Staged<usize>,
-    pub max_health: Staged<usize>,
+    pub health: Staged<u32>,
+    pub temp_health: Staged<u32>,
+    pub max_health: Staged<u32>,
 
     // ABILITIES
-    pub strength: Staged<usize>,
-    pub dexterity: Staged<usize>,
-    pub constitution: Staged<usize>,
-    pub intelligence: Staged<usize>,
-    pub wisdom: Staged<usize>,
-    pub charisma: Staged<usize>,
+    pub strength: Staged<u32>,
+    pub dexterity: Staged<u32>,
+    pub constitution: Staged<u32>,
+    pub intelligence: Staged<u32>,
+    pub wisdom: Staged<u32>,
+    pub charisma: Staged<u32>,
 
     pub strength_modifier: Staged<i32>,
     pub dexterity_modifier: Staged<i32>,
@@ -133,9 +134,6 @@ pub struct Character {
     pub intelligence_modifier: Staged<i32>,
     pub wisdom_modifier: Staged<i32>,
     pub charisma_modifier: Staged<i32>,
-
-    // INITIATIVE
-    pub initiative: Staged<i32>,
 
     // SIZE
     pub size: Staged<CreatureSize>,
@@ -146,14 +144,14 @@ pub struct Character {
     pub languages: Staged<Vec<Language>>,
 
     // SPEED
-    pub walking_speed: Staged<usize>,
-    pub flying_speed: Staged<usize>,
-    pub climbing_speed: Staged<usize>,
-    pub swimming_speed: Staged<usize>,
-    pub burrowing_speed: Staged<usize>,
+    pub walking_speed: Staged<u32>,
+    pub flying_speed: Staged<u32>,
+    pub climbing_speed: Staged<u32>,
+    pub swimming_speed: Staged<u32>,
+    pub burrowing_speed: Staged<u32>,
 
     // ATTACKS PER ACTION
-    pub attacks_per_action: Staged<usize>,
+    pub attacks_per_action: Staged<u32>,
 
     // NOTES
     pub saving_throw_notes: Staged<Vec<&'static str>>,
@@ -173,7 +171,7 @@ pub struct Character {
     // NOT EDITABLE BY YOU. YES, YOU.
 
     // FINALIZE MACRO PANICS HERE
-    money: [usize; 5],
+    money: [u32; 5],
 
     inspiration: bool,
 

@@ -43,7 +43,7 @@ pub trait Race: Debug {
 #[dynamic_choose]
 pub trait Class: Debug {
     fn name(&self) -> &'static str;
-    fn hit_dice(&self) -> usize;
+    fn hit_dice(&self) -> u32;
     fn declare(&self, _c: &mut Character) {}
     fn iterate(&self, _c: &mut Character) {}
     fn last(&mut self, _c: &mut Character) {}
@@ -77,15 +77,15 @@ pub trait HalflingSubrace: Debug {
 #[dynamic_choose]
 pub trait RoguishArchetype: Debug {
     fn name(&self) -> &'static str;
-    fn declare(&self, _c: &mut Character, _lvl: usize) {}
-    fn iterate(&self, _c: &mut Character, _lvl: usize) {}
-    fn last(&mut self, _c: &mut Character, _lvl: usize) {}
+    fn declare(&self, _c: &mut Character, _lvl: u32) {}
+    fn iterate(&self, _c: &mut Character, _lvl: u32) {}
+    fn last(&mut self, _c: &mut Character, _lvl: u32) {}
 }
 
 #[dynamic_choose]
 pub trait EldritchInvocation: Debug {
     fn name(&self) -> &'static str;
-    fn declare(&self, _c: &mut Character, _lvl: usize) {}
-    fn iterate(&self, _c: &mut Character, _lvl: usize) {}
-    fn last(&self, _c: &mut Character, _lvl: usize) {}
+    fn declare(&self, _c: &mut Character, _lvl: u32) {}
+    fn iterate(&self, _c: &mut Character, _lvl: u32) {}
+    fn last(&self, _c: &mut Character, _lvl: u32) {}
 }

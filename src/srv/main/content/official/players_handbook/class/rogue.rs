@@ -11,7 +11,7 @@ pub struct Rogue {
 #[content]
 impl Class for Rogue {
     properties! {
-        hit_dice: usize = 8
+        hit_dice: u32 = 8
     }
 
     fn declare(&self, c: &mut Character) {

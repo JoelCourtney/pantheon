@@ -37,8 +37,8 @@ fn get_character(state: State<SharedData>) -> content::Json<String> {
 #[serde(rename_all = "snake_case", tag = "field", content = "value")]
 enum EditRequest<'a> {
     Name(String),
-    Health(usize),
-    TempHealth(usize),
+    Health(u32),
+    TempHealth(u32),
     Feature {
         container: &'a str,
         feature_index: usize,

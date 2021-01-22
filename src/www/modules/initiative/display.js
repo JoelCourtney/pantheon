@@ -1,3 +1,3 @@
 registerDisplayCallback(function (character) {
-    // TODO
+    setField("initiative", ((character.initiative>=0)?"+":"")+character.initiative);
 });

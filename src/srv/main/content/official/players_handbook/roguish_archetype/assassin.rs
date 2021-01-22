@@ -9,12 +9,12 @@ pub struct Assassin;
 impl RoguishArchetype for Assassin {
     properties! {}
 
-    fn declare(&self, c: &mut Character, lvl: usize) {
+    fn declare(&self, c: &mut Character, lvl: u32) {
         if lvl >= 3 {
             c.tool_proficiencies.declare_modifier(NAME);
         }
     }
-    fn iterate(&self, c: &mut Character, lvl: usize) {
+    fn iterate(&self, c: &mut Character, lvl: u32) {
         if lvl >= 3 {
             if c.tool_proficiencies.modify(NAME) {
                 (*c.tool_proficiencies).push(("Disguise Kit", ProficiencyType::Single));
@@ -22,7 +22,7 @@ impl RoguishArchetype for Assassin {
             }
         }
     }
-    fn last(&mut self, c: &mut Character, lvl: usize) {
+    fn last(&mut self, c: &mut Character, lvl: u32) {
         if lvl >= 3 {
             c.class_features.push(
                 Feature (

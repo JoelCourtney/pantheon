@@ -11,7 +11,7 @@ pub struct Wizard {
 #[content]
 impl Class for Wizard {
     properties! {
-        hit_dice: usize = 6
+        hit_dice: u32 = 6
     }
     fn declare(&self, c: &mut Character) {
         self.common.declare(c, self);
