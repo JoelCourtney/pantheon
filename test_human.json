@@ -1,5 +1,6 @@
 {
   "name": "Test Boi",
+  "money": [0,0,0,1102,0],
   "inspiration": false,
   "health": 3,
   "temp_health": 4,

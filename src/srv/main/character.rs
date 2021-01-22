@@ -29,7 +29,7 @@ pub struct StoredCharacter {
 
     inspiration: bool,
 
-    // money: [usize; 5],
+    money: [usize; 5],
 
     race: Box<dyn Race>,
     classes: Vec<Box<dyn Class>>
@@ -57,7 +57,7 @@ impl StoredCharacter {
             wisdom: Staged::new(self.base_wisdom),
             charisma: Staged::new(self.base_charisma),
 
-            // money: self.money,
+            money: self.money,
             inspiration: self.inspiration,
 
             alignment: self.alignment,
@@ -170,7 +170,7 @@ pub struct Character {
     // NOT EDITABLE BY YOU. YES, YOU.
 
     // FINALIZE MACRO PANICS HERE
-    // money: [usize; 5],
+    money: [usize; 5],
 
     inspiration: bool,
 

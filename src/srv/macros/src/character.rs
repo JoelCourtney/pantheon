@@ -24,7 +24,8 @@ pub(crate) fn finalize(ast: syn::DeriveInput) -> TokenStream {
 
             for field in &fields {
                 let id = field.ident.clone().expect("expected named field");
-                match &field.ty {
+                let ty = &field.ty;
+                match ty {
                     syn::Type::Path(
                         syn::TypePath {
                             path: syn::Path {
@@ -34,7 +35,6 @@ pub(crate) fn finalize(ast: syn::DeriveInput) -> TokenStream {
                             ..
                         }
                     ) => {
-                        let ty = &field.ty;
                         let first = &seg.first().unwrap();
                         if &first.ident.to_string() == "Staged" {
                             let target = match &first.arguments {
@@ -52,11 +52,11 @@ pub(crate) fn finalize(ast: syn::DeriveInput) -> TokenStream {
                                         ) => {
                                             arg_ty
                                         }
-                                        _ => unimplemented!()
+                                        _ => panic!("expected generic argument")
                                     }
                                 }
                                 _ => {
-                                    unimplemented!()
+                                    panic!("expected angle bracketed type args")
                                 }
                             };
                             count_unresolved_acc = quote! {
@@ -83,7 +83,16 @@ pub(crate) fn finalize(ast: syn::DeriveInput) -> TokenStream {
                         }
 
                     }
-                    _ => unimplemented!()
+                    _ => {
+                        final_character_acc = quote! {
+                            #final_character_acc
+                            pub #id: #ty,
+                        };
+                        finalize_acc = quote! {
+                            #finalize_acc
+                            #id: self.#id,
+                        };
+                    }
                 }
             }
             (quote! {
