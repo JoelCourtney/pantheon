@@ -5,7 +5,7 @@ use crate::misc::*;
 use std::fmt::Debug;
 use macros::FinalizeCharacter;
 use crate::content::common::common_rules;
-use crate::content::traits::{Race, Class};
+use crate::content::traits::{Race, Class, Item};
 use std::ops::{Deref, DerefMut};
 use std::collections::HashSet;
 use maplit::hashset;
@@ -32,7 +32,9 @@ pub struct StoredCharacter {
     money: [u32; 5],
 
     race: Box<dyn Race>,
-    classes: Vec<(Box<dyn Class>, u32)>
+    classes: Vec<(Box<dyn Class>, u32)>,
+
+    inventory: Vec<(Box<dyn Item>, Equipped, bool)>
 }
 
 impl StoredCharacter {
@@ -71,6 +73,9 @@ impl StoredCharacter {
             let first = i == 0;
             class.declare(&mut char, *level, first);
         }
+        for (item, equipped, attuned) in &self.inventory {
+            item.declare(&mut char, *equipped, *attuned);
+        }
 
         let mut old_count: i64  = -2;
         let mut count: i64 = -1;
@@ -84,6 +89,9 @@ impl StoredCharacter {
                 let first = i == 0;
                 class.iterate(&mut char, *level, first);
             }
+            for (item, equipped, attuned) in &self.inventory {
+                item.iterate(&mut char, *equipped, *attuned);
+            }
 
             count = char.count_unresolved().into();
 
@@ -92,8 +100,7 @@ impl StoredCharacter {
         // dbg!(iterations);
         if count != 0 {
             dbg!(&char);
-            println!("modifier deadlock");
-            // Err(TODO("make an error for this"))
+            println!("ITERATOR DEADLOCK");
             Err(())
         } else {
             common_rules::last(&mut char);

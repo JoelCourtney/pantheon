@@ -2,7 +2,7 @@ use std::fmt::Debug;
 use macros::dynamic_choose;
 use crate::feature::Choose;
 use crate::character::Character;
-use crate::misc::{CastingTime, Equipable, Rarity};
+use crate::misc::{CastingTime, Equipable, Rarity, Equipped};
 
 #[dynamic_choose]
 pub trait Race: Debug {
@@ -57,14 +57,14 @@ pub trait Item: Debug {
     fn description_no_title(&self) -> &'static str;
 
     fn equipable(&self) -> Equipable;
+    fn attunable(&self) -> bool { false }
     fn rarity(&self) -> Rarity;
     fn weight(&self) -> Option<u32>;
     fn cost(&self) -> Option<u32>;
     fn magical(&self) -> bool { false }
-    fn attunement(&self) -> bool { false }
 
-    fn declare(&self, _c: &mut Character) {}
-    fn iterate(&self, _c: &mut Character) {}
+    fn declare(&self, _c: &mut Character, _equipped: Equipped, _attuned: bool) {}
+    fn iterate(&self, _c: &mut Character, _equipped: Equipped, _attuned: bool) {}
 }
 
 #[dynamic_choose]

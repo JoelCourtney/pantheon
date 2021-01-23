@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use crate::feature::Choose;
 use macros::choose;
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, Copy, Clone)]
 pub enum Range {
     Fixed(u32),
     Extra(u32, u32)
@@ -23,7 +23,7 @@ pub struct CastingComponents {
     material: Option<&'static str>
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, Copy, Clone, Eq, PartialEq)]
 pub enum Equipable {
     No,
     Yes,
@@ -32,7 +32,21 @@ pub enum Equipable {
     Holdable(Holdable)
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, Deserialize, Copy, Clone, Eq, PartialEq)]
+pub enum Equipped {
+    No,
+    Yes,
+    HeldVersatile(Hand)
+}
+
+#[derive(Debug, Deserialize, Serialize, Copy, Clone, Eq, PartialEq)]
+pub enum Hand {
+    Left,
+    Right,
+    Both
+}
+
+#[derive(Debug, Serialize, Copy, Clone, Eq, PartialEq)]
 pub enum Holdable {
     One,
     Two,
@@ -40,7 +54,7 @@ pub enum Holdable {
     Ammunition
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, Copy, Clone, Eq, PartialEq)]
 pub enum Rarity {
     Common,
     Uncommon,
@@ -160,7 +174,7 @@ pub enum Language {
     Unknown,
 }
 
-#[derive(Serialize, Debug)]
+#[derive(Serialize, Debug, Copy, Clone)]
 pub enum Vantage {
     Advantage,
     None,
@@ -170,20 +184,20 @@ pub enum Vantage {
 
 impl Vantage {
     // WILL UNCOMMENT LATER
-    // fn upgrade(&mut self) {
-    //     use Vantage::*;
-    //
-    //     match self {
-    //         None => {
-    //             *self = Advantage;
-    //         }
-    //         Disadvantage => {
-    //             *self = NoneLocked;
-    //         }
-    //         _ => {}
-    //     }
-    // }
-    //
+    pub(crate) fn upgrade(&mut self) {
+        use Vantage::*;
+
+        match self {
+            None => {
+                *self = Advantage;
+            }
+            Disadvantage => {
+                *self = NoneLocked;
+            }
+            _ => {}
+        }
+    }
+
     // fn downgrade(&mut self) {
     //     use Vantage::*;
     //
