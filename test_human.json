@@ -1,7 +1,5 @@
 {
   "name": "Test Boi",
-  "money": [0,0,0,1102,0],
-  "inspiration": false,
   "health": 3,
   "temp_health": 4,
   "base_strength": 12,
@@ -11,22 +9,29 @@
   "base_wisdom": 12,
   "base_charisma": 12,
   "alignment": "ChaoticNeutral",
+  "inspiration": false,
+  "money": [
+    0,
+    0,
+    0,
+    1102,
+    0
+  ],
   "race": {
     "Human": {
-      "extra_language": "Giant"
+      "extra_language": "Gnomish"
     }
   },
   "classes": [
-    {
-      "Rogue": {
-        "common": {
-          "lvl": 3,
-          "first_class": true
-        },
-        "subclass": {
-          "Assassin": null
+    [
+      {
+        "Rogue": {
+          "subclass": {
+            "Assassin": null
+          }
         }
-      }
-    }
+      },
+      3
+    ]
   ]
 }

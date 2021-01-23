@@ -1,7 +1,3 @@
-use serde::{Serialize, Deserialize};
-use crate::character::Character;
-use crate::content::traits::Class;
-
 pub(crate) mod common_rules {
     use crate::character::Character;
 
@@ -54,38 +50,34 @@ pub(crate) mod common_rules {
     pub fn last(_c: &mut Character) {}
 }
 
-#[derive(Serialize, Deserialize, Debug, Default)]
-pub struct CommonClassContent {
-    pub lvl: u32,
-    first_class: bool
-}
+pub(crate) mod common_class_rules {
+    use crate::character::Character;
+    use crate::content::traits::Class;
 
-impl CommonClassContent {
-    pub fn declare(&self, c: &mut Character, class: &dyn Class) {
+    pub fn declare(class: &dyn Class, c: &mut Character, _level: u32, _first: bool) {
         let name = class.name();
         c.max_health.declare_initializer(name);
         c.total_level.declare_modifier(name);
         c.class_names.declare_modifier(name);
     }
-    pub fn iterate(&self, c: &mut Character, class: &dyn Class) {
+    pub fn iterate(class: &dyn Class, c: &mut Character, level: u32, first: bool) {
         let name = class.name();
         let hd = class.hit_dice();
         if c.constitution_modifier.finalized() && c.max_health.initialize(name) {
             let mut res: i32 = 0;
-            if self.first_class && self.lvl >= 1 {
+            if first && level >= 1 {
                 res += (hd / 2 - 1) as i32;
             }
-            res += ((hd / 2 + 1) as i32 + *c.constitution_modifier) * self.lvl as i32;
+            res += ((hd / 2 + 1) as i32 + *c.constitution_modifier) * level as i32;
             *c.max_health += res as u32;
         }
         if c.total_level.modify(name) {
-            *c.total_level += self.lvl;
+            *c.total_level += level;
         }
         if c.class_names.modify(name) {
-            (*c.class_names).push(format!("{} {}", name, self.lvl));
+            (*c.class_names).push(format!("{} {}", name, level));
         }
     }
-    pub fn last(&mut self, _c: &mut Character) {}
 }
 
 pub(crate) mod common_race_rules {

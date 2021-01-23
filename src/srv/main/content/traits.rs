@@ -22,9 +22,9 @@ pub trait Class: Debug {
     fn description_no_title(&self) -> &'static str;
 
     fn hit_dice(&self) -> u32;
-    fn declare(&self, _c: &mut Character) {}
-    fn iterate(&self, _c: &mut Character) {}
-    fn last(&mut self, _c: &mut Character) {}
+    fn declare(&self, _c: &mut Character, _level: u32, _first: bool) {}
+    fn iterate(&self, _c: &mut Character, _level: u32, _first: bool) {}
+    fn last(&mut self, _c: &mut Character, _level: u32, _first: bool) {}
 }
 
 #[dynamic_choose]

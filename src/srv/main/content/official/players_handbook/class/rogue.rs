@@ -4,7 +4,6 @@ crate::name!("Rogue");
 
 #[derive(Debug, Default, Deserialize, Serialize)]
 pub struct Rogue {
-    common: CommonClassContent,
     subclass: Box<dyn RoguishArchetype>,
 }
 
@@ -14,17 +13,16 @@ impl Class for Rogue {
         hit_dice: u32 = 8
     }
 
-    fn declare(&self, c: &mut Character) {
-        self.common.declare(c, self);
-        self.subclass.declare(c, self.common.lvl);
+    fn declare(&self, c: &mut Character, level: u32, first: bool) {
+        common_class_rules::declare(self, c, level, first);
+        self.subclass.declare(c, level);
     }
-    fn iterate(&self, c: &mut Character) {
-        self.common.iterate(c, self);
-        self.subclass.iterate(c, self.common.lvl);
+    fn iterate(&self, c: &mut Character, level: u32, first: bool) {
+        common_class_rules::iterate(self, c, level, first);
+        self.subclass.iterate(c, level);
     }
-    fn last(&mut self, c: &mut Character) {
-        self.common.last(c);
-        self.subclass.last(c, self.common.lvl);
+    fn last(&mut self, c: &mut Character, level: u32, _first: bool) {
+        self.subclass.last(c, level);
     }
 
     description! {r#"

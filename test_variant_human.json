@@ -23,16 +23,14 @@
 		}
 	},
 	"classes": [
-		{
+		[{
 			"Rogue": {
 				"subclass": {
 					"Assassin": null
-				},
-				"common": {
-						"lvl": 3,
-						"first_class": true
 				}
 			}
-		}
-	]
+		},3]
+	],
+	"inspiration": false,
+	"money": [0,1,2,3,4]
 }

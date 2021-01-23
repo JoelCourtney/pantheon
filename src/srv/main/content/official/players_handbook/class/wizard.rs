@@ -4,7 +4,6 @@ crate::name!("Wizard");
 
 #[derive(Debug, Serialize, Deserialize, Default)]
 pub struct Wizard {
-    common: CommonClassContent,
     spellbook: Vec<Box<dyn Spell>>
 }
 
@@ -13,11 +12,11 @@ impl Class for Wizard {
     properties! {
         hit_dice: u32 = 6
     }
-    fn declare(&self, c: &mut Character) {
-        self.common.declare(c, self);
+    fn declare(&self, c: &mut Character, level: u32, first: bool) {
+        common_class_rules::declare(self, c, level, first);
     }
-    fn iterate(&self, c: &mut Character) {
-        self.common.iterate(c, self);
+    fn iterate(&self, c: &mut Character, level: u32, first: bool) {
+        common_class_rules::iterate(self, c, level, first);
     }
 
     description! { r#"

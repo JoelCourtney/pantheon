@@ -32,7 +32,7 @@ pub struct StoredCharacter {
     money: [u32; 5],
 
     race: Box<dyn Race>,
-    classes: Vec<Box<dyn Class>>
+    classes: Vec<(Box<dyn Class>, u32)>
 }
 
 impl StoredCharacter {
@@ -67,8 +67,9 @@ impl StoredCharacter {
 
         common_rules::declare(&mut char);
         self.race.declare(&mut char);
-        for class in &self.classes {
-            class.declare(&mut char);
+        for (i, (class, level)) in self.classes.iter().enumerate() {
+            let first = i == 0;
+            class.declare(&mut char, *level, first);
         }
 
         let mut old_count: i64  = -2;
@@ -79,8 +80,9 @@ impl StoredCharacter {
 
             common_rules::iterate(&mut char);
             self.race.iterate(&mut char);
-            for class in &self.classes {
-                class.iterate(&mut char);
+            for (i, (class, level)) in self.classes.iter().enumerate() {
+                let first = i == 0;
+                class.iterate(&mut char, *level, first);
             }
 
             count = char.count_unresolved().into();
@@ -96,8 +98,9 @@ impl StoredCharacter {
         } else {
             common_rules::last(&mut char);
             self.race.last(&mut char);
-            for class in &mut self.classes {
-                class.last(&mut char);
+            for (i, (class, level)) in self.classes.iter_mut().enumerate() {
+                let first = i == 0;
+                class.last(&mut char, *level, first);
             }
             Ok(char.finalize())
         }
