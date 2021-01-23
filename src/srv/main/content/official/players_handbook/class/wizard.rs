@@ -19,8 +19,9 @@ impl Class for Wizard {
     fn iterate(&self, c: &mut Character) {
         self.common.iterate(c, self);
     }
+
+    description! { r#"
+        # Wizard
+    "#}
 }
 
-describe! { r#"
-    # Wizard
-"#}

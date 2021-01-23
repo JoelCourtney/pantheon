@@ -61,24 +61,25 @@ impl Race for VariantHuman {
 
         self.feat.last(c);
     }
+
+    description! { r#"
+        # Variant Human
+
+        If your campaign uses the optional feat rules from the Player’s Handbook, your Dungeon Master might allow these variant traits, all of which replace the human’s Ability Score Increase trait.
+
+        ## Variant Human Traits
+
+        ### Ability Score Increase
+
+        Two different ability scores of your choice increase by 1.
+
+        ### Skills
+
+        You gain proficiency in one skill of your choice.
+
+        ### Feat
+
+        You gain one feat of your choice.
+    "#}
 }
 
-describe! { r#"
-    # Variant Human
-
-    If your campaign uses the optional feat rules from the Player’s Handbook, your Dungeon Master might allow these variant traits, all of which replace the human’s Ability Score Increase trait.
-
-    ## Variant Human Traits
-
-    ### Ability Score Increase
-
-    Two different ability scores of your choice increase by 1.
-
-    ### Skills
-
-    You gain proficiency in one skill of your choice.
-
-    ### Feat
-
-    You gain one feat of your choice.
-"#}

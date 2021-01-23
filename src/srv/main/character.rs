@@ -300,8 +300,6 @@ impl<T> DerefMut for Staged<T>
     }
 }
 
-
-
 unsafe impl Sync for StoredCharacter {}
 unsafe impl Send for StoredCharacter {}
 unsafe impl Sync for FinalCharacter {}

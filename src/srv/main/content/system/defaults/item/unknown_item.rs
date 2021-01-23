@@ -12,10 +12,10 @@ impl Item for UnknownItem {
         cost: Option<u32> = None,
         magical: bool = false
     }
+
+    description! {r#"
+        # Unknown Item
+
+        Please choose a real item. This is a placeholder.
+    "#}
 }
-
-describe! {r#"
-    # Unknown Item
-
-    Please choose a real item. This is a placeholder.
-"#}

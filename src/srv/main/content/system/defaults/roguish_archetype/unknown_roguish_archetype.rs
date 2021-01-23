@@ -6,10 +6,11 @@ pub struct UnknownRoguishArchetype;
 #[content]
 impl RoguishArchetype for UnknownRoguishArchetype {
     properties! {}
+
+    description! { r#"
+        # Unknown Roguish Archetype
+
+        Please choose a roguish archetype. This is a placeholder.
+    "#}
 }
 
-describe! { r#"
-    # Unknown Roguish Archetype
-
-    Please choose a roguish archetype. This is a placeholder.
-"#}

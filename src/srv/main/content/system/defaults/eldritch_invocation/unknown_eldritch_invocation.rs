@@ -6,10 +6,11 @@ pub struct UnknownEldritchInvocation;
 #[content]
 impl EldritchInvocation for UnknownEldritchInvocation {
     properties! {}
+
+    description! { r#"
+        # Unknown Eldritch Invocation
+
+        Please choose an Eldritch Invocation. This is a placeholder.
+    "#}
 }
 
-describe! { r#"
-    # Unknown Eldritch Invocation
-
-    Please choose an Eldritch Invocation. This is a placeholder.
-"#}

@@ -15,14 +15,15 @@ impl Item for CloakOfElvenkind {
         weight: Option<u32> = None,
         cost: Option<u32> = None
     }
+    
+    description! {r#"
+        # Cloak of Elvenkind
+
+        *Wondrous Item, Uncommon (requires attunement)*
+
+        While you wear this cloak with its hood up, Wisdom (Perception) checks made to see you have disadvantage, and you have advantage on Dexterity (Stealth) checks made to hide, as the cloak's color shifts to camouflage you. Pulling the hood up or down requires an action.
+
+        *Notes: Advantage: Stealth, Deception, Outerwear*
+    "#}
 }
 
-describe! {r#"
-    # Cloak of Elvenkind
-
-    *Wondrous Item, Uncommon (requires attunement)*
-
-    While you wear this cloak with its hood up, Wisdom (Perception) checks made to see you have disadvantage, and you have advantage on Dexterity (Stealth) checks made to hide, as the cloak's color shifts to camouflage you. Pulling the hood up or down requires an action.
-
-    *Notes: Advantage: Stealth, Deception, Outerwear*
-"#}

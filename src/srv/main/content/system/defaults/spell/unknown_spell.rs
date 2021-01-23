@@ -10,10 +10,11 @@ impl Spell for UnknownSpell {
         casting_time: CastingTime = CastingTime::Ritual("this is not a real spell"),
         optional_ritual: bool = false
     }
+
+    description! { r#"
+        # Unknown Spell
+
+        Please choose a spell. This is a placeholder.
+    "#}
 }
 
-describe! { r#"
-    # Unknown Spell
-
-    Please choose a spell. This is a placeholder.
-"#}

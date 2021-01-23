@@ -6,10 +6,11 @@ pub struct UnknownFeat;
 #[content]
 impl Feat for UnknownFeat {
     properties! {}
+
+    description! {r#"
+        # Unknown Feat
+
+        Please choose a feat. This is a placeholder.
+    "#}
 }
 
-describe! {r#"
-    # Unknown Feat
-
-    Please choose a feat. This is a placeholder.
-"#}

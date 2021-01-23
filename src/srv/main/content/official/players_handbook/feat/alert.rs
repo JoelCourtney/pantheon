@@ -18,19 +18,20 @@ impl Feat for Alert {
     fn last(&mut self, c: &mut Character) {
         c.feat_features.extend(vec! [
             Feature (
-                Alert::description_without_title(),
+                self.description_no_title(),
                 None
             )
         ]);
     }
+
+    description! { r#"
+        # Alert
+
+        Always on the lookout for danger, you gain the following benefits:
+
+        - You gain a +5 bonus to initiative.
+        - You can't be surprised while you are conscious.
+        - Other creatures don't gain advantage on attack rolls against you as a result of being unseen by you.
+    "# }
 }
 
-describe! { r#"
-    # Alert
-
-    Always on the lookout for danger, you gain the following benefits:
-
-    - You gain a +5 bonus to initiative.
-    - You can't be surprised while you are conscious.
-    - Other creatures don't gain advantage on attack rolls against you as a result of being unseen by you.
-"# }

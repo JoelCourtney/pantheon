@@ -6,10 +6,11 @@ pub struct UnknownHalflingSubrace;
 #[content]
 impl HalflingSubrace for UnknownHalflingSubrace {
     properties! {}
+
+    description! { r#"
+        # Unknown Halfling Subrace
+
+        Please choose a halfling subrace. This is a placeholder.
+    "#}
 }
 
-describe! { r#"
-    # Unknown Halfling Subrace
-
-    Please choose a halfling subrace. This is a placeholder.
-"#}

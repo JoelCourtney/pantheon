@@ -24,7 +24,6 @@ mod server;
 mod character;
 mod content;
 mod feature;
-mod describe;
 mod moves;
 mod misc;
 
