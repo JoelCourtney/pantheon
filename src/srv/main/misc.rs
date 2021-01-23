@@ -1,11 +1,24 @@
 use serde::{Deserialize, Serialize};
 use crate::feature::Choose;
 use macros::choose;
+use std::collections::HashMap;
+
+#[derive(Serialize, Debug)]
+pub struct RolledAmount {
+    pub dice: HashMap<u32, i32>,
+    pub constant: i32
+}
 
 #[derive(Debug, Serialize, Copy, Clone)]
 pub enum Range {
     Fixed(u32),
     Extra(u32, u32)
+}
+
+impl Default for Range {
+    fn default() -> Self {
+        Range::Fixed(5)
+    }
 }
 
 #[derive(Debug, Serialize)]

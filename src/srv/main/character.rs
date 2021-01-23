@@ -9,7 +9,7 @@ use crate::content::traits::{Race, Class, Item};
 use std::ops::{Deref, DerefMut};
 use std::collections::HashSet;
 use maplit::hashset;
-use crate::moves::Move;
+use crate::moves::*;
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct StoredCharacter {
@@ -207,6 +207,7 @@ pub struct Character {
     // PROFICIENCIES AND LANGUAGES
     pub skill_proficiencies: Staged<Vec<(Skill, ProficiencyType)>>,
     pub tool_proficiencies: Staged<Vec<(&'static str, ProficiencyType)>>,
+    pub weapon_proficiencies: Staged<Vec<&'static str>>,
     pub languages: Staged<Vec<Language>>,
 
     // SPEED
@@ -219,6 +220,11 @@ pub struct Character {
     // ATTACKS PER ACTION
     pub attacks_per_action: Staged<u32>,
 
+    // MOVES
+    pub attack_moves: Staged<Vec<AttackMove>>,
+    pub cast_moves: Staged<Vec<CastMove>>,
+    pub misc_moves: Staged<Vec<MiscMove>>,
+
     // DO NOT MODIFY FIELDS AFTER THIS POINT IN THE DECLARE AND ITERATE STEPS
 
     // FEATURES, TRAITS, AND FEATS
@@ -227,9 +233,6 @@ pub struct Character {
     pub background_features: Vec<Feature>,
     pub feat_features: Vec<Feature>,
 
-    pub actions: Vec<Move>,
-    pub bonus_actions: Vec<Move>,
-    pub reactions: Vec<Move>,
 
     // NOT EDITABLE BY YOU. YES, YOU.
 

@@ -1,22 +1,37 @@
 use serde::Serialize;
-use crate::misc::Range;
+use crate::misc::{Range, Ability, RolledAmount};
 
 #[derive(Debug, Serialize)]
-pub enum Move {
-    AttackMove {
-        name: &'static str,
-        hit: isize,
-        damage: usize,
-        range: Range,
-        properties: Vec<&'static str>
-    },
-    CastMove {
-        name: &'static str,
-        range: Range,
-    },
-    Other {
-        name: &'static str,
-        description: &'static str
-    }
+pub struct AttackMove {
+    pub name: &'static str,
+    pub time: MoveTime,
+    pub hit: i32,
+    pub damage: RolledAmount,
+    pub range: Range,
+    pub properties: Vec<&'static str>,
+
+    #[serde(skip)]
+    pub(crate) use_modifier: Ability
 }
 
+#[derive(Debug, Serialize)]
+pub struct CastMove {
+    pub name: &'static str,
+    pub range: Range,
+    pub time: MoveTime
+}
+
+#[derive(Debug, Serialize)]
+pub struct MiscMove {
+    pub name: &'static str,
+    pub description: &'static str,
+    pub time: MoveTime
+}
+
+#[derive(Debug, Serialize)]
+pub enum MoveTime {
+    Action,
+    BonusAction,
+    Reaction,
+    Other
+}

@@ -50,6 +50,15 @@ pub trait Spell: Debug {
     // TODO
 }
 
+/// NOTE if implementing a Weapon item, do:
+/// - declare and initialize c.attack_moves
+/// - add the attack associated with this item IN INITIALIZATION
+/// - mark the ability score associated with the +hit modifier.
+/// - set the name of the attack identically to the name of the weapon.
+///
+/// Do not:
+/// - automatically add the ability score (other content might change which score is used)
+/// - check for proficiency and add the proficiency bonus (the common rules will do that).
 #[dynamic_choose]
 pub trait Item: Debug {
     fn name(&self) -> &'static str;

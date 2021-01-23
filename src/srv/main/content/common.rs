@@ -1,9 +1,12 @@
 pub(crate) mod common_rules {
     use crate::character::Character;
+    use crate::misc::Ability;
 
     const NAME: &'static str = "Common Rules";
 
     pub fn declare(c: &mut Character) {
+        // INITIALIZERS
+
         c.strength_modifier.declare_initializer(NAME);
         c.dexterity_modifier.declare_initializer(NAME);
         c.constitution_modifier.declare_initializer(NAME);
@@ -11,12 +14,18 @@ pub(crate) mod common_rules {
         c.wisdom_modifier.declare_initializer(NAME);
         c.charisma_modifier.declare_initializer(NAME);
 
-        c.attacks_per_action.declare_initializer(NAME);
-
         c.proficiency_bonus.declare_initializer(NAME);
         c.initiative.declare_initializer(NAME);
+
+        c.attacks_per_action.declare_initializer(NAME);
+
+        // MODIFIERS
+
+        c.attack_moves.declare_modifier(NAME);
     }
     pub fn iterate(c: &mut Character) {
+        // INITIALIZERS
+
         if c.strength.finalized() && c.strength_modifier.initialize(NAME) {
             *c.strength_modifier = (*c.strength as i32 - 10) / 2;
         }
@@ -36,15 +45,34 @@ pub(crate) mod common_rules {
             *c.charisma_modifier = (*c.charisma as i32 - 10) / 2;
         }
 
-        if c.attacks_per_action.initialize(NAME) {
-            *c.attacks_per_action = 1;
-        }
-
         if c.total_level.finalized() && c.proficiency_bonus.initialize(NAME) {
             *c.proficiency_bonus = (*c.total_level - 1) / 4 + 2;
         }
         if c.dexterity_modifier.finalized() && c.initiative.initialize(NAME) {
             *c.initiative = *c.dexterity_modifier;
+        }
+
+        if c.attacks_per_action.initialize(NAME) {
+            *c.attacks_per_action = 1;
+        }
+
+        // MODIFIERS
+
+        if c.strength_modifier.finalized() &&
+            c.dexterity_modifier.finalized() &&
+            c.proficiency_bonus.finalized() &&
+            c.weapon_proficiencies.finalized() &&
+            c.attack_moves.modify(NAME) {
+            for attack in &mut *c.attack_moves {
+                match attack.use_modifier {
+                    Ability::Strength => attack.hit += *c.strength_modifier,
+                    Ability::Dexterity => attack.hit += *c.dexterity_modifier,
+                    _ => panic!("unsupported modifier")
+                }
+                if (*c.weapon_proficiencies).contains(&attack.name) {
+                    attack.hit += *c.proficiency_bonus as i32;
+                }
+            }
         }
     }
     pub fn last(_c: &mut Character) {}
