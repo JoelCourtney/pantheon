@@ -40,8 +40,12 @@ function editCharacter(data) {
     xhttp.send(JSON.stringify(data));
 }
 
-function pasteFields(fields, character) {
-    fields.forEach(function (field) { document.getElementById('field-' + field).innerHTML = character[field] });
+function pasteFields(fields, character, signed=false) {
+    if (!signed) {
+        fields.forEach(function (field) { document.getElementById('field-' + field).innerHTML = character[field] });
+    } else {
+        fields.forEach(function (field) { document.getElementById('field-' + field).innerHTML = signedInt(character[field]) });
+    }
 }
 
 function setField(field, value) {
