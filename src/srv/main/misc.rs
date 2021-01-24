@@ -4,6 +4,13 @@ use macros::choose;
 use std::collections::HashMap;
 use maplit::hashmap;
 
+/// Represents an amount of damage.
+///
+/// Random dice rolls are stored in `dice`. NdS is stored as `S => N`. When modifying the dice
+/// component to add or remove some S sided dice, you should in most cases check if S is already
+/// in the map. Negative N are allowed.
+///
+/// Constant is the predetermined component. E.g. in "2d4 + 3", 3 is the constant.
 #[derive(Serialize, Debug)]
 pub struct Damage {
     pub dice: HashMap<u32, i32>,
@@ -12,21 +19,24 @@ pub struct Damage {
 }
 
 impl Damage {
+    /// Creates a Damage struct for a single die (1dS) of a given damage type.
     #[allow(dead_code)]
-    fn from_die(d: u32, ty: DamageType) -> Damage {
+    fn from_die(s: u32, ty: DamageType) -> Damage {
         Damage {
             dice: hashmap! {
-                d => 1
+                s => 1
             },
             constant: 0,
             ty
         }
     }
+
+    /// Creates a Damage struct for multiple dice of the same kind (NdS) of a given damage type.
     #[allow(dead_code)]
-    fn from_dice(d: u32, n: i32, ty: DamageType) -> Damage {
+    fn from_dice(n: i32, s: u32, ty: DamageType) -> Damage {
         Damage {
             dice: hashmap! {
-                d => n
+                s => n
             },
             constant: 0,
             ty
@@ -34,6 +44,7 @@ impl Damage {
     }
 }
 
+/// Please don't make me let you homebrew this.
 #[derive(Debug, Serialize)]
 pub enum DamageType {
     Acid,
@@ -51,12 +62,16 @@ pub enum DamageType {
     Thunder
 }
 
+/// Represents a range.
+///
+/// Myself is used in place of `Self` because that is a reserved keyword. Fixed is for ranges with
+/// a hard limit, and Tiered is for two-part ranges where the farther range has disadvantage.
 #[derive(Debug, Serialize, Copy, Clone)]
 pub enum Range {
     Myself,
     Touch,
     Fixed(u32),
-    Extra(u32, u32)
+    Tiered(u32, u32)
 }
 
 #[derive(Debug, Serialize)]
@@ -74,6 +89,13 @@ pub struct CastingComponents {
     material: Option<&'static str>
 }
 
+/// Whether the item can be equipped, and how.
+///
+/// - **No**: Not equippable, or does not do anything when equipped.
+/// - **Yes**: Equippable by choice, and is not armor or holdable.
+/// - **Always**: Is always automatically equipped if in the character's inventory.
+/// - **Armor**: Is armor.
+/// - **Holdable**: Must be held in order to have any effect. E.G. weapons, shields, ammunition
 #[derive(Debug, Serialize, Copy, Clone, Eq, PartialEq)]
 pub enum Equipable {
     No,
@@ -83,6 +105,25 @@ pub enum Equipable {
     Holdable(Holdable)
 }
 
+/// What type of holdable item it is.
+///
+/// - **One**: always held in one hand
+/// - **Two**: always held in two hands
+/// - **Versatile**: can be held in one or two hands
+/// - **Ammunition**: only usable when an ammunition-using weapon is currently held.
+#[derive(Debug, Serialize, Copy, Clone, Eq, PartialEq)]
+pub enum Holdable {
+    One,
+    Two,
+    Versatile,
+    Ammunition
+}
+
+/// Current Equipped status of an item.
+///
+/// - **No**: not equipped
+/// - **Yes**: equipped, when item is not versatile
+/// - **HeldVersatile**: equipped, when it is versatile
 #[derive(Debug, Serialize, Deserialize, Copy, Clone, Eq, PartialEq)]
 pub enum Equipped {
     No,
@@ -90,19 +131,12 @@ pub enum Equipped {
     HeldVersatile(Hand)
 }
 
+/// Which hand a versatile item is held in.
 #[derive(Debug, Deserialize, Serialize, Copy, Clone, Eq, PartialEq)]
 pub enum Hand {
     Left,
     Right,
     Both
-}
-
-#[derive(Debug, Serialize, Copy, Clone, Eq, PartialEq)]
-pub enum Holdable {
-    One,
-    Two,
-    Versatile,
-    Ammunition
 }
 
 #[derive(Debug, Serialize, Copy, Clone, Eq, PartialEq)]
