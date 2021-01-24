@@ -29,9 +29,12 @@ mod misc;
 
 fn main() {
     let mut args = std::env::args();
-    if args.len() != 2 {
-        println!("Usage:\tdndcent [FILE]");
-    } else {
-        server::ignite(args.nth(1).expect("get 1st arg failed")).launch();
-    }
+    {
+        if args.len() != 2 {
+            // println!("Usage:\tdndcent [FILE]");
+            server::ignite("test_human.json".to_string())
+        } else {
+            server::ignite(args.nth(1).expect("get 1st arg failed"))
+        }
+    }.launch();
 }
