@@ -59,7 +59,8 @@ pub enum DamageType {
     Psychic,
     Radiant,
     Slashing,
-    Thunder
+    Thunder,
+    Other(&'static str)
 }
 
 /// Represents a range.
