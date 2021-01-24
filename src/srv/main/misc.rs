@@ -2,23 +2,61 @@ use serde::{Deserialize, Serialize};
 use crate::feature::Choose;
 use macros::choose;
 use std::collections::HashMap;
+use maplit::hashmap;
 
 #[derive(Serialize, Debug)]
-pub struct RolledAmount {
+pub struct Damage {
     pub dice: HashMap<u32, i32>,
-    pub constant: i32
+    pub constant: i32,
+    pub ty: DamageType
+}
+
+impl Damage {
+    #[allow(dead_code)]
+    fn from_die(d: u32, ty: DamageType) -> Damage {
+        Damage {
+            dice: hashmap! {
+                d => 1
+            },
+            constant: 0,
+            ty
+        }
+    }
+    #[allow(dead_code)]
+    fn from_dice(d: u32, n: i32, ty: DamageType) -> Damage {
+        Damage {
+            dice: hashmap! {
+                d => n
+            },
+            constant: 0,
+            ty
+        }
+    }
+}
+
+#[derive(Debug, Serialize)]
+pub enum DamageType {
+    Acid,
+    Bludgeoning,
+    Cold,
+    Fire,
+    Force,
+    Lightning,
+    Necrotic,
+    Piercing,
+    Poison,
+    Psychic,
+    Radiant,
+    Slashing,
+    Thunder
 }
 
 #[derive(Debug, Serialize, Copy, Clone)]
 pub enum Range {
+    Myself,
+    Touch,
     Fixed(u32),
     Extra(u32, u32)
-}
-
-impl Default for Range {
-    fn default() -> Self {
-        Range::Fixed(5)
-    }
 }
 
 #[derive(Debug, Serialize)]
@@ -196,7 +234,6 @@ pub enum Vantage {
 }
 
 impl Vantage {
-    // WILL UNCOMMENT LATER
     pub(crate) fn upgrade(&mut self) {
         use Vantage::*;
 
@@ -211,19 +248,20 @@ impl Vantage {
         }
     }
 
-    // fn downgrade(&mut self) {
-    //     use Vantage::*;
-    //
-    //     match self {
-    //         None => {
-    //             *self = Disadvantage;
-    //         }
-    //         Advantage => {
-    //             *self = NoneLocked;
-    //         }
-    //         _ => {}
-    //     }
-    // }
+    #[allow(dead_code)]
+    fn downgrade(&mut self) {
+        use Vantage::*;
+
+        match self {
+            None => {
+                *self = Disadvantage;
+            }
+            Advantage => {
+                *self = NoneLocked;
+            }
+            _ => {}
+        }
+    }
 }
 
 impl Default for Vantage {

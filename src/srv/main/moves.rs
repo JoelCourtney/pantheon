@@ -1,12 +1,12 @@
 use serde::Serialize;
-use crate::misc::{Range, Ability, RolledAmount};
+use crate::misc::{Range, Ability, Damage};
 
 #[derive(Debug, Serialize)]
 pub struct AttackMove {
     pub name: &'static str,
     pub time: MoveTime,
     pub hit: i32,
-    pub damage: RolledAmount,
+    pub damage: Damage,
     pub range: Range,
     pub properties: Vec<&'static str>,
 
