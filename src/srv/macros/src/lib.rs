@@ -34,12 +34,8 @@ use quote::quote;
 ///
 /// Don't use this macro yourself. It should only be used in `content/mod.rs`.
 #[proc_macro]
-pub fn registry(args: TokenStream) -> TokenStream {
-    let declared_content_files: usize = syn::parse::<syn::LitInt>(args)
-        .expect("parse registry arg failed")
-        .base10_parse::<usize>()
-        .expect("parse registry usize failed");
-    registry::registry(declared_content_files)
+pub fn registry(_: TokenStream) -> TokenStream {
+    registry::registry()
 }
 
 /// I'm lazy. Seriously, I'm this lazy.

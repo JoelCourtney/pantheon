@@ -5,7 +5,7 @@ mod homebrew;
 pub(crate) mod traits;
 pub(crate) mod common;
 
-macros::registry!(18);
+macros::registry!();
 
 /// Contains where to find a particular file.
 ///

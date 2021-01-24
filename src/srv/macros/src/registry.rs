@@ -3,9 +3,7 @@ use proc_macro::TokenStream;
 use quote::{quote, format_ident};
 use inflector::Inflector;
 
-pub(crate) fn registry(declared_content_files: usize) -> TokenStream {
-    let mut counted_content_files: usize = 0;
-
+pub(crate) fn registry() -> TokenStream {
     let registration = collect_registration();
 
     let mut content_functions = quote! {};
@@ -38,7 +36,6 @@ pub(crate) fn registry(declared_content_files: usize) -> TokenStream {
 
         let mut registry_static_entries = quote! {};
         for (collection, source, content) in entries {
-            counted_content_files += 1;
             if collection != "system" || source != "defaults" {
                 let collection_ident = format_ident!("{}", collection);
                 let source_ident = format_ident!("{}", source);
@@ -63,27 +60,19 @@ pub(crate) fn registry(declared_content_files: usize) -> TokenStream {
             };
         };
     }
-    if counted_content_files == declared_content_files {
-        (quote! {
-            use std::collections::HashMap;
-            use crate::character::*;
-            use maplit::hashmap;
-            use lazy_static::lazy_static;
-            use crate::content::traits::*;
+    (quote! {
+        use std::collections::HashMap;
+        use crate::character::*;
+        use maplit::hashmap;
+        use lazy_static::lazy_static;
+        use crate::content::traits::*;
 
-            lazy_static! {
-                #registry_statics
-            }
+        lazy_static! {
+            #registry_statics
+        }
 
-            #content_functions
-        }).into()
-    } else {
-        format!(
-            r#"compile_error!("content file count mismatch: expected {}, found {}");"#,
-            declared_content_files,
-            counted_content_files
-        ).parse().expect("compile error parse failed")
-    }
+        #content_functions
+    }).into()
 }
 
 fn collect_registration() -> HashMap<

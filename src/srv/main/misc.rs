@@ -283,7 +283,7 @@ impl Vantage {
     }
 
     #[allow(dead_code)]
-    fn downgrade(&mut self) {
+    pub(crate) fn downgrade(&mut self) {
         use Vantage::*;
 
         match self {

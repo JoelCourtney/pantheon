@@ -1,3 +1,5 @@
 crate::register!(
-    cloak_of_elvenkind
+    cloak_of_elvenkind,
+    shield,
+    padded
 );

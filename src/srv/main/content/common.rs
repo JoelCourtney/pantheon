@@ -19,6 +19,8 @@ pub(crate) mod common_rules {
 
         c.attacks_per_action.declare_initializer(NAME);
 
+        c.armor_class.declare_initializer(NAME);
+
         // MODIFIERS
 
         c.attack_moves.declare_modifier(NAME);
@@ -54,6 +56,13 @@ pub(crate) mod common_rules {
 
         if c.attacks_per_action.initialize(NAME) {
             *c.attacks_per_action = 1;
+        }
+
+        if c.dexterity_modifier.finalized() && c.armor_class.initialize(NAME) {
+            let default = (10 + *c.dexterity_modifier) as u32;
+            if *c.armor_class < default {
+                *c.armor_class = default;
+            }
         }
 
         // MODIFIERS

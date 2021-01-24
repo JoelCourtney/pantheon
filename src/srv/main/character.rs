@@ -130,6 +130,9 @@ pub struct Character {
     pub temp_health: Staged<u32>,
     pub max_health: Staged<u32>,
 
+    // ARMOR
+    pub armor_class: Staged<u32>,
+
     // ABILITIES
     pub strength: Staged<u32>,
     pub dexterity: Staged<u32>,
