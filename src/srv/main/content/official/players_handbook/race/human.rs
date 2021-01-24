@@ -35,7 +35,7 @@ impl Race for Human {
 
         if c.languages.initialize(NAME) {
             (*c.languages).push(Language::Common);
-            (*c.languages).push(self.extra_language.clone());
+            (*c.languages).push(self.extra_language);
         }
 
         // MODIFY
