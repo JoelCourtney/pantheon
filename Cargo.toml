@@ -5,15 +5,15 @@ authors = ["Joel Courtney <joel.e.courtney@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-serde = { version = "1", features = ["derive"] }
-serde_json = "1"
+serde = { version = "1.0.122", features = ["derive"] }
+serde_json = "1.0.59"
 typetag = "0.1.6"
 indoc = "1.0"
-maplit = "*"
+maplit = "1.0.2"
 lazy_static = "1.4.0"
 rocket = "0.4.6"
-base64 = "*"
-rand = "*"
+base64 = "0.13.0"
+rand = "0.8.2"
 macros = { path = "src/srv/macros" }
 
 [dependencies.rocket_contrib]
