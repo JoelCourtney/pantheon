@@ -235,16 +235,17 @@ dependencies = [
 name = "dndcent"
 version = "0.1.0"
 dependencies = [
+ "base64 0.9.3",
  "indoc",
  "lazy_static",
  "macros",
  "maplit",
+ "rand",
  "rocket",
  "rocket_contrib",
  "serde",
  "serde_json",
  "typetag",
- "walkdir",
 ]
 
 [[package]]

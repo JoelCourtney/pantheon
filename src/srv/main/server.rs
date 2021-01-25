@@ -99,11 +99,9 @@ fn serve_static_file(path: std::path::PathBuf) -> Option<rocket::response::Conte
     let content_type = ContentType::from_extension(path.extension().unwrap().to_str().unwrap()).unwrap();
     let bytes = macros::match_raw_files!([
         "modules",
-        "images/icon/icon.png",
         "scripts",
-        "uikit/dist/css/uikit.dndcent-theme.min.css",
-        "uikit/dist/js/uikit.min.js",
-        "uikit/dist/js/uikit-icons.min.js",
+        "css",
+        "images/icon/icon.png",
         "fonts/Rajdhani/Rajdhani-Regular.ttf",
         "fonts/Montserrat/Montserrat-Regular.ttf",
         "fonts/Montserrat/Montserrat-Bold.ttf",

@@ -21,7 +21,8 @@ default-features = false
 features = ["json", "serve"]
 
 [build-dependencies]
-walkdir = "2.3.1"
+base64 = "*"
+rand = "*"
 
 [[bin]]
 path = "src/srv/main/main.rs"
