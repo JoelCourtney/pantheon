@@ -35,6 +35,8 @@ Run in the root of the repo:
 $ cargo build
 ```
 
+If you make any changes to the client-side code, you do need to rebuild the server, because the contents of those files are bundled directly into the binary to avoid relying on environment variables.
+
 ### UI Style
 
 If you make any changes in `src/www/uikit-custom`, you will need to rebuild uikit. In the root of the repo, do that with:
@@ -43,8 +45,6 @@ If you make any changes in `src/www/uikit-custom`, you will need to rebuild uiki
 $ ./build_ui.py
 $ cargo build
 ```
-
-Note that you do need to rebuild the server, because the contents of those files are bundled directly into the binary to avoid relying on environment variables.
 
 ## Running
 
