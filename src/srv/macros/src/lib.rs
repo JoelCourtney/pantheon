@@ -11,6 +11,7 @@ mod choose;
 mod content;
 mod registry;
 mod character;
+mod server;
 
 use proc_macro::TokenStream;
 use quote::quote;
@@ -127,4 +128,10 @@ pub fn content(_args: TokenStream, input: TokenStream) -> TokenStream {
     let ast: syn::ItemImpl = syn::parse(input)
         .expect("parse content arg failed");
     content::content(ast)
+}
+
+#[proc_macro]
+pub fn match_raw_files(input: TokenStream) -> TokenStream {
+    let ast: syn::ExprArray = syn::parse(input).expect("expected expr array");
+    server::match_raw_files(ast)
 }

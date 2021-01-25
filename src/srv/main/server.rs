@@ -1,5 +1,4 @@
 use rocket::{Rocket, State};
-use rocket_contrib::serve::StaticFiles;
 use std::sync::RwLock;
 use crate::character::{StoredCharacter,FinalCharacter};
 use rocket::response::content;
@@ -22,9 +21,7 @@ pub(crate) fn ignite(path: String) -> Rocket {
     };
     rocket::ignite()
         .manage(state)
-        .mount("/", StaticFiles::from("src/www"))
-        .mount("/", routes![get_character])
-        .mount("/", routes![edit_character])
+        .mount("/", routes![serve_root, serve_static_file, get_character, edit_character])
 }
 
 #[post("/")]
@@ -84,4 +81,33 @@ fn edit_character(data: Json<EditRequest>, state: State<SharedData>) -> content:
     std::mem::drop(final_char);
     stored_char.write(&*state.path);
     get_character(state)
+}
+
+#[get("/")]
+fn serve_root() -> rocket::response::Content<&'static [u8]> {
+    use rocket::response::content::Content;
+    use rocket::http::ContentType;
+
+    Content(ContentType::HTML, include_bytes!("../../www/index.html"))
+}
+
+#[get("/<path..>")]
+fn serve_static_file(path: std::path::PathBuf) -> Option<rocket::response::Content<&'static [u8]>> {
+    use rocket::response::content::Content;
+    use rocket::http::ContentType;
+
+    let content_type = ContentType::from_extension(path.extension().unwrap().to_str().unwrap()).unwrap();
+    let bytes = macros::match_raw_files!([
+        "modules",
+        "images/icon/icon.png",
+        "scripts",
+        "uikit/dist/css/uikit.dndcent-theme.min.css",
+        "uikit/dist/js/uikit.min.js",
+        "uikit/dist/js/uikit-icons.min.js",
+        "fonts/Rajdhani/Rajdhani-Regular.ttf",
+        "fonts/Montserrat/Montserrat-Regular.ttf",
+        "fonts/Montserrat/Montserrat-Bold.ttf",
+        "fonts/Montserrat/Montserrat-BlackItalic.ttf"
+    ]);
+    Some(Content(content_type, bytes))
 }
