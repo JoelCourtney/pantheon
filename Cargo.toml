@@ -3,7 +3,6 @@ name = "dndcent"
 version = "0.1.0"
 authors = ["Joel Courtney <joel.e.courtney@gmail.com>"]
 edition = "2018"
-build = "src/build.rs"
 
 [dependencies]
 serde = { version = "1", features = ["derive"] }
@@ -13,16 +12,14 @@ indoc = "1.0"
 maplit = "*"
 lazy_static = "1.4.0"
 rocket = "0.4.6"
+base64 = "*"
+rand = "*"
 macros = { path = "src/srv/macros" }
 
 [dependencies.rocket_contrib]
 version = "0.4.6"
 default-features = false
 features = ["json", "serve"]
-
-[build-dependencies]
-base64 = "*"
-rand = "*"
 
 [[bin]]
 path = "src/srv/main/main.rs"

@@ -1,4 +1,4 @@
-use rocket::{Rocket, State};
+use rocket::{Rocket, State, config::{Environment, Config}};
 use std::sync::RwLock;
 use crate::character::{StoredCharacter,FinalCharacter};
 use rocket::response::content;
@@ -12,6 +12,13 @@ struct SharedData {
 }
 
 pub(crate) fn ignite(path: String) -> Rocket {
+    let config = Config::build(Environment::active()
+                               .expect("active rocket env not found"))
+        .address("0.0.0.0")
+        .port(8000)
+        .secret_key(make_secret_key())
+        .finalize()
+        .expect("failed to config rocket");
     let mut stored_char = StoredCharacter::read(&*path);
     let final_char = stored_char.resolve().expect("ignite character resolve failed");
     let state = SharedData {
@@ -19,9 +26,18 @@ pub(crate) fn ignite(path: String) -> Rocket {
         stored_char: RwLock::new(stored_char),
         final_char: RwLock::new(final_char)
     };
-    rocket::ignite()
+    rocket::custom(config)
         .manage(state)
         .mount("/", routes![serve_root, serve_static_file, get_character, edit_character])
+}
+
+/// Generates a 256 bit secret key for rocket's cookies.
+///
+/// I know this makes cookies unusable between sessions.
+/// Good thing I don't use cookies.
+fn make_secret_key() -> String {
+    let bytes = rand::random::<[u8; 32]>();
+    base64::encode(&bytes)
 }
 
 #[post("/")]
