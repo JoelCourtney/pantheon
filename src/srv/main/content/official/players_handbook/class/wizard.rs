@@ -19,6 +19,15 @@ impl Class for Wizard {
         common_class_rules::iterate(self, c, level, first);
     }
 
+    fn last(&mut self, c: &mut Character, _level: u32, _first: bool) {
+        c.class_features.push(
+            Feature (
+                "Hello",
+                Unique(&mut self.spellbook)
+            )
+        )
+    }
+
     description! { r#"
         # Wizard
     "#}

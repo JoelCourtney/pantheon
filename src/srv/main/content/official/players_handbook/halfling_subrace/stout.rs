@@ -24,7 +24,7 @@ impl HalflingSubrace for Stout {
 
                     Your Constitution score increases by 1.
                 "},
-                None
+                Empty
             ),
             Feature (
                 indoc! {r"
@@ -32,7 +32,7 @@ impl HalflingSubrace for Stout {
 
                     You have advantage on saving throws against poison, and you have resistance against poison damage.
                 "},
-                None
+                Empty
             )
         ]);
     }

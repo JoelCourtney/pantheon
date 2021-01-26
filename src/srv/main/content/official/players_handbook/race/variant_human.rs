@@ -43,19 +43,19 @@ impl Race for VariantHuman {
         c.race_traits.extend(vec! [
             Feature (
                 "# Ability Score Increase\n\nTwo different ability scores of your choice increase by 1.",
-                Some(&mut self.abilities)
+                Any(&mut self.abilities)
             ),
             Feature (
                 "# Skills\n\nYou gain proficiency in one skill of your choice.",
-                Some(&mut self.skill)
+                Any(&mut self.skill)
             ),
             Feature (
                 "# Languages\n\nYou can speak, read, and write Common and one extra language of your choice. Humans typically learn the languages of other peoples they deal with, including obscure dialects. They are fond of sprinkling their speech with words borrowed from other tongues: Orc curses, Elvish musical expressions, Dwarvish military phrases, and so on.",
-                Some(&mut self.language)
+                Any(&mut self.language)
             ),
             Feature (
                 "# Feat\n\nYou gain one feat of your choice.",
-                Some(&mut self.feat)
+                Any(&mut self.feat)
             )
         ]);
 

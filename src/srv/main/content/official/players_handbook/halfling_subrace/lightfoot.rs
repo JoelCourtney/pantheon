@@ -24,7 +24,7 @@ impl HalflingSubrace for Lightfoot {
 
                     Your Charisma score increases by 1.
                 "},
-                None
+                Empty
             ),
             Feature (
                 indoc! {r"
@@ -32,7 +32,7 @@ impl HalflingSubrace for Lightfoot {
 
                     You can attempt to hide even when you are obscured only by a creature that is at least one size larger than you.
                 "},
-                None
+                Empty
             )
         ]);
     }

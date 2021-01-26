@@ -21,7 +21,7 @@ struct Registration {
 macro_rules! name {
     ($name:literal) => {
         #[allow(unused_imports)] use crate::character::*;
-        #[allow(unused_imports)] use crate::feature::*;
+        #[allow(unused_imports)] use crate::feature::{Feature, Choice::*};
         #[allow(unused_imports)] use crate::misc::*;
         #[allow(unused_imports)] use crate::moves::*;
         #[allow(unused_imports)] use crate::{properties, description};

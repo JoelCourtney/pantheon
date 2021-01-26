@@ -66,7 +66,7 @@ impl Race for Human {
 
                     Your ability scores each increase by 1."
                 },
-                None
+                Empty
             ),
             Feature (
                 indoc! { r"
@@ -74,7 +74,7 @@ impl Race for Human {
 
                     Humans tend toward no particular alignment. The best and the worst are found among them."
                 },
-                None
+                Empty
             ),
             Feature (
                 indoc! { r"
@@ -82,7 +82,7 @@ impl Race for Human {
 
                     Humans reach adulthood in their late teens and live less than a century."
                 },
-                None
+                Empty
             ),
             Feature (
                 indoc! { r"
@@ -90,15 +90,15 @@ impl Race for Human {
 
                     Humans vary widely in height and build, from barely 5 feet to well over 6 feet tall. Regardless of your position in that range, your size is Medium."
                 },
-                None
+                Empty
             ),
             Feature (
                 "# Speed\n\nYour base walking speed is 30 feet.",
-                None
+                Empty
             ),
             Feature (
                 "# Languages\n\nYou can speak, read, and write Common and one extra language of your choice. Humans typically learn the languages of other peoples they deal with, including obscure dialects. They are fond of sprinkling their speech with words borrowed from other tongues: Orc curses, Elvish musical expressions, Dwarvish military phrases, and so on.",
-                Some(&mut self.extra_language)
+                Any(&mut self.extra_language)
             )
         ]);
     }

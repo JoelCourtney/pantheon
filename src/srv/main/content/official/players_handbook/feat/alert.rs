@@ -19,7 +19,7 @@ impl Feat for Alert {
         c.feat_features.extend(vec! [
             Feature (
                 self.description_no_title(),
-                None
+                Empty
             )
         ]);
     }

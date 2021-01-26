@@ -4,6 +4,7 @@ use crate::character::{StoredCharacter,FinalCharacter};
 use rocket::response::content;
 use rocket_contrib::json::Json;
 use serde::Deserialize;
+use crate::feature::Choice;
 
 struct SharedData {
     path: String,
@@ -86,10 +87,10 @@ fn edit_character(data: Json<EditRequest>, state: State<SharedData>) -> content:
                 _ => panic!(format!("no container found: {}", container))
             }.get_mut(feature_index)
                 .expect(&format!("feature index out of bounds: {}", feature_index)).1 {
-                Some(c) => unsafe {
+                Choice::Any(c) | Choice::Unique(c) => unsafe {
                     (*c).choose(choice, choice_index);
                 }
-                None => panic!(format!("no choice here to choose from: {:?}", feature_index))
+                Choice::Empty => panic!(format!("no choice here to choose from: {:?}", feature_index))
             }
         }
     }

@@ -10,7 +10,7 @@ pub(crate) fn choose(ast: syn::DeriveInput) -> TokenStream {
             let vars = variants.iter().map( |var| {
                 var.ident.to_string()
             }).collect();
-            let process = process_choose_attribute(ident.to_string(), vars);
+            let process = process_enum_choose(ident.to_string(), vars);
             quote! {
                 #[derive(Debug, Serialize, Deserialize, Copy, Clone, Hash, Eq, PartialEq)]
                 #ast
@@ -23,8 +23,7 @@ pub(crate) fn choose(ast: syn::DeriveInput) -> TokenStream {
     }).into()
 }
 
-fn process_choose_attribute(name: String, vars: Vec<String>) -> TokenStream2 {
-    let max_length = 2;
+fn process_enum_choose(name: String, vars: Vec<String>) -> TokenStream2 {
     let enum_ident = format_ident!("{}", name);
 
     let mut choices = "".to_string();
@@ -45,13 +44,7 @@ fn process_choose_attribute(name: String, vars: Vec<String>) -> TokenStream2 {
     let match_rules_tokens: TokenStream2 = match_rules.parse().expect("match rules parse failed");
     let reverse_match_rules_tokens: TokenStream2 = reverse_match_rules.parse().expect("reverse match rules failed");
 
-    let mut acc = quote! {
-        impl Default for #enum_ident {
-            fn default() -> Self {
-                #enum_ident::Unknown
-            }
-        }
-
+    quote! {
         impl Choose for #enum_ident {
             fn choose(&mut self, choice: &str, index: usize) {
                 if index == 0 {
@@ -72,61 +65,51 @@ fn process_choose_attribute(name: String, vars: Vec<String>) -> TokenStream2 {
                 }
             }
         }
-    };
-    for i in 2..max_length+1 {
-        let size: usize = i;
-        acc = quote! {
-            #acc
-            impl Choose for [#enum_ident; #size] {
-                fn choose(&mut self, choice: &str, index: usize) {
-                    if index < self.len() {
-                        self[index] = match choice {
-                            #match_rules_tokens
-                            _ => panic!(format!("choice not found: {}", choice))
-                        }
-                    }
-                }
-                fn to_choice(&self, unique: bool) -> crate::feature::ChoiceSerial {
-                    crate::feature::ChoiceSerial {
-                        current_choices: self.iter().map(|v| match v {
-                            #reverse_match_rules_tokens
-                            _ => panic!(format!("reverse match token not found: {:?}", v))
-                        }).collect(),
-                        all_choices: {
-                            (0..#size).map(
-                                |index| {
-                                    if !unique {
-                                        vec! [ #choices_tokens ]
-                                    } else {
-                                        let current_choices: Vec<&'static str> = self.iter().filter_map(
-                                            |v| {
-                                                if *v != self[index] {
-                                                    Some(match *v {
-                                                        #reverse_match_rules_tokens
-                                                        _ => panic!(format!("(2) reverse match token not found: {:?}", v))
-                                                    })
-                                                } else {
-                                                    None
-                                                }
-                                            }
-                                        ).collect();
-                                        vec! [ #choices_tokens ].iter().filter_map(
-                                            |v| if current_choices.iter().all(|w| v != w) {
-                                                Some(*v)
-                                            } else {
-                                                None
-                                            }
-                                        ).collect()
-                                    }
-                                }
-                            ).collect()
-                        }
+
+        impl<const N: usize> Choose for [#enum_ident; N] {
+            fn choose(&mut self, choice: &str, index: usize) {
+                if index < N {
+                    self[index] = match choice {
+                        #match_rules_tokens
+                        _ => panic!(format!("choice not found: {}", choice))
                     }
                 }
             }
-        };
+            fn to_choice(&self, unique: bool) -> crate::feature::ChoiceSerial {
+                let all_choices: Vec<&str> = vec![ #choices_tokens ];
+                let current_choices: Vec<&str> = self.iter().map(|v| match v {
+                    #reverse_match_rules_tokens
+                    _ => panic!(format!("reverse match token not found: {:?}", v))
+                }).collect();
+                crate::feature::ChoiceSerial::from_vecs(current_choices, all_choices, unique)
+            }
+        }
+
+        impl Choose for Vec<#enum_ident> {
+            fn choose(&mut self, choice: &str, index: usize) {
+                if index < self.len() {
+                    self[index] = match choice {
+                        #match_rules_tokens
+                        _ => panic!(format!("choice not found: {}", choice))
+                    }
+                }
+            }
+            fn to_choice(&self, unique: bool) -> crate::feature::ChoiceSerial {
+                let all_choices: Vec<&str> = vec![ #choices_tokens ];
+                let current_choices: Vec<&str> = self.iter().map(|v| match v {
+                    #reverse_match_rules_tokens
+                    _ => panic!(format!("reverse match token not found: {:?}", v))
+                }).collect();
+                crate::feature::ChoiceSerial::from_vecs(current_choices, all_choices, unique)
+            }
+        }
+
+        impl Default for #enum_ident {
+            fn default() -> Self {
+                #enum_ident::Unknown
+            }
+        }
     }
-    acc
 }
 
 pub(crate) fn dynamic_choose(ast: syn::ItemTrait) -> TokenStream {
@@ -137,6 +120,7 @@ pub(crate) fn dynamic_choose(ast: syn::ItemTrait) -> TokenStream {
     (quote! {
         #[typetag::serde]
         #ast
+
         impl Choose for Box<dyn #ident> {
             fn choose(&mut self, choice: &str, index: usize) {
                 if index == 0 {
@@ -145,17 +129,43 @@ pub(crate) fn dynamic_choose(ast: syn::ItemTrait) -> TokenStream {
                     panic!(format!("index must be 0 for dynamic single choice, was {}", index))
                 }
             }
-            fn to_choice(&self, unique: bool) -> crate::feature::ChoiceSerial {
-                if !unique {
-                    crate::feature::ChoiceSerial {
-                        current_choices: vec! [ self.name() ],
-                        all_choices: vec! [
-                            crate::content::#get_all_ident()
-                        ]
-                    }
-                } else {
-                    unimplemented!()
+            fn to_choice(&self, _unique: bool) -> crate::feature::ChoiceSerial {
+                crate::feature::ChoiceSerial {
+                    current_choices: vec! [ self.name() ],
+                    all_choices: vec! [
+                        crate::content::#get_all_ident()
+                    ]
                 }
+            }
+        }
+
+        impl<const N: usize> Choose for [Box<dyn #ident>; N] {
+            fn choose(&mut self, choice: &str, index: usize) {
+                if index < N {
+                    self[index] = crate::content::#lower_ident(choice).expect(&format!("choice not found: {}", choice));
+                } else {
+                    panic!(format!("index must be less than {}, was {}", N, index))
+                }
+            }
+            fn to_choice(&self, unique: bool) -> crate::feature::ChoiceSerial {
+                let current_choices: Vec<&str> = self.iter().map(|v| v.name()).collect();
+                let all_choices: Vec<&str> = crate::content::#get_all_ident();
+                crate::feature::ChoiceSerial::from_vecs(current_choices, all_choices, unique)
+            }
+        }
+
+        impl Choose for Vec<Box<dyn #ident>> {
+            fn choose(&mut self, choice: &str, index: usize) {
+                if index < self.len() {
+                    self[index] = crate::content::#lower_ident(choice).expect(&format!("choice not found: {}", choice));
+                } else {
+                    panic!(format!("index must be less than {}, was {}", self.len(), index))
+                }
+            }
+            fn to_choice(&self, unique: bool) -> crate::feature::ChoiceSerial {
+                let current_choices: Vec<&str> = self.iter().map(|v| v.name()).collect();
+                let all_choices: Vec<&str> = crate::content::#get_all_ident();
+                crate::feature::ChoiceSerial::from_vecs(current_choices, all_choices, unique)
             }
         }
 
