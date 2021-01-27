@@ -53,13 +53,13 @@ function loadModules() {
             document.head.appendChild(displayScript);
         }
     }
-};
+}
 
 function areModulesLoaded() {
     return modulesRequested === modulesReceived && modulesRequested === displayCallbacks.length;
 }
 
-var displayCallbacks = [];
+let displayCallbacks = [];
 function registerDisplayCallback(func) {
     displayCallbacks.push(func);
     if (areModulesLoaded()) {
@@ -69,7 +69,7 @@ function registerDisplayCallback(func) {
 
 function loaded() {
     setView("combat");
-    getCharacter();
+    displayCharacter();
 }
 
 function callDisplayCallbacks(character) {

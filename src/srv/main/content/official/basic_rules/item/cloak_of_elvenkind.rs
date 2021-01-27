@@ -19,7 +19,6 @@ impl Item for CloakOfElvenkind {
             if equipped == Equipped::Yes {
                 c.stealth_vantage.declare_modifier(NAME);
             }
-            c.misc_moves.declare_initializer(NAME);
         }
     }
 
@@ -29,25 +28,27 @@ impl Item for CloakOfElvenkind {
                 if c.stealth_vantage.modify(NAME) {
                     c.stealth_vantage.upgrade();
                 }
-                if c.misc_moves.initialize(NAME) {
-                    (*c.misc_moves).push(
-                        MiscMove {
-                            name: "Cloak of Elvenkind",
-                            description: "Pulling the hood down requires an action.",
-                            time: MoveTime::Action
-                        }
-                    );
-                }
-            } else {
-                if c.misc_moves.initialize(NAME) {
-                    (*c.misc_moves).push(
-                        MiscMove {
-                            name: "Cloak of Elvenkind",
-                            description: "Pulling the hood up requires an action.",
-                            time: MoveTime::Action
-                        }
-                    );
-                }
+            }
+        }
+    }
+
+    fn last(&mut self, c: &mut Character, equipped: Equipped, attuned: bool) {
+        if attuned {
+            match equipped {
+                Equipped::Yes => c.misc_moves.push(
+                    MiscMove {
+                        name: "Cloak of Elvenkind",
+                        description: "Pulling the hood down requires an action.",
+                        time: MoveTime::Action
+                    }
+                ),
+                _ => c.misc_moves.push(
+                    MiscMove {
+                        name: "Cloak of Elvenkind",
+                        description: "Pulling the hood up requires an action.",
+                        time: MoveTime::Action
+                    }
+                )
             }
         }
     }

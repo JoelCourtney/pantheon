@@ -22,6 +22,7 @@ pub trait Class: Debug {
     fn description_no_title(&self) -> &'static str;
 
     fn hit_dice(&self) -> u32;
+
     fn declare(&self, _c: &mut Character, _level: u32, _first: bool) {}
     fn iterate(&self, _c: &mut Character, _level: u32, _first: bool) {}
     fn last(&mut self, _c: &mut Character, _level: u32, _first: bool) {}
@@ -74,6 +75,7 @@ pub trait Item: Debug {
 
     fn declare(&self, _c: &mut Character, _equipped: Equipped, _attuned: bool) {}
     fn iterate(&self, _c: &mut Character, _equipped: Equipped, _attuned: bool) {}
+    fn last(&mut self, _c: &mut Character, _equipped: Equipped, _attuned: bool) {}
 }
 
 #[dynamic_choose]

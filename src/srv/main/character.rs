@@ -109,6 +109,9 @@ impl StoredCharacter {
                 let first = i == 0;
                 class.last(&mut char, *level, first);
             }
+            for (item, equipped, attuned) in &mut self.inventory {
+                item.last(&mut char, *equipped, *attuned);
+            }
             Ok(char.finalize())
         }
     }
@@ -226,7 +229,6 @@ pub struct Character {
     // MOVES
     pub attack_moves: Staged<Vec<AttackMove>>,
     pub cast_moves: Staged<Vec<CastMove>>,
-    pub misc_moves: Staged<Vec<MiscMove>>,
 
     // DO NOT MODIFY FIELDS AFTER THIS POINT IN THE DECLARE AND ITERATE STEPS
 
@@ -236,6 +238,7 @@ pub struct Character {
     pub background_features: Vec<Feature>,
     pub feat_features: Vec<Feature>,
 
+    pub misc_moves: Vec<MiscMove>,
 
     // NOT EDITABLE BY YOU. YES, YOU.
 

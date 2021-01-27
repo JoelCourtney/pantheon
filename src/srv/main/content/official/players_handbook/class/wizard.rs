@@ -19,7 +19,15 @@ impl Class for Wizard {
         common_class_rules::iterate(self, c, level, first);
     }
 
-    fn last(&mut self, c: &mut Character, _level: u32, _first: bool) {
+    fn last(&mut self, c: &mut Character, level: u32, first: bool) {
+        if let Some(s) = self.spellbook.last() {
+            if s.name() != "Unknown Spell" {
+                self.spellbook.push(Default::default())
+            }
+        }
+
+        common_class_rules::last(self, c, level, first);
+
         c.class_features.push(
             Feature (
                 "Hello",

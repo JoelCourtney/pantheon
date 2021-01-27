@@ -115,6 +115,9 @@ pub(crate) mod common_class_rules {
             (*c.class_names).push(format!("{} {}", name, level));
         }
     }
+    pub fn last(_class: &dyn Class, _c: &mut Character, _level: u32, _first: bool) {
+
+    }
 }
 
 pub(crate) mod common_race_rules {

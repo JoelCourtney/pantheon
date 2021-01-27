@@ -21,7 +21,8 @@ impl Class for Rogue {
         common_class_rules::iterate(self, c, level, first);
         self.subclass.iterate(c, level);
     }
-    fn last(&mut self, c: &mut Character, level: u32, _first: bool) {
+    fn last(&mut self, c: &mut Character, level: u32, first: bool) {
+        common_class_rules::last(self, c, level, first);
         self.subclass.last(c, level);
     }
 
