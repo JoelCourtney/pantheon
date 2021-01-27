@@ -270,7 +270,6 @@ pub struct Character {
 
     // NOT EDITABLE BY YOU. YES, YOU.
 
-    // FINALIZE MACRO PANICS HERE
     left_hand: Option<&'static str>,
     right_hand: Option<&'static str>,
     both_hands: Option<&'static str>,
