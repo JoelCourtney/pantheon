@@ -111,6 +111,34 @@ impl StoredCharacter {
             }
             for (item, equipped, attuned) in &mut self.inventory {
                 item.last(&mut char, *equipped, *attuned);
+                match equipped {
+                    Equipped::No => {}
+                    Equipped::Yes => {
+                        match item.equipable() {
+                            Equipable::Armor => {
+                                char.armor = Some(item.name());
+                            }
+                            _ => {
+                                if item.ammunition() {
+                                    char.ammunition = Some(item.name());
+                                }
+                            }
+                        }
+                    }
+                    Equipped::Held(h) => {
+                        match h {
+                            Hand::Left => {
+                                char.left_hand = Some(item.name());
+                            }
+                            Hand::Right => {
+                                char.right_hand = Some(item.name());
+                            }
+                            Hand::Both => {
+                                char.both_hands = Some(item.name());
+                            }
+                        }
+                    }
+                }
             }
             Ok(char.finalize())
         }
@@ -243,6 +271,12 @@ pub struct Character {
     // NOT EDITABLE BY YOU. YES, YOU.
 
     // FINALIZE MACRO PANICS HERE
+    left_hand: Option<&'static str>,
+    right_hand: Option<&'static str>,
+    both_hands: Option<&'static str>,
+    ammunition: Option<&'static str>,
+    armor: Option<&'static str>,
+
     money: [u32; 5],
 
     inspiration: bool,

@@ -129,7 +129,7 @@ pub enum Holdable {
 pub enum Equipped {
     No,
     Yes,
-    HeldVersatile(Hand)
+    Held(Hand)
 }
 
 /// Which hand a versatile item is held in.

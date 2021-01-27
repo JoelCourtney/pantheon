@@ -67,11 +67,13 @@ pub trait Item: Debug {
     fn description_no_title(&self) -> &'static str;
 
     fn equipable(&self) -> Equipable;
-    fn attunable(&self) -> bool { false }
     fn rarity(&self) -> Rarity;
     fn weight(&self) -> Option<u32>;
     fn cost(&self) -> Option<u32>;
+
     fn magical(&self) -> bool { false }
+    fn attunable(&self) -> bool { false }
+    fn ammunition(&self) -> bool { false }
 
     fn declare(&self, _c: &mut Character, _equipped: Equipped, _attuned: bool) {}
     fn iterate(&self, _c: &mut Character, _equipped: Equipped, _attuned: bool) {}
