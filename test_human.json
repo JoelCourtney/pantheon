@@ -36,6 +36,7 @@
   ],
   "inventory": [
 	  [{"CloakOfElvenkind": null}, "Yes", true],
-	  [{"Shield": null}, {"Held": "Left"}, false]
+	  [{"Shield": null}, {"Held": "Left"}, false],
+	  [{"Rapier": null}, {"Held": "Right"}, false]
   ]
 }

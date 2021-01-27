@@ -18,6 +18,6 @@ registerDisplayCallback(function (character) {
         'sleight_of_hand',
         'stealth',
         'survival'
-    ], character, true);
+    ], true);
     // TODO vantage and proficiency boldyness
 });

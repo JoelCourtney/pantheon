@@ -20,8 +20,7 @@ pub struct Damage {
 
 impl Damage {
     /// Creates a Damage struct for a single die (1dS) of a given damage type.
-    #[allow(dead_code)]
-    fn from_die(s: u32, ty: DamageType) -> Damage {
+    pub fn from_die(s: u32, ty: DamageType) -> Damage {
         Damage {
             dice: hashmap! {
                 s => 1

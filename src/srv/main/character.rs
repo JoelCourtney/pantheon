@@ -111,33 +111,41 @@ impl StoredCharacter {
             }
             for (item, equipped, attuned) in &mut self.inventory {
                 item.last(&mut char, *equipped, *attuned);
-                match equipped {
-                    Equipped::No => {}
-                    Equipped::Yes => {
-                        match item.equipable() {
-                            Equipable::Armor => {
-                                char.armor = Some(item.name());
+                match item.equipable() {
+                    Equipable::Armor => {
+                        match equipped {
+                            Equipped::Yes => char.armor = Some(item.name()),
+                            Equipped::No => char.armor_choices.push(item.name()),
+                            Equipped::Held(_) => panic!("armor isn't holdable")
+                        }
+                    }
+                    Equipable::Holdable(hold) => {
+                        match hold {
+                            Holdable::Ammunition => {
+                                match equipped {
+                                    Equipped::Yes => char.ammunition = Some(item.name()),
+                                    Equipped::No => char.ammunition_choices.push(item.name()),
+                                    Equipped::Held(_) => panic!("ammunition isn't holdable")
+                                }
                             }
                             _ => {
-                                if item.ammunition() {
-                                    char.ammunition = Some(item.name());
+                                match equipped {
+                                    Equipped::Held(hand) => {
+                                        match hand {
+                                            Hand::Left => char.left_hand = Some(item.name()),
+                                            Hand::Right => char.right_hand = Some(item.name()),
+                                            Hand::Both => char.both_hands = Some(item.name())
+                                        }
+                                    }
+                                    Equipped::No => {
+                                        char.hold_choices.push(item.name());
+                                    }
+                                    Equipped::Yes => panic!("holdables aren't generically equippable")
                                 }
                             }
                         }
                     }
-                    Equipped::Held(h) => {
-                        match h {
-                            Hand::Left => {
-                                char.left_hand = Some(item.name());
-                            }
-                            Hand::Right => {
-                                char.right_hand = Some(item.name());
-                            }
-                            Hand::Both => {
-                                char.both_hands = Some(item.name());
-                            }
-                        }
-                    }
+                    _ => {}
                 }
             }
             Ok(char.finalize())
@@ -275,6 +283,10 @@ pub struct Character {
     both_hands: Option<&'static str>,
     ammunition: Option<&'static str>,
     armor: Option<&'static str>,
+
+    hold_choices: Vec<&'static str>,
+    armor_choices: Vec<&'static str>,
+    ammunition_choices: Vec<&'static str>,
 
     money: [u32; 5],
 

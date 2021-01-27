@@ -1,3 +1,3 @@
 registerDisplayCallback(function (character) {
-    pasteFields(['armor_class'], character);
+    pasteFields(['armor_class']);
 });

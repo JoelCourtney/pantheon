@@ -1,3 +1,3 @@
 registerDisplayCallback(function (character) {
-    pasteFields(['proficiency_bonus'], character);
+    pasteFields(['proficiency_bonus']);
 });

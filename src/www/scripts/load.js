@@ -73,5 +73,7 @@ function loaded() {
 }
 
 function callDisplayCallbacks(character) {
+    fieldsToPaste = [];
     displayCallbacks.forEach(func => func(character));
+    actuallyPasteFields(character);
 }

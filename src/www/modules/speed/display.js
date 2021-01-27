@@ -1,3 +1,3 @@
 registerDisplayCallback(function (character) {
-    pasteFields(['walking_speed'], character);
+    pasteFields(['walking_speed']);
 });

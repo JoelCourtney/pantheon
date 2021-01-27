@@ -21,7 +21,9 @@ function getCharacter() {
     xhttp.open("POST", "/", false);
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send();
-    return JSON.parse(xhttp.responseText);
+    let text = xhttp.responseText;
+    console.log("size: " + text.length + " bytes");
+    return JSON.parse(text);
 }
 
 function displayCharacter() {
@@ -48,12 +50,18 @@ function editCharacter(data) {
     xhttp.send(JSON.stringify(data));
 }
 
-function pasteFields(fields, character, signed=false) {
-    if (!signed) {
-        fields.forEach(function (field) { document.getElementById('field-' + field).innerHTML = character[field] });
-    } else {
-        fields.forEach(function (field) { document.getElementById('field-' + field).innerHTML = signedInt(character[field]) });
-    }
+let fieldsToPaste = [];
+function pasteFields(fields, signed=false) {
+    fields.forEach(function (field) {
+        fieldsToPaste.push([field, signed]);
+    });
+}
+
+function actuallyPasteFields(character) {
+    fieldsToPaste.forEach(function (paste) {
+        document.getElementById('field-' + paste[0]).innerHTML =
+            paste[1]?signedInt(character[paste[0]]):character[paste[0]];
+    });
 }
 
 function setField(field, value) {
