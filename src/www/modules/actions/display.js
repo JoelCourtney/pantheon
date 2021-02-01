@@ -1,3 +1,3 @@
 registerDisplayCallback(function (character) {
-    // TODO
+    pasteFields(['attacks_per_action']);
 });
