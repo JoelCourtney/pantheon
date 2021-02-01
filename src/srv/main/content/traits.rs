@@ -67,9 +67,9 @@ pub trait Item: Debug {
     fn description_no_title(&self) -> &'static str;
 
     fn equipable(&self) -> Equipable;
-    fn rarity(&self) -> Rarity;
-    fn weight(&self) -> Option<u32>;
-    fn cost(&self) -> Option<u32>;
+    fn rarity(&self) -> Rarity { Rarity::Common }
+    fn weight(&self) -> Option<u32> { None }
+    fn cost(&self) -> Option<u32> { None }
 
     fn magical(&self) -> bool { false }
     fn attunable(&self) -> bool { false }

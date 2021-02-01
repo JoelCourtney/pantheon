@@ -11,7 +11,17 @@ pub struct AttackMove {
     pub properties: Vec<&'static str>,
 
     #[serde(skip)]
-    pub(crate) use_modifier: Ability
+    pub(crate) use_modifier: Ability,
+    #[serde(skip)]
+    pub(crate) weapon_type: WeaponType
+}
+
+#[allow(dead_code)] // TODO remove
+#[derive(Debug, Serialize)]
+pub enum WeaponType {
+    Simple,
+    Martial,
+    Other
 }
 
 #[derive(Debug, Serialize)]

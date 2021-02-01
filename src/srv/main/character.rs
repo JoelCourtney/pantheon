@@ -250,6 +250,7 @@ pub struct Character {
     pub skill_proficiencies: Staged<Vec<(Skill, ProficiencyType)>>,
     pub tool_proficiencies: Staged<Vec<(&'static str, ProficiencyType)>>,
     pub weapon_proficiencies: Staged<Vec<&'static str>>,
+    pub armor_proficiencies: Staged<Vec<&'static str>>,
     pub languages: Staged<Vec<Language>>,
 
     // SPEED
