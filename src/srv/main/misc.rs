@@ -1,8 +1,10 @@
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Serialize, Serializer};
 use crate::feature::Choose;
 use macros::choose;
 use std::collections::HashMap;
 use maplit::hashmap;
+use std::fmt::Display;
+use serde::__private::Formatter;
 
 /// Represents an amount of damage.
 ///
@@ -11,7 +13,7 @@ use maplit::hashmap;
 /// in the map. Negative N are allowed.
 ///
 /// Constant is the predetermined component. E.g. in "2d4 + 3", 3 is the constant.
-#[derive(Serialize, Debug)]
+#[derive(Debug)]
 pub struct Damage {
     pub dice: HashMap<u32, i32>,
     pub constant: i32,
@@ -43,6 +45,21 @@ impl Damage {
     }
 }
 
+impl Serialize for Damage {
+    fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error> where
+        S: Serializer {
+        let mut res = String::new();
+        for (s, n) in &self.dice {
+            res += &*format!("+{}d{}", n, s);
+        }
+        if self.constant != 0 {
+            res += &*format!("+{}", self.constant);
+        }
+        res += &*format!(" {}", self.ty);
+        serializer.serialize_str(&res[1..])
+    }
+}
+
 /// Please don't make me let you homebrew this.
 #[derive(Debug, Serialize)]
 pub enum DamageType {
@@ -60,6 +77,15 @@ pub enum DamageType {
     Slashing,
     Thunder,
     Other(&'static str)
+}
+
+impl Display for DamageType {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        match self {
+            DamageType::Other(s) => write!(f, "{}", s),
+            _ => write!(f, "{:?}", self)
+        }
+    }
 }
 
 /// Represents a range.
