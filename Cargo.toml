@@ -19,7 +19,7 @@ macros = { path = "src/srv/macros" }
 [dependencies.rocket_contrib]
 version = "0.4.6"
 default-features = false
-features = ["json", "serve"]
+features = ["json"]
 
 [[bin]]
 path = "src/srv/main/main.rs"
