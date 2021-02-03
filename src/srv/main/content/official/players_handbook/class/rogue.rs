@@ -4,6 +4,7 @@ crate::name!("Rogue");
 
 #[derive(Debug, Default, Deserialize, Serialize)]
 pub struct Rogue {
+    skill_proficiencies: [RogueSkill; 4],
     subclass: Box<dyn RoguishArchetype>,
 }
 
@@ -15,10 +16,57 @@ impl Class for Rogue {
 
     fn declare(&self, c: &mut Character, level: u32, first: bool) {
         common_class_rules::declare(self, c, level, first);
+
+        c.armor_proficiencies.declare_initializer(NAME);
+        c.weapon_proficiencies.declare_initializer(NAME);
+        c.tool_proficiencies.declare_initializer(NAME);
+
+        c.dexterity_save_proficiency.declare_initializer(NAME);
+        c.intelligence_save_proficiency.declare_initializer(NAME);
+
+        for skill in &self.skill_proficiencies {
+            if *skill != RogueSkill::Unknown {
+                c.get_mut_skill_proficiency(skill.into()).declare_initializer(NAME);
+            }
+        }
+
         self.subclass.declare(c, level);
     }
     fn iterate(&self, c: &mut Character, level: u32, first: bool) {
         common_class_rules::iterate(self, c, level, first);
+
+        if c.armor_proficiencies.initialize(NAME) {
+            (*c.armor_proficiencies).push("Light Armor");
+        }
+        if c.weapon_proficiencies.initialize(NAME) {
+            (*c.weapon_proficiencies).extend(vec![
+                "Simple Weapons",
+                "Hand Crossbows",
+                "Longswords",
+                "Rapiers",
+                "Shortswords"
+            ]);
+        }
+        if c.tool_proficiencies.initialize(NAME) {
+            (*c.tool_proficiencies).push(("Diebs' Tools", ProficiencyType::Single));
+        }
+
+        if c.dexterity_save_proficiency.initialize(NAME) {
+            *c.dexterity_save_proficiency = ProficiencyType::Single;
+        }
+        if c.intelligence_save_proficiency.initialize(NAME) {
+            *c.intelligence_save_proficiency = ProficiencyType::Single;
+        }
+
+        for skill in &self.skill_proficiencies {
+            if *skill != RogueSkill::Unknown {
+                let skill_proficiency = c.get_mut_skill_proficiency(skill.into());
+                if skill_proficiency.initialize(NAME) {
+                    **skill_proficiency = ProficiencyType::Single
+                }
+            }
+        }
+
         self.subclass.iterate(c, level);
     }
     fn last(&mut self, c: &mut Character, level: u32, first: bool) {
@@ -181,3 +229,37 @@ impl Class for Rogue {
     "#}
 }
 
+#[choose]
+pub enum RogueSkill {
+    Acrobatics,
+    Athletics,
+    Deception,
+    Insight,
+    Intimidation,
+    Investigation,
+    Perception,
+    Performance,
+    Persuasion,
+    SleightOfHand,
+    Stealth,
+    Unknown
+}
+
+impl From<&RogueSkill> for Skill {
+    fn from(s: &RogueSkill) -> Self {
+        match s {
+            RogueSkill::Acrobatics => Skill::Acrobatics,
+            RogueSkill::Athletics => Skill::Athletics,
+            RogueSkill::Deception => Skill::Deception,
+            RogueSkill::Insight => Skill::Insight,
+            RogueSkill::Intimidation => Skill::Intimidation,
+            RogueSkill::Investigation => Skill::Investigation,
+            RogueSkill::Perception => Skill::Perception,
+            RogueSkill::Performance => Skill::Performance,
+            RogueSkill::Persuasion => Skill::Persuasion,
+            RogueSkill::SleightOfHand => Skill::SleightOfHand,
+            RogueSkill::Stealth => Skill::Stealth,
+            RogueSkill::Unknown => Skill::Unknown
+        }
+    }
+}

@@ -226,6 +226,25 @@ pub struct Character {
     pub stealth_vantage: Staged<Vantage>,
     pub survival_vantage: Staged<Vantage>,
 
+    pub acrobatics_proficiency: Staged<ProficiencyType>,
+    pub animal_handling_proficiency: Staged<ProficiencyType>,
+    pub arcana_proficiency: Staged<ProficiencyType>,
+    pub athletics_proficiency: Staged<ProficiencyType>,
+    pub deception_proficiency: Staged<ProficiencyType>,
+    pub history_proficiency: Staged<ProficiencyType>,
+    pub insight_proficiency: Staged<ProficiencyType>,
+    pub intimidation_proficiency: Staged<ProficiencyType>,
+    pub investigation_proficiency: Staged<ProficiencyType>,
+    pub medicine_proficiency: Staged<ProficiencyType>,
+    pub nature_proficiency: Staged<ProficiencyType>,
+    pub perception_proficiency: Staged<ProficiencyType>,
+    pub performance_proficiency: Staged<ProficiencyType>,
+    pub persuasion_proficiency: Staged<ProficiencyType>,
+    pub religion_proficiency: Staged<ProficiencyType>,
+    pub sleight_of_hand_proficiency: Staged<ProficiencyType>,
+    pub stealth_proficiency: Staged<ProficiencyType>,
+    pub survival_proficiency: Staged<ProficiencyType>,
+
     // SAVING THROWS
     pub strength_save: Staged<i32>,
     pub dexterity_save: Staged<i32>,
@@ -241,13 +260,19 @@ pub struct Character {
     pub wisdom_save_vantage: Staged<Vantage>,
     pub charisma_save_vantage: Staged<Vantage>,
 
+    pub strength_save_proficiency: Staged<ProficiencyType>,
+    pub dexterity_save_proficiency: Staged<ProficiencyType>,
+    pub constitution_save_proficiency: Staged<ProficiencyType>,
+    pub intelligence_save_proficiency: Staged<ProficiencyType>,
+    pub wisdom_save_proficiency: Staged<ProficiencyType>,
+    pub charisma_save_proficiency: Staged<ProficiencyType>,
+
     pub saving_throw_notes: Staged<Vec<&'static str>>,
 
     // SIZE
     pub size: Staged<CreatureSize>,
 
     // PROFICIENCIES AND LANGUAGES
-    pub skill_proficiencies: Staged<Vec<(Skill, ProficiencyType)>>,
     pub tool_proficiencies: Staged<Vec<(&'static str, ProficiencyType)>>,
     pub weapon_proficiencies: Staged<Vec<&'static str>>,
     pub armor_proficiencies: Staged<Vec<&'static str>>,
@@ -294,6 +319,104 @@ pub struct Character {
     inspiration: bool,
 
     alignment: Alignment,
+}
+
+impl Character {
+    // fn get_skill(&self, s: Skill) -> &Staged<i32> {
+    //     match s {
+    //         Skill::Acrobatics => &self.acrobatics,
+    //         Skill::AnimalHandling => &self.animal_handling,
+    //         Skill::Arcana => &self.arcana,
+    //         Skill::Athletics => &self.athletics,
+    //         Skill::Deception => &self.deception,
+    //         Skill::History => &self.history,
+    //         Skill::Insight => &self.insight,
+    //         Skill::Intimidation => &self.intimidation,
+    //         Skill::Investigation => &self.investigation,
+    //         Skill::Medicine => &self.medicine,
+    //         Skill::Nature => &self.nature,
+    //         Skill::Perception => &self.perception,
+    //         Skill::Performance => &self.performance,
+    //         Skill::Persuasion => &self.persuasion,
+    //         Skill::Religion => &self.religion,
+    //         Skill::SleightOfHand => &self.sleight_of_hand,
+    //         Skill::Stealth => &self.stealth,
+    //         Skill::Survival => &self.survival,
+    //         Skill::Unknown => panic!("cannot get unknown skill")
+    //     }
+    // }
+    //
+    // pub(crate) fn get_mut_skill(&mut self, s: Skill) -> &mut Staged<i32> {
+    //     match s {
+    //         Skill::Acrobatics => &mut self.acrobatics,
+    //         Skill::AnimalHandling => &mut self.animal_handling,
+    //         Skill::Arcana => &mut self.arcana,
+    //         Skill::Athletics => &mut self.athletics,
+    //         Skill::Deception => &mut self.deception,
+    //         Skill::History => &mut self.history,
+    //         Skill::Insight => &mut self.insight,
+    //         Skill::Intimidation => &mut self.intimidation,
+    //         Skill::Investigation => &mut self.investigation,
+    //         Skill::Medicine => &mut self.medicine,
+    //         Skill::Nature => &mut self.nature,
+    //         Skill::Perception => &mut self.perception,
+    //         Skill::Performance => &mut self.performance,
+    //         Skill::Persuasion => &mut self.persuasion,
+    //         Skill::Religion => &mut self.religion,
+    //         Skill::SleightOfHand => &mut self.sleight_of_hand,
+    //         Skill::Stealth => &mut self.stealth,
+    //         Skill::Survival => &mut self.survival,
+    //         Skill::Unknown => panic!("cannot get unknown skill")
+    //     }
+    // }
+    //
+    // fn get_skill_proficiency(&self, s: Skill) -> &Staged<ProficiencyType> {
+    //     match s {
+    //         Skill::Acrobatics => &self.acrobatics_proficiency,
+    //         Skill::AnimalHandling => &self.animal_handling_proficiency,
+    //         Skill::Arcana => &self.arcana_proficiency,
+    //         Skill::Athletics => &self.athletics_proficiency,
+    //         Skill::Deception => &self.deception_proficiency,
+    //         Skill::History => &self.history_proficiency,
+    //         Skill::Insight => &self.insight_proficiency,
+    //         Skill::Intimidation => &self.intimidation_proficiency,
+    //         Skill::Investigation => &self.investigation_proficiency,
+    //         Skill::Medicine => &self.medicine_proficiency,
+    //         Skill::Nature => &self.nature_proficiency,
+    //         Skill::Perception => &self.perception_proficiency,
+    //         Skill::Performance => &self.performance_proficiency,
+    //         Skill::Persuasion => &self.persuasion_proficiency,
+    //         Skill::Religion => &self.religion_proficiency,
+    //         Skill::SleightOfHand => &self.sleight_of_hand_proficiency,
+    //         Skill::Stealth => &self.stealth_proficiency,
+    //         Skill::Survival => &self.survival_proficiency,
+    //         Skill::Unknown => panic!("cannot get unknown skill")
+    //     }
+    // }
+
+    pub(crate) fn get_mut_skill_proficiency(&mut self, s: Skill) -> &mut Staged<ProficiencyType> {
+        match s {
+            Skill::Acrobatics => &mut self.acrobatics_proficiency,
+            Skill::AnimalHandling => &mut self.animal_handling_proficiency,
+            Skill::Arcana => &mut self.arcana_proficiency,
+            Skill::Athletics => &mut self.athletics_proficiency,
+            Skill::Deception => &mut self.deception_proficiency,
+            Skill::History => &mut self.history_proficiency,
+            Skill::Insight => &mut self.insight_proficiency,
+            Skill::Intimidation => &mut self.intimidation_proficiency,
+            Skill::Investigation => &mut self.investigation_proficiency,
+            Skill::Medicine => &mut self.medicine_proficiency,
+            Skill::Nature => &mut self.nature_proficiency,
+            Skill::Perception => &mut self.perception_proficiency,
+            Skill::Performance => &mut self.performance_proficiency,
+            Skill::Persuasion => &mut self.persuasion_proficiency,
+            Skill::Religion => &mut self.religion_proficiency,
+            Skill::SleightOfHand => &mut self.sleight_of_hand_proficiency,
+            Skill::Stealth => &mut self.stealth_proficiency,
+            Skill::Survival => &mut self.survival_proficiency,
+            Skill::Unknown => panic!("cannot get unknown skill")
+        }
+    }
 }
 
 #[derive(Default, Debug)]

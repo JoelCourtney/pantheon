@@ -21,7 +21,7 @@ struct Registration {
 macro_rules! name {
     ($name:literal) => {
         #[allow(unused_imports)] use crate::character::*;
-        #[allow(unused_imports)] use crate::feature::{Feature, Choice::*};
+        #[allow(unused_imports)] use crate::feature::{Feature, Choice::*, Choose};
         #[allow(unused_imports)] use crate::misc::*;
         #[allow(unused_imports)] use crate::moves::*;
         #[allow(unused_imports)] use crate::{properties, description};
@@ -31,6 +31,7 @@ macro_rules! name {
         #[allow(unused_imports)] use serde::{Serialize, Deserialize};
         #[allow(unused_imports)] use indoc::indoc;
         #[allow(unused_imports)] use std::fmt::Debug;
+        #[allow(unused_imports)] use std::convert::From;
 
         pub const NAME: &'static str = $name;
     }

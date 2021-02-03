@@ -249,13 +249,18 @@ pub enum SavingThrow {
     Unknown,
 }
 
-#[choose]
+#[derive(Debug, Serialize, Copy, Clone)]
 pub enum ProficiencyType {
     None,
     Half,
     Single,
-    Double,
-    Unknown
+    Double
+}
+
+impl Default for ProficiencyType {
+    fn default() -> Self {
+        Self::None
+    }
 }
 
 #[choose]

@@ -1,5 +1,5 @@
 registerDisplayCallback(function (character) {
-    pasteFields([
+    let skills = [
         'acrobatics',
         'animal_handling',
         'arcana',
@@ -18,6 +18,14 @@ registerDisplayCallback(function (character) {
         'sleight_of_hand',
         'stealth',
         'survival'
-    ], true);
-    // TODO vantage and proficiency boldyness
+    ];
+    pasteFields(skills, true);
+
+    for (skill of skills) {
+        let prof = character[skill + "_proficiency"];
+        if (prof !== "None") {
+            document.getElementById('label-' + skill).classList.add("proficiency-" + prof.toLowerCase());
+        }
+    }
+    // TODO vantage
 });

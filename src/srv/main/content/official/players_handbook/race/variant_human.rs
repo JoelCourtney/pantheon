@@ -17,7 +17,8 @@ impl Race for VariantHuman {
 
         c.size.declare_initializer(NAME);
         c.languages.declare_initializer(NAME);
-        c.skill_proficiencies.declare_initializer(NAME);
+
+        c.get_mut_skill_proficiency(self.skill).declare_initializer(NAME);
 
         self.feat.declare(c);
     }
@@ -33,8 +34,9 @@ impl Race for VariantHuman {
             (*c.languages).push(self.language);
         }
 
-        if c.skill_proficiencies.initialize(NAME) {
-            (*c.skill_proficiencies).push((self.skill, ProficiencyType::Single));
+        let skill_proficiency = c.get_mut_skill_proficiency(self.skill);
+        if skill_proficiency.initialize(NAME) {
+            **skill_proficiency = ProficiencyType::Single;
         }
 
         self.feat.iterate(c);
