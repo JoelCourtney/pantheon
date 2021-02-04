@@ -12,7 +12,7 @@ indoc = "1.0"
 maplit = "1.0.2"
 lazy_static = "1.4.0"
 rocket = "0.4.6"
-rocket_contrib = { version = "0.4.6", default-features = false, features = ["json"] }
+rocket_contrib = { version = "0.4.6", default-features = false, features = ["json", "serve"] }
 base64 = "0.13.0"
 rand = "0.8.2"
 

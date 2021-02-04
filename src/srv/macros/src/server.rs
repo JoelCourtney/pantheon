@@ -20,12 +20,12 @@ pub(crate) fn match_raw_files(ast: syn::ExprArray) -> TokenStream {
         .collect();
     let mut match_rules_acc = quote! {};
     for string in strings {
-        for entry in WalkDir::new(format!("src/www/{}",string)) {
+        for entry in WalkDir::new(format!("src/www/build/{}",string)) {
             let entry = entry.expect("expected dir entry");
             let path = entry.path();
             if path.is_file() {
-                let match_rule = path.strip_prefix("src/www/").unwrap().to_str().unwrap();
-                let match_product = format!("../../www/{}", match_rule);
+                let match_rule = path.strip_prefix("src/www/build/").unwrap().to_str().unwrap();
+                let match_product = format!("../../www/build/{}", match_rule);
                 match_rules_acc = quote! {
                     #match_rules_acc
                     #match_rule => &include_bytes!(#match_product)[..],

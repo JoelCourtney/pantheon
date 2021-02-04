@@ -5,6 +5,7 @@ use rocket::response::content;
 use rocket_contrib::json::Json;
 use serde::Deserialize;
 use crate::feature::Choice;
+use rocket_contrib::serve::StaticFiles;
 
 struct SharedData {
     path: String,
@@ -12,7 +13,7 @@ struct SharedData {
     final_char: RwLock<FinalCharacter>
 }
 
-pub(crate) fn ignite(path: String) -> Rocket {
+pub(crate) fn ignite(path: String, dev: bool) -> Rocket {
     let config = Config::build(Environment::active()
                                .expect("active rocket env not found"))
         .address("0.0.0.0")
@@ -27,9 +28,14 @@ pub(crate) fn ignite(path: String) -> Rocket {
         stored_char: RwLock::new(stored_char),
         final_char: RwLock::new(final_char)
     };
-    rocket::custom(config)
+    let rocket = rocket::custom(config)
         .manage(state)
-        .mount("/", routes![serve_root, serve_static_file, get_character, edit_character])
+        .mount("/", routes![get_character, edit_character]);
+    return if dev {
+        rocket.mount("/", StaticFiles::from("src/www/build"))
+    } else {
+        rocket.mount("/", routes![serve_root, serve_static_file])
+    }
 }
 
 /// Generates a 256 bit secret key for rocket's cookies.
@@ -100,14 +106,16 @@ fn edit_character(data: Json<EditRequest>, state: State<SharedData>) -> content:
     get_character(state)
 }
 
+#[allow(dead_code)]
 #[get("/")]
 fn serve_root() -> rocket::response::Content<&'static [u8]> {
     use rocket::response::content::Content;
     use rocket::http::ContentType;
 
-    Content(ContentType::HTML, include_bytes!("../../www/index.html"))
+    Content(ContentType::HTML, include_bytes!("../../www/build/index.html"))
 }
 
+#[allow(dead_code)]
 #[get("/<path..>")]
 fn serve_static_file(path: std::path::PathBuf) -> Option<rocket::response::Content<&'static [u8]>> {
     use rocket::response::content::Content;
@@ -115,14 +123,9 @@ fn serve_static_file(path: std::path::PathBuf) -> Option<rocket::response::Conte
 
     let content_type = ContentType::from_extension(path.extension().unwrap().to_str().unwrap()).unwrap();
     let bytes = macros::match_raw_files!([
-        "modules",
-        "scripts",
-        "css",
-        "images/icon/icon.png",
-        "fonts/Rajdhani/Rajdhani-Regular.ttf",
-        "fonts/Montserrat/Montserrat-Regular.ttf",
-        "fonts/Montserrat/Montserrat-Bold.ttf",
-        "fonts/Montserrat/Montserrat-BlackItalic.ttf"
+        "_snowpack/",
+        "dist",
+        "icon.png"
     ]);
     Some(Content(content_type, bytes))
 }

@@ -1,3 +1,0 @@
-registerDisplayCallback(function (character) {
-    // TODO
-});
