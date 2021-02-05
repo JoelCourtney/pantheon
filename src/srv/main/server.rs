@@ -123,10 +123,7 @@ fn serve_static_file(path: std::path::PathBuf) -> Option<rocket::response::Conte
 
     let content_type = ContentType::from_extension(path.extension().unwrap().to_str().unwrap()).unwrap();
     let bytes = macros::match_raw_files!([
-        "_snowpack/",
-        "main",
-        "fonts",
-        "icon.png"
+        ""
     ]);
     Some(Content(content_type, bytes))
 }

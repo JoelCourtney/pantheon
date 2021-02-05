@@ -1,14 +1,6 @@
 import {Writable, writable} from 'svelte/store';
 
-class State {
-    name: string = ''
-    race_name: string = ''
-    class_names: Array<string> = []
-}
-
-export const c: Writable<State> = writable(new State());
-getCharacter()
-    .then((value) => c.set(value));
+export let character: Writable<Promise<any>> = writable(getCharacter());
 
 async function getCharacter() {
     const location = window.location.hostname;

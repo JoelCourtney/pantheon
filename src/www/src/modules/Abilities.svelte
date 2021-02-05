@@ -1,0 +1,35 @@
+<script lang="ts">
+    import { signedInt } from '../helpers.ts';
+
+    export let c;
+    export let view;
+</script>
+
+<div class="sheet-box uk-width-large">
+    <div uk-grid class="uk-child-width-1-3 uk-grid-row-medium">
+        <div>
+            <h1 class="sheet-box-title-small uk-margin-remove">Strength</h1>
+            <p class="sheet-box-number uk-margin-small">{c.strength}|{signedInt(c.strength_modifier)}</p>
+        </div>
+        <div>
+            <h1 class="sheet-box-title-small">Dexterity</h1>
+            <p class="sheet-box-number uk-margin-small">{c.dexterity}|{signedInt(c.dexterity_modifier)}</p>
+        </div>
+        <div>
+            <h1 class="sheet-box-title-small">Constitution</h1>
+            <p class="sheet-box-number uk-margin-small">{c.constitution}|{signedInt(c.constitution_modifier)}</p>
+        </div>
+        <div>
+            <p class="sheet-box-number">{c.intelligence}|{signedInt(c.intelligence_modifier)}</p>
+            <h1 class="sheet-box-title-small uk-margin-remove">Intelligence</h1>
+        </div>
+        <div>
+            <p class="sheet-box-number">{c.wisdom}|{signedInt(c.wisdom_modifier)}</p>
+            <h1 class="sheet-box-title-small uk-margin-remove">Wisdom</h1>
+        </div>
+        <div>
+            <p class="sheet-box-number">{c.charisma}|{signedInt(c.charisma_modifier)}</p>
+            <h1 class="sheet-box-title-small uk-margin-remove">Charisma</h1>
+        </div>
+    </div>
+</div>

@@ -1,29 +1,45 @@
 <script lang='ts'>
     import './main.css';
 
-    import { c, view } from './state.ts';
+    import { character, view } from './state.ts';
 
     import Sidebar from './modules/Sidebar.svelte';
     import Health from './modules/Health.svelte';
+    import ArmorClass from './modules/ArmorClass.svelte';
+    import ProficiencyBonus from './modules/ProficiencyBonus.svelte';
+    import Initiative from './modules/Initiative.svelte';
+    import Speed from './modules/Speed.svelte';
+    import Inspiration from './modules/Inspiration.svelte';
+    import Abilities from './modules/Abilities.svelte';
+    import Hands from './modules/Hands.svelte';
+    import Armor from './modules/Armor.svelte';
+    import Inventory from './modules/Inventory.svelte';
+    import Money from './modules/Money.svelte';
+    import Moves from './modules/Moves.svelte';
+    import Skills from './modules/Skills.svelte';
 
-    $: document.title = `${$c.name} - DnDCent`;
+    $: $character.then((c) => document.title = `${c.name} - DnDCent`);
 </script>
 
-<div class="uk-flex" id="all-content">
-    <Sidebar {c} {view}/>
-    <div class="uk-padding uk-width-expand" id="sheet">
-        <Health {c} {view}/>
-<!--        <div class="view-everything view-combat" module="armor-class"></div>-->
-<!--        <div class="view-everything view-combat view-roleplay" module="proficiency-bonus"></div>-->
-<!--        <div class="view-everything view-combat" module="initiative"></div>-->
-<!--        <div class="view-everything view-combat" module="speed"></div>-->
-<!--        <div class="view-everything view-combat view-roleplay" module="inspiration"></div>-->
-<!--        <div class="view-everything view-combat view-roleplay view-skills" module="abilities"></div>-->
-<!--        <div class="view-everything view-combat view-equipment" module="hands" clear="combat"></div>-->
-<!--        <div class="view-everything view-combat view-equipment" module="armor"></div>-->
-<!--        <div class="view-everything view-equipment" module="inventory"></div>-->
-<!--        <div class="view-everything view-roleplay view-equipment" module="money"></div>-->
-<!--        <div class="view-everything view-combat" module="moves"></div>-->
-<!--        <div class="view-everything view-combat view-roleplay view-skills" module="skills" clear="combat"></div>-->
+{#await $character}
+    <p>Fetching character.</p>
+{:then c}
+    <div class="uk-flex" id="all-content">
+        <Sidebar {c} {view}/>
+        <div class="uk-padding uk-width-expand" id="sheet">
+            <Health {c} {view}/>
+            <ArmorClass {c} {view}/>
+            <ProficiencyBonus {c} {view}/>
+            <Initiative {c} {view}/>
+            <Speed {c} {view}/>
+            <Inspiration {c} {view}/>
+            <Abilities {c} {view}/>
+            <Hands {c} {view}/>
+            <Armor {c} {view}/>
+            <Inventory {c} {view}/>
+            <Money {c} {view}/>
+            <Moves {c} {view}/>
+            <Skills {c} {view}/>
+        </div>
     </div>
-</div>
+{/await}

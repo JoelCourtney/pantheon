@@ -1,0 +1,26 @@
+<script lang="ts">
+    export let c;
+    export let view;
+</script>
+
+<div class="sheet-box uk-width-auto">
+    <h1 class="sheet-box-title-small">Currency</h1>
+    <div uk-grid class="uk-grid-small">
+        <div class="uk-width-auto uk-text-right">
+            <ul class="uk-list uk-list-collapse">
+                <li>Platinum</li>
+                <li>Gold</li>
+                <li>Electrum</li>
+                <li>Silver</li>
+                <li>Copper</li>
+            </ul>
+        </div>
+        <div class="uk-width-auto uk-text-left">
+            <ul class="uk-list uk-list-collapse">
+                {#each c.money as m}
+                    <li>{m}</li>
+                {/each}
+            </ul>
+        </div>
+    </div>
+</div>
