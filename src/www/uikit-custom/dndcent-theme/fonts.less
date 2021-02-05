@@ -1,0 +1,23 @@
+.font-face(@font-family, @style-name, @font-weight, @font-style, @mixin-name, @new-name){
+  @font-face {
+    font-family: '@{new-name}';
+    src: url('../../../fonts/@{font-family}/@{font-family}-@{style-name}.ttf') format('truetype');
+    font-weight: @font-weight;
+    font-style: @font-style;
+  }
+  .font-@{mixin-name} {
+    font-family: @new-name;
+    font-weight: @font-weight;
+    font-style: @font-style;
+  }
+}
+
+.font-face('Montserrat', 'Regular', 400, normal, main, main);
+.font-face('Montserrat', 'Bold', 700, normal, main-bold, main);
+.font-face('Montserrat', 'Black', 900, normal, main-black, main);
+.font-face('Montserrat', 'Italic', 400, italic, main-italic, main);
+.font-face('Montserrat', 'BoldItalic', 700, italic, main-bold-italic, main);
+.font-face('Montserrat', 'BlackItalic', 900, italic, main-black-italic, main);
+
+.font-face('Rajdhani', 'Regular', 400, normal, title, title);
+.font-face('Rajdhani', 'Bold', 700, normal, title-bold, title);

@@ -1,30 +1,29 @@
 <script lang='ts'>
-	import './main.css';
+    import './main.css';
 
-	import { c } from './character.ts';
+    import { c, view } from './state.ts';
 
-	$: document.title = `${$c.name} - DnDCent`;
+    import Sidebar from './modules/Sidebar.svelte';
+    import Health from './modules/Health.svelte';
+
+    $: document.title = `${$c.name} - DnDCent`;
 </script>
 
-<style>
-	@font-face {
-		font-family: main;
-		src: url("fonts/Montserrat/Montserrat-Regular.ttf");
-	}
-	@font-face {
-		font-family: title;
-		src: url("fonts/Rajdhani/Rajdhani-Regular.ttf");
-	}
-
-	:global(p) {
-		font-family: main, sans-serif;
-	}
-
-	:global(h1,h2,h3,h4,h5,h6) {
-		font-family: title, sans-serif;
-	}
-</style>
-
-<div>
-	<h1 class="">Hello there, {$c.name}</h1>
+<div class="uk-flex" id="all-content">
+    <Sidebar {c} {view}/>
+    <div class="uk-padding uk-width-expand" id="sheet">
+        <Health {c} {view}/>
+<!--        <div class="view-everything view-combat" module="armor-class"></div>-->
+<!--        <div class="view-everything view-combat view-roleplay" module="proficiency-bonus"></div>-->
+<!--        <div class="view-everything view-combat" module="initiative"></div>-->
+<!--        <div class="view-everything view-combat" module="speed"></div>-->
+<!--        <div class="view-everything view-combat view-roleplay" module="inspiration"></div>-->
+<!--        <div class="view-everything view-combat view-roleplay view-skills" module="abilities"></div>-->
+<!--        <div class="view-everything view-combat view-equipment" module="hands" clear="combat"></div>-->
+<!--        <div class="view-everything view-combat view-equipment" module="armor"></div>-->
+<!--        <div class="view-everything view-equipment" module="inventory"></div>-->
+<!--        <div class="view-everything view-roleplay view-equipment" module="money"></div>-->
+<!--        <div class="view-everything view-combat" module="moves"></div>-->
+<!--        <div class="view-everything view-combat view-roleplay view-skills" module="skills" clear="combat"></div>-->
+    </div>
 </div>

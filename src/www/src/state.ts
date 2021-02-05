@@ -1,6 +1,12 @@
-import { writable } from 'svelte/store';
+import {Writable, writable} from 'svelte/store';
 
-export const c: any = writable({});
+class State {
+    name: string = ''
+    race_name: string = ''
+    class_names: Array<string> = []
+}
+
+export const c: Writable<State> = writable(new State());
 getCharacter()
     .then((value) => c.set(value));
 
@@ -21,3 +27,5 @@ async function getCharacter() {
         return e;
     }
 }
+
+export const view: Writable<string> = writable('combat');
