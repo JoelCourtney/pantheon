@@ -245,6 +245,12 @@ pub struct Character {
     pub stealth_proficiency: Staged<ProficiencyType>,
     pub survival_proficiency: Staged<ProficiencyType>,
 
+    // PASSIVES
+    pub passive_perception: Staged<i32>,
+    pub passive_investigation: Staged<i32>,
+    pub passive_insight: Staged<i32>,
+    pub passive_notes: Staged<Vec<&'static str>>,
+
     // SAVING THROWS
     pub strength_save: Staged<i32>,
     pub dexterity_save: Staged<i32>,

@@ -40,6 +40,10 @@ pub(crate) mod common_rules {
         c.stealth.declare_initializer(NAME);
         c.survival.declare_initializer(NAME);
 
+        c.passive_perception.declare_initializer(NAME);
+        c.passive_investigation.declare_initializer(NAME);
+        c.passive_insight.declare_initializer(NAME);
+
         c.proficiency_bonus.declare_initializer(NAME);
         c.initiative.declare_initializer(NAME);
 
@@ -99,7 +103,6 @@ pub(crate) mod common_rules {
 
         // INIT SKILLS and SAVING THROWS
         if c.proficiency_bonus.ready() {
-
             if c.strength_modifier.ready() {
                 if c.athletics_proficiency.ready()
                     && c.athletics.initialize(NAME) {
@@ -242,6 +245,20 @@ pub(crate) mod common_rules {
                         + calculate_proficiency(*c.proficiency_bonus, *c.charisma_save_proficiency);
                 }
             }
+        }
+
+        // PASSIVES
+        if c.perception.ready() &&
+            c.passive_perception.initialize(NAME) {
+            *c.passive_perception = 10 + *c.perception;
+        }
+        if c.investigation.ready() &&
+            c.passive_investigation.initialize(NAME) {
+            *c.passive_investigation = 10 + *c.investigation;
+        }
+        if c.insight.ready() &&
+            c.passive_insight.initialize(NAME) {
+            *c.passive_insight = 10 + *c.insight;
         }
 
         // MODIFIERS
