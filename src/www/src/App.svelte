@@ -21,14 +21,17 @@
     import Proficiencies from "./modules/Proficiencies.svelte";
     import Passives from "./modules/Passives.svelte";
     import Statuses from "./modules/Statuses.svelte";
+    import Endcap from "./Endcap.svelte";
 
-    $: $character.then((c) => document.title = `${c.name} - DnDCent`);
+    $: $character.then((c) => {
+        document.title = `${c.name} - DnDCent`;
+    });
 </script>
 
 {#await $character}
     <p>Fetching character.</p>
 {:then c}
-    <div class="uk-flex" id="all-content">
+    <div class="uk-flex">
         <Sidebar {c} {view}/>
         <div class="uk-padding uk-width-expand" id="sheet">
             {#if $view === 'everything'}
@@ -38,7 +41,9 @@
                 <Initiative {c}/>
                 <Speed {c}/>
                 <Inspiration {c}/>
-                <Statuses {c}/>
+                <Endcap id={0}>
+                    <Statuses {c}/>
+                </Endcap>
                 <Abilities {c}/>
                 <Hands {c}/>
                 <Armor {c}/>
@@ -46,7 +51,9 @@
                 <Money {c}/>
                 <Moves {c}/>
                 <Passives {c}/>
-                <Proficiencies {c}/>
+                <Endcap id={1}>
+                    <Proficiencies {c}/>
+                </Endcap>
                 <Skills {c}/>
                 <SavingThrows {c}/>
             {:else if $view === 'combat'}
