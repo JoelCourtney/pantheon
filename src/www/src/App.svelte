@@ -18,6 +18,7 @@
     import Moves from './modules/Moves.svelte';
     import Skills from './modules/Skills.svelte';
     import SavingThrows from "./modules/SavingThrows.svelte";
+    import Proficiencies from "./modules/Proficiencies.svelte";
 
     $: $character.then((c) => document.title = `${c.name} - DnDCent`);
 </script>
@@ -41,6 +42,7 @@
                 <Inventory {c}/>
                 <Money {c}/>
                 <Moves {c}/>
+                <Proficiencies {c}/>
                 <Skills {c}/>
                 <SavingThrows {c}/>
             {:else if $view === 'combat'}
