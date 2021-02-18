@@ -20,4 +20,4 @@ async function getCharacter() {
     }
 }
 
-export const view: Writable<string> = writable('combat');
+export const view: Writable<string> = writable('everything');

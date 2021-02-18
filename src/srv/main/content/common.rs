@@ -14,6 +14,13 @@ pub(crate) mod common_rules {
         c.wisdom_modifier.declare_initializer(NAME);
         c.charisma_modifier.declare_initializer(NAME);
 
+        c.strength_save.declare_initializer(NAME);
+        c.dexterity_save.declare_initializer(NAME);
+        c.constitution_save.declare_initializer(NAME);
+        c.intelligence_save.declare_initializer(NAME);
+        c.wisdom_save.declare_initializer(NAME);
+        c.charisma_save.declare_initializer(NAME);
+
         c.acrobatics.declare_initializer(NAME);
         c.animal_handling.declare_initializer(NAME);
         c.arcana.declare_initializer(NAME);
@@ -47,156 +54,203 @@ pub(crate) mod common_rules {
     pub fn iterate(c: &mut Character) {
         // INITIALIZERS
 
-        if c.strength.finalized() && c.strength_modifier.initialize(NAME) {
+        // ABILITY SCORE MODIFIERS
+        if c.strength.ready() && c.strength_modifier.initialize(NAME) {
             *c.strength_modifier = (*c.strength as i32 - 10) / 2;
         }
-        if c.dexterity.finalized() && c.dexterity_modifier.initialize(NAME) {
+        if c.dexterity.ready() && c.dexterity_modifier.initialize(NAME) {
             *c.dexterity_modifier = (*c.dexterity as i32 - 10) / 2;
         }
-        if c.constitution.finalized() && c.constitution_modifier.initialize(NAME) {
+        if c.constitution.ready() && c.constitution_modifier.initialize(NAME) {
             *c.constitution_modifier = (*c.constitution as i32 - 10) / 2;
         }
-        if c.intelligence.finalized() && c.intelligence_modifier.initialize(NAME) {
+        if c.intelligence.ready() && c.intelligence_modifier.initialize(NAME) {
             *c.intelligence_modifier = (*c.intelligence as i32 - 10) / 2;
         }
-        if c.wisdom.finalized() && c.wisdom_modifier.initialize(NAME) {
+        if c.wisdom.ready() && c.wisdom_modifier.initialize(NAME) {
             *c.wisdom_modifier = (*c.wisdom as i32 - 10) / 2;
         }
-        if c.charisma.finalized() && c.charisma_modifier.initialize(NAME) {
+        if c.charisma.ready() && c.charisma_modifier.initialize(NAME) {
             *c.charisma_modifier = (*c.charisma as i32 - 10) / 2;
         }
 
-        if c.total_level.finalized() && c.proficiency_bonus.initialize(NAME) {
+        // PROFICIENCY BONUS
+        if c.total_level.ready() && c.proficiency_bonus.initialize(NAME) {
             *c.proficiency_bonus = (*c.total_level - 1) / 4 + 2;
         }
-        if c.dexterity_modifier.finalized() && c.initiative.initialize(NAME) {
+
+        // INITIATIVE
+        if c.dexterity_modifier.ready() && c.initiative.initialize(NAME) {
             *c.initiative = *c.dexterity_modifier;
         }
 
+        // DEFAULT ATTACKS PER ACTION
         if c.attacks_per_action.initialize(NAME) {
             *c.attacks_per_action = 1;
         }
 
-        if c.dexterity_modifier.finalized() && c.armor_class.initialize(NAME) {
+        // DEFAULT ARMOR-LESS AC
+        if c.dexterity_modifier.ready() && c.armor_class.initialize(NAME) {
             let default = (10 + *c.dexterity_modifier) as u32;
             if *c.armor_class < default {
                 *c.armor_class = default;
             }
         }
 
-        if c.proficiency_bonus.finalized() {
-            if c.dexterity_modifier.finalized() {
-                if c.acrobatics_proficiency.finalized()
-                    && c.acrobatics.initialize(NAME) {
-                    *c.acrobatics = *c.dexterity_modifier
-                        + calculate_proficiency(*c.proficiency_bonus, *c.acrobatics_proficiency);
-                }
-                if c.sleight_of_hand_proficiency.finalized()
-                    && c.sleight_of_hand.initialize(NAME) {
-                    *c.sleight_of_hand = *c.dexterity_modifier
-                        + calculate_proficiency(*c.proficiency_bonus, *c.sleight_of_hand_proficiency);
-                }
-                if c.stealth_proficiency.finalized()
-                    && c.stealth.initialize(NAME) {
-                    *c.stealth = *c.dexterity_modifier
-                        + calculate_proficiency(*c.proficiency_bonus, *c.stealth_proficiency);
-                }
-            }
+        // INIT SKILLS and SAVING THROWS
+        if c.proficiency_bonus.ready() {
 
-            if c.strength_modifier.finalized() {
-                if c.athletics_proficiency.finalized()
+            if c.strength_modifier.ready() {
+                if c.athletics_proficiency.ready()
                     && c.athletics.initialize(NAME) {
                     *c.athletics = *c.strength_modifier
                         + calculate_proficiency(*c.proficiency_bonus, *c.athletics_proficiency);
                 }
+
+                if c.strength_save_proficiency.ready()
+                    && c.strength_save.initialize(NAME) {
+                    *c.strength_save = *c.strength_modifier
+                        + calculate_proficiency(*c.proficiency_bonus, *c.strength_save_proficiency);
+                }
             }
 
-            if c.intelligence_modifier.finalized() {
-                if c.arcana_proficiency.finalized()
+            if c.dexterity_modifier.ready() {
+                if c.acrobatics_proficiency.ready()
+                    && c.acrobatics.initialize(NAME) {
+                    *c.acrobatics = *c.dexterity_modifier
+                        + calculate_proficiency(*c.proficiency_bonus, *c.acrobatics_proficiency);
+                }
+                if c.sleight_of_hand_proficiency.ready()
+                    && c.sleight_of_hand.initialize(NAME) {
+                    *c.sleight_of_hand = *c.dexterity_modifier
+                        + calculate_proficiency(*c.proficiency_bonus, *c.sleight_of_hand_proficiency);
+                }
+                if c.stealth_proficiency.ready()
+                    && c.stealth.initialize(NAME) {
+                    *c.stealth = *c.dexterity_modifier
+                        + calculate_proficiency(*c.proficiency_bonus, *c.stealth_proficiency);
+                }
+
+                if c.dexterity_save_proficiency.ready()
+                    && c.dexterity_save.initialize(NAME) {
+                    *c.dexterity_save = *c.dexterity_modifier
+                        + calculate_proficiency(*c.proficiency_bonus, *c.dexterity_save_proficiency);
+                }
+            }
+
+            if c.constitution_modifier.ready() {
+                if c.constitution_save_proficiency.ready()
+                    && c.constitution_save.initialize(NAME) {
+                    *c.constitution_save = *c.constitution_modifier
+                        + calculate_proficiency(*c.proficiency_bonus, *c.constitution_save_proficiency);
+                }
+            }
+
+            if c.intelligence_modifier.ready() {
+                if c.arcana_proficiency.ready()
                     && c.arcana.initialize(NAME) {
-                    *c.arcana = *c.dexterity_modifier
+                    *c.arcana = *c.intelligence_modifier
                         + calculate_proficiency(*c.proficiency_bonus, *c.arcana_proficiency);
                 }
-                if c.history_proficiency.finalized()
+                if c.history_proficiency.ready()
                     && c.history.initialize(NAME) {
-                    *c.history = *c.dexterity_modifier
+                    *c.history = *c.intelligence_modifier
                         + calculate_proficiency(*c.proficiency_bonus, *c.history_proficiency);
                 }
-                if c.investigation_proficiency.finalized()
+                if c.investigation_proficiency.ready()
                     && c.investigation.initialize(NAME) {
-                    *c.investigation = *c.dexterity_modifier
+                    *c.investigation = *c.intelligence_modifier
                         + calculate_proficiency(*c.proficiency_bonus, *c.investigation_proficiency);
                 }
-                if c.nature_proficiency.finalized()
+                if c.nature_proficiency.ready()
                     && c.nature.initialize(NAME) {
-                    *c.nature = *c.dexterity_modifier
+                    *c.nature = *c.intelligence_modifier
                         + calculate_proficiency(*c.proficiency_bonus, *c.nature_proficiency);
                 }
-                if c.religion_proficiency.finalized()
+                if c.religion_proficiency.ready()
                     && c.religion.initialize(NAME) {
-                    *c.religion = *c.dexterity_modifier
+                    *c.religion = *c.intelligence_modifier
                         + calculate_proficiency(*c.proficiency_bonus, *c.religion_proficiency);
                 }
+
+                if c.intelligence_save_proficiency.ready()
+                    && c.intelligence_save.initialize(NAME) {
+                    *c.intelligence_save = *c.intelligence_modifier
+                        + calculate_proficiency(*c.proficiency_bonus, *c.intelligence_save_proficiency);
+                }
             }
 
-            if c.wisdom_modifier.finalized() {
-                if c.animal_handling_proficiency.finalized()
+            if c.wisdom_modifier.ready() {
+                if c.animal_handling_proficiency.ready()
                     && c.animal_handling.initialize(NAME) {
-                    *c.animal_handling = *c.dexterity_modifier
+                    *c.animal_handling = *c.wisdom_modifier
                         + calculate_proficiency(*c.proficiency_bonus, *c.animal_handling_proficiency);
                 }
-                if c.insight_proficiency.finalized()
+                if c.insight_proficiency.ready()
                     && c.insight.initialize(NAME) {
-                    *c.insight = *c.dexterity_modifier
+                    *c.insight = *c.wisdom_modifier
                         + calculate_proficiency(*c.proficiency_bonus, *c.insight_proficiency);
                 }
-                if c.medicine_proficiency.finalized()
+                if c.medicine_proficiency.ready()
                     && c.medicine.initialize(NAME) {
-                    *c.medicine = *c.dexterity_modifier
+                    *c.medicine = *c.wisdom_modifier
                         + calculate_proficiency(*c.proficiency_bonus, *c.medicine_proficiency);
                 }
-                if c.perception_proficiency.finalized()
+                if c.perception_proficiency.ready()
                     && c.perception.initialize(NAME) {
-                    *c.perception = *c.dexterity_modifier
+                    *c.perception = *c.wisdom_modifier
                         + calculate_proficiency(*c.proficiency_bonus, *c.perception_proficiency);
                 }
-                if c.survival_proficiency.finalized()
+                if c.survival_proficiency.ready()
                     && c.survival.initialize(NAME) {
-                    *c.survival = *c.dexterity_modifier
+                    *c.survival = *c.wisdom_modifier
                         + calculate_proficiency(*c.proficiency_bonus, *c.survival_proficiency);
+                }
+
+                if c.wisdom_save_proficiency.ready()
+                    && c.wisdom_save.initialize(NAME) {
+                    *c.wisdom_save = *c.wisdom_modifier
+                        + calculate_proficiency(*c.proficiency_bonus, *c.wisdom_save_proficiency);
                 }
             }
 
-            if c.charisma_modifier.finalized() {
-                if c.deception_proficiency.finalized()
+            if c.charisma_modifier.ready() {
+                if c.deception_proficiency.ready()
                     && c.deception.initialize(NAME) {
-                    *c.deception = *c.dexterity_modifier
+                    *c.deception = *c.charisma_modifier
                         + calculate_proficiency(*c.proficiency_bonus, *c.deception_proficiency);
                 }
-                if c.intimidation_proficiency.finalized()
+                if c.intimidation_proficiency.ready()
                     && c.intimidation.initialize(NAME) {
-                    *c.intimidation = *c.dexterity_modifier
+                    *c.intimidation = *c.charisma_modifier
                         + calculate_proficiency(*c.proficiency_bonus, *c.intimidation_proficiency);
                 }
-                if c.performance_proficiency.finalized()
+                if c.performance_proficiency.ready()
                     && c.performance.initialize(NAME) {
-                    *c.performance = *c.dexterity_modifier
+                    *c.performance = *c.charisma_modifier
                         + calculate_proficiency(*c.proficiency_bonus, *c.performance_proficiency);
                 }
-                if c.persuasion_proficiency.finalized()
+                if c.persuasion_proficiency.ready()
                     && c.persuasion.initialize(NAME) {
-                    *c.persuasion = *c.dexterity_modifier
+                    *c.persuasion = *c.charisma_modifier
                         + calculate_proficiency(*c.proficiency_bonus, *c.persuasion_proficiency);
+                }
+
+                if c.charisma_save_proficiency.ready()
+                    && c.charisma_save.initialize(NAME) {
+                    *c.charisma_save = *c.charisma_modifier
+                        + calculate_proficiency(*c.proficiency_bonus, *c.charisma_save_proficiency);
                 }
             }
         }
 
         // MODIFIERS
 
-        if c.strength_modifier.finalized() &&
-            c.dexterity_modifier.finalized() &&
-            c.proficiency_bonus.finalized() &&
-            c.weapon_proficiencies.finalized() &&
+        // ATTACK SKILL MODIFIERS
+        if c.strength_modifier.ready() &&
+            c.dexterity_modifier.ready() &&
+            c.proficiency_bonus.ready() &&
+            c.weapon_proficiencies.ready() &&
             c.attack_moves.modify(NAME) {
             for attack in &mut *c.attack_moves {
                 match attack.use_modifier {
@@ -235,7 +289,7 @@ pub(crate) mod common_class_rules {
     pub fn iterate(class: &dyn Class, c: &mut Character, level: u32, first: bool) {
         let name = class.name();
         let hd = class.hit_dice();
-        if c.constitution_modifier.finalized() && c.max_health.initialize(name) {
+        if c.constitution_modifier.ready() && c.max_health.initialize(name) {
             let mut res: i32 = 0;
             if first && level >= 1 {
                 res += (hd / 2 - 1) as i32;

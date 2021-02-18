@@ -19,7 +19,7 @@ impl Item for Shortsword {
     }
 
     fn iterate(&self, c: &mut Character, equipped: Equipped, _attuned: bool) {
-        if c.strength_modifier.finalized() && c.dexterity_modifier.finalized() {
+        if c.strength_modifier.ready() && c.dexterity_modifier.ready() {
             let ability = if *c.strength_modifier > *c.dexterity_modifier {
                 Ability::Strength
             } else {

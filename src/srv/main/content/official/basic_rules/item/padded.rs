@@ -21,7 +21,7 @@ impl Item for Padded {
 
     fn iterate(&self, c: &mut Character, e: Equipped, _: bool) {
         if e == Equipped::Yes {
-            if c.dexterity_modifier.finalized() && c.armor_class.initialize(NAME) {
+            if c.dexterity_modifier.ready() && c.armor_class.initialize(NAME) {
                 *c.armor_class = 11 + *c.dexterity_modifier as u32;
             }
             if c.stealth_vantage.modify(NAME) {

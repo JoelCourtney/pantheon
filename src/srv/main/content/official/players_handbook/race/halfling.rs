@@ -33,6 +33,7 @@ impl Race for Halfling {
 
         if c.saving_throw_notes.initialize(NAME) {
             (*c.saving_throw_notes).push("*Adv* against being frightened");
+            (*c.saving_throw_notes).push("*Adv* against working correctly");
         }
 
         if c.dexterity.modify(NAME) {

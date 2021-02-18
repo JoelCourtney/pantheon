@@ -1,6 +1,5 @@
 <script lang="ts">
     export let c;
-    export let view;
 </script>
 
 <div class="sheet-box uk-width-xlarge uk-height-max-large uk-overflow-auto">

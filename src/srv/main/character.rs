@@ -453,7 +453,7 @@ impl<T> Staged<T>
         self.finalizers.insert(who);
     }
 
-    pub fn finalized(&self) -> bool {
+    pub fn ready(&self) -> bool {
         self.initializers.is_empty() && self.modifiers.is_empty() && self.finalizers.is_empty()
     }
 

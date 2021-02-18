@@ -1,0 +1,46 @@
+{
+	"name": "Test Boi",
+	"health": 3,
+	"temp_health": 4,
+	"base_strength": 12,
+	"base_dexterity": 12,
+	"base_constitution": 12,
+	"base_intelligence": 12,
+	"base_wisdom": 12,
+	"base_charisma": 12,
+	"alignment": "ChaoticNeutral",
+	"inspiration": false,
+	"money": [
+		0,
+		1102,
+		0,
+		0,
+		0
+	],
+	"race": {
+		"Halfling": {
+			"subrace": {
+				"Lightfoot": null
+			}
+		}
+	},
+	"classes": [
+		[
+			{
+				"Rogue": {
+					"skill_proficiencies": ["Deception", "Intimidation", "Stealth", "Persuasion"],
+					"subclass": {
+						"Assassin": null
+					}
+				}
+			},
+			3
+		]
+	],
+	"inventory": [
+		[{"CloakOfElvenkind": null}, "Yes", true],
+		[{"Shield": null}, {"Held": "Left"}, false],
+		[{"Rapier": null}, {"Held": "Right"}, false],
+		[{"Longsword": null}, "No", false]
+	]
+}
