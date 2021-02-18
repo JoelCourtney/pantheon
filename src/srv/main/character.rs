@@ -284,6 +284,10 @@ pub struct Character {
     pub armor_proficiencies: Staged<Vec<&'static str>>,
     pub languages: Staged<Vec<Language>>,
 
+    // DEFENSES, CONDITIONS
+    pub defenses: Staged<Vec<&'static str>>,
+    pub conditions: Staged<Vec<&'static str>>,
+
     // SPEED
     pub walking_speed: Staged<u32>,
     pub flying_speed: Staged<u32>,

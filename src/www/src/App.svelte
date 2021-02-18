@@ -20,6 +20,7 @@
     import SavingThrows from "./modules/SavingThrows.svelte";
     import Proficiencies from "./modules/Proficiencies.svelte";
     import Passives from "./modules/Passives.svelte";
+    import Statuses from "./modules/Statuses.svelte";
 
     $: $character.then((c) => document.title = `${c.name} - DnDCent`);
 </script>
@@ -37,6 +38,7 @@
                 <Initiative {c}/>
                 <Speed {c}/>
                 <Inspiration {c}/>
+                <Statuses {c}/>
                 <Abilities {c}/>
                 <Hands {c}/>
                 <Armor {c}/>
