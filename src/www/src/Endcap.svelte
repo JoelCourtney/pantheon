@@ -4,7 +4,7 @@
     function pack() {
         let parent = document.getElementById('endcap-' + id);
         parent.setAttribute('style', 'width: unset; overflow: hidden; float: unset;');
-        let width = parent.clientWidth;
+        let width = Math.floor(parent.getBoundingClientRect().width);
         parent.setAttribute('style', 'width: ' + width + 'px; overflow: inherit; float: right');
     }
 

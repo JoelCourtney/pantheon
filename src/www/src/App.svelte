@@ -22,6 +22,7 @@
     import Passives from "./modules/Passives.svelte";
     import Statuses from "./modules/Statuses.svelte";
     import Endcap from "./Endcap.svelte";
+    import ClearLeft from "./ClearLeft.svelte";
 
     $: $character.then((c) => {
         document.title = `${c.name} - DnDCent`;
@@ -41,29 +42,63 @@
                 <Initiative {c}/>
                 <Speed {c}/>
                 <Inspiration {c}/>
-                <Endcap id={0}>
-                    <Statuses {c}/>
-                </Endcap>
-                <Abilities {c}/>
                 <Hands {c}/>
                 <Armor {c}/>
-                <Inventory {c}/>
-                <Money {c}/>
-                <Moves {c}/>
-                <Passives {c}/>
-                <Endcap id={1}>
-                    <Proficiencies {c}/>
+                <ClearLeft>
+                    <Skills {c}/>
+                </ClearLeft>
+                <Abilities {c}/>
+                <Endcap id={0}>
+                    <Moves {c}/>
                 </Endcap>
-                <Skills {c}/>
+                <Passives {c}/>
                 <SavingThrows {c}/>
+                <ClearLeft>
+                    <Proficiencies {c}/>
+                </ClearLeft>
+                <Inventory {c}/>
+                <Endcap id={1}>
+                    <Statuses {c}/>
+                </Endcap>
+                <Money {c}/>
             {:else if $view === 'combat'}
                 <Health {c}/>
+                <ArmorClass {c}/>
+                <ProficiencyBonus {c}/>
+                <Initiative {c}/>
+                <Speed {c}/>
+                <Inspiration {c}/>
+                <Hands {c}/>
+                <Armor {c}/>
+                <ClearLeft>
+                    <Skills {c}/>
+                </ClearLeft>
+                <Abilities {c}/>
+                <Endcap id={0}>
+                    <Moves {c}/>
+                </Endcap>
+                <SavingThrows {c}/>
+                <Passives {c}/>
+                <ClearLeft>
+                    <Proficiencies {c}/>
+                </ClearLeft>
+                <Inventory {c}/>
+                <Endcap id={1}>
+                    <Statuses {c}/>
+                </Endcap>
+                <Money {c}/>
             {:else if $view === 'roleplay'}
                 <Health {c}/>
             {:else if $view === 'equipment'}
                 <Health {c}/>
             {:else if $view === 'skills'}
-                <Health {c}/>
+                <Skills {c}/>
+                <Abilities {c}/>
+                <Endcap id={0}>
+                    <Proficiencies {c}/>
+                </Endcap>
+                <SavingThrows {c}/>
+                <Passives {c}/>
             {:else if $view === 'description'}
                 <Health {c}/>
             {:else if $view === 'notes'}
