@@ -17,6 +17,7 @@ impl Race for VariantHuman {
 
         c.size.declare_initializer(NAME);
         c.languages.declare_initializer(NAME);
+        c.speeds.walk.declare_initializer(NAME);
 
         for ability in &self.abilities {
             match c.abilities.get_mut(*ability) {
@@ -44,6 +45,10 @@ impl Race for VariantHuman {
             if self.language != Language::Unknown {
                 (*c.languages).push(self.language);
             }
+        }
+        
+        if c.speeds.walk.initialize(NAME) {
+            *c.speeds.walk = 30;
         }
 
         for ability in &self.abilities {

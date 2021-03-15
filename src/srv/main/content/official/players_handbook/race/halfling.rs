@@ -67,7 +67,7 @@ impl Race for Halfling {
                 Empty
             ),
             Feature (
-                "**Speed:** Your base walking speed is 25 feel.",
+                "**Speed:** Your base walking speed is 25 feet.",
                 Empty
             ),
             Feature (

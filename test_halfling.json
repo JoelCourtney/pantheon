@@ -22,14 +22,14 @@
   "race": {
     "VariantHuman": {
       "abilities": [
-        "Dexterity",
-        "Constitution"
+        "Strength",
+        "Dexterity"
       ],
-      "skill": "Unknown",
+      "skill": "Intimidation",
       "feat": {
-        "UnknownFeat": null
+        "Alert": null
       },
-      "language": "Unknown"
+      "language": "Infernal"
     }
   },
   "classes": [
