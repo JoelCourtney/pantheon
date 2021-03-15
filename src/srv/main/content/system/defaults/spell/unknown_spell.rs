@@ -1,4 +1,4 @@
-crate::name!("Unknown Spell");
+crate::name!("Unknown");
 
 #[derive(Debug, Serialize, Deserialize, Default)]
 pub struct UnknownSpell {}

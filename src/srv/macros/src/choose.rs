@@ -79,7 +79,6 @@ fn process_enum_choose(name: String, vars: Vec<String>) -> TokenStream2 {
                 let all_choices: Vec<&str> = vec![ #choices_tokens ];
                 let current_choices: Vec<&str> = self.iter().map(|v| match v {
                     #reverse_match_rules_tokens
-                    _ => panic!(format!("reverse match token not found: {:?}", v))
                 }).collect();
                 crate::feature::ChoiceSerial::from_vecs(current_choices, all_choices, unique)
             }
@@ -98,7 +97,6 @@ fn process_enum_choose(name: String, vars: Vec<String>) -> TokenStream2 {
                 let all_choices: Vec<&str> = vec![ #choices_tokens ];
                 let current_choices: Vec<&str> = self.iter().map(|v| match v {
                     #reverse_match_rules_tokens
-                    _ => panic!(format!("reverse match token not found: {:?}", v))
                 }).collect();
                 crate::feature::ChoiceSerial::from_vecs(current_choices, all_choices, unique)
             }

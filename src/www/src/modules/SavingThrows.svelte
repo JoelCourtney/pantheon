@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { signedInt } from '../helpers.ts';
+    import { signedInt, render } from '../helpers.ts';
 
     export let c;
 </script>
@@ -31,6 +31,6 @@
         </div>
     </div>
     {#if c.saving_throw_notes.length}
-        <p class="uk-margin-remove-bottom">{@html c.saving_throw_notes.join('<br/>')}</p>
+        <p class="uk-margin-remove-bottom">{@html render(c.saving_throw_notes.join('  \n'))}</p>
     {/if}
 </div>

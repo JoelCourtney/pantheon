@@ -281,7 +281,9 @@ pub(crate) mod common_rules {
             }
         }
     }
-    pub fn last(_c: &mut Character) {}
+    pub fn last(c: &mut Character) {
+        c.race_choices = crate::content::get_all_race();
+    }
 
     fn calculate_proficiency(bonus: u32, proficiency: ProficiencyType) -> i32 {
         match proficiency {

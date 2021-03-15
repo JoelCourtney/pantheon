@@ -26,7 +26,7 @@ impl RoguishArchetype for Assassin {
         if lvl >= 3 {
             c.class_features.push(
                 Feature (
-                    "# Bonus Proficiencies\n\nWhen you choose this archetype at 3rd level, you gain proficiency with the disguise kit and poisoner's kit.",
+                    "**Bonus Proficiencies:** When you choose this archetype at 3rd level, you gain proficiency with the disguise kit and poisoner's kit.",
                     Empty
                 )
             );

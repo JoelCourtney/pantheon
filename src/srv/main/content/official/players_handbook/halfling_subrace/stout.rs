@@ -9,29 +9,29 @@ impl HalflingSubrace for Stout {
 
     fn declare(&self, c: &mut Character) {
         c.constitution.declare_modifier(NAME);
+        c.saving_throw_notes.declare_initializer(NAME);
+        c.defenses.declare_initializer(NAME);
     }
     fn iterate(&self, c: &mut Character) {
         if c.constitution.modify(NAME) {
             *c.constitution += 1;
+        }
+        if c.saving_throw_notes.initialize(NAME) {
+            (*c.saving_throw_notes).push("**ADV** against poisoned");
+        }
+        if c.defenses.initialize(NAME) {
+            (c.defenses).push("**RES** poison");
         }
     }
 
     fn last(&mut self, c: &mut Character) {
         c.race_traits.extend(vec![
             Feature (
-                indoc! {r"
-                    # Ability Score Increase
-
-                    Your Constitution score increases by 1.
-                "},
+                "**Ability Score Increase:** Your Constitution score increases by 1.",
                 Empty
             ),
             Feature (
-                indoc! {r"
-                    # Stout Resilience
-
-                    You have advantage on saving throws against poison, and you have resistance against poison damage.
-                "},
+                "**Stout Resilience:** You have advantage on saving throws against poison, and you have resistance against poison damage.",
                 Empty
             )
         ]);

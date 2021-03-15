@@ -25,8 +25,9 @@ impl Class for Rogue {
         c.intelligence_save_proficiency.declare_initializer(NAME);
 
         for skill in &self.skill_proficiencies {
-            if *skill != RogueSkill::Unknown {
-                c.get_mut_skill_proficiency(skill.into()).declare_initializer(NAME);
+            match c.get_mut_skill_proficiency(skill.into()) {
+                Some(s) => s.declare_initializer(NAME),
+                None => {}
             }
         }
 
@@ -59,11 +60,13 @@ impl Class for Rogue {
         }
 
         for skill in &self.skill_proficiencies {
-            if *skill != RogueSkill::Unknown {
-                let skill_proficiency = c.get_mut_skill_proficiency(skill.into());
-                if skill_proficiency.initialize(NAME) {
-                    **skill_proficiency = ProficiencyType::Single
+            match c.get_mut_skill_proficiency(skill.into()) {
+                Some(s) => {
+                    if s.initialize(NAME) {
+                        **s = ProficiencyType::Single
+                    }
                 }
+                None => {}
             }
         }
 

@@ -35,10 +35,21 @@
     </div>
     <div class="builder-box">
         <h1 class="box-title">Race</h1>
-        <select class="uk-select">
-            <option>Hooman</option>
-            <option>Elv</option>
-            <option>Dwarv</option>
+        <select class="uk-select" on:change={
+            editCharacter({
+                race: c.race_choices[this.value]
+            })
+        }>
+            {#if c.race_name === 'Unknown Race'}
+                <option selected value={-1}>Choose a race</option>
+            {/if}
+            {#each c.race_choices as race, i}
+                {#if c.race_name === race}
+                    <option selected value={i}>{race}</option>
+                {:else}
+                    <option value={i}>{race}</option>
+                {/if}
+            {/each}
         </select>
         <ul uk-tab class="builder-box-nav">
             <li><a>Traits</a></li>
@@ -60,6 +71,9 @@
                                     }
                                 })
                             }>
+                                {#if current === 'Unknown'}
+                                    <option selected value={-1}>Choose</option>
+                                {/if}
                                 {#each trait[1].all_choices[j] as choice, k}
                                     {#if current !== choice}
                                         <option value={k}>{choice}</option>

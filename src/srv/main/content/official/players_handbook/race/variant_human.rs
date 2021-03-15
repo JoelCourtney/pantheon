@@ -18,7 +18,17 @@ impl Race for VariantHuman {
         c.size.declare_initializer(NAME);
         c.languages.declare_initializer(NAME);
 
-        c.get_mut_skill_proficiency(self.skill).declare_initializer(NAME);
+        for ability in &self.abilities {
+            match c.get_mut_ability(*ability) {
+                Some(a) => a.declare_modifier(NAME),
+                None => {}
+            }
+        }
+
+        match c.get_mut_skill_proficiency(self.skill) {
+            Some(s) => s.declare_initializer(NAME),
+            None => {}
+        }
 
         self.feat.declare(c);
     }
@@ -31,12 +41,29 @@ impl Race for VariantHuman {
 
         if c.languages.initialize(NAME) {
             (*c.languages).push(Language::Common);
-            (*c.languages).push(self.language);
+            if self.language != Language::Unknown {
+                (*c.languages).push(self.language);
+            }
         }
 
-        let skill_proficiency = c.get_mut_skill_proficiency(self.skill);
-        if skill_proficiency.initialize(NAME) {
-            **skill_proficiency = ProficiencyType::Single;
+        for ability in &self.abilities {
+            match c.get_mut_ability(*ability) {
+                Some(a) => {
+                    if a.modify(NAME) {
+                        **a += 1;
+                    }
+                }
+                None => {}
+            }
+        }
+
+        match c.get_mut_skill_proficiency(self.skill) {
+            Some(s) => {
+                if s.initialize(NAME) {
+                    **s = ProficiencyType::Single;
+                }
+            }
+            None => {}
         }
 
         self.feat.iterate(c);
@@ -44,19 +71,19 @@ impl Race for VariantHuman {
     fn last(&mut self, c: &mut Character) {
         c.race_traits.extend(vec! [
             Feature (
-                "# Ability Score Increase\n\nTwo different ability scores of your choice increase by 1.",
+                "**Ability Score Increase:** Two different ability scores of your choice increase by 1.",
                 Any(&mut self.abilities)
             ),
             Feature (
-                "# Skills\n\nYou gain proficiency in one skill of your choice.",
+                "**Skills:** You gain proficiency in one skill of your choice.",
                 Any(&mut self.skill)
             ),
             Feature (
-                "# Languages\n\nYou can speak, read, and write Common and one extra language of your choice. Humans typically learn the languages of other peoples they deal with, including obscure dialects. They are fond of sprinkling their speech with words borrowed from other tongues: Orc curses, Elvish musical expressions, Dwarvish military phrases, and so on.",
+                "**Languages:** You can speak, read, and write Common and one extra language of your choice. Humans typically learn the languages of other peoples they deal with, including obscure dialects. They are fond of sprinkling their speech with words borrowed from other tongues: Orc curses, Elvish musical expressions, Dwarvish military phrases, and so on.",
                 Any(&mut self.language)
             ),
             Feature (
-                "# Feat\n\nYou gain one feat of your choice.",
+                "**Feat:** You gain one feat of your choice.",
                 Any(&mut self.feat)
             )
         ]);

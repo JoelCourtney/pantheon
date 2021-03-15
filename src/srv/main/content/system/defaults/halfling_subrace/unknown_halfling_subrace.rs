@@ -1,4 +1,4 @@
-crate::name!("Unknown Halfling Subrace");
+crate::name!("Unknown");
 
 #[derive(Debug, Serialize, Deserialize, Default)]
 pub struct UnknownHalflingSubrace;

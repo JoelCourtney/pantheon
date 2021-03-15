@@ -23,7 +23,7 @@
         <dd>{c.weapon_proficiencies.join(', ')}</dd>
         <dt>Tools</dt>
         <dd>{@html expandedTools.join(', ')}</dd>
-        <dt>Language</dt>
+        <dt>Languages</dt>
         <dd>{c.languages.join(', ')}</dd>
     </dl>
 </div>

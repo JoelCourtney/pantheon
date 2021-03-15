@@ -65,7 +65,8 @@ enum EditRequest<'a> {
         feature_index: usize,
         choice_index: usize,
         choice: &'a str
-    }
+    },
+    Race(&'a str)
 }
 
 #[post("/edit", format="json", data="<data>")]
@@ -79,6 +80,7 @@ fn edit_character(data: Json<EditRequest>, state: State<SharedData>) -> content:
         Name(s) => (*stored_char).name = s,
         Health(u) => (*stored_char).health = u,
         TempHealth(u) => (*stored_char).temp_health = u,
+        Race(r) => (*stored_char).race = crate::content::race(r).unwrap(),
         Feature {
             container,
             feature_index,

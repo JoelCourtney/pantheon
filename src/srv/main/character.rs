@@ -31,7 +31,7 @@ pub struct StoredCharacter {
 
     money: [u32; 5],
 
-    race: Box<dyn Race>,
+    pub(crate) race: Box<dyn Race>,
     classes: Vec<(Box<dyn Class>, u32)>,
 
     inventory: Vec<(Box<dyn Item>, Equipped, bool)>
@@ -305,6 +305,10 @@ pub struct Character {
     // DO NOT MODIFY FIELDS AFTER THIS POINT IN THE DECLARE AND ITERATE STEPS
 
     // FEATURES, TRAITS, AND FEATS
+    pub race_choices: Vec<&'static str>,
+    pub class_choices: Vec<&'static str>,
+    pub background_choices: Vec<&'static str>,
+
     pub race_traits: Vec<Feature>,
     pub class_features: Vec<Feature>,
     pub background_features: Vec<Feature>,
@@ -404,27 +408,52 @@ impl Character {
     //     }
     // }
 
-    pub(crate) fn get_mut_skill_proficiency(&mut self, s: Skill) -> &mut Staged<ProficiencyType> {
+    pub(crate) fn get_mut_skill_proficiency(&mut self, s: Skill) -> Option<&mut Staged<ProficiencyType>> {
         match s {
-            Skill::Acrobatics => &mut self.acrobatics_proficiency,
-            Skill::AnimalHandling => &mut self.animal_handling_proficiency,
-            Skill::Arcana => &mut self.arcana_proficiency,
-            Skill::Athletics => &mut self.athletics_proficiency,
-            Skill::Deception => &mut self.deception_proficiency,
-            Skill::History => &mut self.history_proficiency,
-            Skill::Insight => &mut self.insight_proficiency,
-            Skill::Intimidation => &mut self.intimidation_proficiency,
-            Skill::Investigation => &mut self.investigation_proficiency,
-            Skill::Medicine => &mut self.medicine_proficiency,
-            Skill::Nature => &mut self.nature_proficiency,
-            Skill::Perception => &mut self.perception_proficiency,
-            Skill::Performance => &mut self.performance_proficiency,
-            Skill::Persuasion => &mut self.persuasion_proficiency,
-            Skill::Religion => &mut self.religion_proficiency,
-            Skill::SleightOfHand => &mut self.sleight_of_hand_proficiency,
-            Skill::Stealth => &mut self.stealth_proficiency,
-            Skill::Survival => &mut self.survival_proficiency,
-            Skill::Unknown => panic!("cannot get unknown skill")
+            Skill::Acrobatics => Some(&mut self.acrobatics_proficiency),
+            Skill::AnimalHandling => Some(&mut self.animal_handling_proficiency),
+            Skill::Arcana => Some(&mut self.arcana_proficiency),
+            Skill::Athletics => Some(&mut self.athletics_proficiency),
+            Skill::Deception => Some(&mut self.deception_proficiency),
+            Skill::History => Some(&mut self.history_proficiency),
+            Skill::Insight => Some(&mut self.insight_proficiency),
+            Skill::Intimidation => Some(&mut self.intimidation_proficiency),
+            Skill::Investigation => Some(&mut self.investigation_proficiency),
+            Skill::Medicine => Some(&mut self.medicine_proficiency),
+            Skill::Nature => Some(&mut self.nature_proficiency),
+            Skill::Perception => Some(&mut self.perception_proficiency),
+            Skill::Performance => Some(&mut self.performance_proficiency),
+            Skill::Persuasion => Some(&mut self.persuasion_proficiency),
+            Skill::Religion => Some(&mut self.religion_proficiency),
+            Skill::SleightOfHand => Some(&mut self.sleight_of_hand_proficiency),
+            Skill::Stealth => Some(&mut self.stealth_proficiency),
+            Skill::Survival => Some(&mut self.survival_proficiency),
+            Skill::Unknown => None
+        }
+    }
+
+    #[allow(dead_code)]
+    pub(crate) fn get_ability(&self, a: Ability) -> Option<&Staged<u32>> {
+        match a {
+            Ability::Strength => Some(&self.strength),
+            Ability::Dexterity => Some(&self.dexterity),
+            Ability::Constitution => Some(&self.constitution),
+            Ability::Intelligence => Some(&self.intelligence),
+            Ability::Wisdom => Some(&self.wisdom),
+            Ability::Charisma => Some(&self.charisma),
+            Ability::Unknown => None
+        }
+    }
+
+    pub(crate) fn get_mut_ability(&mut self, a: Ability) -> Option<&mut Staged<u32>> {
+        match a {
+            Ability::Strength => Some(&mut self.strength),
+            Ability::Dexterity => Some(&mut self.dexterity),
+            Ability::Constitution => Some(&mut self.constitution),
+            Ability::Intelligence => Some(&mut self.intelligence),
+            Ability::Wisdom => Some(&mut self.wisdom),
+            Ability::Charisma => Some(&mut self.charisma),
+            Ability::Unknown => None
         }
     }
 }

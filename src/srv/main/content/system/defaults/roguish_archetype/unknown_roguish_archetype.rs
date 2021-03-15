@@ -1,4 +1,4 @@
-crate::name!("Unknown Roguish Archetype");
+crate::name!("Unknown");
 
 #[derive(Debug, Serialize, Deserialize, Default)]
 pub struct UnknownRoguishArchetype;

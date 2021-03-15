@@ -1,4 +1,4 @@
-crate::name!("Unknown Eldritch Invocation");
+crate::name!("Unknown");
 
 #[derive(Debug, Serialize, Deserialize, Default)]
 pub struct UnknownEldritchInvocation;
