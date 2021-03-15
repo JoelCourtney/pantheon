@@ -1,5 +1,8 @@
 <script lang="ts">
     export let c;
+
+    import {render} from "../helpers.ts";
+    import {editCharacter} from '../state.ts';
 </script>
 
 <div class="uk-grid-small uk-child-width-2-3 uk-flex-center" uk-grid>
@@ -42,8 +45,33 @@
             <li><a>Description</a></li>
         </ul>
         <ul class="uk-list uk-list-bullet uk-margin-remove-top">
-            <li>Hello there</li>
-            <li>Hello there</li>
+            {#each c.race_traits as trait, i}
+                <li>
+                    {@html render(trait[0])}
+                    {#if trait[1] !== null}
+                        {#each trait[1].current_choices as current, j}
+                            <select class="uk-select" on:change={
+                                editCharacter({
+                                    feature: {
+                                        container: 'race',
+                                        feature_index: i,
+                                        choice_index: j,
+                                        choice: c.race_traits[i][1].all_choices[j][this.value]
+                                    }
+                                })
+                            }>
+                                {#each trait[1].all_choices[j] as choice, k}
+                                    {#if current !== choice}
+                                        <option value={k}>{choice}</option>
+                                    {:else}
+                                        <option selected value={k}>{choice}</option>
+                                    {/if}
+                                {/each}
+                            </select>
+                        {/each}
+                    {/if}
+                </li>
+            {/each}
         </ul>
     </div>
     <div class="builder-box">

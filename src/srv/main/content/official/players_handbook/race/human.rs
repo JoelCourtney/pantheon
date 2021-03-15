@@ -2,7 +2,7 @@ crate::name!("Human");
 
 #[derive(Debug, Serialize, Deserialize, Default)]
 pub struct Human {
-    extra_language: Language,
+    extra_language: Language
 }
 
 #[content]
@@ -61,43 +61,27 @@ impl Race for Human {
     fn last(&mut self, c: &mut Character) {
         c.race_traits.extend(vec! [
             Feature (
-                indoc! { r"
-                    # Ability Score Increase
-
-                    Your ability scores each increase by 1."
-                },
+                "**Ability Score Increase:** Your ability scores each increase by `1`.",
                 Empty
             ),
             Feature (
-                indoc! { r"
-                    # Alignment
-
-                    Humans tend toward no particular alignment. The best and the worst are found among them."
-                },
+                "**Alignment:** Humans tend toward no particular alignment. The best and the worst are found among them.",
                 Empty
             ),
             Feature (
-                indoc! { r"
-                    # Age
-
-                    Humans reach adulthood in their late teens and live less than a century."
-                },
+                "**Age:** Humans reach adulthood in their late teens and live less than a century.",
                 Empty
             ),
             Feature (
-                indoc! { r"
-                    # Size
-
-                    Humans vary widely in height and build, from barely 5 feet to well over 6 feet tall. Regardless of your position in that range, your size is Medium."
-                },
+                "**Size:** Humans vary widely in height and build, from barely `5 feet` to well over `6 feet` tall. Regardless of your position in that range, your size is `Medium`.",
                 Empty
             ),
             Feature (
-                "# Speed\n\nYour base walking speed is 30 feet.",
+                "**Speed:** Your base walking speed is `30 feet`.",
                 Empty
             ),
             Feature (
-                "# Languages\n\nYou can speak, read, and write Common and one extra language of your choice. Humans typically learn the languages of other peoples they deal with, including obscure dialects. They are fond of sprinkling their speech with words borrowed from other tongues: Orc curses, Elvish musical expressions, Dwarvish military phrases, and so on.",
+                "**Languages:** You can speak, read, and write `Common` and one extra language of your choice. Humans typically learn the languages of other peoples they deal with, including obscure dialects. They are fond of sprinkling their speech with words borrowed from other tongues: Orc curses, Elvish musical expressions, Dwarvish military phrases, and so on.",
                 Any(&mut self.extra_language)
             )
         ]);

@@ -3,17 +3,35 @@ import {Writable, writable} from 'svelte/store';
 export let character: Writable<Promise<any>> = writable(getCharacter());
 
 async function getCharacter() {
+    return sendRequest(false, null);
+}
+
+export async function updateCharacter() {
+    character.set(getCharacter());
+}
+
+export async function editCharacter(request: any) {
+    character.set(sendRequest(true, request));
+}
+
+async function sendRequest(edit: boolean, data: any) {
     const location = window.location.hostname;
     const port = window.location.port;
-    const settings = {
+    let settings: any = {
         method: 'POST',
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
         }
     };
+    if (edit) {
+        settings.body = JSON.stringify(data);
+    }
     try {
-        const fetchResponse = await fetch(`http://${location}:${port}/`, settings);
+        const url = edit
+            ?`http://${location}:${port}/edit/`
+            :`http://${location}:${port}/`;
+        const fetchResponse = await fetch(url, settings);
         return await fetchResponse.json();
     } catch (e) {
         return e;

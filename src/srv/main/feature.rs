@@ -37,13 +37,13 @@ impl ChoiceSerial {
         ChoiceSerial {
             current_choices: current_choices.clone(),
             all_choices: (0..current_choices.len()).map(
-                |_| {
+                |i| {
                     if !unique {
                         all_choices.clone()
                     } else {
                         all_choices.clone()
                             .into_iter()
-                            .filter(|v| !current_choices.contains(v))
+                            .filter(|v| v == &current_choices[i] || !current_choices.contains(&v))
                             .collect()
                     }
                 }
