@@ -18,18 +18,13 @@ pub struct StoredCharacter {
     pub(crate) health: u32,
     pub(crate) temp_health: u32,
 
-    base_strength: u32,
-    base_dexterity: u32,
-    base_constitution: u32,
-    base_intelligence: u32,
-    base_wisdom: u32,
-    base_charisma: u32,
+    base_abilities: AbilityMap<u32>,
 
     alignment: Alignment,
 
     inspiration: bool,
 
-    money: [u32; 5],
+    money: MoneyTypeMap<u32>,
 
     pub(crate) race: Box<dyn Race>,
     classes: Vec<(Box<dyn Class>, u32)>,
@@ -52,14 +47,16 @@ impl StoredCharacter {
             health: Staged::new(self.health),
             temp_health: Staged::new(self.temp_health),
 
-            strength: Staged::new(self.base_strength),
-            dexterity: Staged::new(self.base_dexterity),
-            constitution: Staged::new(self.base_constitution),
-            intelligence: Staged::new(self.base_intelligence),
-            wisdom: Staged::new(self.base_wisdom),
-            charisma: Staged::new(self.base_charisma),
+            abilities: AbilityMap {
+                strength: Staged::new(self.base_abilities.strength),
+                dexterity: Staged::new(self.base_abilities.dexterity),
+                constitution: Staged::new(self.base_abilities.constitution),
+                intelligence: Staged::new(self.base_abilities.intelligence),
+                wisdom: Staged::new(self.base_abilities.wisdom),
+                charisma: Staged::new(self.base_abilities.charisma),
+            },
 
-            money: self.money,
+            money: self.money.clone(),
             inspiration: self.inspiration,
 
             alignment: self.alignment,
@@ -173,106 +170,22 @@ pub struct Character {
     pub armor_class: Staged<u32>,
 
     // ABILITIES
-    pub strength: Staged<u32>,
-    pub dexterity: Staged<u32>,
-    pub constitution: Staged<u32>,
-    pub intelligence: Staged<u32>,
-    pub wisdom: Staged<u32>,
-    pub charisma: Staged<u32>,
-
-    pub strength_modifier: Staged<i32>,
-    pub dexterity_modifier: Staged<i32>,
-    pub constitution_modifier: Staged<i32>,
-    pub intelligence_modifier: Staged<i32>,
-    pub wisdom_modifier: Staged<i32>,
-    pub charisma_modifier: Staged<i32>,
+    pub abilities: AbilityMap<Staged<u32>>,
+    pub ability_modifiers: AbilityMap<Staged<i32>>,
 
     // SKILLS
-    pub acrobatics: Staged<i32>,
-    pub animal_handling: Staged<i32>,
-    pub arcana: Staged<i32>,
-    pub athletics: Staged<i32>,
-    pub deception: Staged<i32>,
-    pub history: Staged<i32>,
-    pub insight: Staged<i32>,
-    pub intimidation: Staged<i32>,
-    pub investigation: Staged<i32>,
-    pub medicine: Staged<i32>,
-    pub nature: Staged<i32>,
-    pub perception: Staged<i32>,
-    pub performance: Staged<i32>,
-    pub persuasion: Staged<i32>,
-    pub religion: Staged<i32>,
-    pub sleight_of_hand: Staged<i32>,
-    pub stealth: Staged<i32>,
-    pub survival: Staged<i32>,
-
-    pub acrobatics_vantage: Staged<Vantage>,
-    pub animal_handling_vantage: Staged<Vantage>,
-    pub arcana_vantage: Staged<Vantage>,
-    pub athletics_vantage: Staged<Vantage>,
-    pub deception_vantage: Staged<Vantage>,
-    pub history_vantage: Staged<Vantage>,
-    pub insight_vantage: Staged<Vantage>,
-    pub intimidation_vantage: Staged<Vantage>,
-    pub investigation_vantage: Staged<Vantage>,
-    pub medicine_vantage: Staged<Vantage>,
-    pub nature_vantage: Staged<Vantage>,
-    pub perception_vantage: Staged<Vantage>,
-    pub performance_vantage: Staged<Vantage>,
-    pub persuasion_vantage: Staged<Vantage>,
-    pub religion_vantage: Staged<Vantage>,
-    pub sleight_of_hand_vantage: Staged<Vantage>,
-    pub stealth_vantage: Staged<Vantage>,
-    pub survival_vantage: Staged<Vantage>,
-
-    pub acrobatics_proficiency: Staged<ProficiencyType>,
-    pub animal_handling_proficiency: Staged<ProficiencyType>,
-    pub arcana_proficiency: Staged<ProficiencyType>,
-    pub athletics_proficiency: Staged<ProficiencyType>,
-    pub deception_proficiency: Staged<ProficiencyType>,
-    pub history_proficiency: Staged<ProficiencyType>,
-    pub insight_proficiency: Staged<ProficiencyType>,
-    pub intimidation_proficiency: Staged<ProficiencyType>,
-    pub investigation_proficiency: Staged<ProficiencyType>,
-    pub medicine_proficiency: Staged<ProficiencyType>,
-    pub nature_proficiency: Staged<ProficiencyType>,
-    pub perception_proficiency: Staged<ProficiencyType>,
-    pub performance_proficiency: Staged<ProficiencyType>,
-    pub persuasion_proficiency: Staged<ProficiencyType>,
-    pub religion_proficiency: Staged<ProficiencyType>,
-    pub sleight_of_hand_proficiency: Staged<ProficiencyType>,
-    pub stealth_proficiency: Staged<ProficiencyType>,
-    pub survival_proficiency: Staged<ProficiencyType>,
+    pub skills: SkillMap<Staged<i32>>,
+    pub skill_vantages: SkillMap<Staged<Vantage>>,
+    pub skill_proficiencies: SkillMap<Staged<ProficiencyType>>,
 
     // PASSIVES
-    pub passive_perception: Staged<i32>,
-    pub passive_investigation: Staged<i32>,
-    pub passive_insight: Staged<i32>,
+    pub passives: PassiveSkillMap<Staged<i32>>,
     pub passive_notes: Staged<Vec<&'static str>>,
 
     // SAVING THROWS
-    pub strength_save: Staged<i32>,
-    pub dexterity_save: Staged<i32>,
-    pub constitution_save: Staged<i32>,
-    pub intelligence_save: Staged<i32>,
-    pub wisdom_save: Staged<i32>,
-    pub charisma_save: Staged<i32>,
-
-    pub strength_save_vantage: Staged<Vantage>,
-    pub dexterity_save_vantage: Staged<Vantage>,
-    pub constitution_save_vantage: Staged<Vantage>,
-    pub intelligence_save_vantage: Staged<Vantage>,
-    pub wisdom_save_vantage: Staged<Vantage>,
-    pub charisma_save_vantage: Staged<Vantage>,
-
-    pub strength_save_proficiency: Staged<ProficiencyType>,
-    pub dexterity_save_proficiency: Staged<ProficiencyType>,
-    pub constitution_save_proficiency: Staged<ProficiencyType>,
-    pub intelligence_save_proficiency: Staged<ProficiencyType>,
-    pub wisdom_save_proficiency: Staged<ProficiencyType>,
-    pub charisma_save_proficiency: Staged<ProficiencyType>,
-
+    pub saves: AbilityMap<Staged<i32>>,
+    pub save_vantages: AbilityMap<Staged<Vantage>>,
+    pub save_proficiencies: AbilityMap<Staged<ProficiencyType>>,
     pub saving_throw_notes: Staged<Vec<&'static str>>,
 
     // SIZE
@@ -289,11 +202,7 @@ pub struct Character {
     pub conditions: Staged<Vec<&'static str>>,
 
     // SPEED
-    pub walking_speed: Staged<u32>,
-    pub flying_speed: Staged<u32>,
-    pub climbing_speed: Staged<u32>,
-    pub swimming_speed: Staged<u32>,
-    pub burrowing_speed: Staged<u32>,
+    pub speeds: MovementTypeMap<Staged<u32>>,
 
     // ATTACKS PER ACTION
     pub attacks_per_action: Staged<u32>,
@@ -328,137 +237,14 @@ pub struct Character {
     armor_choices: Vec<&'static str>,
     ammunition_choices: Vec<&'static str>,
 
-    money: [u32; 5],
+    money: MoneyTypeMap<u32>,
 
     inspiration: bool,
 
     alignment: Alignment,
 }
 
-impl Character {
-    // fn get_skill(&self, s: Skill) -> &Staged<i32> {
-    //     match s {
-    //         Skill::Acrobatics => &self.acrobatics,
-    //         Skill::AnimalHandling => &self.animal_handling,
-    //         Skill::Arcana => &self.arcana,
-    //         Skill::Athletics => &self.athletics,
-    //         Skill::Deception => &self.deception,
-    //         Skill::History => &self.history,
-    //         Skill::Insight => &self.insight,
-    //         Skill::Intimidation => &self.intimidation,
-    //         Skill::Investigation => &self.investigation,
-    //         Skill::Medicine => &self.medicine,
-    //         Skill::Nature => &self.nature,
-    //         Skill::Perception => &self.perception,
-    //         Skill::Performance => &self.performance,
-    //         Skill::Persuasion => &self.persuasion,
-    //         Skill::Religion => &self.religion,
-    //         Skill::SleightOfHand => &self.sleight_of_hand,
-    //         Skill::Stealth => &self.stealth,
-    //         Skill::Survival => &self.survival,
-    //         Skill::Unknown => panic!("cannot get unknown skill")
-    //     }
-    // }
-    //
-    // pub(crate) fn get_mut_skill(&mut self, s: Skill) -> &mut Staged<i32> {
-    //     match s {
-    //         Skill::Acrobatics => &mut self.acrobatics,
-    //         Skill::AnimalHandling => &mut self.animal_handling,
-    //         Skill::Arcana => &mut self.arcana,
-    //         Skill::Athletics => &mut self.athletics,
-    //         Skill::Deception => &mut self.deception,
-    //         Skill::History => &mut self.history,
-    //         Skill::Insight => &mut self.insight,
-    //         Skill::Intimidation => &mut self.intimidation,
-    //         Skill::Investigation => &mut self.investigation,
-    //         Skill::Medicine => &mut self.medicine,
-    //         Skill::Nature => &mut self.nature,
-    //         Skill::Perception => &mut self.perception,
-    //         Skill::Performance => &mut self.performance,
-    //         Skill::Persuasion => &mut self.persuasion,
-    //         Skill::Religion => &mut self.religion,
-    //         Skill::SleightOfHand => &mut self.sleight_of_hand,
-    //         Skill::Stealth => &mut self.stealth,
-    //         Skill::Survival => &mut self.survival,
-    //         Skill::Unknown => panic!("cannot get unknown skill")
-    //     }
-    // }
-    //
-    // fn get_skill_proficiency(&self, s: Skill) -> &Staged<ProficiencyType> {
-    //     match s {
-    //         Skill::Acrobatics => &self.acrobatics_proficiency,
-    //         Skill::AnimalHandling => &self.animal_handling_proficiency,
-    //         Skill::Arcana => &self.arcana_proficiency,
-    //         Skill::Athletics => &self.athletics_proficiency,
-    //         Skill::Deception => &self.deception_proficiency,
-    //         Skill::History => &self.history_proficiency,
-    //         Skill::Insight => &self.insight_proficiency,
-    //         Skill::Intimidation => &self.intimidation_proficiency,
-    //         Skill::Investigation => &self.investigation_proficiency,
-    //         Skill::Medicine => &self.medicine_proficiency,
-    //         Skill::Nature => &self.nature_proficiency,
-    //         Skill::Perception => &self.perception_proficiency,
-    //         Skill::Performance => &self.performance_proficiency,
-    //         Skill::Persuasion => &self.persuasion_proficiency,
-    //         Skill::Religion => &self.religion_proficiency,
-    //         Skill::SleightOfHand => &self.sleight_of_hand_proficiency,
-    //         Skill::Stealth => &self.stealth_proficiency,
-    //         Skill::Survival => &self.survival_proficiency,
-    //         Skill::Unknown => panic!("cannot get unknown skill")
-    //     }
-    // }
-
-    pub(crate) fn get_mut_skill_proficiency(&mut self, s: Skill) -> Option<&mut Staged<ProficiencyType>> {
-        match s {
-            Skill::Acrobatics => Some(&mut self.acrobatics_proficiency),
-            Skill::AnimalHandling => Some(&mut self.animal_handling_proficiency),
-            Skill::Arcana => Some(&mut self.arcana_proficiency),
-            Skill::Athletics => Some(&mut self.athletics_proficiency),
-            Skill::Deception => Some(&mut self.deception_proficiency),
-            Skill::History => Some(&mut self.history_proficiency),
-            Skill::Insight => Some(&mut self.insight_proficiency),
-            Skill::Intimidation => Some(&mut self.intimidation_proficiency),
-            Skill::Investigation => Some(&mut self.investigation_proficiency),
-            Skill::Medicine => Some(&mut self.medicine_proficiency),
-            Skill::Nature => Some(&mut self.nature_proficiency),
-            Skill::Perception => Some(&mut self.perception_proficiency),
-            Skill::Performance => Some(&mut self.performance_proficiency),
-            Skill::Persuasion => Some(&mut self.persuasion_proficiency),
-            Skill::Religion => Some(&mut self.religion_proficiency),
-            Skill::SleightOfHand => Some(&mut self.sleight_of_hand_proficiency),
-            Skill::Stealth => Some(&mut self.stealth_proficiency),
-            Skill::Survival => Some(&mut self.survival_proficiency),
-            Skill::Unknown => None
-        }
-    }
-
-    #[allow(dead_code)]
-    pub(crate) fn get_ability(&self, a: Ability) -> Option<&Staged<u32>> {
-        match a {
-            Ability::Strength => Some(&self.strength),
-            Ability::Dexterity => Some(&self.dexterity),
-            Ability::Constitution => Some(&self.constitution),
-            Ability::Intelligence => Some(&self.intelligence),
-            Ability::Wisdom => Some(&self.wisdom),
-            Ability::Charisma => Some(&self.charisma),
-            Ability::Unknown => None
-        }
-    }
-
-    pub(crate) fn get_mut_ability(&mut self, a: Ability) -> Option<&mut Staged<u32>> {
-        match a {
-            Ability::Strength => Some(&mut self.strength),
-            Ability::Dexterity => Some(&mut self.dexterity),
-            Ability::Constitution => Some(&mut self.constitution),
-            Ability::Intelligence => Some(&mut self.intelligence),
-            Ability::Wisdom => Some(&mut self.wisdom),
-            Ability::Charisma => Some(&mut self.charisma),
-            Ability::Unknown => None
-        }
-    }
-}
-
-#[derive(Default, Debug)]
+#[derive(Default, Debug, Serialize)]
 pub struct Staged<T>
     where T: Default + Debug + Serialize {
     value: T,

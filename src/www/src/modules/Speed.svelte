@@ -4,5 +4,5 @@
 
 <div class="sheet-box">
     <h1 class="box-title">Walking Speed</h1>
-    <p class="sheet-box-number">{c.walking_speed} ft</p>
+    <p class="sheet-box-number">{c.speeds.walk} ft</p>
 </div>

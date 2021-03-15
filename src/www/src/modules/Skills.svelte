@@ -9,46 +9,46 @@
     <div uk-grid class="uk-grid-small">
         <div class="uk-width-auto uk-text-right">
             <ul class="uk-list uk-list-collapse">
-                <li class="proficiency-{c.acrobatics_proficiency.toLowerCase()}">Acrobatics</li>
-                <li class="proficiency-{c.animal_handling_proficiency.toLowerCase()}">Animal Handling</li>
-                <li class="proficiency-{c.arcana_proficiency.toLowerCase()}">Arcana</li>
-                <li class="proficiency-{c.athletics_proficiency.toLowerCase()}">Athletics</li>
-                <li class="proficiency-{c.deception_proficiency.toLowerCase()}">Deception</li>
-                <li class="proficiency-{c.history_proficiency.toLowerCase()}">History</li>
-                <li class="proficiency-{c.insight_proficiency.toLowerCase()}">Insight</li>
-                <li class="proficiency-{c.intimidation_proficiency.toLowerCase()}">Intimidation</li>
-                <li class="proficiency-{c.investigation_proficiency.toLowerCase()}">Investigation</li>
-                <li class="proficiency-{c.medicine_proficiency.toLowerCase()}">Medicine</li>
-                <li class="proficiency-{c.nature_proficiency.toLowerCase()}">Nature</li>
-                <li class="proficiency-{c.perception_proficiency.toLowerCase()}">Perception</li>
-                <li class="proficiency-{c.performance_proficiency.toLowerCase()}">Performance</li>
-                <li class="proficiency-{c.persuasion_proficiency.toLowerCase()}">Persuasion</li>
-                <li class="proficiency-{c.religion_proficiency.toLowerCase()}">Religion</li>
-                <li class="proficiency-{c.sleight_of_hand_proficiency.toLowerCase()}">Sleight of Hand</li>
-                <li class="proficiency-{c.stealth_proficiency.toLowerCase()}">Stealth</li>
-                <li class="proficiency-{c.survival_proficiency.toLowerCase()}">Survival</li>
+                <li class="proficiency-{c.skill_proficiencies.acrobatics.toLowerCase()}">Acrobatics</li>
+                <li class="proficiency-{c.skill_proficiencies.animal_handling.toLowerCase()}">Animal Handling</li>
+                <li class="proficiency-{c.skill_proficiencies.arcana.toLowerCase()}">Arcana</li>
+                <li class="proficiency-{c.skill_proficiencies.athletics.toLowerCase()}">Athletics</li>
+                <li class="proficiency-{c.skill_proficiencies.deception.toLowerCase()}">Deception</li>
+                <li class="proficiency-{c.skill_proficiencies.history.toLowerCase()}">History</li>
+                <li class="proficiency-{c.skill_proficiencies.insight.toLowerCase()}">Insight</li>
+                <li class="proficiency-{c.skill_proficiencies.intimidation.toLowerCase()}">Intimidation</li>
+                <li class="proficiency-{c.skill_proficiencies.investigation.toLowerCase()}">Investigation</li>
+                <li class="proficiency-{c.skill_proficiencies.medicine.toLowerCase()}">Medicine</li>
+                <li class="proficiency-{c.skill_proficiencies.nature.toLowerCase()}">Nature</li>
+                <li class="proficiency-{c.skill_proficiencies.perception.toLowerCase()}">Perception</li>
+                <li class="proficiency-{c.skill_proficiencies.performance.toLowerCase()}">Performance</li>
+                <li class="proficiency-{c.skill_proficiencies.persuasion.toLowerCase()}">Persuasion</li>
+                <li class="proficiency-{c.skill_proficiencies.religion.toLowerCase()}">Religion</li>
+                <li class="proficiency-{c.skill_proficiencies.sleight_of_hand.toLowerCase()}">Sleight of Hand</li>
+                <li class="proficiency-{c.skill_proficiencies.stealth.toLowerCase()}">Stealth</li>
+                <li class="proficiency-{c.skill_proficiencies.survival.toLowerCase()}">Survival</li>
             </ul>
         </div>
         <div class="uk-width-auto uk-text-left">
             <ul class="uk-list uk-list-collapse">
-                <li>{signedInt(c.acrobatics)}</li>
-                <li>{signedInt(c.animal_handling)}</li>
-                <li>{signedInt(c.arcana)}</li>
-                <li>{signedInt(c.athletics)}</li>
-                <li>{signedInt(c.deception)}</li>
-                <li>{signedInt(c.history)}</li>
-                <li>{signedInt(c.insight)}</li>
-                <li>{signedInt(c.intimidation)}</li>
-                <li>{signedInt(c.investigation)}</li>
-                <li>{signedInt(c.medicine)}</li>
-                <li>{signedInt(c.nature)}</li>
-                <li>{signedInt(c.perception)}</li>
-                <li>{signedInt(c.performance)}</li>
-                <li>{signedInt(c.persuasion)}</li>
-                <li>{signedInt(c.religion)}</li>
-                <li>{signedInt(c.sleight_of_hand)}</li>
-                <li>{signedInt(c.stealth)}</li>
-                <li>{signedInt(c.survival)}</li>
+                <li>{signedInt(c.skills.acrobatics)}</li>
+                <li>{signedInt(c.skills.animal_handling)}</li>
+                <li>{signedInt(c.skills.arcana)}</li>
+                <li>{signedInt(c.skills.athletics)}</li>
+                <li>{signedInt(c.skills.deception)}</li>
+                <li>{signedInt(c.skills.history)}</li>
+                <li>{signedInt(c.skills.insight)}</li>
+                <li>{signedInt(c.skills.intimidation)}</li>
+                <li>{signedInt(c.skills.investigation)}</li>
+                <li>{signedInt(c.skills.medicine)}</li>
+                <li>{signedInt(c.skills.nature)}</li>
+                <li>{signedInt(c.skills.perception)}</li>
+                <li>{signedInt(c.skills.performance)}</li>
+                <li>{signedInt(c.skills.persuasion)}</li>
+                <li>{signedInt(c.skills.religion)}</li>
+                <li>{signedInt(c.skills.sleight_of_hand)}</li>
+                <li>{signedInt(c.skills.stealth)}</li>
+                <li>{signedInt(c.skills.survival)}</li>
             </ul>
         </div>
     </div>

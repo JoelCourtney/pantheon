@@ -21,11 +21,11 @@ impl Class for Rogue {
         c.weapon_proficiencies.declare_initializer(NAME);
         c.tool_proficiencies.declare_initializer(NAME);
 
-        c.dexterity_save_proficiency.declare_initializer(NAME);
-        c.intelligence_save_proficiency.declare_initializer(NAME);
+        c.save_proficiencies.dexterity.declare_initializer(NAME);
+        c.save_proficiencies.intelligence.declare_initializer(NAME);
 
         for skill in &self.skill_proficiencies {
-            match c.get_mut_skill_proficiency(skill.into()) {
+            match c.skill_proficiencies.get_mut(skill.into()) {
                 Some(s) => s.declare_initializer(NAME),
                 None => {}
             }
@@ -52,15 +52,15 @@ impl Class for Rogue {
             (*c.tool_proficiencies).push(("Diebs' Tools", ProficiencyType::Single));
         }
 
-        if c.dexterity_save_proficiency.initialize(NAME) {
-            *c.dexterity_save_proficiency = ProficiencyType::Single;
+        if c.save_proficiencies.dexterity.initialize(NAME) {
+            *c.save_proficiencies.dexterity = ProficiencyType::Single;
         }
-        if c.intelligence_save_proficiency.initialize(NAME) {
-            *c.intelligence_save_proficiency = ProficiencyType::Single;
+        if c.save_proficiencies.intelligence.initialize(NAME) {
+            *c.save_proficiencies.intelligence = ProficiencyType::Single;
         }
 
         for skill in &self.skill_proficiencies {
-            match c.get_mut_skill_proficiency(skill.into()) {
+            match c.skill_proficiencies.get_mut(skill.into()) {
                 Some(s) => {
                     if s.initialize(NAME) {
                         **s = ProficiencyType::Single

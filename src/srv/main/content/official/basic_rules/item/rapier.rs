@@ -18,8 +18,8 @@ impl Item for Rapier {
         }
     }
     fn iterate(&self, c: &mut Character, equipped: Equipped, _attuned: bool) {
-        if c.strength_modifier.ready() && c.dexterity_modifier.ready() {
-            let ability = if *c.strength_modifier > *c.dexterity_modifier {
+        if c.ability_modifiers.strength.ready() && c.ability_modifiers.dexterity.ready() {
+            let ability = if *c.ability_modifiers.strength > *c.ability_modifiers.dexterity {
                 Ability::Strength
             } else {
                 Ability::Dexterity

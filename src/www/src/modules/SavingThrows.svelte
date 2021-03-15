@@ -10,22 +10,22 @@
         <div uk-grid class="uk-grid-small uk-flex-center">
             <div class="uk-text-right">
                 <ul class="uk-list uk-list-collapse">
-                    <li class="proficiency-{c.strength_save_proficiency.toLowerCase()}">Strength</li>
-                    <li class="proficiency-{c.dexterity_save_proficiency.toLowerCase()}">Dexterity</li>
-                    <li class="proficiency-{c.constitution_save_proficiency.toLowerCase()}">Constitution</li>
-                    <li class="proficiency-{c.intelligence_save_proficiency.toLowerCase()}">Intelligence</li>
-                    <li class="proficiency-{c.wisdom_save_proficiency.toLowerCase()}">Wisdom</li>
-                    <li class="proficiency-{c.charisma_save_proficiency.toLowerCase()}">Charisma</li>
+                    <li class="proficiency-{c.save_proficiencies.strength.toLowerCase()}">Strength</li>
+                    <li class="proficiency-{c.save_proficiencies.dexterity.toLowerCase()}">Dexterity</li>
+                    <li class="proficiency-{c.save_proficiencies.constitution.toLowerCase()}">Constitution</li>
+                    <li class="proficiency-{c.save_proficiencies.intelligence.toLowerCase()}">Intelligence</li>
+                    <li class="proficiency-{c.save_proficiencies.wisdom.toLowerCase()}">Wisdom</li>
+                    <li class="proficiency-{c.save_proficiencies.charisma.toLowerCase()}">Charisma</li>
                 </ul>
             </div>
             <div class="uk-text-left">
                 <ul class="uk-list uk-list-collapse">
-                    <li>{signedInt(c.strength_save)}</li>
-                    <li>{signedInt(c.dexterity_save)}</li>
-                    <li>{signedInt(c.constitution_save)}</li>
-                    <li>{signedInt(c.intelligence_save)}</li>
-                    <li>{signedInt(c.wisdom_save)}</li>
-                    <li>{signedInt(c.charisma_save)}</li>
+                    <li>{signedInt(c.saves.strength)}</li>
+                    <li>{signedInt(c.saves.dexterity)}</li>
+                    <li>{signedInt(c.saves.constitution)}</li>
+                    <li>{signedInt(c.saves.intelligence)}</li>
+                    <li>{signedInt(c.saves.wisdom)}</li>
+                    <li>{signedInt(c.saves.charisma)}</li>
                 </ul>
             </div>
         </div>

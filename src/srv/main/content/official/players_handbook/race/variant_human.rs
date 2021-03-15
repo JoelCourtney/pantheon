@@ -19,13 +19,13 @@ impl Race for VariantHuman {
         c.languages.declare_initializer(NAME);
 
         for ability in &self.abilities {
-            match c.get_mut_ability(*ability) {
+            match c.abilities.get_mut(*ability) {
                 Some(a) => a.declare_modifier(NAME),
                 None => {}
             }
         }
 
-        match c.get_mut_skill_proficiency(self.skill) {
+        match c.skill_proficiencies.get_mut(self.skill) {
             Some(s) => s.declare_initializer(NAME),
             None => {}
         }
@@ -47,7 +47,7 @@ impl Race for VariantHuman {
         }
 
         for ability in &self.abilities {
-            match c.get_mut_ability(*ability) {
+            match c.abilities.get_mut(*ability) {
                 Some(a) => {
                     if a.modify(NAME) {
                         **a += 1;
@@ -57,7 +57,7 @@ impl Race for VariantHuman {
             }
         }
 
-        match c.get_mut_skill_proficiency(self.skill) {
+        match c.skill_proficiencies.get_mut(self.skill) {
             Some(s) => {
                 if s.initialize(NAME) {
                     **s = ProficiencyType::Single;

@@ -5,6 +5,7 @@ use std::collections::HashMap;
 use maplit::hashmap;
 use std::fmt::Display;
 use serde::__private::Formatter;
+use enum_iterator::IntoEnumIterator;
 
 /// Represents an amount of damage.
 ///
@@ -237,6 +238,53 @@ pub enum Skill {
     Unknown
 }
 
+impl Skill {
+    pub fn get_associated_ability(&self) -> Ability {
+        use Ability::*;
+        match self {
+            Skill::Acrobatics => Dexterity,
+            Skill::AnimalHandling => Wisdom,
+            Skill::Arcana => Intelligence,
+            Skill::Athletics => Strength,
+            Skill::Deception => Charisma,
+            Skill::History => Intelligence,
+            Skill::Insight => Wisdom,
+            Skill::Intimidation => Charisma,
+            Skill::Investigation => Intelligence,
+            Skill::Medicine => Wisdom,
+            Skill::Nature => Intelligence,
+            Skill::Perception => Wisdom,
+            Skill::Performance => Charisma,
+            Skill::Persuasion => Charisma,
+            Skill::Religion => Intelligence,
+            Skill::SleightOfHand => Dexterity,
+            Skill::Stealth => Dexterity,
+            Skill::Survival => Wisdom,
+            Skill::Unknown => Unknown
+        }
+    }
+}
+
+#[choose]
+pub enum PassiveSkill {
+    Perception,
+    Investigation,
+    Insight,
+    Unknown
+}
+
+impl PassiveSkill {
+    pub fn into_skill(self) -> Skill {
+        use Skill::*;
+        match self {
+            PassiveSkill::Perception => Perception,
+            PassiveSkill::Investigation => Investigation,
+            PassiveSkill::Insight => Insight,
+            PassiveSkill::Unknown => Unknown
+        }
+    }
+}
+
 #[choose]
 pub enum SavingThrow {
     Strength,
@@ -331,4 +379,24 @@ impl Vantage {
 
 impl Default for Vantage {
     fn default() -> Self { Vantage::None }
+}
+
+#[choose]
+pub enum MovementType {
+    Walk,
+    Fly,
+    Climb,
+    Burrow,
+    Swim,
+    Unknown
+}
+
+#[choose]
+pub enum MoneyType {
+    Platinum,
+    Gold,
+    Electrum,
+    Silver,
+    Copper,
+    Unknown
 }

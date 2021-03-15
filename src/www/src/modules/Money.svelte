@@ -16,9 +16,11 @@
         </div>
         <div class="uk-width-auto uk-text-left">
             <ul class="uk-list uk-list-collapse">
-                {#each c.money as m}
-                    <li>{m}</li>
-                {/each}
+                <li>{c.money.platinum}</li>
+                <li>{c.money.gold}</li>
+                <li>{c.money.electrum}</li>
+                <li>{c.money.silver}</li>
+                <li>{c.money.copper}</li>
             </ul>
         </div>
     </div>

@@ -12,7 +12,7 @@ pub(crate) fn choose(ast: syn::DeriveInput) -> TokenStream {
             }).collect();
             let process = process_enum_choose(ident.to_string(), vars);
             quote! {
-                #[derive(Debug, Serialize, Deserialize, Copy, Clone, Hash, Eq, PartialEq)]
+                #[derive(Debug, Serialize, Deserialize, Copy, Clone, Hash, Eq, PartialEq, IntoEnumIterator)]
                 #ast
                 #process
             }
@@ -27,24 +27,44 @@ fn process_enum_choose(name: String, vars: Vec<String>) -> TokenStream2 {
     let enum_ident = format_ident!("{}", name);
 
     let mut choices = "".to_string();
-    for var in &vars {
-        if var != "Unknown" {
-            choices.extend(format!(r#""{}","#, var).chars());
-        }
-    }
-    let choices_tokens: TokenStream2 = choices.parse().expect("choices parse failed");
     let mut match_rules = "".to_string();
     let mut reverse_match_rules = "".to_string();
+    let mut map_fields = "".to_string();
+    let mut map_unwrap_fields = "".to_string();
+    let mut map_get_rules = "".to_string();
+    let mut map_get_mut_rules = "".to_string();
+    let mut map_count = "".to_string();
     for var in &vars {
+        let snake_var = var.to_snake_case();
         if var != "Unknown" {
+            choices.extend(format!(r#""{}","#, var).chars());
             match_rules.extend(format!(r#""{}" => {}::{},{}"#, var, name, var, "\n").chars());
+            map_fields.extend(format!("pub {}: T,\n", snake_var).chars());
+            map_unwrap_fields.extend(format!("{}: self.{}.unwrap(),\n", snake_var, snake_var).chars());
+            map_get_rules.extend(format!("{}::{} => Some(&self.{}),\n", name, var, snake_var).chars());
+            map_get_mut_rules.extend(format!("{}::{} => Some(&mut self.{}),\n", name, var, snake_var).chars());
+            map_count.extend(format!("self.{}.count_unresolved() +\n", snake_var).chars());
         }
         reverse_match_rules.extend(format!(r#"{}::{} => "{}",{}"#, name, var, var, "\n").chars());
     }
+    let choices_tokens: TokenStream2 = choices.parse().expect("choices parse failed");
     let match_rules_tokens: TokenStream2 = match_rules.parse().expect("match rules parse failed");
     let reverse_match_rules_tokens: TokenStream2 = reverse_match_rules.parse().expect("reverse match rules failed");
+    let map_fields_tokens: TokenStream2 = map_fields.parse().expect("map fields parse failed");
+    let map_unwrap_fields_tokens: TokenStream2 = map_unwrap_fields.parse().expect("map unwrap fields parse failed");
+    let map_get_rules_tokens: TokenStream2 = map_get_rules.parse().expect("map get rules parse failed");
+    let map_get_mut_rules_tokens: TokenStream2 = map_get_mut_rules.parse().expect("map get mut rules parse failed");
+    let map_count_tokens: TokenStream2 = map_count.parse().expect("map count parse failed");
+
+    let map_ident = format_ident!("{}Map", name);
 
     quote! {
+        impl #enum_ident {
+            pub fn known(&self) -> bool {
+                *self != #enum_ident::Unknown
+            }
+        }
+
         impl Choose for #enum_ident {
             fn choose(&mut self, choice: &str, index: usize) {
                 if index == 0 {
@@ -105,6 +125,50 @@ fn process_enum_choose(name: String, vars: Vec<String>) -> TokenStream2 {
         impl Default for #enum_ident {
             fn default() -> Self {
                 #enum_ident::Unknown
+            }
+        }
+
+        #[derive(Debug, Serialize, Deserialize, Default, Clone)]
+        pub struct #map_ident<T>
+            where T: std::fmt::Debug + serde::Serialize + Default {
+            #map_fields_tokens
+        }
+
+        impl<T> #map_ident<T>
+            where T: std::fmt::Debug + serde::Serialize + Default {
+            pub fn get(&self, var: #enum_ident) -> Option<&T> {
+                match var {
+                    #map_get_rules_tokens
+                    #enum_ident::Unknown => None
+                }
+            }
+
+            pub fn get_known(&self, var: #enum_ident) -> &T {
+                self.get(var).unwrap()
+            }
+
+            pub fn get_mut(&mut self, var: #enum_ident) -> Option<&mut T> {
+                match var {
+                    #map_get_mut_rules_tokens
+                    #enum_ident::Unknown => None
+                }
+            }
+
+            pub fn get_mut_known(&mut self, var: #enum_ident) -> &mut T {
+                self.get_mut(var).unwrap()
+            }
+        }
+
+        impl<T> #map_ident<crate::character::Staged<T>>
+            where T: std::fmt::Debug + serde::Serialize + Default {
+            pub fn unwrap(self) -> #map_ident<T> {
+                #map_ident {
+                    #map_unwrap_fields_tokens
+                }
+            }
+
+            pub fn count_unresolved(&self) -> u32 {
+                #map_count_tokens 0
             }
         }
     }

@@ -13,11 +13,11 @@ impl Race for Halfling {
         common_race_rules::declare(c, self);
 
         c.size.declare_initializer(NAME);
-        c.walking_speed.declare_initializer(NAME);
+        c.speeds.walk.declare_initializer(NAME);
 
         c.saving_throw_notes.declare_initializer(NAME);
 
-        c.dexterity.declare_modifier(NAME);
+        c.abilities.dexterity.declare_modifier(NAME);
 
         c.languages.declare_initializer(NAME);
 
@@ -29,8 +29,8 @@ impl Race for Halfling {
         if c.size.initialize(NAME) {
             *c.size = CreatureSize::Small;
         }
-        if c.walking_speed.initialize(NAME) {
-            *c.walking_speed = 25;
+        if c.speeds.walk.initialize(NAME) {
+            *c.speeds.walk = 25;
         }
 
         if c.saving_throw_notes.initialize(NAME) {
@@ -41,8 +41,8 @@ impl Race for Halfling {
             (*c.languages).push(Language::Common);
         }
 
-        if c.dexterity.modify(NAME) {
-            *c.dexterity += 2;
+        if c.abilities.dexterity.modify(NAME) {
+            *c.abilities.dexterity += 2;
         }
 
 

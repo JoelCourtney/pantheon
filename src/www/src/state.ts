@@ -3,7 +3,9 @@ import {Writable, writable} from 'svelte/store';
 export let character: Writable<Promise<any>> = writable(getCharacter());
 
 async function getCharacter() {
-    return sendRequest(false, null);
+    let c = sendRequest(false, null);
+    console.log(c);
+    return c;
 }
 
 export async function updateCharacter() {

@@ -8,13 +8,13 @@ impl HalflingSubrace for Stout {
     properties! {}
 
     fn declare(&self, c: &mut Character) {
-        c.constitution.declare_modifier(NAME);
+        c.abilities.constitution.declare_modifier(NAME);
         c.saving_throw_notes.declare_initializer(NAME);
         c.defenses.declare_initializer(NAME);
     }
     fn iterate(&self, c: &mut Character) {
-        if c.constitution.modify(NAME) {
-            *c.constitution += 1;
+        if c.abilities.constitution.modify(NAME) {
+            *c.abilities.constitution += 1;
         }
         if c.saving_throw_notes.initialize(NAME) {
             (*c.saving_throw_notes).push("**ADV** against poisoned");

@@ -13,15 +13,15 @@ impl Race for Human {
         common_race_rules::declare(c, self);
 
         c.size.declare_initializer(NAME);
-        c.walking_speed.declare_initializer(NAME);
+        c.speeds.walk.declare_initializer(NAME);
         c.languages.declare_initializer(NAME);
 
-        c.strength.declare_modifier(NAME);
-        c.dexterity.declare_modifier(NAME);
-        c.constitution.declare_modifier(NAME);
-        c.intelligence.declare_modifier(NAME);
-        c.wisdom.declare_modifier(NAME);
-        c.charisma.declare_modifier(NAME);
+        c.abilities.strength.declare_modifier(NAME);
+        c.abilities.dexterity.declare_modifier(NAME);
+        c.abilities.constitution.declare_modifier(NAME);
+        c.abilities.intelligence.declare_modifier(NAME);
+        c.abilities.wisdom.declare_modifier(NAME);
+        c.abilities.charisma.declare_modifier(NAME);
     }
     fn iterate(&self, c: &mut Character) {
         common_race_rules::iterate(c, self);
@@ -29,8 +29,8 @@ impl Race for Human {
         if c.size.initialize(NAME) {
             *c.size = CreatureSize::Medium;
         }
-        if c.walking_speed.initialize(NAME) {
-            *c.walking_speed = 30;
+        if c.speeds.walk.initialize(NAME) {
+            *c.speeds.walk = 30;
         }
 
         if c.languages.initialize(NAME) {
@@ -41,23 +41,23 @@ impl Race for Human {
         }
 
         // MODIFY
-        if c.strength.modify(NAME) {
-            *c.strength += 1;
+        if c.abilities.strength.modify(NAME) {
+            *c.abilities.strength += 1;
         }
-        if c.dexterity.modify(NAME) {
-            *c.dexterity += 1;
+        if c.abilities.dexterity.modify(NAME) {
+            *c.abilities.dexterity += 1;
         }
-        if c.constitution.modify(NAME) {
-            *c.constitution += 1;
+        if c.abilities.constitution.modify(NAME) {
+            *c.abilities.constitution += 1;
         }
-        if c.intelligence.modify(NAME) {
-            *c.intelligence += 1;
+        if c.abilities.intelligence.modify(NAME) {
+            *c.abilities.intelligence += 1;
         }
-        if c.wisdom.modify(NAME) {
-            *c.wisdom += 1;
+        if c.abilities.wisdom.modify(NAME) {
+            *c.abilities.wisdom += 1;
         }
-        if c.charisma.modify(NAME) {
-            *c.charisma += 1;
+        if c.abilities.charisma.modify(NAME) {
+            *c.abilities.charisma += 1;
         }
     }
     fn last(&mut self, c: &mut Character) {

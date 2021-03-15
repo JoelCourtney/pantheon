@@ -15,9 +15,9 @@
             </div>
             <div class="uk-text-left">
                 <ul class="uk-list uk-list-collapse">
-                    <li>{c.passive_perception}</li>
-                    <li>{c.passive_investigation}</li>
-                    <li>{c.passive_insight}</li>
+                    <li>{c.passives.perception}</li>
+                    <li>{c.passives.investigation}</li>
+                    <li>{c.passives.insight}</li>
                 </ul>
             </div>
         </div>

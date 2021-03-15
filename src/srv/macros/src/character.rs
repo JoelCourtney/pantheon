@@ -1,5 +1,6 @@
 use proc_macro::TokenStream;
 use quote::quote;
+use syn::{PathSegment, TypePath};
 
 pub(crate) fn finalize(ast: syn::DeriveInput) -> TokenStream {
     if &ast.ident.to_string() != "Character" {
@@ -38,28 +39,7 @@ pub(crate) fn finalize(ast: syn::DeriveInput) -> TokenStream {
                         let first = &seg.first()
                             .expect("path has no segments?");
                         if &first.ident.to_string() == "Staged" {
-                            let target = match &first.arguments {
-                                syn::PathArguments::AngleBracketed(
-                                    syn::AngleBracketedGenericArguments {
-                                        args,
-                                        ..
-                                    }
-                                ) => {
-                                    match args.first().expect("path arg has no segments?") {
-                                        syn::GenericArgument::Type(
-                                            syn::Type::Path(
-                                                arg_ty @ syn::TypePath { .. }
-                                            )
-                                        ) => {
-                                            arg_ty
-                                        }
-                                        _ => panic!("expected generic argument")
-                                    }
-                                }
-                                _ => {
-                                    panic!("expected angle bracketed type args")
-                                }
-                            };
+                            let target = extract_type_argument(first);
                             count_unresolved_acc = quote! {
                                 #count_unresolved_acc
                                 + self.#id.count_unresolved()
@@ -67,6 +47,22 @@ pub(crate) fn finalize(ast: syn::DeriveInput) -> TokenStream {
                             final_character_acc = quote! {
                                 #final_character_acc
                                 pub #id: #target,
+                            };
+                            finalize_acc = quote! {
+                                #finalize_acc
+                                #id: self.#id.unwrap(),
+                            };
+                        } else if first.ident.to_string().contains("Map")
+                            && extract_type_argument(first).path.segments.first().unwrap().ident.to_string() == "Staged" {
+                            let target = extract_type_argument(extract_type_argument(first).path.segments.first().unwrap());
+                            let map_ident = &first.ident;
+                            count_unresolved_acc = quote! {
+                                #count_unresolved_acc
+                                + self.#id.count_unresolved()
+                            };
+                            final_character_acc = quote! {
+                                #final_character_acc
+                                pub #id: #map_ident<#target>,
                             };
                             finalize_acc = quote! {
                                 #finalize_acc
@@ -82,7 +78,6 @@ pub(crate) fn finalize(ast: syn::DeriveInput) -> TokenStream {
                                 #id: self.#id,
                             };
                         }
-
                     }
                     _ => {
                         final_character_acc = quote! {
@@ -117,5 +112,28 @@ pub(crate) fn finalize(ast: syn::DeriveInput) -> TokenStream {
         _ => (quote! {
             compile_error!("must be applied to the Character struct only");
         }).into()
+    }
+}
+
+fn extract_type_argument(first: &PathSegment) -> &TypePath {
+    match &first.arguments {
+        syn::PathArguments::AngleBracketed(
+            syn::AngleBracketedGenericArguments {
+                args,
+                ..
+            }
+        ) => {
+            match args.first().expect("path arg has no segments?") {
+                syn::GenericArgument::Type(
+                    syn::Type::Path(
+                        arg_ty
+                    )
+                ) => arg_ty,
+                _ => panic!("expected generic argument")
+            }
+        }
+        _ => {
+            panic!("expected angle bracketed type args")
+        }
     }
 }
