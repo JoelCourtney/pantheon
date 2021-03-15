@@ -52,7 +52,7 @@ If you make any changes to the client-side code, you do need to rebuild the serv
 
 Any changes to the frontend will require you to rebuild it with `npm run build --prefix src/www`. Or, you can use `npm run watch --prefix src/www` instead to watch for changes and rebuild automatically. Then, you will need to rebuild the server if you are not in dev mode (see end).
 
-### UI Style
+#### UI Style
 
 If you make any changes in `src/www/uikit-custom`, you will need to rebuild the uikit theme. Do that with:
 
