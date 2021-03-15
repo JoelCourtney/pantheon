@@ -3,7 +3,7 @@
 </script>
 
 <div class="sheet-box uk-width-small">
-    <h1 class="sheet-box-title-small">Statuses</h1>
+    <h1 class="box-title">Statuses</h1>
     <dl class="uk-description-list uk-text-left">
         <dt>Defenses</dt>
         <dd>{c.defenses.length?c.statuses.join(', '):'None'}</dd>

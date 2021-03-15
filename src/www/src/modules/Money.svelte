@@ -3,7 +3,7 @@
 </script>
 
 <div class="sheet-box uk-width-auto">
-    <h1 class="sheet-box-title-small">Currency</h1>
+    <h1 class="box-title">Currency</h1>
     <div uk-grid class="uk-grid-small">
         <div class="uk-width-auto uk-text-right">
             <ul class="uk-list uk-list-collapse">

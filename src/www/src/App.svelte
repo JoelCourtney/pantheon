@@ -24,6 +24,8 @@
     import Endcap from "./Endcap.svelte";
     import ClearLeft from "./ClearLeft.svelte";
 
+    import Builder from "./modules/Builder.svelte";
+
     $: $character.then((c) => {
         document.title = `${c.name} - DnDCent`;
     });
@@ -51,8 +53,8 @@
                 <Endcap id={0}>
                     <Moves {c}/>
                 </Endcap>
-                <Passives {c}/>
                 <SavingThrows {c}/>
+                <Passives {c}/>
                 <ClearLeft>
                     <Proficiencies {c}/>
                 </ClearLeft>
@@ -79,14 +81,7 @@
                 </Endcap>
                 <SavingThrows {c}/>
                 <Passives {c}/>
-                <ClearLeft>
-                    <Proficiencies {c}/>
-                </ClearLeft>
-                <Inventory {c}/>
-                <Endcap id={1}>
-                    <Statuses {c}/>
-                </Endcap>
-                <Money {c}/>
+                <Statuses {c}/>
             {:else if $view === 'roleplay'}
                 <Health {c}/>
             {:else if $view === 'equipment'}
@@ -103,6 +98,8 @@
                 <Health {c}/>
             {:else if $view === 'notes'}
                 <Health {c}/>
+            {:else if $view === 'builder'}
+                <Builder {c}/>
             {/if}
         </div>
     </div>

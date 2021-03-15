@@ -4,7 +4,7 @@
 
 <div class="sheet-box uk-width-auto">
     <div class="uk-inline">
-        <h1 class="sheet-box-title-small">Armor</h1>
+        <h1 class="box-title">Armor</h1>
         <button class="uk-button uk-button-default" type="button" id="armor-button">{c.armor?c.armor:'None'}</button>
     </div>
 </div>

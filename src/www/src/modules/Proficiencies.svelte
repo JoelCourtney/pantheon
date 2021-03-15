@@ -15,7 +15,7 @@
 </script>
 
 <div class="sheet-box uk-width-medium">
-    <h1 class="sheet-box-title-small">Proficiencies</h1>
+    <h1 class="box-title">Proficiencies</h1>
     <dl class="uk-description-list uk-text-left">
         <dt>Armor</dt>
         <dd>{c.armor_proficiencies.join(', ')}</dd>

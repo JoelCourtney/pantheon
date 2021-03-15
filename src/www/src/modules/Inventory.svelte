@@ -3,7 +3,7 @@
 </script>
 
 <div class="sheet-box uk-width-xlarge uk-height-max-large uk-overflow-auto">
-    <h1 class="sheet-box-title-small">Inventory</h1>
+    <h1 class="box-title">Inventory</h1>
     <table class="uk-table uk-table-small uk-table-divider uk-text-left">
         <caption>Weapons</caption>
         <thead>

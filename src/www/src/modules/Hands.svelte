@@ -5,11 +5,11 @@
 <div class="sheet-box uk-width-auto">
     <div uk-grid>
         <div class="uk-inline">
-            <h1 class="sheet-box-title-small">Left Hand</h1>
+            <h1 class="box-title">Left Hand</h1>
             <button class="uk-button uk-button-default" type="button" id="field-left_hand">{c.left_hand}</button>
         </div>
         <div class="uk-inline uk-padding-remove-left">
-            <h1 class="sheet-box-title-small">Right Hand</h1>
+            <h1 class="box-title">Right Hand</h1>
             <button class="uk-button uk-button-default" type="button" id="field-right_hand">{c.right_hand}</button>
         </div>
     </div>

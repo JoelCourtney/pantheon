@@ -3,7 +3,7 @@
 </script>
 
 <div class="sheet-box uk-width-auto">
-    <h1 class="sheet-box-title-small">Passives</h1>
+    <h1 class="box-title">Passives</h1>
     <div class="uk-width-shrink">
         <div uk-grid class="uk-grid-small uk-flex-center">
             <div class="uk-text-right">
