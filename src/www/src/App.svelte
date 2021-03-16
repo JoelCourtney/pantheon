@@ -1,7 +1,7 @@
 <script lang='ts'>
     import './main.css';
 
-    import {character, view} from './state.ts';
+    import {c, view} from './state.ts';
 
     import Sidebar from './modules/Sidebar.svelte';
     import Health from './modules/Health.svelte';
@@ -26,14 +26,16 @@
 
     import Builder from "./modules/Builder.svelte";
 
-    $: $character.then((c) => {
-        document.title = `${c.name} - DnDCent`;
-    });
+    $: {
+        if ($c !== null) {
+            document.title = `${$c.name} - DnDCent`;
+        }
+    }
 </script>
 
-{#await $character}
+{#if $c === null}
     <p>Fetching character.</p>
-{:then c}
+{:else}
     <div class="uk-flex">
         <Sidebar {c} {view}/>
         <div class="uk-padding uk-width-expand" id="sheet">
@@ -103,4 +105,4 @@
             {/if}
         </div>
     </div>
-{/await}
+{/if}

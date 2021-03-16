@@ -3,12 +3,22 @@
 
     import {render} from "../helpers.ts";
     import {editCharacter} from '../state.ts';
+
+    function updateName(name) {
+        if (name !== $c.name) {
+            editCharacter({
+                name: name
+            });
+        }
+    }
 </script>
 
 <div class="uk-grid-small uk-child-width-2-3 uk-flex-center" uk-grid>
     <div class="builder-box">
         <h1 class="box-title">Name</h1>
-        <input class="uk-input" placeholder="Person McPersonFace"/>
+        <input class="uk-input" placeholder="Person McPersonFace" value={$c.name}
+               on:focusout={(e) => {updateName(e.target.value)}}
+               on:keypress={(e) => {if (e.keyCode === 13) updateName(e.target.value)}}/>
     </div>
     <div class="builder-box">
         <h1 class="box-title">Abilities</h1>
@@ -37,14 +47,14 @@
         <h1 class="box-title">Race</h1>
         <select class="uk-select" on:change={
             editCharacter({
-                race: c.race_choices[this.value]
+                race: $c.race_choices[this.value]
             })
         }>
-            {#if c.race_name === 'Unknown Race'}
+            {#if $c.race_name === 'Unknown Race'}
                 <option selected value={-1}>Choose a race</option>
             {/if}
-            {#each c.race_choices as race, i}
-                {#if c.race_name === race}
+            {#each $c.race_choices as race, i}
+                {#if $c.race_name === race}
                     <option selected value={i}>{race}</option>
                 {:else}
                     <option value={i}>{race}</option>
@@ -56,7 +66,7 @@
             <li><a>Description</a></li>
         </ul>
         <ul class="uk-list uk-list-bullet uk-margin-remove-top">
-            {#each c.race_traits as trait, i}
+            {#each $c.race_traits as trait, i}
                 <li>
                     {@html render(trait[0])}
                     {#if trait[1] !== null}
@@ -67,7 +77,7 @@
                                         container: 'race',
                                         feature_index: i,
                                         choice_index: j,
-                                        choice: c.race_traits[i][1].all_choices[j][this.value]
+                                        choice: $c.race_traits[i][1].all_choices[j][this.value]
                                     }
                                 })
                             }>

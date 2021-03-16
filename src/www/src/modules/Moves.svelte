@@ -5,7 +5,7 @@
 
     let attackActions: Array<Array<string>> = [];
     let castActions: string = '';
-    for (let attack of c.attack_moves) {
+    for (let attack of $c.attack_moves) {
         let range = attack.range.Fixed;
         let row = [
             attack.name,
@@ -30,7 +30,7 @@
     <div id="move-actions">
         {#if attackActions.length}
             <table class="uk-table uk-table-small uk-table-divider uk-text-left">
-                <caption>Attacks ({c.attacks_per_action} per action)</caption>
+                <caption>Attacks ({$c.attacks_per_action} per action)</caption>
                 <thead>
                 <tr>
                     <th class="uk-width-small">Weapon</th>

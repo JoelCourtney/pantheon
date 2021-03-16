@@ -15,14 +15,14 @@
             </div>
             <div class="uk-text-left">
                 <ul class="uk-list uk-list-collapse">
-                    <li>{c.passives.perception}</li>
-                    <li>{c.passives.investigation}</li>
-                    <li>{c.passives.insight}</li>
+                    <li>{$c.passives.perception}</li>
+                    <li>{$c.passives.investigation}</li>
+                    <li>{$c.passives.insight}</li>
                 </ul>
             </div>
         </div>
     </div>
-    {#if c.passive_notes.length}
-        <p class="uk-margin-remove-bottom">{@html c.passive_notes.join('<br/>')}</p>
+    {#if $c.passive_notes.length}
+        <p class="uk-margin-remove-bottom">{@html $c.passive_notes.join('<br/>')}</p>
     {/if}
 </div>

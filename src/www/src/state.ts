@@ -1,19 +1,19 @@
 import {Writable, writable} from 'svelte/store';
 
-export let character: Writable<Promise<any>> = writable(getCharacter());
+export let c: Writable<any> = writable(null);
+updateCharacter();
 
 async function getCharacter() {
     let c = sendRequest(false, null);
-    console.log(c);
     return c;
 }
 
-export async function updateCharacter() {
-    character.set(getCharacter());
+export function updateCharacter() {
+    getCharacter().then((value) => c.set(value));
 }
 
 export async function editCharacter(request: any) {
-    character.set(sendRequest(true, request));
+    sendRequest(true, request).then((value) => c.set(value));
 }
 
 async function sendRequest(edit: boolean, data: any) {
