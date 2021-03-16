@@ -31,7 +31,7 @@ fn main() {
     let mut args = std::env::args();
     {
         if args.len() != 2 {
-            server::ignite("test_halfling.json".to_string(), true)
+            server::ignite("test_character.json".to_string(), true)
         } else {
             server::ignite(args.nth(1).expect("get 1st arg failed"), false)
         }

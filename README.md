@@ -68,4 +68,4 @@ In the root of the repo, you can run the server with `cargo run [FILE]` for debu
 
 ### Dev mode
 
-If [FILE] is not provided, it defaults to "test_human.json", which will be an error if run anywhere other than the root of the repo. Also, it will serve pages dynamically, so changes to the frontend files will be automatically be incorporated without rebuilding/restarting.
+If [FILE] is not provided, it defaults to "test_character.json", which will be an error if run anywhere other than the root of the repo. Also, it will serve pages dynamically, so changes to the frontend files will be automatically be incorporated without rebuilding/restarting.
