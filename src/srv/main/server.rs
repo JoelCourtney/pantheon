@@ -58,6 +58,7 @@ fn get_character(state: State<SharedData>) -> content::Json<String> {
 #[serde(rename_all = "snake_case")]
 enum EditRequest<'a> {
     Name(String),
+    Description(String),
     Health(u32),
     TempHealth(u32),
     Feature {
@@ -78,6 +79,7 @@ fn edit_character(data: Json<EditRequest>, state: State<SharedData>) -> content:
     use EditRequest::*;
     match data.into_inner() {
         Name(s) => (*stored_char).name = s,
+        Description(s) => (*stored_char).description = s,
         Health(u) => (*stored_char).health = u,
         TempHealth(u) => (*stored_char).temp_health = u,
         Race(r) => (*stored_char).race = crate::content::race(r).unwrap(),

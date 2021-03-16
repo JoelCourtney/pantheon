@@ -1,5 +1,5 @@
 {
-  "name": "It fuckin works!",
+  "name": "It fuckin",
   "health": 3,
   "temp_health": 4,
   "base_abilities": {
@@ -22,8 +22,8 @@
   "race": {
     "VariantHuman": {
       "abilities": [
-        "Dexterity",
-        "Wisdom"
+        "Wisdom",
+        "Constitution"
       ],
       "skill": "History",
       "feat": {
@@ -83,5 +83,6 @@
       "No",
       false
     ]
-  ]
+  ],
+  "description": "hello therea asdf asdf \n\n\nwasssu\na"
 }

@@ -4,11 +4,11 @@
     import {render} from "../helpers.ts";
     import {editCharacter} from '../state.ts';
 
-    function updateName(name) {
-        if (name !== $c.name) {
-            editCharacter({
-                name: name
-            });
+    function updateText(field, text) {
+        if (text !== $c[field]) {
+            let request: any = {};
+            request[field] = text;
+            editCharacter(request);
         }
     }
 </script>
@@ -17,8 +17,8 @@
     <div class="builder-box">
         <h1 class="box-title">Name</h1>
         <input class="uk-input" placeholder="Person McPersonFace" value={$c.name}
-               on:focusout={(e) => {updateName(e.target.value)}}
-               on:keypress={(e) => {if (e.keyCode === 13) updateName(e.target.value)}}/>
+               on:focusout={(e) => {updateText("name", e.target.value)}}
+               on:keypress={(e) => {if (e.keyCode === 13) updateText("name", e.target.value)}}/>
     </div>
     <div class="builder-box">
         <h1 class="box-title">Abilities</h1>
@@ -106,6 +106,7 @@
     </div>
     <div class="builder-box">
         <h1 class="box-title">Description</h1>
-        <textarea class="uk-textarea uk-height-large" placeholder="Insert tragic and edgy backstory here."></textarea>
+        <textarea class="uk-textarea uk-height-large" placeholder="Insert tragic and edgy backstory here." value={$c.description}
+            on:focusout={(e) => updateText("description", e.target.value)}/>
     </div>
 </div>

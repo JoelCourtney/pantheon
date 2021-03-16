@@ -29,7 +29,9 @@ pub struct StoredCharacter {
     pub(crate) race: Box<dyn Race>,
     classes: Vec<(Box<dyn Class>, u32)>,
 
-    inventory: Vec<(Box<dyn Item>, Equipped, bool)>
+    inventory: Vec<(Box<dyn Item>, Equipped, bool)>,
+
+    pub(crate) description: String
 }
 
 impl StoredCharacter {
@@ -43,7 +45,6 @@ impl StoredCharacter {
     }
     pub fn resolve(&mut self) -> Result<FinalCharacter, ()> {
         let mut char = Character {
-            name: Staged::new(self.name.clone()),
             health: Staged::new(self.health),
             temp_health: Staged::new(self.temp_health),
 
@@ -55,6 +56,9 @@ impl StoredCharacter {
                 wisdom: Staged::new(self.base_abilities.wisdom),
                 charisma: Staged::new(self.base_abilities.charisma),
             },
+
+            name: self.name.clone(),
+            description: self.description.clone(),
 
             money: self.money.clone(),
             inspiration: self.inspiration,
@@ -152,7 +156,6 @@ impl StoredCharacter {
 
 #[derive(Debug, Default, FinalizeCharacter)]
 pub struct Character {
-    pub name: Staged<String>,
     pub total_level: Staged<u32>,
     pub race_name: Staged<String>,
     pub class_names: Staged<Vec<String>>,
@@ -213,6 +216,8 @@ pub struct Character {
 
     // DO NOT MODIFY FIELDS AFTER THIS POINT IN THE DECLARE AND ITERATE STEPS
 
+    name: String,
+
     // FEATURES, TRAITS, AND FEATS
     pub race_choices: Vec<&'static str>,
     pub class_choices: Vec<&'static str>,
@@ -242,6 +247,8 @@ pub struct Character {
     inspiration: bool,
 
     alignment: Alignment,
+
+    description: String
 }
 
 #[derive(Default, Debug, Serialize)]
