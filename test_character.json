@@ -1,5 +1,5 @@
 {
-  "name": "Person McPersonface",
+  "name": "Its a me",
   "health": 3,
   "temp_health": 4,
   "base_abilities": {
@@ -29,7 +29,7 @@
       "feat": {
         "Alert": null
       },
-      "language": "Celestial"
+      "language": "Unknown"
     }
   },
   "classes": [
@@ -84,5 +84,5 @@
       false
     ]
   ],
-  "description": "hello therea a\n\nwasssu\na"
+  "description": "its a still a me"
 }

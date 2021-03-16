@@ -33,8 +33,12 @@
     }
 </script>
 
-{#if $c === null}
-    <p>Fetching character.</p>
+{#if 'error' in $c}
+    <div class="uk-padding">
+        <h1>D&D machine broke.</h1>
+        <p>Understandable, have a nice day.</p>
+        <p class="uk-text-danger">{$c.error}</p>
+    </div>
 {:else}
     <div class="uk-flex">
         <Sidebar {c} {view}/>

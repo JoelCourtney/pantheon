@@ -1,6 +1,6 @@
 import {Writable, writable} from 'svelte/store';
 
-export let c: Writable<any> = writable(null);
+export let c: Writable<any> = writable({error: "haven't fetched character yet."});
 updateCharacter();
 
 async function getCharacter() {
@@ -36,7 +36,7 @@ async function sendRequest(edit: boolean, data: any) {
         const fetchResponse = await fetch(url, settings);
         return await fetchResponse.json();
     } catch (e) {
-        return e;
+        return {error: e.toString()};
     }
 }
 
