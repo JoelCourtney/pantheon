@@ -1,5 +1,5 @@
 {
-  "name": "It fuckin",
+  "name": "Person McPersonface",
   "health": 3,
   "temp_health": 4,
   "base_abilities": {
@@ -22,14 +22,14 @@
   "race": {
     "VariantHuman": {
       "abilities": [
-        "Wisdom",
-        "Constitution"
+        "Unknown",
+        "Unknown"
       ],
-      "skill": "History",
+      "skill": "Unknown",
       "feat": {
         "Alert": null
       },
-      "language": "Infernal"
+      "language": "Celestial"
     }
   },
   "classes": [
@@ -84,5 +84,5 @@
       false
     ]
   ],
-  "description": "hello therea asdf asdf \n\n\nwasssu\na"
+  "description": "hello therea a\n\nwasssu\na"
 }

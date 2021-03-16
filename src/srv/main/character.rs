@@ -226,7 +226,7 @@ pub struct Character {
     pub race_traits: Vec<Feature>,
     pub class_features: Vec<Feature>,
     pub background_features: Vec<Feature>,
-    pub feat_features: Vec<Feature>,
+    pub feats: Vec<Feature>,
 
     pub misc_moves: Vec<MiscMove>,
 

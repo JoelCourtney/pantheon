@@ -50,7 +50,7 @@
                 race: $c.race_choices[this.value]
             })
         }>
-            {#if $c.race_name === 'Unknown Race'}
+            {#if $c.race_name === 'Unknown'}
                 <option selected value={-1}>Choose a race</option>
             {/if}
             {#each $c.race_choices as race, i}
@@ -61,48 +61,62 @@
                 {/if}
             {/each}
         </select>
-        <ul uk-tab class="builder-box-nav">
-            <li><a>Traits</a></li>
-            <li><a>Description</a></li>
-        </ul>
-        <ul class="uk-list uk-list-bullet uk-margin-remove-top">
-            {#each $c.race_traits as trait, i}
-                <li>
-                    {@html render(trait[0])}
-                    {#if trait[1] !== null}
-                        {#each trait[1].current_choices as current, j}
-                            <select class="uk-select" on:change={
-                                editCharacter({
-                                    feature: {
-                                        container: 'race',
-                                        feature_index: i,
-                                        choice_index: j,
-                                        choice: $c.race_traits[i][1].all_choices[j][this.value]
-                                    }
-                                })
-                            }>
-                                {#if current === 'Unknown'}
-                                    <option selected value={-1}>Choose</option>
-                                {/if}
-                                {#each trait[1].all_choices[j] as choice, k}
-                                    {#if current !== choice}
-                                        <option value={k}>{choice}</option>
-                                    {:else}
-                                        <option selected value={k}>{choice}</option>
+        {#if $c.race_traits.length !== 0}
+            <ul uk-tab class="builder-box-nav">
+                <li><a>Traits</a></li>
+                <li><a>Description</a></li>
+            </ul>
+            <ul class="uk-list uk-list-bullet uk-margin-remove-top">
+                {#each $c.race_traits as trait, i}
+                    <li>
+                        {@html render(trait[0])}
+                        {#if trait[1] !== null}
+                            {#each trait[1].current_choices as current, j}
+                                <select class="uk-select" on:change={
+                                    editCharacter({
+                                        feature: {
+                                            container: 'race',
+                                            feature_index: i,
+                                            choice_index: j,
+                                            choice: $c.race_traits[i][1].all_choices[j][this.value]
+                                        }
+                                    })
+                                }>
+                                    {#if current === 'Unknown'}
+                                        <option selected value={-1}>Choose</option>
                                     {/if}
-                                {/each}
-                            </select>
-                        {/each}
-                    {/if}
-                </li>
-            {/each}
-        </ul>
+                                    {#each trait[1].all_choices[j] as choice, k}
+                                        {#if current !== choice}
+                                            <option value={k}>{choice}</option>
+                                        {:else}
+                                            <option selected value={k}>{choice}</option>
+                                        {/if}
+                                    {/each}
+                                </select>
+                            {/each}
+                        {/if}
+                    </li>
+                {/each}
+            </ul>
+        {/if}
     </div>
     <div class="builder-box">
         <h1 class="box-title">Classes</h1>
     </div>
     <div class="builder-box">
         <h1 class="box-title">Background</h1>
+    </div>
+    <div class="builder-box">
+        <h1 class="box-title">Feats</h1>
+        {#if $c.feats.length !== 0}
+            <ul class="uk-list uk-list-bullet uk-margin-remove-top">
+                {#each $c.feats as feat, i}
+                    <li>
+                        {@html render(feat[0])}
+                    </li>
+                {/each}
+            </ul>
+        {/if}
     </div>
     <div class="builder-box">
         <h1 class="box-title">Description</h1>

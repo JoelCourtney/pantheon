@@ -93,7 +93,7 @@ fn edit_character(data: Json<EditRequest>, state: State<SharedData>) -> content:
                 "race" => &mut (*final_char).race_traits,
                 "class" => &mut (*final_char).class_features,
                 "background" => &mut (*final_char).background_features,
-                "feat" => &mut (*final_char).feat_features,
+                "feat" => &mut (*final_char).feats,
                 _ => panic!(format!("no container found: {}", container))
             }.get_mut(feature_index)
                 .expect(&format!("feature index out of bounds: {}", feature_index)).1 {
