@@ -17,7 +17,7 @@ base64 = "0.13.0"
 rand = "0.8.2"
 enum-iterator = "0.6.0"
 
-macros = { path = "src/srv/macros" }
+proc_macros = { path = "src/srv/proc_macros" }
 
 [[bin]]
 path = "src/srv/main/main.rs"

@@ -18,7 +18,7 @@
 
 #[macro_use] extern crate rocket;
 
-extern crate macros;
+extern crate proc_macros;
 
 mod server;
 mod character;
@@ -26,6 +26,7 @@ mod content;
 mod feature;
 mod moves;
 mod misc;
+mod macros;
 
 fn main() {
     let mut args = std::env::args();

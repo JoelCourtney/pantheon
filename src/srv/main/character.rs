@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use crate::feature::Feature;
 use crate::misc::*;
 use std::fmt::Debug;
-use macros::FinalizeCharacter;
+use proc_macros::FinalizeCharacter;
 use crate::content::common::common_rules;
 use crate::content::traits::{Race, Class, Item};
 use std::ops::{Deref, DerefMut};

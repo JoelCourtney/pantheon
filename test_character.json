@@ -10,7 +10,7 @@
     "wisdom": 12,
     "charisma": 12
   },
-  "alignment": "ChaoticNeutral",
+  "alignment": "Chaotic Neutral",
   "inspiration": false,
   "money": {
     "platinum": 10,
@@ -22,14 +22,14 @@
   "race": {
     "VariantHuman": {
       "abilities": [
-        "Unknown",
+        "Intelligence",
         "Unknown"
       ],
-      "skill": "Unknown",
+      "skill": "Animal Handling",
       "feat": {
         "Alert": null
       },
-      "language": "Unknown"
+      "language": "Deep Speech"
     }
   },
   "classes": [

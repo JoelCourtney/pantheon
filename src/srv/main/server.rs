@@ -126,7 +126,7 @@ fn serve_static_file(path: std::path::PathBuf) -> Option<rocket::response::Conte
     use rocket::http::ContentType;
 
     let content_type = ContentType::from_extension(path.extension().unwrap().to_str().unwrap()).unwrap();
-    let bytes = macros::match_raw_files!([
+    let bytes = proc_macros::match_raw_files!([
         ""
     ]);
     Some(Content(content_type, bytes))

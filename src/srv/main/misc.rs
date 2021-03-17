@@ -1,11 +1,9 @@
 use serde::{Deserialize, Serialize, Serializer};
 use crate::feature::Choose;
-use macros::choose;
 use std::collections::HashMap;
 use maplit::hashmap;
-use std::fmt::Display;
-use serde::__private::Formatter;
-use enum_iterator::IntoEnumIterator;
+use std::fmt::{Display, Formatter};
+use crate::choose;
 
 /// Represents an amount of damage.
 ///
@@ -166,45 +164,71 @@ pub enum Hand {
     Both
 }
 
-#[derive(Debug, Serialize, Copy, Clone, Eq, PartialEq)]
+choose! {
 pub enum Rarity {
     Common,
     Uncommon,
     Rare,
+    #[choose(pretty = "Very Rare")]
     VeryRare,
-    Legendary
+    Legendary,
+    Unknown
+}
 }
 
-#[choose]
-pub enum CreatureSize {
-    Unknown,
-    Fine,
-    Diminutive,
-    Tiny,
-    Small,
-    Medium,
-    Large,
-    Huge,
-    Gargantuan,
-    Colossal
+choose! {
+    pub enum CreatureSize {
+        Unknown,
+        Fine,
+        Diminutive,
+        Tiny,
+        Small,
+        Medium,
+        Large,
+        Huge,
+        Gargantuan,
+        Colossal
+    }
 }
 
-#[choose]
+choose! {
 pub enum Alignment {
+
+    #[choose(pretty = "Lawful Good")]
     LawfulGood,
+
+    #[choose(pretty = "Lawful Neutral")]
     LawfulNeutral,
+
+    #[choose(pretty = "Lawful Evil")]
     LawfulEvil,
+
+    #[choose(pretty = "Neutral Good")]
     NeutralGood,
+
+    #[choose(pretty = "True Neutral")]
     TrueNeutral,
+
+    #[choose(pretty = "Neutral Evil")]
     NeutralEvil,
+
+    #[choose(pretty = "Chaotic Good")]
     ChaoticGood,
+
+    #[choose(pretty = "Chaotic Neutral")]
     ChaoticNeutral,
+
+    #[choose(pretty = "Chaotic Evil")]
     ChaoticEvil,
+
     Unknown,
+
+    #[choose(pretty = "It's complicated.")]
     ItsComplicated
 }
+}
 
-#[choose]
+choose! {
 pub enum Ability {
     Strength,
     Dexterity,
@@ -214,10 +238,12 @@ pub enum Ability {
     Charisma,
     Unknown
 }
+}
 
-#[choose]
+choose! {
 pub enum Skill {
     Acrobatics,
+    #[choose(pretty = "Animal Handling")]
     AnimalHandling,
     Arcana,
     Athletics,
@@ -232,10 +258,12 @@ pub enum Skill {
     Performance,
     Persuasion,
     Religion,
+    #[choose(pretty = "Sleight of Hand")]
     SleightOfHand,
     Stealth,
     Survival,
     Unknown
+}
 }
 
 impl Skill {
@@ -265,12 +293,13 @@ impl Skill {
     }
 }
 
-#[choose]
+choose! {
 pub enum PassiveSkill {
     Perception,
     Investigation,
     Insight,
     Unknown
+}
 }
 
 impl PassiveSkill {
@@ -285,7 +314,7 @@ impl PassiveSkill {
     }
 }
 
-#[choose]
+choose! {
 pub enum SavingThrow {
     Strength,
     Dexterity,
@@ -295,6 +324,7 @@ pub enum SavingThrow {
     Charisma,
     Death,
     Unknown,
+}
 }
 
 #[derive(Debug, Serialize, Copy, Clone)]
@@ -311,13 +341,14 @@ impl Default for ProficiencyType {
     }
 }
 
-#[choose]
+choose! {
 pub enum Language {
     Abyssal,
     Aquan,
     Auran,
     Celestial,
     Common,
+    #[choose(pretty = "Deep Speech")]
     DeepSpeech,
     Draconic,
     Druidic,
@@ -336,6 +367,7 @@ pub enum Language {
     Terran,
     Undercommon,
     Unknown,
+}
 }
 
 #[derive(Serialize, Debug, Copy, Clone)]
@@ -381,7 +413,7 @@ impl Default for Vantage {
     fn default() -> Self { Vantage::None }
 }
 
-#[choose]
+choose! {
 pub enum MovementType {
     Walk,
     Fly,
@@ -390,8 +422,9 @@ pub enum MovementType {
     Swim,
     Unknown
 }
+}
 
-#[choose]
+choose! {
 pub enum MoneyType {
     Platinum,
     Gold,
@@ -399,4 +432,5 @@ pub enum MoneyType {
     Silver,
     Copper,
     Unknown
+}
 }

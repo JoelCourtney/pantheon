@@ -1,5 +1,5 @@
 use std::fmt::Debug;
-use macros::dynamic_choose;
+use proc_macros::dynamic_choose;
 use crate::feature::Choose;
 use crate::character::Character;
 use crate::misc::{CastingTime, Equipable, Rarity, Equipped};

@@ -197,6 +197,41 @@ dependencies = [
 ]
 
 [[package]]
+name = "darling"
+version = "0.12.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a06d4a9551359071d1890820e3571252b91229e0712e7c36b08940e603c5a8fc"
+dependencies = [
+ "darling_core",
+ "darling_macro",
+]
+
+[[package]]
+name = "darling_core"
+version = "0.12.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b443e5fb0ddd56e0c9bfa47dc060c5306ee500cb731f2b91432dd65589a77684"
+dependencies = [
+ "fnv",
+ "ident_case",
+ "proc-macro2 1.0.24",
+ "quote 1.0.8",
+ "strsim",
+ "syn 1.0.60",
+]
+
+[[package]]
+name = "darling_macro"
+version = "0.12.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c0220073ce504f12a70efc4e7cdaea9e9b1b324872e7ad96a208056d7a638b81"
+dependencies = [
+ "darling_core",
+ "quote 1.0.8",
+ "syn 1.0.60",
+]
+
+[[package]]
 name = "devise"
 version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -245,8 +280,8 @@ dependencies = [
  "enum-iterator",
  "indoc",
  "lazy_static",
- "macros",
  "maplit",
+ "proc_macros",
  "rand 0.8.2",
  "rocket",
  "rocket_contrib",
@@ -301,6 +336,12 @@ dependencies = [
  "redox_syscall",
  "winapi 0.3.9",
 ]
+
+[[package]]
+name = "fnv"
+version = "1.0.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3f9eec918d3f24069decb9af1554cad7c880e2da24a9afd88aca000531ab82c1"
 
 [[package]]
 name = "fsevent"
@@ -455,6 +496,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "ident_case"
+version = "1.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b9e0384b61958566e926dc50660321d12159025e767c18e043daf26b70104c39"
+
+[[package]]
 name = "idna"
 version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -591,17 +638,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fcf3805d4480bb5b86070dcfeb9e2cb2ebc148adb753c5cca5f884d1d65a42b2"
 dependencies = [
  "cfg-if 0.1.10",
-]
-
-[[package]]
-name = "macros"
-version = "0.1.0"
-dependencies = [
- "Inflector",
- "proc-macro2 1.0.24",
- "quote 1.0.8",
- "syn 1.0.60",
- "walkdir",
 ]
 
 [[package]]
@@ -785,6 +821,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1e0704ee1a7e00d7bb417d0770ea303c1bccbabf0ef1667dae92b5967f5f8a71"
 dependencies = [
  "unicode-xid 0.2.1",
+]
+
+[[package]]
+name = "proc_macros"
+version = "0.1.0"
+dependencies = [
+ "Inflector",
+ "darling",
+ "proc-macro2 1.0.24",
+ "quote 1.0.8",
+ "syn 1.0.60",
+ "walkdir",
 ]
 
 [[package]]
@@ -1039,6 +1087,12 @@ name = "state"
 version = "0.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3015a7d0a5fd5105c91c3710d42f9ccf0abfb287d62206484dcc67f9569a6483"
+
+[[package]]
+name = "strsim"
+version = "0.10.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "73473c0e59e6d5812c5dfe2a064a6444949f089e20eec9a2e5506596494e4623"
 
 [[package]]
 name = "subtle"

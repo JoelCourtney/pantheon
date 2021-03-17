@@ -2,28 +2,34 @@ use proc_macro::TokenStream;
 use proc_macro2::TokenStream as TokenStream2;
 use quote::{quote, format_ident};
 use inflector::Inflector;
+use darling::FromVariant;
 
-pub(crate) fn choose(ast: syn::DeriveInput) -> TokenStream {
-    let ident = ast.ident.clone();
-    (match ast.data.clone() {
-        syn::Data::Enum(syn::DataEnum { variants, .. }) => {
-            let vars = variants.iter().map( |var| {
-                var.ident.to_string()
-            }).collect();
-            let process = process_enum_choose(ident.to_string(), vars);
-            quote! {
-                #[derive(Debug, Serialize, Deserialize, Copy, Clone, Hash, Eq, PartialEq, IntoEnumIterator)]
-                #ast
-                #process
-            }
-        }
-        _ => quote! {
-            compile_error("Choose derive only valid for enums");
-        }
-    }).into()
+#[derive(darling::FromVariant, Debug)]
+#[darling(attributes(choose))]
+struct VariantNames {
+    ident: syn::Ident,
+    #[darling(default)]
+    pretty: String
 }
 
-fn process_enum_choose(name: String, vars: Vec<String>) -> TokenStream2 {
+pub fn choose(ast: syn::DeriveInput) -> TokenStream {
+    let ident = ast.ident.clone();
+    let name = ident.to_string();
+
+    let vars: Vec<(String, String)> = match ast.data {
+        syn::Data::Enum(syn::DataEnum { variants, .. }) => {
+            variants.iter().map( |var| {
+                let var_names = VariantNames::from_variant(var).unwrap();
+                if var_names.pretty.len() != 0 {
+                    (var_names.ident.to_string(), var_names.pretty)
+                } else {
+                    (var_names.ident.to_string(), var_names.ident.to_string())
+                }
+            }).collect()
+        }
+        _ => panic!("item inside choose must be an enum")
+    };
+
     let enum_ident = format_ident!("{}", name);
 
     let mut choices = "".to_string();
@@ -34,18 +40,22 @@ fn process_enum_choose(name: String, vars: Vec<String>) -> TokenStream2 {
     let mut map_get_rules = "".to_string();
     let mut map_get_mut_rules = "".to_string();
     let mut map_count = "".to_string();
-    for var in &vars {
+    let mut serialize_rules = "".to_string();
+    let mut deserialize_rules = "".to_string();
+    for (i, (var, pretty)) in vars.iter().enumerate() {
         let snake_var = var.to_snake_case();
         if var != "Unknown" {
-            choices.extend(format!(r#""{}","#, var).chars());
-            match_rules.extend(format!(r#""{}" => {}::{},{}"#, var, name, var, "\n").chars());
+            choices.extend(format!(r#""{}","#, pretty).chars());
+            match_rules.extend(format!(r#""{}" => {}::{},{}"#, pretty, name, var, "\n").chars());
             map_fields.extend(format!("pub {}: T,\n", snake_var).chars());
             map_unwrap_fields.extend(format!("{}: self.{}.unwrap(),\n", snake_var, snake_var).chars());
             map_get_rules.extend(format!("{}::{} => Some(&self.{}),\n", name, var, snake_var).chars());
             map_get_mut_rules.extend(format!("{}::{} => Some(&mut self.{}),\n", name, var, snake_var).chars());
             map_count.extend(format!("self.{}.count_unresolved() +\n", snake_var).chars());
         }
-        reverse_match_rules.extend(format!(r#"{}::{} => "{}",{}"#, name, var, var, "\n").chars());
+        reverse_match_rules.extend(format!(r#"{}::{} => "{}",{}"#, name, var, pretty, "\n").chars());
+        serialize_rules.extend(format!("{}::{} => serializer.serialize_unit_variant(\"{}\", {}, \"{}\"),\n", name, var, name, i, pretty).chars());
+        deserialize_rules.extend(format!("\"{}\" => Ok({}::{}),\n", pretty, name, var).chars());
     }
     let choices_tokens: TokenStream2 = choices.parse().expect("choices parse failed");
     let match_rules_tokens: TokenStream2 = match_rules.parse().expect("match rules parse failed");
@@ -55,10 +65,14 @@ fn process_enum_choose(name: String, vars: Vec<String>) -> TokenStream2 {
     let map_get_rules_tokens: TokenStream2 = map_get_rules.parse().expect("map get rules parse failed");
     let map_get_mut_rules_tokens: TokenStream2 = map_get_mut_rules.parse().expect("map get mut rules parse failed");
     let map_count_tokens: TokenStream2 = map_count.parse().expect("map count parse failed");
+    let serialize_rules_tokens: TokenStream2 = serialize_rules.parse().expect("serialize rules parse failed");
+    let deserialize_rules_tokens: TokenStream2 = deserialize_rules.parse().expect("deserialize rules parse failed");
 
     let map_ident = format_ident!("{}Map", name);
+    let visitor_ident = format_ident!("{}DeserializeVisitor", name);
+    let error_string = format!("expected a pretty-print variant of enum {}", name);
 
-    quote! {
+    (quote! {
         impl #enum_ident {
             pub fn known(&self) -> bool {
                 *self != #enum_ident::Unknown
@@ -171,7 +185,41 @@ fn process_enum_choose(name: String, vars: Vec<String>) -> TokenStream2 {
                 #map_count_tokens 0
             }
         }
-    }
+
+        impl Serialize for #enum_ident {
+            fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+            where S: serde::Serializer {
+                match self {
+                    #serialize_rules_tokens
+                }
+            }
+        }
+
+        struct #visitor_ident;
+
+        impl<'de> serde::de::Visitor<'de> for #visitor_ident {
+            type Value = #enum_ident;
+
+            fn expecting(&self, formatter: &mut std::fmt::Formatter) -> std::fmt::Result {
+                formatter.write_str(#error_string)
+            }
+
+            fn visit_str<E>(self, value: &str) -> Result<Self::Value, E>
+            where E: serde::de::Error {
+                match value {
+                    #deserialize_rules_tokens
+                    s => panic!("cannot deserialize: {}", s)
+                }
+            }
+        }
+
+        impl<'de> Deserialize<'de> for #enum_ident {
+            fn deserialize<D>(deserializer: D) -> Result<#enum_ident, D::Error>
+            where D: serde::Deserializer<'de> {
+                deserializer.deserialize_str(#visitor_ident)
+            }
+        }
+    }).into()
 }
 
 pub(crate) fn dynamic_choose(ast: syn::ItemTrait) -> TokenStream {

@@ -232,7 +232,7 @@ impl Class for Rogue {
     "#}
 }
 
-#[choose]
+choose! {
 pub enum RogueSkill {
     Acrobatics,
     Athletics,
@@ -246,6 +246,7 @@ pub enum RogueSkill {
     SleightOfHand,
     Stealth,
     Unknown
+}
 }
 
 impl From<&RogueSkill> for Skill {
