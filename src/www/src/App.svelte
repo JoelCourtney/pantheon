@@ -27,7 +27,9 @@
     import Builder from "./modules/Builder.svelte";
 
     $: {
-        if ($c !== null) {
+        if ('error' in $c) {
+            document.title = 'How did I get here';
+        } else {
             document.title = `${$c.name} - DnDCent`;
         }
     }

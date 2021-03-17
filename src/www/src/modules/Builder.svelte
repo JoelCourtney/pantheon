@@ -86,6 +86,6 @@
     <div class="builder-box">
         <h1 class="box-title">Description</h1>
         <textarea class="uk-textarea uk-height-large" placeholder="Insert tragic and edgy backstory here." value={$c.description}
-            on:focusout={(e) => updateText("description", e.target.value)}/>
+            on:focusout={(e) => updateText("description", e.target.value)}></textarea>
     </div>
 </div>
