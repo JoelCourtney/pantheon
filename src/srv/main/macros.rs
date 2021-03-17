@@ -8,7 +8,7 @@ macro_rules! name {
         #[allow(unused_imports)] use crate::{properties, description, choose};
         #[allow(unused_imports)] use crate::content::traits::*;
         #[allow(unused_imports)] use crate::content::common::*;
-        #[allow(unused_imports)] use proc_macros::{def, dynamic_choose, content};
+        #[allow(unused_imports)] use proc_macros::{dynamic_choose, content};
         #[allow(unused_imports)] use serde::{Serialize, Deserialize};
         #[allow(unused_imports)] use indoc::indoc;
         #[allow(unused_imports)] use std::fmt::Debug;

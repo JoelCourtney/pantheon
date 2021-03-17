@@ -40,26 +40,6 @@ pub fn registry(_: TokenStream) -> TokenStream {
     registry::registry()
 }
 
-/// I'm lazy. Seriously, I'm this lazy.
-///
-/// It expands into `Default::default()`. Because I'm lazy.
-///
-/// ## Example
-///
-/// ```
-/// Trait {
-///     name: "Example Trait",
-///     description: "It doesn't do anything other than be a described trait.",
-///     ..def!()
-/// }
-/// ```
-#[proc_macro]
-pub fn def(_: TokenStream) -> TokenStream {
-    (quote! {
-        Default::default()
-    }).into()
-}
-
 /// Derives a bunch of boilerplate to make the enum chooseable through the Choose trait.
 ///
 /// This allows an enum to be displayed as a dropdown for the user to pick something from. It would
