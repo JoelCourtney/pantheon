@@ -1,4 +1,6 @@
 <script lang="ts">
+    import FeatureList from "./FeatureList.svelte";
+
     export let c;
 
     import {render} from "../helpers.ts";
@@ -66,38 +68,7 @@
                 <li><a>Traits</a></li>
                 <li><a>Description</a></li>
             </ul>
-            <ul class="uk-list uk-list-bullet uk-margin-remove-top">
-                {#each $c.race_traits as trait, i}
-                    <li>
-                        {@html render(trait[0])}
-                        {#if trait[1] !== null}
-                            {#each trait[1].current_choices as current, j}
-                                <select class="uk-select" on:change={
-                                    editCharacter({
-                                        feature: {
-                                            container: 'race',
-                                            feature_index: i,
-                                            choice_index: j,
-                                            choice: $c.race_traits[i][1].all_choices[j][this.value]
-                                        }
-                                    })
-                                }>
-                                    {#if current === 'Unknown'}
-                                        <option selected value={-1}>Choose</option>
-                                    {/if}
-                                    {#each trait[1].all_choices[j] as choice, k}
-                                        {#if current !== choice}
-                                            <option value={k}>{choice}</option>
-                                        {:else}
-                                            <option selected value={k}>{choice}</option>
-                                        {/if}
-                                    {/each}
-                                </select>
-                            {/each}
-                        {/if}
-                    </li>
-                {/each}
-            </ul>
+            <FeatureList features={$c.race_traits} container={'race'} />
         {/if}
     </div>
     <div class="builder-box">
@@ -109,13 +80,7 @@
     <div class="builder-box">
         <h1 class="box-title">Feats</h1>
         {#if $c.feats.length !== 0}
-            <ul class="uk-list uk-list-bullet uk-margin-remove-top">
-                {#each $c.feats as feat, i}
-                    <li>
-                        {@html render(feat[0])}
-                    </li>
-                {/each}
-            </ul>
+            <FeatureList features={$c.feats} container={'feat'} />
         {/if}
     </div>
     <div class="builder-box">
