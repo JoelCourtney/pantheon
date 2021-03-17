@@ -99,21 +99,6 @@ pub(crate) mod common_rules {
             }
         }
 
-        // if c.proficiency_bonus.ready() {
-        //     if c.strength_modifier.ready() {
-        //         if c.athletics_proficiency.ready()
-        //             && c.athletics.initialize(NAME) {
-        //             *c.athletics = *c.strength_modifier
-        //                 + calculate_proficiency(*c.proficiency_bonus, *c.athletics_proficiency);
-        //         }
-        //         if c.charisma_save_proficiency.ready()
-        //             && c.charisma_save.initialize(NAME) {
-        //             *c.charisma_save = *c.charisma_modifier
-        //                 + calculate_proficiency(*c.proficiency_bonus, *c.charisma_save_proficiency);
-        //         }
-        //     }
-        // }
-
         // PASSIVES
         for passive in PassiveSkill::into_enum_iter() {
             if passive.known()
@@ -122,10 +107,6 @@ pub(crate) mod common_rules {
                 **c.passives.get_mut_known(passive) = 10 + **c.skills.get_known(passive.into_skill());
             }
         }
-        // if c.insight.ready() &&
-        //     c.passive_insight.initialize(NAME) {
-        //     *c.passive_insight = 10 + *c.insight;
-        // }
 
         // MODIFIERS
 

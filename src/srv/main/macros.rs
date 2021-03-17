@@ -64,8 +64,10 @@ macro_rules! description {
 
 #[macro_export]
 macro_rules! choose {
-    ($e:item) => {
-        #[derive(Debug, Copy, Clone, Hash, Eq, PartialEq, enum_iterator::IntoEnumIterator, proc_macros::StaticChoose)]
-        $e
+    ($($e:item)+) => {
+        $(
+            #[derive(Debug, Copy, Clone, Hash, Eq, PartialEq, enum_iterator::IntoEnumIterator, proc_macros::StaticChoose)]
+            $e
+        )+
     }
 }

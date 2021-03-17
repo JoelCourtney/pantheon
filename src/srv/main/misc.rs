@@ -165,18 +165,16 @@ pub enum Hand {
 }
 
 choose! {
-pub enum Rarity {
-    Common,
-    Uncommon,
-    Rare,
-    #[choose(pretty = "Very Rare")]
-    VeryRare,
-    Legendary,
-    Unknown
-}
-}
+    pub enum Rarity {
+        Common,
+        Uncommon,
+        Rare,
+        #[choose(pretty = "Very Rare")]
+        VeryRare,
+        Legendary,
+        Unknown
+    }
 
-choose! {
     pub enum CreatureSize {
         Unknown,
         Fine,
@@ -189,81 +187,75 @@ choose! {
         Gargantuan,
         Colossal
     }
-}
 
-choose! {
-pub enum Alignment {
+    pub enum Alignment {
 
-    #[choose(pretty = "Lawful Good")]
-    LawfulGood,
+        #[choose(pretty = "Lawful Good")]
+        LawfulGood,
 
-    #[choose(pretty = "Lawful Neutral")]
-    LawfulNeutral,
+        #[choose(pretty = "Lawful Neutral")]
+        LawfulNeutral,
 
-    #[choose(pretty = "Lawful Evil")]
-    LawfulEvil,
+        #[choose(pretty = "Lawful Evil")]
+        LawfulEvil,
 
-    #[choose(pretty = "Neutral Good")]
-    NeutralGood,
+        #[choose(pretty = "Neutral Good")]
+        NeutralGood,
 
-    #[choose(pretty = "True Neutral")]
-    TrueNeutral,
+        #[choose(pretty = "True Neutral")]
+        TrueNeutral,
 
-    #[choose(pretty = "Neutral Evil")]
-    NeutralEvil,
+        #[choose(pretty = "Neutral Evil")]
+        NeutralEvil,
 
-    #[choose(pretty = "Chaotic Good")]
-    ChaoticGood,
+        #[choose(pretty = "Chaotic Good")]
+        ChaoticGood,
 
-    #[choose(pretty = "Chaotic Neutral")]
-    ChaoticNeutral,
+        #[choose(pretty = "Chaotic Neutral")]
+        ChaoticNeutral,
 
-    #[choose(pretty = "Chaotic Evil")]
-    ChaoticEvil,
+        #[choose(pretty = "Chaotic Evil")]
+        ChaoticEvil,
 
-    Unknown,
+        Unknown,
 
-    #[choose(pretty = "It's complicated.")]
-    ItsComplicated
-}
-}
+        #[choose(pretty = "It's complicated.")]
+        ItsComplicated
+    }
 
-choose! {
-pub enum Ability {
-    Strength,
-    Dexterity,
-    Constitution,
-    Intelligence,
-    Wisdom,
-    Charisma,
-    Unknown
-}
-}
+    pub enum Ability {
+        Strength,
+        Dexterity,
+        Constitution,
+        Intelligence,
+        Wisdom,
+        Charisma,
+        Unknown
+    }
 
-choose! {
-pub enum Skill {
-    Acrobatics,
-    #[choose(pretty = "Animal Handling")]
-    AnimalHandling,
-    Arcana,
-    Athletics,
-    Deception,
-    History,
-    Insight,
-    Intimidation,
-    Investigation,
-    Medicine,
-    Nature,
-    Perception,
-    Performance,
-    Persuasion,
-    Religion,
-    #[choose(pretty = "Sleight of Hand")]
-    SleightOfHand,
-    Stealth,
-    Survival,
-    Unknown
-}
+    pub enum Skill {
+        Acrobatics,
+        #[choose(pretty = "Animal Handling")]
+        AnimalHandling,
+        Arcana,
+        Athletics,
+        Deception,
+        History,
+        Insight,
+        Intimidation,
+        Investigation,
+        Medicine,
+        Nature,
+        Perception,
+        Performance,
+        Persuasion,
+        Religion,
+        #[choose(pretty = "Sleight of Hand")]
+        SleightOfHand,
+        Stealth,
+        Survival,
+        Unknown
+    }
 }
 
 impl Skill {
@@ -294,12 +286,12 @@ impl Skill {
 }
 
 choose! {
-pub enum PassiveSkill {
-    Perception,
-    Investigation,
-    Insight,
-    Unknown
-}
+    pub enum PassiveSkill {
+        Perception,
+        Investigation,
+        Insight,
+        Unknown
+    }
 }
 
 impl PassiveSkill {
@@ -315,16 +307,16 @@ impl PassiveSkill {
 }
 
 choose! {
-pub enum SavingThrow {
-    Strength,
-    Dexterity,
-    Constitution,
-    Intelligence,
-    Wisdom,
-    Charisma,
-    Death,
-    Unknown,
-}
+    pub enum SavingThrow {
+        Strength,
+        Dexterity,
+        Constitution,
+        Intelligence,
+        Wisdom,
+        Charisma,
+        Death,
+        Unknown,
+    }
 }
 
 #[derive(Debug, Serialize, Copy, Clone)]
@@ -342,32 +334,32 @@ impl Default for ProficiencyType {
 }
 
 choose! {
-pub enum Language {
-    Abyssal,
-    Aquan,
-    Auran,
-    Celestial,
-    Common,
-    #[choose(pretty = "Deep Speech")]
-    DeepSpeech,
-    Draconic,
-    Druidic,
-    Dwarvish,
-    Elvish,
-    Giant,
-    Gnomish,
-    Goblin,
-    Gnoll,
-    Halfling,
-    Ignan,
-    Infernal,
-    Orc,
-    Primordial,
-    Sylvan,
-    Terran,
-    Undercommon,
-    Unknown,
-}
+    pub enum Language {
+        Abyssal,
+        Aquan,
+        Auran,
+        Celestial,
+        Common,
+        #[choose(pretty = "Deep Speech")]
+        DeepSpeech,
+        Draconic,
+        Druidic,
+        Dwarvish,
+        Elvish,
+        Giant,
+        Gnomish,
+        Goblin,
+        Gnoll,
+        Halfling,
+        Ignan,
+        Infernal,
+        Orc,
+        Primordial,
+        Sylvan,
+        Terran,
+        Undercommon,
+        Unknown,
+    }
 }
 
 #[derive(Serialize, Debug, Copy, Clone)]
@@ -414,23 +406,21 @@ impl Default for Vantage {
 }
 
 choose! {
-pub enum MovementType {
-    Walk,
-    Fly,
-    Climb,
-    Burrow,
-    Swim,
-    Unknown
-}
-}
+    pub enum MovementType {
+        Walk,
+        Fly,
+        Climb,
+        Burrow,
+        Swim,
+        Unknown
+    }
 
-choose! {
-pub enum MoneyType {
-    Platinum,
-    Gold,
-    Electrum,
-    Silver,
-    Copper,
-    Unknown
-}
+    pub enum MoneyType {
+        Platinum,
+        Gold,
+        Electrum,
+        Silver,
+        Copper,
+        Unknown
+    }
 }
