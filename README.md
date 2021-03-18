@@ -1,8 +1,6 @@
 # DnDCent
 
-Its like DnDBeyond, but worse, and probably illegal.
-
-Currently under development, doesn't do anything useful yet.
+The best (and only) knock of DnDBeyond (that I could find) (I might be biased)!
 
 ## Setup
 
