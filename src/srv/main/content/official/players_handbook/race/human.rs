@@ -12,52 +12,34 @@ impl Race for Human {
     fn declare(&self, c: &mut Character) {
         common_race_rules::declare(c, self);
 
-        c.size.declare_initializer(NAME);
-        c.speeds.walk.declare_initializer(NAME);
-        c.languages.declare_initializer(NAME);
+        i!(c.size);
+        i!(c.speeds.walk);
+        i!(c.languages);
 
-        c.abilities.strength.declare_modifier(NAME);
-        c.abilities.dexterity.declare_modifier(NAME);
-        c.abilities.constitution.declare_modifier(NAME);
-        c.abilities.intelligence.declare_modifier(NAME);
-        c.abilities.wisdom.declare_modifier(NAME);
-        c.abilities.charisma.declare_modifier(NAME);
+        for ability in Ability::into_enum_iter() {
+            if ability.known() {
+                m!(c.abilities.get_mut_known(ability));
+            }
+        }
     }
     fn iterate(&self, c: &mut Character) {
         common_race_rules::iterate(c, self);
 
-        if c.size.initialize(NAME) {
-            *c.size = CreatureSize::Medium;
-        }
-        if c.speeds.walk.initialize(NAME) {
-            *c.speeds.walk = 30;
-        }
+        i! { c.size = CreatureSize::Medium }
 
-        if c.languages.initialize(NAME) {
-            (*c.languages).push(Language::Common);
-            if self.extra_language != Language::Unknown {
-                (*c.languages).push(self.extra_language);
-            }
+        i! { c.speeds.walk = 30 }
+
+        if self.extra_language != Language::Unknown {
+            i! { c.languages >>= vec! [ Language::Common, self.extra_language ] }
+        } else {
+            i! { c.languages <<= Language::Common }
         }
 
         // MODIFY
-        if c.abilities.strength.modify(NAME) {
-            *c.abilities.strength += 1;
-        }
-        if c.abilities.dexterity.modify(NAME) {
-            *c.abilities.dexterity += 1;
-        }
-        if c.abilities.constitution.modify(NAME) {
-            *c.abilities.constitution += 1;
-        }
-        if c.abilities.intelligence.modify(NAME) {
-            *c.abilities.intelligence += 1;
-        }
-        if c.abilities.wisdom.modify(NAME) {
-            *c.abilities.wisdom += 1;
-        }
-        if c.abilities.charisma.modify(NAME) {
-            *c.abilities.charisma += 1;
+        for ability in Ability::into_enum_iter() {
+            if ability.known() {
+                m! { c.abilities.get_mut_known(ability) += 1 }
+            }
         }
     }
     fn last(&mut self, c: &mut Character) {

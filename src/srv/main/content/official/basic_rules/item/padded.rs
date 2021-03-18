@@ -14,19 +14,15 @@ impl Item for Padded {
 
     fn declare(&self, c: &mut Character, e: Equipped, _: bool) {
         if e == Equipped::Yes {
-            c.armor_class.declare_initializer(NAME);
-            c.skill_vantages.stealth.declare_modifier(NAME);
+            i!(c.armor_class);
+            m!(c.skill_vantages.stealth);
         }
     }
 
     fn iterate(&self, c: &mut Character, e: Equipped, _: bool) {
         if e == Equipped::Yes {
-            if c.ability_modifiers.dexterity.ready() && c.armor_class.initialize(NAME) {
-                *c.armor_class = 11 + *c.ability_modifiers.dexterity as u32;
-            }
-            if c.skill_vantages.stealth.modify(NAME) {
-                c.skill_vantages.stealth.downgrade();
-            }
+            i! { c.armor_class = 11 + c.ability_modifiers.dexterity.done()? as u32 }
+            m! { c.skill_vantages.stealth -= 1 }
         }
     }
 

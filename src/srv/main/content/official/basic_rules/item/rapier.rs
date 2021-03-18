@@ -14,7 +14,7 @@ impl Item for Rapier {
 
     fn declare(&self, c: &mut Character, equipped: Equipped, _attuned: bool) {
         if let Equipped::Held(_) = equipped {
-            c.attack_moves.declare_initializer(NAME);
+            i!(c.attack_moves);
         }
     }
     fn iterate(&self, c: &mut Character, equipped: Equipped, _attuned: bool) {
@@ -25,19 +25,17 @@ impl Item for Rapier {
                 Ability::Dexterity
             };
             if let Equipped::Held(_) = equipped {
-                if c.attack_moves.initialize(NAME) {
-                    (*c.attack_moves).push(
-                        AttackMove {
-                            name: NAME,
-                            time: MoveTime::Action,
-                            hit: 0,
-                            damage: Damage::from_die(8, DamageType::Piercing),
-                            range: Range::Fixed(5),
-                            properties: vec!["Finesse"],
-                            use_modifier: ability,
-                            weapon_type: WeaponType::Martial
-                        }
-                    )
+                i! {
+                    c.attack_moves <<= AttackMove {
+                        name: NAME,
+                        time: MoveTime::Action,
+                        hit: 0,
+                        damage: Damage::from_die(8, DamageType::Piercing),
+                        range: Range::Fixed(5),
+                        properties: vec!["Finesse"],
+                        use_modifier: ability,
+                        weapon_type: WeaponType::Martial
+                    }
                 }
             }
         }

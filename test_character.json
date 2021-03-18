@@ -1,5 +1,5 @@
 {
-  "name": "Its a me",
+  "name": "Its a ",
   "health": 3,
   "temp_health": 4,
   "base_abilities": {
@@ -22,14 +22,14 @@
   "race": {
     "VariantHuman": {
       "abilities": [
-        "Intelligence",
-        "Unknown"
+        "Strength",
+        "Dexterity"
       ],
-      "skill": "Animal Handling",
+      "skill": "Unknown",
       "feat": {
-        "Alert": null
+        "UnknownFeat": null
       },
-      "language": "Deep Speech"
+      "language": "Unknown"
     }
   },
   "classes": [

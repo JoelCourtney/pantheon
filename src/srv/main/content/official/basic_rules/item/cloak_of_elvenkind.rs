@@ -17,7 +17,7 @@ impl Item for CloakOfElvenkind {
     fn declare(&self, c: &mut Character, equipped: Equipped, attuned: bool) {
         if attuned {
             if equipped == Equipped::Yes {
-                c.skill_vantages.stealth.declare_modifier(NAME);
+                m!(c.skill_vantages.stealth);
             }
         }
     }
@@ -25,9 +25,7 @@ impl Item for CloakOfElvenkind {
     fn iterate(&self, c: &mut Character, equipped: Equipped, attuned: bool) {
         if attuned {
             if equipped == Equipped::Yes {
-                if c.skill_vantages.stealth.modify(NAME) {
-                    c.skill_vantages.stealth.upgrade();
-                }
+                m! { c.skill_vantages.stealth += 1 }
             }
         }
     }

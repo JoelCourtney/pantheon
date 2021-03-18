@@ -20,6 +20,8 @@
 
 extern crate proc_macros;
 
+use std::ops::AddAssign;
+
 mod server;
 mod character;
 mod content;
@@ -29,6 +31,9 @@ mod misc;
 mod macros;
 
 fn main() {
+    let mut x = 5;
+    x.add_assign(3);
+
     let mut args = std::env::args();
     {
         if args.len() != 2 {

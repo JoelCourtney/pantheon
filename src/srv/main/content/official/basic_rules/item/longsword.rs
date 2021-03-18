@@ -14,42 +14,38 @@ impl Item for Longsword {
 
     fn declare(&self, c: &mut Character, equipped: Equipped, _attuned: bool) {
         if let Equipped::Held(_) = equipped {
-            c.attack_moves.declare_initializer(NAME);
+            i!(c.attack_moves);
         }
     }
 
     fn iterate(&self, c: &mut Character, equipped: Equipped, _attuned: bool) {
         match equipped {
             Equipped::Held(Hand::Both) => {
-                if c.attack_moves.initialize(NAME) {
-                    (*c.attack_moves).push(
-                        AttackMove {
-                            name: NAME,
-                            time: MoveTime::Action,
-                            hit: 0,
-                            damage: Damage::from_die(10, DamageType::Slashing),
-                            range: Range::Fixed(5),
-                            properties: vec![ "Versatile" ],
-                            use_modifier: Ability::Strength,
-                            weapon_type: WeaponType::Martial
-                        }
-                    )
+                i! {
+                    c.attack_moves <<= AttackMove {
+                        name: NAME,
+                        time: MoveTime::Action,
+                        hit: 0,
+                        damage: Damage::from_die(10, DamageType::Slashing),
+                        range: Range::Fixed(5),
+                        properties: vec![ "Versatile" ],
+                        use_modifier: Ability::Strength,
+                        weapon_type: WeaponType::Martial
+                    }
                 }
             }
             Equipped::Held(_) => {
-                if c.attack_moves.initialize(NAME) {
-                    (*c.attack_moves).push(
-                        AttackMove {
-                            name: NAME,
-                            time: MoveTime::Action,
-                            hit: 0,
-                            damage: Damage::from_die(8, DamageType::Slashing),
-                            range: Range::Fixed(5),
-                            properties: vec![ "Versatile" ],
-                            use_modifier: Ability::Strength,
-                            weapon_type: WeaponType::Martial
-                        }
-                    )
+                i! {
+                    c.attack_moves <<= AttackMove {
+                        name: NAME,
+                        time: MoveTime::Action,
+                        hit: 0,
+                        damage: Damage::from_die(8, DamageType::Slashing),
+                        range: Range::Fixed(5),
+                        properties: vec![ "Versatile" ],
+                        use_modifier: Ability::Strength,
+                        weapon_type: WeaponType::Martial
+                    }
                 }
             }
             _ => {}

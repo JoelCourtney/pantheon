@@ -11,7 +11,7 @@ impl RoguishArchetype for Assassin {
 
     fn declare(&self, c: &mut Character, lvl: u32) {
         if lvl >= 3 {
-            c.tool_proficiencies.declare_modifier(NAME);
+            m!(c.tool_proficiencies);
         }
     }
     fn iterate(&self, c: &mut Character, lvl: u32) {

@@ -15,7 +15,6 @@ mod character;
 mod server;
 
 use proc_macro::TokenStream;
-use quote::quote;
 
 /// Generates the Registry struct and some of its methods.
 ///
@@ -115,4 +114,22 @@ pub fn content(_args: TokenStream, input: TokenStream) -> TokenStream {
 pub fn match_raw_files(input: TokenStream) -> TokenStream {
     let ast: syn::ExprArray = syn::parse(input).expect("expected expr array");
     server::match_raw_files(ast)
+}
+
+#[proc_macro]
+pub fn i(input: TokenStream) -> TokenStream {
+    let ast: syn::Expr = syn::parse(input).expect("expected statement");
+    content::stages(ast, "initialize").into()
+}
+
+#[proc_macro]
+pub fn m(input: TokenStream) -> TokenStream {
+    let ast: syn::Expr = syn::parse(input).expect("expected statement");
+    content::stages(ast, "modify").into()
+}
+
+#[proc_macro]
+pub fn f(input: TokenStream) -> TokenStream {
+    let ast: syn::Expr = syn::parse(input).expect("expected statement");
+    content::stages(ast, "finalize").into()
 }

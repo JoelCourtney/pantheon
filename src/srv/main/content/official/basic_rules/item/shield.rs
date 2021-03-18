@@ -14,7 +14,7 @@ impl Item for Shield {
 
     fn declare(&self, c: &mut Character, e: Equipped, _: bool) {
         match e {
-            Equipped::Held(_) => c.armor_class.declare_modifier(NAME),
+            Equipped::Held(_) => m!(c.armor_class),
             _ => {}
         }
     }
@@ -22,9 +22,7 @@ impl Item for Shield {
     fn iterate(&self, c: &mut Character, e: Equipped, _: bool) {
         match e {
             Equipped::Held(_) => {
-                if c.armor_class.modify(NAME) {
-                    (*c.armor_class) += 2;
-                }
+                m! { c.armor_class += 2 }
             }
             _ => {}
         }

@@ -17,16 +17,16 @@ impl Class for Rogue {
     fn declare(&self, c: &mut Character, level: u32, first: bool) {
         common_class_rules::declare(self, c, level, first);
 
-        c.armor_proficiencies.declare_initializer(NAME);
-        c.weapon_proficiencies.declare_initializer(NAME);
-        c.tool_proficiencies.declare_initializer(NAME);
+        i!(c.armor_proficiencies);
+        i!(c.weapon_proficiencies);
+        i!(c.tool_proficiencies);
 
-        c.save_proficiencies.dexterity.declare_initializer(NAME);
-        c.save_proficiencies.intelligence.declare_initializer(NAME);
+        i!(c.save_proficiencies.dexterity);
+        i!(c.save_proficiencies.intelligence);
 
         for skill in &self.skill_proficiencies {
             match c.skill_proficiencies.get_mut(skill.into()) {
-                Some(s) => s.declare_initializer(NAME),
+                Some(s) => i!(s),
                 None => {}
             }
         }
@@ -36,35 +36,27 @@ impl Class for Rogue {
     fn iterate(&self, c: &mut Character, level: u32, first: bool) {
         common_class_rules::iterate(self, c, level, first);
 
-        if c.armor_proficiencies.initialize(NAME) {
-            (*c.armor_proficiencies).push("Light Armor");
-        }
-        if c.weapon_proficiencies.initialize(NAME) {
-            (*c.weapon_proficiencies).extend(vec![
+        i! { c.armor_proficiencies <<= "Light Armor" }
+
+        i! {
+            c.weapon_proficiencies >>= vec! [
                 "Simple Weapons",
                 "Hand Crossbows",
                 "Longswords",
                 "Rapiers",
                 "Shortswords"
-            ]);
-        }
-        if c.tool_proficiencies.initialize(NAME) {
-            (*c.tool_proficiencies).push(("Diebs' Tools", ProficiencyType::Single));
+            ]
         }
 
-        if c.save_proficiencies.dexterity.initialize(NAME) {
-            *c.save_proficiencies.dexterity = ProficiencyType::Single;
-        }
-        if c.save_proficiencies.intelligence.initialize(NAME) {
-            *c.save_proficiencies.intelligence = ProficiencyType::Single;
-        }
+        i! { c.tool_proficiencies <<= ("Diebs' Tools", ProficiencyType::Single) }
+
+        i! { c.save_proficiencies.dexterity = ProficiencyType::Single }
+        i! { c.save_proficiencies.intelligence = ProficiencyType::Single }
 
         for skill in &self.skill_proficiencies {
             match c.skill_proficiencies.get_mut(skill.into()) {
                 Some(s) => {
-                    if s.initialize(NAME) {
-                        **s = ProficiencyType::Single
-                    }
+                    i!{ *s = ProficiencyType::Single }
                 }
                 None => {}
             }

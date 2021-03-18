@@ -8,12 +8,10 @@ impl HalflingSubrace for Lightfoot {
     properties! {}
 
     fn declare(&self, c: &mut Character) {
-        c.abilities.charisma.declare_modifier(NAME);
+        m!(c.abilities.charisma);
     }
     fn iterate(&self, c: &mut Character) {
-        if c.abilities.charisma.modify(NAME) {
-            *c.abilities.charisma += 1;
-        }
+        m! { c.abilities.charisma += 1 }
     }
 
     fn last(&mut self, c: &mut Character) {

@@ -8,12 +8,10 @@ impl Feat for Alert {
     properties! {}
 
     fn declare(&self, c: &mut Character) {
-        c.initiative.declare_modifier(NAME);
+        m!(c.initiative);
     }
     fn iterate(&self, c: &mut Character) {
-        if c.initiative.modify(NAME) {
-            *c.initiative += 5;
-        }
+        m! { c.initiative += 5 }
     }
     fn last(&mut self, c: &mut Character) {
         c.feats.extend(vec! [

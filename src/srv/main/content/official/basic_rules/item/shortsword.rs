@@ -14,7 +14,7 @@ impl Item for Shortsword {
 
     fn declare(&self, c: &mut Character, equipped: Equipped, _attuned: bool) {
         if let Equipped::Held(_) = equipped {
-            c.attack_moves.declare_initializer(NAME);
+            i!(c.attack_moves);
         }
     }
 
@@ -27,19 +27,17 @@ impl Item for Shortsword {
             };
             match equipped {
                 Equipped::Held(_) => {
-                    if c.attack_moves.initialize(NAME) {
-                        (*c.attack_moves).push(
-                            AttackMove {
-                                name: NAME,
-                                time: MoveTime::Action,
-                                hit: 0,
-                                damage: Damage::from_die(6, DamageType::Piercing),
-                                range: Range::Fixed(5),
-                                properties: vec!["Light", "Finesse"],
-                                use_modifier: ability,
-                                weapon_type: WeaponType::Martial
-                            }
-                        )
+                    i! {
+                        c.attack_moves <<= AttackMove {
+                            name: NAME,
+                            time: MoveTime::Action,
+                            hit: 0,
+                            damage: Damage::from_die(6, DamageType::Piercing),
+                            range: Range::Fixed(5),
+                            properties: vec!["Light", "Finesse"],
+                            use_modifier: ability,
+                            weapon_type: WeaponType::Martial
+                        }
                     }
                 }
                 _ => {}

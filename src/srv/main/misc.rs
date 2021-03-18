@@ -385,7 +385,6 @@ impl Vantage {
         }
     }
 
-    #[allow(dead_code)]
     pub(crate) fn downgrade(&mut self) {
         use Vantage::*;
 
@@ -398,6 +397,14 @@ impl Vantage {
             }
             _ => {}
         }
+    }
+
+    pub(crate) fn add_assign<T>(&mut self, _other: T) {
+        self.upgrade();
+    }
+
+    pub(crate) fn sub_assign<T>(&mut self, _other: T) {
+        self.downgrade();
     }
 }
 

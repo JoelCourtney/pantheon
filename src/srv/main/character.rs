@@ -275,13 +275,13 @@ impl<T> Staged<T>
         self.value
     }
 
-    pub fn declare_initializer(&mut self, who: &'static str) {
+    pub fn declare_initialize(&mut self, who: &'static str) {
         self.initializers.insert(who);
     }
-    pub fn declare_modifier(&mut self, who: &'static str) {
+    pub fn declare_modify(&mut self, who: &'static str) {
         self.modifiers.insert(who);
     }
-    pub fn declare_finalizer(&mut self, who: &'static str) {
+    pub fn declare_finalize(&mut self, who: &'static str) {
         self.finalizers.insert(who);
     }
 
@@ -304,10 +304,20 @@ impl<T> Staged<T>
     }
 }
 
+impl<T> Staged<T>
+    where T: Serialize + Default + Debug + Clone {
+    pub fn done(&self) -> Result <T, () > {
+        if self.ready() {
+            Ok(self.value.clone())
+        } else {
+            Err(())
+        }
+    }
+}
+
 impl<T> Deref for Staged<T>
     where T: Debug + Default + Serialize {
     type Target = T;
-
     fn deref(&self) -> &Self::Target {
         &self.value
     }
