@@ -3,7 +3,7 @@ use crate::feature::Choose;
 use std::collections::HashMap;
 use maplit::hashmap;
 use std::fmt::{Display, Formatter};
-use crate::choose;
+use proc_macros::choose;
 
 /// Represents an amount of damage.
 ///
@@ -164,98 +164,77 @@ pub enum Hand {
     Both
 }
 
-choose! {
-    pub enum Rarity {
-        Common,
-        Uncommon,
-        Rare,
-        #[choose(pretty = "Very Rare")]
-        VeryRare,
-        Legendary,
-        Unknown
-    }
+#[choose]
+pub enum Rarity {
+    Common,
+    Uncommon,
+    Rare,
+    VeryRare = "Very Rare",
+    Legendary,
+    Unknown
+}
 
-    pub enum CreatureSize {
-        Unknown,
-        Fine,
-        Diminutive,
-        Tiny,
-        Small,
-        Medium,
-        Large,
-        Huge,
-        Gargantuan,
-        Colossal
-    }
+#[choose]
+pub enum CreatureSize {
+    Unknown,
+    Fine,
+    Diminutive,
+    Tiny,
+    Small,
+    Medium,
+    Large,
+    Huge,
+    Gargantuan,
+    Colossal
+}
 
-    pub enum Alignment {
+#[choose]
+pub enum Alignment {
+    LawfulGood = "Lawful Good",
+    LawfulNeutral = "Lawful Neutral",
+    LawfulEvil = "Lawful Evil",
+    NeutralGood = "Neutral Good",
+    TrueNeutral = "True Neutral",
+    NeutralEvil = "Neutral Evil",
+    ChaoticGood = "Chaotic Good",
+    ChaoticNeutral = "Chaotic Neutral",
+    ChaoticEvil = "Chaotic Evil",
+    Unknown,
+    ItsComplicated = "It's complicated."
+}
 
-        #[choose(pretty = "Lawful Good")]
-        LawfulGood,
+#[choose]
+pub enum Ability {
+    Strength,
+    Dexterity,
+    Constitution,
+    Intelligence,
+    Wisdom,
+    Charisma,
+    Unknown
+}
 
-        #[choose(pretty = "Lawful Neutral")]
-        LawfulNeutral,
-
-        #[choose(pretty = "Lawful Evil")]
-        LawfulEvil,
-
-        #[choose(pretty = "Neutral Good")]
-        NeutralGood,
-
-        #[choose(pretty = "True Neutral")]
-        TrueNeutral,
-
-        #[choose(pretty = "Neutral Evil")]
-        NeutralEvil,
-
-        #[choose(pretty = "Chaotic Good")]
-        ChaoticGood,
-
-        #[choose(pretty = "Chaotic Neutral")]
-        ChaoticNeutral,
-
-        #[choose(pretty = "Chaotic Evil")]
-        ChaoticEvil,
-
-        Unknown,
-
-        #[choose(pretty = "It's complicated.")]
-        ItsComplicated
-    }
-
-    pub enum Ability {
-        Strength,
-        Dexterity,
-        Constitution,
-        Intelligence,
-        Wisdom,
-        Charisma,
-        Unknown
-    }
-
-    pub enum Skill {
-        Acrobatics,
-        #[choose(pretty = "Animal Handling")]
-        AnimalHandling,
-        Arcana,
-        Athletics,
-        Deception,
-        History,
-        Insight,
-        Intimidation,
-        Investigation,
-        Medicine,
-        Nature,
-        Perception,
-        Performance,
-        Persuasion,
-        Religion,
-        #[choose(pretty = "Sleight of Hand")]
-        SleightOfHand,
-        Stealth,
-        Survival,
-        Unknown
-    }
+#[choose]
+pub enum Skill {
+    Acrobatics,
+    AnimalHandling = "Animal Handling",
+    Arcana,
+    Athletics,
+    Deception,
+    History,
+    Insight,
+    Intimidation,
+    Investigation,
+    Medicine,
+    Nature,
+    Perception,
+    Performance,
+    Persuasion,
+    Religion,
+    SleightOfHand = "Sleight of Hand",
+    Stealth,
+    Survival,
+    Unknown
 }
 
 impl Skill {
@@ -285,13 +264,12 @@ impl Skill {
     }
 }
 
-choose! {
-    pub enum PassiveSkill {
-        Perception,
-        Investigation,
-        Insight,
-        Unknown
-    }
+#[choose]
+pub enum PassiveSkill {
+    Perception,
+    Investigation,
+    Insight,
+    Unknown
 }
 
 impl PassiveSkill {
@@ -306,17 +284,16 @@ impl PassiveSkill {
     }
 }
 
-choose! {
-    pub enum SavingThrow {
-        Strength,
-        Dexterity,
-        Constitution,
-        Intelligence,
-        Wisdom,
-        Charisma,
-        Death,
-        Unknown,
-    }
+#[choose]
+pub enum SavingThrow {
+    Strength,
+    Dexterity,
+    Constitution,
+    Intelligence,
+    Wisdom,
+    Charisma,
+    Death,
+    Unknown,
 }
 
 #[derive(Debug, Serialize, Copy, Clone)]
@@ -333,33 +310,31 @@ impl Default for ProficiencyType {
     }
 }
 
-choose! {
-    pub enum Language {
-        Abyssal,
-        Aquan,
-        Auran,
-        Celestial,
-        Common,
-        #[choose(pretty = "Deep Speech")]
-        DeepSpeech,
-        Draconic,
-        Druidic,
-        Dwarvish,
-        Elvish,
-        Giant,
-        Gnomish,
-        Goblin,
-        Gnoll,
-        Halfling,
-        Ignan,
-        Infernal,
-        Orc,
-        Primordial,
-        Sylvan,
-        Terran,
-        Undercommon,
-        Unknown,
-    }
+#[choose]
+pub enum Language {
+    Abyssal,
+    Aquan,
+    Auran,
+    Celestial,
+    Common,
+    DeepSpeech = "Deep Speech",
+    Draconic,
+    Druidic,
+    Dwarvish,
+    Elvish,
+    Giant,
+    Gnomish,
+    Goblin,
+    Gnoll,
+    Halfling,
+    Ignan,
+    Infernal,
+    Orc,
+    Primordial,
+    Sylvan,
+    Terran,
+    Undercommon,
+    Unknown,
 }
 
 #[derive(Serialize, Debug, Copy, Clone)]
@@ -412,22 +387,22 @@ impl Default for Vantage {
     fn default() -> Self { Vantage::None }
 }
 
-choose! {
-    pub enum MovementType {
-        Walk,
-        Fly,
-        Climb,
-        Burrow,
-        Swim,
-        Unknown
-    }
+#[choose]
+pub enum MovementType {
+    Walk,
+    Fly,
+    Climb,
+    Burrow,
+    Swim,
+    Unknown
+}
 
-    pub enum MoneyType {
-        Platinum,
-        Gold,
-        Electrum,
-        Silver,
-        Copper,
-        Unknown
-    }
+#[choose]
+pub enum MoneyType {
+    Platinum,
+    Gold,
+    Electrum,
+    Silver,
+    Copper,
+    Unknown
 }

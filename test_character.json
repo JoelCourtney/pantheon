@@ -20,10 +20,8 @@
     "copper": 0
   },
   "race": {
-    "Halfling": {
-      "subrace": {
-        "UnknownHalflingSubrace": null
-      }
+    "Human": {
+      "extra_language": "Deep Speech"
     }
   },
   "classes": [

@@ -222,21 +222,20 @@ impl Class for Rogue {
     "#}
 }
 
-choose! {
-    pub enum RogueSkill {
-        Acrobatics,
-        Athletics,
-        Deception,
-        Insight,
-        Intimidation,
-        Investigation,
-        Perception,
-        Performance,
-        Persuasion,
-        #[choose(pretty = "Sleight of Hand")] SleightOfHand,
-        Stealth,
-        Unknown
-    }
+#[choose]
+pub enum RogueSkill {
+    Acrobatics,
+    Athletics,
+    Deception,
+    Insight,
+    Intimidation,
+    Investigation,
+    Perception,
+    Performance,
+    Persuasion,
+    SleightOfHand = "Sleight of Hand",
+    Stealth,
+    Unknown
 }
 
 impl From<&RogueSkill> for Skill {

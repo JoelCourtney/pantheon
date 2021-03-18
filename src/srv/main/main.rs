@@ -84,8 +84,8 @@ fn display_help() -> ! {
         indoc::indoc! { r"
             {} {} command line help
 
-            This is the DnDCent server. It either loads or creates a character file, and serves
-            the inteface on {}.
+            This is the DnDCent server. It either loads or creates a character file,
+            and serves the inteface on {}.
 
             USAGE: dndcent [--new | -n] <file>
 

@@ -2,33 +2,32 @@ use proc_macro::TokenStream;
 use proc_macro2::TokenStream as TokenStream2;
 use quote::{quote, format_ident};
 use inflector::Inflector;
-use darling::FromVariant;
 
-#[derive(darling::FromVariant, Debug)]
-#[darling(attributes(choose))]
-struct VariantNames {
-    ident: syn::Ident,
-    #[darling(default)]
-    pretty: String
-}
-
-pub fn choose(ast: syn::DeriveInput) -> TokenStream {
+pub fn choose(ast: syn::ItemEnum) -> TokenStream {
     let ident = ast.ident.clone();
     let name = ident.to_string();
 
-    let vars: Vec<(String, String)> = match ast.data {
-        syn::Data::Enum(syn::DataEnum { variants, .. }) => {
-            variants.iter().map( |var| {
-                let var_names = VariantNames::from_variant(var).unwrap();
-                if var_names.pretty.len() != 0 {
-                    (var_names.ident.to_string(), var_names.pretty)
-                } else {
-                    (var_names.ident.to_string(), var_names.ident.to_string())
-                }
-            }).collect()
+    let vars: Vec<(String, String)> = ast.clone().variants.iter().map(
+        |var| {
+            match &var.discriminant {
+                Some(
+                    (_,
+                        syn::Expr::Lit(
+                            syn::ExprLit {
+                                lit: syn::Lit::Str(s), ..
+                            }
+                        )
+                    )
+                ) => (var.ident.to_string(), s.value()),
+                _ => (var.ident.to_string(), var.ident.to_string())
+            }
         }
-        _ => panic!("item inside choose must be an enum")
-    };
+    ).collect();
+
+    let mut stripped_ast = ast.clone();
+    for var in &mut stripped_ast.variants {
+        var.discriminant = None;
+    }
 
     let enum_ident = format_ident!("{}", name);
 
@@ -73,6 +72,9 @@ pub fn choose(ast: syn::DeriveInput) -> TokenStream {
     let error_string = format!("expected a pretty-print variant of enum {}", name);
 
     (quote! {
+        #[derive(Debug, Copy, Clone, Hash, Eq, PartialEq, enum_iterator::IntoEnumIterator)]
+        #stripped_ast
+
         impl #enum_ident {
             pub fn known(&self) -> bool {
                 *self != #enum_ident::Unknown

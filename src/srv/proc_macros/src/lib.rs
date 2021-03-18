@@ -6,7 +6,6 @@
 //! and that sounds terrible and error-prone. These macros automate that process.
 
 extern crate proc_macro;
-extern crate darling;
 
 mod choose;
 mod content;
@@ -84,9 +83,9 @@ pub fn registry(_: TokenStream) -> TokenStream {
 ///     }
 /// }
 /// ```
-#[proc_macro_derive(StaticChoose, attributes(choose))]
-pub fn choose(input: TokenStream) -> TokenStream {
-    let ast: syn::DeriveInput = syn::parse(input)
+#[proc_macro_attribute]
+pub fn choose(_args: TokenStream, input: TokenStream) -> TokenStream {
+    let ast: syn::ItemEnum = syn::parse(input)
         .expect("parse choose arg failed");
     choose::choose(ast)
 }
@@ -130,3 +129,4 @@ pub fn m(input: TokenStream) -> TokenStream {
 pub fn f(input: TokenStream) -> TokenStream {
     content::stages(input, "finalize").into()
 }
+

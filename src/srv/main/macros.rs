@@ -5,10 +5,10 @@ macro_rules! name {
         #[allow(unused_imports)] use crate::feature::{Feature, Choice::*, Choose};
         #[allow(unused_imports)] use crate::misc::*;
         #[allow(unused_imports)] use crate::moves::*;
-        #[allow(unused_imports)] use crate::{properties, description, choose};
+        #[allow(unused_imports)] use crate::{properties, description};
         #[allow(unused_imports)] use crate::content::traits::*;
         #[allow(unused_imports)] use crate::content::common::*;
-        #[allow(unused_imports)] use proc_macros::{dynamic_choose, content, i, m, f};
+        #[allow(unused_imports)] use proc_macros::{choose, dynamic_choose, content, i, m, f};
         #[allow(unused_imports)] use serde::{Serialize, Deserialize};
         #[allow(unused_imports)] use indoc::indoc;
         #[allow(unused_imports)] use std::fmt::Debug;
@@ -61,12 +61,12 @@ macro_rules! description {
     }
 }
 
-#[macro_export]
-macro_rules! choose {
-    ($($e:item)+) => {
-        $(
-            #[derive(Debug, Copy, Clone, Hash, Eq, PartialEq, enum_iterator::IntoEnumIterator, proc_macros::StaticChoose)]
-            $e
-        )+
-    }
-}
+// #[macro_export]
+// macro_rules! choose {
+//     ($($e:item)+) => {
+//         $(
+//             #[derive(Debug, Copy, Clone, Hash, Eq, PartialEq, enum_iterator::IntoEnumIterator, proc_macros::StaticChoose)]
+//             $e
+//         )+
+//     }
+// }
