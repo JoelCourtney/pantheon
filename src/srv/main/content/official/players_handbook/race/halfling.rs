@@ -12,27 +12,21 @@ impl Race for Halfling {
     fn declare(&self, c: &mut Character) {
         common_race_rules::declare(c, self);
 
-        i!(c.size);
-        i!(c.speeds.walk);
-
-        i!(c.saving_throw_notes);
+        i!(c.size, c.speeds.walk, c.saving_throw_notes, c.languages);
 
         m!(c.abilities.dexterity);
-
-        i!(c.languages);
 
         self.subrace.declare(c);
     }
     fn iterate(&self, c: &mut Character) {
         common_race_rules::iterate(c, self);
 
-        i! { c.size = CreatureSize::Small }
-
-        i! { c.speeds.walk = 25 }
-
-        i! { c.saving_throw_notes <<= "**ADV** against frightened" }
-
-        i! { c.languages <<= Language::Common }
+        i! {
+            c.size = CreatureSize::Small;
+            c.speeds.walk = 25;
+            c.saving_throw_notes <<= "**ADV** against frightened";
+            c.languages <<= Language::Common;
+        }
 
         m! { c.abilities.dexterity += 2 }
 

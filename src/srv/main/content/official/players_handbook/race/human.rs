@@ -12,9 +12,7 @@ impl Race for Human {
     fn declare(&self, c: &mut Character) {
         common_race_rules::declare(c, self);
 
-        i!(c.size);
-        i!(c.speeds.walk);
-        i!(c.languages);
+        i!(c.size, c.speeds.walk, c.languages);
 
         for ability in Ability::into_enum_iter() {
             if ability.known() {
@@ -25,9 +23,10 @@ impl Race for Human {
     fn iterate(&self, c: &mut Character) {
         common_race_rules::iterate(c, self);
 
-        i! { c.size = CreatureSize::Medium }
-
-        i! { c.speeds.walk = 30 }
+        i! {
+            c.size = CreatureSize::Medium;
+            c.speeds.walk = 30;
+        }
 
         if self.extra_language != Language::Unknown {
             i! { c.languages >>= vec! [ Language::Common, self.extra_language ] }

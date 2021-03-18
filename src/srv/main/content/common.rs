@@ -28,12 +28,7 @@ pub(crate) mod common_rules {
             }
         }
 
-        i!(c.proficiency_bonus);
-        i!(c.initiative);
-
-        i!(c.attacks_per_action);
-
-        i!(c.armor_class);
+        i!(c.proficiency_bonus, c.initiative, c.attacks_per_action, c.armor_class);
 
         // MODIFIERS
 
@@ -46,43 +41,40 @@ pub(crate) mod common_rules {
         for ability in Ability::into_enum_iter() {
             if ability.known() {
                 i! {
-                    *c.ability_modifiers.get_mut_known(ability) = (c.abilities.get_known(ability).done()? as i32 - 10) / 2
+                    *c.ability_modifiers.get_mut_known(ability) = (c.abilities.get_known(ability)? as i32 - 10) / 2
                 }
             }
         }
 
-        i! { c.proficiency_bonus = (c.total_level.done()? - 1) / 4 + 2 }
-
-        i! { c.initiative = c.ability_modifiers.dexterity.done()? }
-
-        // DEFAULT ATTACKS PER ACTION
-        i! {c.attacks_per_action = 1}
-
-        // DEFAULT ARMOR-LESS AC
-        i! { c.armor_class = {
-            let default = (10 + c.ability_modifiers.dexterity.done()?) as u32;
-            if *c.armor_class < default {
-                default
-            } else {
-                *c.armor_class
-            }
-        }}
+        i! {
+            c.proficiency_bonus = (c.total_level? - 1) / 4 + 2;
+            c.initiative = c.ability_modifiers.dexterity?;
+            c.attacks_per_action = 1;
+            c.armor_class = {
+                let default = (10 + c.ability_modifiers.dexterity?) as u32;
+                if *c.armor_class < default {
+                    default
+                } else {
+                    *c.armor_class
+                }
+            };
+        }
 
         // INIT SKILLS and SAVING THROWS
         for skill in Skill::into_enum_iter() {
             let ability = skill.get_associated_ability();
             if skill.known() {
                 i! {
-                    *c.skills.get_mut_known(skill) = c.ability_modifiers.get_known(ability).done()?
-                        + calculate_proficiency(c.proficiency_bonus.done()?, c.skill_proficiencies.get_known(skill).done()?)
+                    *c.skills.get_mut_known(skill) = c.ability_modifiers.get_known(ability)?
+                        + calculate_proficiency(c.proficiency_bonus?, c.skill_proficiencies.get_known(skill)?)
                 }
             }
         }
         for ability in Ability::into_enum_iter() {
             if ability.known() {
                 i! {
-                    *c.saves.get_mut_known(ability) = c.ability_modifiers.get_known(ability).done()?
-                        + calculate_proficiency(c.proficiency_bonus.done()?, c.save_proficiencies.get_known(ability).done()?)
+                    *c.saves.get_mut_known(ability) = c.ability_modifiers.get_known(ability)?
+                        + calculate_proficiency(c.proficiency_bonus?, c.save_proficiencies.get_known(ability)?)
                 }
             }
         }
@@ -90,7 +82,7 @@ pub(crate) mod common_rules {
         // PASSIVES
         for passive in PassiveSkill::into_enum_iter() {
             if passive.known() {
-                i! { *c.passives.get_mut_known(passive) = 10 + c.skills.get_known(passive.into_skill()).done()? }
+                i! { *c.passives.get_mut_known(passive) = 10 + c.skills.get_known(passive.into_skill())? }
             }
         }
 
@@ -137,8 +129,7 @@ pub(crate) mod common_class_rules {
     pub fn declare(class: &dyn Class, c: &mut Character, _level: u32, _first: bool) {
         #[allow(non_snake_case)]
         let NAME = class.name();
-        i!(c.max_health);
-        i!(c.class_names);
+        i!(c.max_health, c.class_names);
         m!(c.total_level);
     }
     pub fn iterate(class: &dyn Class, c: &mut Character, level: u32, first: bool) {
@@ -150,12 +141,12 @@ pub(crate) mod common_class_rules {
                 if first && level >= 1 {
                     res += (hd / 2 - 1) as i32;
                 }
-                res += ((hd / 2 + 1) as i32 + c.ability_modifiers.constitution.done()?) * level as i32;
+                res += ((hd / 2 + 1) as i32 + c.ability_modifiers.constitution?) * level as i32;
                 res as u32
-            }
+            };
+            c.class_names <<= format!("{} {}", NAME, level);
         }
         m! { c.total_level += level }
-        i! { c.class_names <<= format!("{} {}", NAME, level) }
     }
     pub fn last(_class: &dyn Class, _c: &mut Character, _level: u32, _first: bool) {
 
@@ -176,7 +167,7 @@ pub(crate) mod common_race_rules {
     pub fn iterate(c: &mut Character, race: &dyn Race) {
         #[allow(non_snake_case)]
         let NAME = race.name();
-        
+
         i! { c.race_name = race.name().to_string() }
     }
 }

@@ -17,12 +17,13 @@ impl Class for Rogue {
     fn declare(&self, c: &mut Character, level: u32, first: bool) {
         common_class_rules::declare(self, c, level, first);
 
-        i!(c.armor_proficiencies);
-        i!(c.weapon_proficiencies);
-        i!(c.tool_proficiencies);
-
-        i!(c.save_proficiencies.dexterity);
-        i!(c.save_proficiencies.intelligence);
+        i!(
+            c.armor_proficiencies,
+            c.weapon_proficiencies,
+            c.tool_proficiencies,
+            c.save_proficiencies.dexterity,
+            c.save_proficiencies.intelligence
+        );
 
         for skill in &self.skill_proficiencies {
             match c.skill_proficiencies.get_mut(skill.into()) {
@@ -36,22 +37,19 @@ impl Class for Rogue {
     fn iterate(&self, c: &mut Character, level: u32, first: bool) {
         common_class_rules::iterate(self, c, level, first);
 
-        i! { c.armor_proficiencies <<= "Light Armor" }
-
         i! {
+            c.armor_proficiencies <<= "Light Armor";
             c.weapon_proficiencies >>= vec! [
                 "Simple Weapons",
                 "Hand Crossbows",
                 "Longswords",
                 "Rapiers",
                 "Shortswords"
-            ]
+            ];
+            c.tool_proficiencies <<= ("Diebs' Tools", ProficiencyType::Single);
+            c.save_proficiencies.dexterity = ProficiencyType::Single;
+            c.save_proficiencies.intelligence = ProficiencyType::Single;
         }
-
-        i! { c.tool_proficiencies <<= ("Diebs' Tools", ProficiencyType::Single) }
-
-        i! { c.save_proficiencies.dexterity = ProficiencyType::Single }
-        i! { c.save_proficiencies.intelligence = ProficiencyType::Single }
 
         for skill in &self.skill_proficiencies {
             match c.skill_proficiencies.get_mut(skill.into()) {

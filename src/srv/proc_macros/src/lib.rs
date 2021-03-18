@@ -116,20 +116,20 @@ pub fn match_raw_files(input: TokenStream) -> TokenStream {
     server::match_raw_files(ast)
 }
 
+
+
 #[proc_macro]
 pub fn i(input: TokenStream) -> TokenStream {
-    let ast: syn::Expr = syn::parse(input).expect("expected statement");
-    content::stages(ast, "initialize").into()
+    content::stages(input, "initialize").into()
 }
 
 #[proc_macro]
 pub fn m(input: TokenStream) -> TokenStream {
-    let ast: syn::Expr = syn::parse(input).expect("expected statement");
-    content::stages(ast, "modify").into()
+    content::stages(input, "modify").into()
 }
+
 
 #[proc_macro]
 pub fn f(input: TokenStream) -> TokenStream {
-    let ast: syn::Expr = syn::parse(input).expect("expected statement");
-    content::stages(ast, "finalize").into()
+    content::stages(input, "finalize").into()
 }

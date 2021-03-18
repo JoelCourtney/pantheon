@@ -15,9 +15,7 @@ impl Race for VariantHuman {
     fn declare(&self, c: &mut Character) {
         common_race_rules::declare(c, self);
 
-        i!(c.size);
-        i!(c.languages);
-        i!(c.speeds.walk);
+        i!(c.size, c.speeds.walk, c.languages);
 
         for ability in &self.abilities {
             match c.abilities.get_mut(*ability) {
@@ -36,15 +34,16 @@ impl Race for VariantHuman {
     fn iterate(&self, c: &mut Character) {
         common_race_rules::iterate(c, self);
 
-        i! { c.size = CreatureSize::Medium }
+        i! {
+            c.size = CreatureSize::Medium;
+            c.speeds.walk = 30;
+        }
 
         if self.language != Language::Unknown {
             i! { c.languages >>= vec! [ Language::Common, self.language ] }
         } else {
             i! { c.languages <<= Language::Common }
         }
-
-        i! { c.speeds.walk = 30 }
 
         for ability in &self.abilities {
             match c.abilities.get_mut(*ability) {

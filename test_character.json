@@ -20,16 +20,10 @@
     "copper": 0
   },
   "race": {
-    "VariantHuman": {
-      "abilities": [
-        "Strength",
-        "Dexterity"
-      ],
-      "skill": "Unknown",
-      "feat": {
-        "UnknownFeat": null
-      },
-      "language": "Unknown"
+    "Halfling": {
+      "subrace": {
+        "Stout": null
+      }
     }
   },
   "classes": [
@@ -84,5 +78,5 @@
       false
     ]
   ],
-  "description": "its a still a me"
+  "description": "its a still a me\n\nitaaaaaa fuggin work\n"
 }
