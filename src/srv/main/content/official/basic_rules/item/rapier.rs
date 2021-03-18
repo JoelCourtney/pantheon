@@ -12,30 +12,24 @@ impl Item for Rapier {
         cost: Option<u32> = Some(25)
     }
 
-    fn declare(&self, c: &mut Character, equipped: Equipped, _attuned: bool) {
-        if let Equipped::Held(_) = equipped {
-            i!(c.attack_moves);
-        }
-    }
     fn iterate(&self, c: &mut Character, equipped: Equipped, _attuned: bool) {
-        if c.ability_modifiers.strength.ready() && c.ability_modifiers.dexterity.ready() {
-            let ability = if *c.ability_modifiers.strength > *c.ability_modifiers.dexterity {
-                Ability::Strength
-            } else {
-                Ability::Dexterity
-            };
-            if let Equipped::Held(_) = equipped {
-                i! {
-                    c.attack_moves <<= AttackMove {
-                        name: NAME,
-                        time: MoveTime::Action,
-                        hit: 0,
-                        damage: Damage::from_die(8, DamageType::Piercing),
-                        range: Range::Fixed(5),
-                        properties: vec!["Finesse"],
-                        use_modifier: ability,
-                        weapon_type: WeaponType::Martial
-                    }
+        if let Equipped::Held(_) = equipped {
+            i! {
+                c.attack_moves <<= AttackMove {
+                    name: NAME,
+                    time: MoveTime::Action,
+                    hit: 0,
+                    damage: Damage::from_die(8, DamageType::Piercing),
+                    range: Range::Fixed(5),
+                    properties: vec!["Finesse"],
+                    use_modifier: {
+                        if c.ability_modifiers.strength? > c.ability_modifiers.dexterity? {
+                            Ability::Strength
+                        } else {
+                            Ability::Dexterity
+                        }
+                    },
+                    weapon_type: WeaponType::Martial
                 }
             }
         }

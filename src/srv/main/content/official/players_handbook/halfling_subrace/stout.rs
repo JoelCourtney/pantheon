@@ -7,10 +7,6 @@ pub struct Stout;
 impl HalflingSubrace for Stout {
     properties! {}
 
-    fn declare(&self, c: &mut Character) {
-        i!(c.saving_throw_notes, c.defenses);
-        m!(c.abilities.constitution);
-    }
     fn iterate(&self, c: &mut Character) {
         i! {
             c.saving_throw_notes <<= "**ADV** against poisoned";

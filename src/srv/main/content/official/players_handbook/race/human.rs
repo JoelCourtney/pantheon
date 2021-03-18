@@ -9,17 +9,6 @@ pub struct Human {
 impl Race for Human {
     properties! {}
 
-    fn declare(&self, c: &mut Character) {
-        common_race_rules::declare(c, self);
-
-        i!(c.size, c.speeds.walk, c.languages);
-
-        for ability in Ability::into_enum_iter() {
-            if ability.known() {
-                m!(c.abilities.get_mut_known(ability));
-            }
-        }
-    }
     fn iterate(&self, c: &mut Character) {
         common_race_rules::iterate(c, self);
 

@@ -9,15 +9,6 @@ pub struct Halfling {
 impl Race for Halfling {
     properties! {}
 
-    fn declare(&self, c: &mut Character) {
-        common_race_rules::declare(c, self);
-
-        i!(c.size, c.speeds.walk, c.saving_throw_notes, c.languages);
-
-        m!(c.abilities.dexterity);
-
-        self.subrace.declare(c);
-    }
     fn iterate(&self, c: &mut Character) {
         common_race_rules::iterate(c, self);
 

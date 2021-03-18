@@ -10,7 +10,6 @@ pub trait Race: Debug {
     fn description(&self) -> &'static str;
     fn description_no_title(&self) -> &'static str;
 
-    fn declare(&self, _c: &mut Character) {}
     fn iterate(&self, _c: &mut Character) {}
     fn last(&mut self, _c: &mut Character) {}
 }
@@ -23,7 +22,6 @@ pub trait Class: Debug {
 
     fn hit_dice(&self) -> u32;
 
-    fn declare(&self, _c: &mut Character, _level: u32, _first: bool) {}
     fn iterate(&self, _c: &mut Character, _level: u32, _first: bool) {}
     fn last(&mut self, _c: &mut Character, _level: u32, _first: bool) {}
 }
@@ -34,7 +32,6 @@ pub trait Feat: Debug {
     fn description(&self) -> &'static str;
     fn description_no_title(&self) -> &'static str;
 
-    fn declare(&self, _c: &mut Character) {}
     fn iterate(&self, _c: &mut Character) {}
     fn last(&mut self, _c: &mut Character) {}
 }
@@ -75,7 +72,6 @@ pub trait Item: Debug {
     fn attunable(&self) -> bool { false }
     fn ammunition(&self) -> bool { false }
 
-    fn declare(&self, _c: &mut Character, _equipped: Equipped, _attuned: bool) {}
     fn iterate(&self, _c: &mut Character, _equipped: Equipped, _attuned: bool) {}
     fn last(&mut self, _c: &mut Character, _equipped: Equipped, _attuned: bool) {}
 }
@@ -86,7 +82,6 @@ pub trait HalflingSubrace: Debug {
     fn description(&self) -> &'static str;
     fn description_no_title(&self) -> &'static str;
 
-    fn declare(&self, _c: &mut Character) {}
     fn iterate(&self, _c: &mut Character) {}
     fn last(&mut self, _c: &mut Character) {}
 }
@@ -97,7 +92,6 @@ pub trait RoguishArchetype: Debug {
     fn description(&self) -> &'static str;
     fn description_no_title(&self) -> &'static str;
 
-    fn declare(&self, _c: &mut Character, _lvl: u32) {}
     fn iterate(&self, _c: &mut Character, _lvl: u32) {}
     fn last(&mut self, _c: &mut Character, _lvl: u32) {}
 }
@@ -108,7 +102,6 @@ pub trait EldritchInvocation: Debug {
     fn description(&self) -> &'static str;
     fn description_no_title(&self) -> &'static str;
 
-    fn declare(&self, _c: &mut Character, _lvl: u32) {}
     fn iterate(&self, _c: &mut Character, _lvl: u32) {}
     fn last(&self, _c: &mut Character, _lvl: u32) {}
 }

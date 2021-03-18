@@ -12,13 +12,6 @@ impl Item for Padded {
         cost: Option<u32> = Some(5)
     }
 
-    fn declare(&self, c: &mut Character, e: Equipped, _: bool) {
-        if e == Equipped::Yes {
-            i!(c.armor_class);
-            m!(c.skill_vantages.stealth);
-        }
-    }
-
     fn iterate(&self, c: &mut Character, e: Equipped, _: bool) {
         if e == Equipped::Yes {
             i! { c.armor_class = 11 + c.ability_modifiers.dexterity? as u32 }

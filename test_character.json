@@ -1,5 +1,5 @@
 {
-  "name": "Its a ",
+  "name": "Its a asd f",
   "health": 3,
   "temp_health": 4,
   "base_abilities": {
@@ -21,7 +21,7 @@
   },
   "race": {
     "Human": {
-      "extra_language": "Deep Speech"
+      "extra_language": "Unknown"
     }
   },
   "classes": [
@@ -76,5 +76,5 @@
       false
     ]
   ],
-  "description": "its a still a me\n\nitaaaaaa fuggin work\n"
+  "description": "its a still a me\n"
 }

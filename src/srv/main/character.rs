@@ -7,8 +7,8 @@ use proc_macros::FinalizeCharacter;
 use crate::content::common::common_rules;
 use crate::content::traits::{Race, Class, Item};
 use std::ops::{Deref, DerefMut};
-use std::collections::HashSet;
-use maplit::hashset;
+use std::collections::{HashMap};
+use maplit::hashmap;
 use crate::moves::*;
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -67,16 +67,6 @@ impl StoredCharacter {
 
             ..Default::default()
         };
-
-        common_rules::declare(&mut char);
-        self.race.declare(&mut char);
-        for (i, (class, level)) in self.classes.iter().enumerate() {
-            let first = i == 0;
-            class.declare(&mut char, *level, first);
-        }
-        for (item, equipped, attuned) in &self.inventory {
-            item.declare(&mut char, *equipped, *attuned);
-        }
 
         let mut old_count: i64  = -2;
         let mut count: i64 = -1;
@@ -286,9 +276,9 @@ pub struct Character {
 pub struct Staged<T>
     where T: Default + Debug + Serialize {
     value: T,
-    initializers: HashSet<&'static str>,
-    modifiers: HashSet<&'static str>,
-    finalizers: HashSet<&'static str>
+    initializers: HashMap<&'static str, bool>,
+    modifiers: HashMap<&'static str, bool>,
+    finalizers: HashMap<&'static str, bool>,
 }
 
 impl<T> Staged<T>
@@ -297,48 +287,83 @@ impl<T> Staged<T>
     fn new(v: T) -> Self {
         Staged {
             value: v,
-            initializers: hashset! {},
-            modifiers: hashset! {},
-            finalizers: hashset! {}
+            initializers: hashmap! {},
+            modifiers: hashmap! {},
+            finalizers: hashmap! {}
         }
     }
     pub fn unwrap(self) -> T {
         self.value
     }
 
-    pub fn declare_initialize(&mut self, who: &'static str) {
-        self.initializers.insert(who);
-    }
-    pub fn declare_modify(&mut self, who: &'static str) {
-        self.modifiers.insert(who);
-    }
-    pub fn declare_finalize(&mut self, who: &'static str) {
-        self.finalizers.insert(who);
-    }
-
-    pub fn ready(&self) -> bool {
-        self.initializers.is_empty() && self.modifiers.is_empty() && self.finalizers.is_empty()
-    }
-
-    pub fn initialize(&mut self, who: &'static str) -> bool {
-        self.initializers.remove(who)
-    }
-    pub fn modify(&mut self, who: &'static str) -> bool {
-        self.initializers.is_empty() && self.modifiers.remove(who)
-    }
-    pub fn finalize(&mut self, who: &'static str) -> bool {
-        self.initializers.is_empty() && self.modifiers.is_empty() && self.finalizers.remove(who)
-    }
-
     pub fn count_unresolved(&self) -> u32 {
-        (self.initializers.len() + self.modifiers.len() + self.finalizers.len()) as u32
+        self.initializers.values().fold(0, |acc, b| acc + !*b as u32)
+            + self.modifiers.values().fold(0, |acc, b| acc + !*b as u32)
+            + self.finalizers.values().fold(0, |acc, b| acc + !*b as u32)
+    }
+
+    fn initialized(&self) -> bool {
+        self.initializers.values().all(|b| *b)
+    }
+    fn modified(&self) -> bool {
+        self.initialized() && self.modifiers.values().all(|b| *b)
+    }
+    pub fn finalized(&self) -> bool {
+        self.modified() && self.finalizers.values().all(|b| *b)
+    }
+
+    pub fn request_initialize(&mut self, who: &'static str) -> bool {
+        match self.initializers.get(who) {
+            Some(b) if !*b => true,
+            None => {
+                self.initializers.insert(who, false);
+                false
+            }
+            _ => false
+        }
+    }
+    pub fn request_modify(&mut self, who: &'static str) -> bool {
+        match self.modifiers.get(who) {
+            Some(b) if !*b => self.initialized(),
+            None => {
+                self.modifiers.insert(who, false);
+                false
+            }
+            _ => false
+        }
+    }
+    pub fn request_finalize(&mut self, who: &'static str) -> bool {
+        match self.finalizers.get(who) {
+            Some(b) if !*b => self.initialized() && self.modified(),
+            None => {
+                self.finalizers.insert(who, false);
+                false
+            }
+            _ => false
+        }
+    }
+
+    pub fn confirm_initialize(&mut self, who: &'static str) {
+        match self.initializers.get_mut(who) {
+            Some(b) if !*b => *b = true,
+            _ => panic!("nope")
+        }
+    }
+    pub fn confirm_modify(&mut self, who: &'static str) {
+        match self.modifiers.get_mut(who) {
+            Some(b) if !*b => *b = true,
+            _ => panic!("nope")
+        }
+    }
+    pub fn confirm_finalize(&mut self, who: &'static str) {
+        self.finalizers.insert(who, true);
     }
 }
 
 impl<T> Staged<T>
     where T: Serialize + Default + Debug + Clone {
     pub fn r#final(&self) -> Result <T, () > {
-        if self.ready() {
+        if self.finalized() {
             Ok(self.value.clone())
         } else {
             Err(())

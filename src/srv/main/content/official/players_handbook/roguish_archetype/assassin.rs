@@ -9,16 +9,13 @@ pub struct Assassin;
 impl RoguishArchetype for Assassin {
     properties! {}
 
-    fn declare(&self, c: &mut Character, lvl: u32) {
-        if lvl >= 3 {
-            m!(c.tool_proficiencies);
-        }
-    }
     fn iterate(&self, c: &mut Character, lvl: u32) {
         if lvl >= 3 {
-            if c.tool_proficiencies.modify(NAME) {
-                (*c.tool_proficiencies).push(("Disguise Kit", ProficiencyType::Single));
-                (*c.tool_proficiencies).push(("Poisoner's Kit", ProficiencyType::Single));
+            m! {
+                c.tool_proficiencies >>= vec! [
+                    ("Disguise Kit", ProficiencyType::Single),
+                    ("Poisoner's Kit", ProficiencyType::Single)
+                ]
             }
         }
     }

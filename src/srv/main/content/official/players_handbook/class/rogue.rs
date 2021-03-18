@@ -14,26 +14,6 @@ impl Class for Rogue {
         hit_dice: u32 = 8
     }
 
-    fn declare(&self, c: &mut Character, level: u32, first: bool) {
-        common_class_rules::declare(self, c, level, first);
-
-        i!(
-            c.armor_proficiencies,
-            c.weapon_proficiencies,
-            c.tool_proficiencies,
-            c.save_proficiencies.dexterity,
-            c.save_proficiencies.intelligence
-        );
-
-        for skill in &self.skill_proficiencies {
-            match c.skill_proficiencies.get_mut(skill.into()) {
-                Some(s) => i!(s),
-                None => {}
-            }
-        }
-
-        self.subclass.declare(c, level);
-    }
     fn iterate(&self, c: &mut Character, level: u32, first: bool) {
         common_class_rules::iterate(self, c, level, first);
 

@@ -12,12 +12,6 @@ impl Item for Longsword {
         cost: Option<u32> = Some(15)
     }
 
-    fn declare(&self, c: &mut Character, equipped: Equipped, _attuned: bool) {
-        if let Equipped::Held(_) = equipped {
-            i!(c.attack_moves);
-        }
-    }
-
     fn iterate(&self, c: &mut Character, equipped: Equipped, _attuned: bool) {
         match equipped {
             Equipped::Held(Hand::Both) => {

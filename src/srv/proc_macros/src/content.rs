@@ -32,8 +32,8 @@ pub(crate) fn stages(input: TokenStream, stage: &'static str) -> TokenStream2 {
             Err(..) => panic!("must be separated with semicolons or commas")
         }
     };
-    let stage_ident = format_ident!("{}", stage);
-    let declare_ident = format_ident!("declare_{}", stage);
+    let request_stage = format_ident!("request_{}", stage);
+    let confirm_stage = format_ident!("confirm_{}", stage);
     let mut acc: TokenStream2 = quote! {};
     for seg in ast {
         match seg {
@@ -47,11 +47,14 @@ pub(crate) fn stages(input: TokenStream, stage: &'static str) -> TokenStream2 {
                 let expanded_right = expand_carriers(right.to_token_stream());
                 acc = quote! {
                     #acc
-                    match (|| -> Result<_, ()> {Ok(#expanded_right)})() {
-                        Ok(v) if (#left).#stage_ident(NAME) => {
-                            *#left = v;
+                    if (#left).#request_stage(NAME) {
+                        match (|| -> Result<_, ()> {Ok(#expanded_right)})() {
+                            Ok(v) => {
+                                *#left = v;
+                                (#left).#confirm_stage(NAME);
+                            }
+                            _ => {}
                         }
-                        _ => {}
                     }
                 }
             },
@@ -73,25 +76,28 @@ pub(crate) fn stages(input: TokenStream, stage: &'static str) -> TokenStream2 {
                 let expanded_right = expand_carriers(right.to_token_stream());
                 acc = quote! {
                     #acc
-                    match (|| -> Result<_, ()> {Ok(#expanded_right)})() {
-                        Ok(v) if (#left).#stage_ident(NAME) => {
-                            use std::ops::{AddAssign, SubAssign};
-                            (*#left).#func(v);
+                    if (#left).#request_stage(NAME) {
+                        match (|| -> Result<_, ()> {Ok(#expanded_right)})() {
+                            Ok(v) => {
+                                use std::ops::{AddAssign, SubAssign};
+                                (*#left).#func(v);
+                                (#left).#confirm_stage(NAME);
+                            }
+                            _ => {}
                         }
-                        _ => {}
                     }
                 };
             },
             _ => {
-                acc = if acc.is_empty() {
-                    quote! {
-                        #seg.#declare_ident(NAME)
-                    }
-                } else {
-                    quote! {
-                        #acc; #seg.#declare_ident(NAME)
-                    }
-                }
+                // acc = if acc.is_empty() {
+                //     quote! {
+                //         #seg.#declare_ident(NAME)
+                //     }
+                // } else {
+                //     quote! {
+                //         #acc; #seg.#declare_ident(NAME)
+                //     }
+                // }
             }
         }
     }

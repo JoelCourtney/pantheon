@@ -12,25 +12,6 @@ pub struct VariantHuman {
 impl Race for VariantHuman {
     properties! {}
 
-    fn declare(&self, c: &mut Character) {
-        common_race_rules::declare(c, self);
-
-        i!(c.size, c.speeds.walk, c.languages);
-
-        for ability in &self.abilities {
-            match c.abilities.get_mut(*ability) {
-                Some(a) => m!(a),
-                None => {}
-            }
-        }
-
-        match c.skill_proficiencies.get_mut(self.skill) {
-            Some(s) => i!(s),
-            None => {}
-        }
-
-        self.feat.declare(c);
-    }
     fn iterate(&self, c: &mut Character) {
         common_race_rules::iterate(c, self);
 

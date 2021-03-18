@@ -2,38 +2,10 @@ pub(crate) mod common_rules {
     use crate::character::Character;
     use crate::misc::{Ability, ProficiencyType, Skill, PassiveSkill};
     use enum_iterator::IntoEnumIterator;
-    use proc_macros::{i, m};
+    use proc_macros::i;
 
     const NAME: &'static str = "Common Rules";
 
-    pub fn declare(c: &mut Character) {
-        // INITIALIZERS
-
-        for ability in Ability::into_enum_iter() {
-            if ability.known() {
-                i!(c.ability_modifiers.get_mut_known(ability));
-                i!(c.saves.get_mut_known(ability));
-            }
-        }
-
-        for skill in Skill::into_enum_iter() {
-            if skill.known() {
-                i!(c.skills.get_mut_known(skill));
-            }
-        }
-
-        for passive in PassiveSkill::into_enum_iter() {
-            if passive.known() {
-                i!(c.passives.get_mut_known(passive));
-            }
-        }
-
-        i!(c.proficiency_bonus, c.initiative, c.attacks_per_action, c.armor_class);
-
-        // MODIFIERS
-
-        m!(c.attack_moves);
-    }
     pub fn iterate(c: &mut Character) {
         // INITIALIZERS
 
@@ -49,6 +21,7 @@ pub(crate) mod common_rules {
         i! {
             c.proficiency_bonus = {
                 let level = c.total_level?;
+                dbg!(level);
                 if level >= 1 && level <= 20 {
                     (level - 1) / 4 + 2
                 } else {
@@ -96,20 +69,22 @@ pub(crate) mod common_rules {
         // MODIFIERS
 
         // ATTACK SKILL MODIFIERS
-        if c.ability_modifiers.strength.ready() &&
-            c.ability_modifiers.dexterity.ready() &&
-            c.proficiency_bonus.ready() &&
-            c.weapon_proficiencies.ready() &&
-            c.attack_moves.modify(NAME) {
-            for attack in &mut *c.attack_moves {
-                match attack.use_modifier {
-                    Ability::Strength => attack.hit += *c.ability_modifiers.strength,
-                    Ability::Dexterity => attack.hit += *c.ability_modifiers.dexterity,
-                    _ => panic!("unsupported modifier")
+        if c.attack_moves.request_modify(NAME) {
+            if c.ability_modifiers.strength.finalized() &&
+                c.ability_modifiers.dexterity.finalized() &&
+                c.proficiency_bonus.finalized() &&
+                c.weapon_proficiencies.finalized() {
+                for attack in &mut *c.attack_moves {
+                    match attack.use_modifier {
+                        Ability::Strength => attack.hit += *c.ability_modifiers.strength,
+                        Ability::Dexterity => attack.hit += *c.ability_modifiers.dexterity,
+                        _ => panic!("unsupported modifier")
+                    }
+                    if (*c.weapon_proficiencies).contains(&attack.name) {
+                        attack.hit += *c.proficiency_bonus as i32;
+                    }
                 }
-                if (*c.weapon_proficiencies).contains(&attack.name) {
-                    attack.hit += *c.proficiency_bonus as i32;
-                }
+                c.attack_moves.confirm_modify(NAME);
             }
         }
     }
@@ -132,12 +107,6 @@ pub(crate) mod common_class_rules {
     use crate::content::traits::Class;
     use proc_macros::{i, m};
 
-    pub fn declare(class: &dyn Class, c: &mut Character, _level: u32, _first: bool) {
-        #[allow(non_snake_case)]
-        let NAME = class.name();
-        i!(c.max_health, c.class_names);
-        m!(c.total_level);
-    }
     pub fn iterate(class: &dyn Class, c: &mut Character, level: u32, first: bool) {
         #[allow(non_snake_case)] let NAME = class.name();
         let hd = class.hit_dice();
@@ -152,7 +121,7 @@ pub(crate) mod common_class_rules {
             };
             c.class_names <<= format!("{} {}", NAME, level);
         }
-        m! { c.total_level += level }
+        m! { c.total_level += dbg!(level) }
     }
     pub fn last(_class: &dyn Class, _c: &mut Character, _level: u32, _first: bool) {
 
@@ -164,12 +133,6 @@ pub(crate) mod common_race_rules {
     use crate::content::traits::Race;
     use proc_macros::i;
 
-    pub fn declare(c: &mut Character, race: &dyn Race) {
-        #[allow(non_snake_case)]
-        let NAME = race.name();
-
-        i!(c.race_name);
-    }
     pub fn iterate(c: &mut Character, race: &dyn Race) {
         #[allow(non_snake_case)]
         let NAME = race.name();
