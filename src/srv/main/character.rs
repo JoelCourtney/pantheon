@@ -154,6 +154,37 @@ impl StoredCharacter {
     }
 }
 
+impl Default for StoredCharacter {
+    fn default() -> Self {
+        StoredCharacter {
+            name: "".to_string(),
+            health: 0,
+            temp_health: 0,
+            base_abilities: AbilityMap {
+                strength: 10,
+                dexterity: 10,
+                constitution: 10,
+                intelligence: 10,
+                wisdom: 10,
+                charisma: 10,
+            },
+            alignment: Alignment::Unknown,
+            inspiration: false,
+            money: MoneyTypeMap {
+                platinum: 0,
+                gold: 0,
+                electrum: 0,
+                silver: 0,
+                copper: 0,
+            },
+            race: crate::content::default_race(),
+            classes: vec![],
+            inventory: vec![],
+            description: "".to_string()
+        }
+    }
+}
+
 #[derive(Debug, Default, FinalizeCharacter)]
 pub struct Character {
     pub total_level: Staged<u32>,
@@ -306,7 +337,7 @@ impl<T> Staged<T>
 
 impl<T> Staged<T>
     where T: Serialize + Default + Debug + Clone {
-    pub fn done(&self) -> Result <T, () > {
+    pub fn r#final(&self) -> Result <T, () > {
         if self.ready() {
             Ok(self.value.clone())
         } else {

@@ -20,7 +20,9 @@
 
 extern crate proc_macros;
 
-use std::ops::AddAssign;
+use std::process::exit;
+use crate::character::StoredCharacter;
+use colored::Colorize;
 
 mod server;
 mod character;
@@ -31,15 +33,77 @@ mod misc;
 mod macros;
 
 fn main() {
-    let mut x = 5;
-    x.add_assign(3);
 
-    let mut args = std::env::args();
-    {
-        if args.len() != 2 {
-            server::ignite("test_character.json".to_string(), true)
-        } else {
-            server::ignite(args.nth(1).expect("get 1st arg failed"), false)
+    let args: Vec<String> = std::env::args().collect();
+
+    let path = match args.len() {
+        1 if cfg!(debug_assertions) => {
+            "test_character.json".to_string()
         }
-    }.launch();
+        2 if args[1] != "--help" => {
+            args[1].clone()
+        }
+        3 => {
+            let path =
+                match &*args[1] {
+                    "--new" | "-n" => args[2].clone(),
+                    _ => match &*args[2] {
+                        "--new" | "-n" => args[1].clone(),
+                        _ => display_help()
+                    }
+                };
+            if std::path::Path::new(&*path).exists() {
+                println!("{}",
+                         format!("File {} already exists.\nPlease delete it before creating a new character file with that name.", path)
+                             .bright_red()
+                );
+                exit(2);
+            }
+            StoredCharacter::default().write(&*path);
+            path
+        }
+        _ => display_help()
+    };
+    if !std::path::Path::new(&*path).exists() {
+        println!(
+            "{}",
+            format!("File {} does not exist.\nPlease check that you gave the right path, or create it with -n or --new.", path)
+                .bright_red()
+        );
+        exit(1);
+    }
+    let rocket = server::ignite(path.clone());
+    if cfg!(not(debug_assertions)) {
+        println!("Serving {} on {}", path.green(), "http://localhost:8000".green());
+    }
+    rocket.launch();
+}
+
+fn display_help() -> ! {
+    println!(
+        indoc::indoc! { r"
+            {} {} command line help
+
+            This is the DnDCent server. It either loads or creates a character file, and serves
+            the inteface on {}.
+
+            USAGE: dndcent [--new | -n] <file>
+
+                <file>:     name of character file, should have .json extension (not required)
+                            The filename has no relation to the character's name.
+                -n, --new:  create a new default character. (fails if file already exists.)
+
+            EXAMPLES:
+
+                # load and run and already existing character file:
+                dndcent jeebus-creebus.json
+
+                # create and run a new character file:
+                dndcent --new jeebus-creebus.json
+        "},
+        "DnDCent".bright_green(),
+        env!("CARGO_PKG_VERSION").green(),
+        "http://localhost:8000".bright_blue()
+    );
+    exit(0)
 }

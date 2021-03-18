@@ -101,7 +101,7 @@ pub(crate) fn stages(input: TokenStream, stage: &'static str) -> TokenStream2 {
 fn expand_carriers(stream: TokenStream2) -> TokenStream2 {
     use proc_macro2::TokenTree;
 
-    let done: TokenStream2 = ". done ( ) ?".parse().unwrap();
+    let done: TokenStream2 = ". r#final ( ) ?".parse().unwrap();
 
     let res: TokenStream2 = stream.into_iter().flat_map(
         |token| {

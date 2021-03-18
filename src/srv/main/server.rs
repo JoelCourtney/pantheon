@@ -6,6 +6,7 @@ use rocket_contrib::json::Json;
 use serde::Deserialize;
 use crate::feature::Choice;
 use rocket_contrib::serve::StaticFiles;
+use rocket::config::LoggingLevel;
 
 struct SharedData {
     path: String,
@@ -13,11 +14,13 @@ struct SharedData {
     final_char: RwLock<FinalCharacter>
 }
 
-pub(crate) fn ignite(path: String, dev: bool) -> Rocket {
+pub(crate) fn ignite(path: String) -> Rocket {
+    let dev = cfg!(debug_assertions);
     let config = Config::build(Environment::active()
                                .expect("active rocket env not found"))
-        .address("0.0.0.0")
+        .address("localhost")
         .port(8000)
+        .log_level(if cfg!(debug_assertions) {LoggingLevel::Normal} else {LoggingLevel::Off})
         .secret_key(make_secret_key())
         .finalize()
         .expect("failed to config rocket");

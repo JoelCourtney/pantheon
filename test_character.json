@@ -22,7 +22,7 @@
   "race": {
     "Halfling": {
       "subrace": {
-        "Stout": null
+        "UnknownHalflingSubrace": null
       }
     }
   },
