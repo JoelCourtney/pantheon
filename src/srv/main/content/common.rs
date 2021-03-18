@@ -47,7 +47,14 @@ pub(crate) mod common_rules {
         }
 
         i! {
-            c.proficiency_bonus = (c.total_level? - 1) / 4 + 2;
+            c.proficiency_bonus = {
+                let level = c.total_level?;
+                if level >= 1 && level <= 20 {
+                    (level - 1) / 4 + 2
+                } else {
+                    0
+                }
+            };
             c.initiative = c.ability_modifiers.dexterity?;
             c.attacks_per_action = 1;
             c.armor_class = {

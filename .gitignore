@@ -38,3 +38,6 @@ target/
 
 # Rocket
 Rocket.toml
+
+# all new .json files
+*.json
