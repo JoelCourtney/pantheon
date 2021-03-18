@@ -116,8 +116,6 @@ pub fn match_raw_files(input: TokenStream) -> TokenStream {
     server::match_raw_files(ast)
 }
 
-
-
 #[proc_macro]
 pub fn i(input: TokenStream) -> TokenStream {
     content::stages(input, "initialize").into()
@@ -127,7 +125,6 @@ pub fn i(input: TokenStream) -> TokenStream {
 pub fn m(input: TokenStream) -> TokenStream {
     content::stages(input, "modify").into()
 }
-
 
 #[proc_macro]
 pub fn f(input: TokenStream) -> TokenStream {

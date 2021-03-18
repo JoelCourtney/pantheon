@@ -124,7 +124,6 @@ pub(crate) mod common_class_rules {
     use crate::character::Character;
     use crate::content::traits::Class;
     use proc_macros::{i, m};
-    use std::ops::AddAssign;
 
     pub fn declare(class: &dyn Class, c: &mut Character, _level: u32, _first: bool) {
         #[allow(non_snake_case)]

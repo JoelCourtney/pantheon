@@ -75,6 +75,7 @@ pub(crate) fn stages(input: TokenStream, stage: &'static str) -> TokenStream2 {
                     #acc
                     match (|| -> Result<_, ()> {Ok(#expanded_right)})() {
                         Ok(v) if (#left).#stage_ident(NAME) => {
+                            use std::ops::{AddAssign, SubAssign};
                             (*#left).#func(v);
                         }
                         _ => {}
@@ -118,7 +119,7 @@ fn expand_carriers(stream: TokenStream2) -> TokenStream2 {
                     };
                     format!("{}{}{}",
                             open,
-                            expand_carriers(g.stream()).to_string(),
+                            expand_carriers(g.stream()),
                             close
                     ).parse().expect("expand parse failed")
                 },

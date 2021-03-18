@@ -12,9 +12,7 @@ macro_rules! name {
         #[allow(unused_imports)] use serde::{Serialize, Deserialize};
         #[allow(unused_imports)] use indoc::indoc;
         #[allow(unused_imports)] use std::fmt::Debug;
-        #[allow(unused_imports)] use std::convert::From;
         #[allow(unused_imports)] use enum_iterator::IntoEnumIterator;
-        #[allow(unused_imports)] use std::ops::{AddAssign, SubAssign};
 
         pub const NAME: &'static str = $name;
     }
