@@ -21,7 +21,6 @@ pub(crate) mod common_rules {
         i! {
             c.proficiency_bonus = {
                 let level = c.total_level?;
-                dbg!(level);
                 if level >= 1 && level <= 20 {
                     (level - 1) / 4 + 2
                 } else {
@@ -121,7 +120,7 @@ pub(crate) mod common_class_rules {
             };
             c.class_names <<= format!("{} {}", NAME, level);
         }
-        m! { c.total_level += dbg!(level) }
+        m! { c.total_level += level }
     }
     pub fn last(_class: &dyn Class, _c: &mut Character, _level: u32, _first: bool) {
 
