@@ -76,6 +76,11 @@ pub fn choose(ast: syn::ItemEnum) -> TokenStream {
         #stripped_ast
 
         impl #enum_ident {
+            pub fn name(&self) -> &'static str {
+                match self {
+                    #reverse_match_rules_tokens
+                }
+            }
             pub fn known(&self) -> bool {
                 *self != #enum_ident::Unknown
             }
@@ -94,9 +99,7 @@ pub fn choose(ast: syn::ItemEnum) -> TokenStream {
             }
             fn to_choice(&self, _unique: bool) -> crate::feature::ChoiceSerial {
                 crate::feature::ChoiceSerial {
-                    current_choices: vec! [match &self {
-                        #reverse_match_rules_tokens
-                    }],
+                    current_choices: vec! [ self.name() ],
                     all_choices: vec![ vec![ #choices_tokens ] ]
                 }
             }
@@ -113,9 +116,7 @@ pub fn choose(ast: syn::ItemEnum) -> TokenStream {
             }
             fn to_choice(&self, unique: bool) -> crate::feature::ChoiceSerial {
                 let all_choices: Vec<&str> = vec![ #choices_tokens ];
-                let current_choices: Vec<&str> = self.iter().map(|v| match v {
-                    #reverse_match_rules_tokens
-                }).collect();
+                let current_choices: Vec<&str> = self.iter().map(|v| v.name()).collect();
                 crate::feature::ChoiceSerial::from_vecs(current_choices, all_choices, unique)
             }
         }
@@ -131,9 +132,7 @@ pub fn choose(ast: syn::ItemEnum) -> TokenStream {
             }
             fn to_choice(&self, unique: bool) -> crate::feature::ChoiceSerial {
                 let all_choices: Vec<&str> = vec![ #choices_tokens ];
-                let current_choices: Vec<&str> = self.iter().map(|v| match v {
-                    #reverse_match_rules_tokens
-                }).collect();
+                let current_choices: Vec<&str> = self.iter().map(|v| v.name()).collect();
                 crate::feature::ChoiceSerial::from_vecs(current_choices, all_choices, unique)
             }
         }

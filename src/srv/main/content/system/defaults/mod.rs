@@ -1,4 +1,5 @@
 crate::register!(
+    background,
     class,
     eldritch_invocation,
     feat,

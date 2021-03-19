@@ -13,7 +13,7 @@ pub(crate) mod common_rules {
         for ability in Ability::into_enum_iter() {
             if ability.known() {
                 i! {
-                    *c.ability_modifiers.get_mut_known(ability) = (c.abilities.get_known(ability)? as i32 - 10) / 2
+                    *c.ability_modifiers.get_mut_known(ability) = (c.abilities.get_known(ability)? as i32 / 2)  - 5
                 }
             }
         }
@@ -89,6 +89,7 @@ pub(crate) mod common_rules {
     }
     pub fn last(c: &mut Character) {
         c.race_choices = crate::content::get_all_race();
+        c.background_choices = crate::content::get_all_background();
     }
 
     fn calculate_proficiency(bonus: u32, proficiency: ProficiencyType) -> i32 {
@@ -136,6 +137,19 @@ pub(crate) mod common_race_rules {
         #[allow(non_snake_case)]
         let NAME = race.name();
 
-        i! { c.race_name = race.name().to_string() }
+        i! { c.race_name = NAME.to_string() }
+    }
+}
+
+pub(crate) mod common_background_rules {
+    use crate::character::Character;
+    use crate::content::traits::Background;
+    use proc_macros::i;
+
+    pub fn iterate(c: &mut Character, background: &dyn Background) {
+        #[allow(non_snake_case)]
+        let NAME = background.name();
+
+        i! { c.background_name = NAME.to_string()}
     }
 }

@@ -406,3 +406,12 @@ pub enum MoneyType {
     Copper,
     Unknown
 }
+
+#[choose]
+pub enum GamingSet {
+    DiceSet = "Dice Set",
+    DragonchessSet = "Dragonchess Set",
+    PlayingCardSet = "Playing Card Set",
+    ThreeDragonAnteSet = "Three-Dragon Ante Set",
+    Unknown
+}

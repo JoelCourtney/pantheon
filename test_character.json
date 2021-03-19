@@ -4,11 +4,11 @@
   "temp_health": 4,
   "base_abilities": {
     "strength": 12,
-    "dexterity": 12,
-    "constitution": 12,
-    "intelligence": 12,
-    "wisdom": 12,
-    "charisma": 12
+    "dexterity": 9,
+    "constitution": 9,
+    "intelligence": 9,
+    "wisdom": 9,
+    "charisma": 9
   },
   "alignment": "Chaotic Neutral",
   "inspiration": false,
@@ -20,8 +20,16 @@
     "copper": 0
   },
   "race": {
-    "Human": {
-      "extra_language": "Unknown"
+    "VariantHuman": {
+      "abilities": [
+        "Unknown",
+        "Unknown"
+      ],
+      "skill": "Unknown",
+      "feat": {
+        "Alert": null
+      },
+      "language": "Unknown"
     }
   },
   "classes": [
@@ -42,6 +50,11 @@
       3
     ]
   ],
+  "background": {
+    "Soldier": {
+      "game": "Three-Dragon Ante Set"
+    }
+  },
   "inventory": [
     [
       {

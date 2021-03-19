@@ -7,6 +7,7 @@ use serde::Deserialize;
 use crate::feature::Choice;
 use rocket_contrib::serve::StaticFiles;
 use rocket::config::LoggingLevel;
+use crate::misc::Ability;
 
 struct SharedData {
     path: String,
@@ -70,7 +71,9 @@ enum EditRequest<'a> {
         choice_index: usize,
         choice: &'a str
     },
-    Race(&'a str)
+    Race(&'a str),
+    Background(&'a str),
+    AbilityScore(Ability, u32)
 }
 
 #[post("/edit", format="json", data="<data>")]
@@ -86,6 +89,7 @@ fn edit_character(data: Json<EditRequest>, state: State<SharedData>) -> content:
         Health(u) => (*stored_char).health = u,
         TempHealth(u) => (*stored_char).temp_health = u,
         Race(r) => (*stored_char).race = crate::content::race(r).unwrap(),
+        Background(b) => (*stored_char).background = crate::content::background(b).unwrap(),
         Feature {
             container,
             feature_index,
@@ -104,6 +108,17 @@ fn edit_character(data: Json<EditRequest>, state: State<SharedData>) -> content:
                     (*c).choose(choice, choice_index);
                 }
                 Choice::Empty => panic!(format!("no choice here to choose from: {:?}", feature_index))
+            }
+        }
+        AbilityScore(a, n) => {
+            match a {
+                Ability::Strength => (*stored_char).base_abilities.strength = n,
+                Ability::Dexterity => (*stored_char).base_abilities.dexterity = n,
+                Ability::Constitution => (*stored_char).base_abilities.constitution = n,
+                Ability::Intelligence => (*stored_char).base_abilities.intelligence = n,
+                Ability::Wisdom => (*stored_char).base_abilities.wisdom = n,
+                Ability::Charisma => (*stored_char).base_abilities.charisma = n,
+                Ability::Unknown => panic!("cannot edit unknown base score")
             }
         }
     }

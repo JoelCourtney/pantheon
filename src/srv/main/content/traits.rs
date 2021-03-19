@@ -37,6 +37,16 @@ pub trait Feat: Debug {
 }
 
 #[dynamic_choose]
+pub trait Background: Debug {
+    fn name(&self) -> &'static str;
+    fn description(&self) -> &'static str;
+    fn description_no_title(&self) -> &'static str;
+
+    fn iterate(&self, _c: &mut Character) {}
+    fn last(&mut self, _c: &mut Character) {}
+}
+
+#[dynamic_choose]
 pub trait Spell: Debug {
     fn name(&self) -> &'static str;
     fn description(&self) -> &'static str;

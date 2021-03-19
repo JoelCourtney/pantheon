@@ -5,7 +5,7 @@ use crate::misc::*;
 use std::fmt::Debug;
 use proc_macros::FinalizeCharacter;
 use crate::content::common::common_rules;
-use crate::content::traits::{Race, Class, Item};
+use crate::content::traits::{Race, Class, Item, Background};
 use std::ops::{Deref, DerefMut};
 use std::collections::{HashMap};
 use maplit::hashmap;
@@ -18,7 +18,7 @@ pub struct StoredCharacter {
     pub(crate) health: u32,
     pub(crate) temp_health: u32,
 
-    base_abilities: AbilityMap<u32>,
+    pub(crate) base_abilities: AbilityMap<u32>,
 
     alignment: Alignment,
 
@@ -28,6 +28,7 @@ pub struct StoredCharacter {
 
     pub(crate) race: Box<dyn Race>,
     classes: Vec<(Box<dyn Class>, u32)>,
+    pub(crate) background: Box<dyn Background>,
 
     inventory: Vec<(Box<dyn Item>, Equipped, bool)>,
 
@@ -57,6 +58,8 @@ impl StoredCharacter {
                 charisma: Staged::new(self.base_abilities.charisma),
             },
 
+            base_abilities: self.base_abilities.clone(),
+
             name: self.name.clone(),
             description: self.description.clone(),
 
@@ -80,6 +83,7 @@ impl StoredCharacter {
                 let first = i == 0;
                 class.iterate(&mut char, *level, first);
             }
+            self.background.iterate(&mut char);
             for (item, equipped, attuned) in &self.inventory {
                 item.iterate(&mut char, *equipped, *attuned);
             }
@@ -100,6 +104,7 @@ impl StoredCharacter {
                 let first = i == 0;
                 class.last(&mut char, *level, first);
             }
+            self.background.last(&mut char);
             for (item, equipped, attuned) in &mut self.inventory {
                 item.last(&mut char, *equipped, *attuned);
                 match item.equipable() {
@@ -168,6 +173,7 @@ impl Default for StoredCharacter {
                 copper: 0,
             },
             race: crate::content::default_race(),
+            background: crate::content::default_background(),
             classes: vec![],
             inventory: vec![],
             description: "".to_string()
@@ -180,6 +186,7 @@ pub struct Character {
     pub total_level: Staged<u32>,
     pub race_name: Staged<String>,
     pub class_names: Staged<Vec<String>>,
+    pub background_name: Staged<String>,
 
     // PROFICIENCY BONUS AND INITIATIVE
     pub proficiency_bonus: Staged<u32>,
@@ -269,7 +276,9 @@ pub struct Character {
 
     alignment: Alignment,
 
-    description: String
+    description: String,
+
+    base_abilities: AbilityMap<u32>
 }
 
 #[derive(Default, Debug, Serialize)]
