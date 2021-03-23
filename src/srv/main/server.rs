@@ -101,13 +101,13 @@ fn edit_character(data: Json<EditRequest>, state: State<SharedData>) -> content:
                 "class" => &mut (*final_char).class_features,
                 "background" => &mut (*final_char).background_features,
                 "feat" => &mut (*final_char).feats,
-                _ => panic!(format!("no container found: {}", container))
+                _ => panic!("no container found: {}", container)
             }.get_mut(feature_index)
                 .expect(&format!("feature index out of bounds: {}", feature_index)).1 {
                 Choice::Any(c) | Choice::Unique(c) => unsafe {
                     (*c).choose(choice, choice_index);
                 }
-                Choice::Empty => panic!(format!("no choice here to choose from: {:?}", feature_index))
+                Choice::Empty => panic!("no choice here to choose from: {:?}", feature_index)
             }
         }
         AbilityScore(a, n) => {

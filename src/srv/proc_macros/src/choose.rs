@@ -91,10 +91,10 @@ pub fn choose(ast: syn::ItemEnum) -> TokenStream {
                 if index == 0 {
                     *self = match choice {
                         #match_rules_tokens
-                        _ => panic!(format!("choice not found: {}", choice))
+                        _ => panic!("choice not found: {}", choice)
                     }
                 } else {
-                    panic!(format!("choice index should be zero for single choice, was {}", index))
+                    panic!("choice index should be zero for single choice, was {}", index)
                 }
             }
             fn to_choice(&self, _unique: bool) -> crate::feature::ChoiceSerial {
@@ -110,7 +110,7 @@ pub fn choose(ast: syn::ItemEnum) -> TokenStream {
                 if index < N {
                     self[index] = match choice {
                         #match_rules_tokens
-                        _ => panic!(format!("choice not found: {}", choice))
+                        _ => panic!("choice not found: {}", choice)
                     }
                 }
             }
@@ -126,7 +126,7 @@ pub fn choose(ast: syn::ItemEnum) -> TokenStream {
                 if index < self.len() {
                     self[index] = match choice {
                         #match_rules_tokens
-                        _ => panic!(format!("choice not found: {}", choice))
+                        _ => panic!("choice not found: {}", choice)
                     }
                 }
             }
@@ -237,7 +237,7 @@ pub(crate) fn dynamic_choose(ast: syn::ItemTrait) -> TokenStream {
                 if index == 0 {
                     *self = crate::content::#lower_ident(choice).expect(&format!("choice not found: {:?}", choice));
                 } else {
-                    panic!(format!("index must be 0 for dynamic single choice, was {}", index))
+                    panic!("index must be 0 for dynamic single choice, was {}", index)
                 }
             }
             fn to_choice(&self, _unique: bool) -> crate::feature::ChoiceSerial {
@@ -255,7 +255,7 @@ pub(crate) fn dynamic_choose(ast: syn::ItemTrait) -> TokenStream {
                 if index < N {
                     self[index] = crate::content::#lower_ident(choice).expect(&format!("choice not found: {}", choice));
                 } else {
-                    panic!(format!("index must be less than {}, was {}", N, index))
+                    panic!("index must be less than {}, was {}", N, index)
                 }
             }
             fn to_choice(&self, unique: bool) -> crate::feature::ChoiceSerial {
@@ -270,7 +270,7 @@ pub(crate) fn dynamic_choose(ast: syn::ItemTrait) -> TokenStream {
                 if index < self.len() {
                     self[index] = crate::content::#lower_ident(choice).expect(&format!("choice not found: {}", choice));
                 } else {
-                    panic!(format!("index must be less than {}, was {}", self.len(), index))
+                    panic!("index must be less than {}, was {}", self.len(), index)
                 }
             }
             fn to_choice(&self, unique: bool) -> crate::feature::ChoiceSerial {
