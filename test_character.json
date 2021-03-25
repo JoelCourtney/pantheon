@@ -1,5 +1,5 @@
 {
-  "name": "Its a asd f",
+  "name": "Hello there",
   "health": 3,
   "temp_health": 4,
   "base_abilities": {
@@ -22,7 +22,7 @@
   "race": {
     "VariantHuman": {
       "abilities": [
-        "Unknown",
+        "Dexterity",
         "Unknown"
       ],
       "skill": "Unknown",
@@ -89,5 +89,5 @@
       false
     ]
   ],
-  "description": "its a still a me\n"
+  "description": "its a still a me\nyee\n"
 }

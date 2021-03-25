@@ -365,7 +365,10 @@ impl<T> Staged<T>
         }
     }
     pub fn confirm_finalize(&mut self, who: &'static str) {
-        self.finalizers.insert(who, true);
+        match self.finalizers.get_mut(who) {
+            Some(b) if !*b => *b = true,
+            _ => panic!("nope")
+        }
     }
 }
 
