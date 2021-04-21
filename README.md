@@ -24,7 +24,7 @@ $ npm install
 
 #### UI Style (optional)
 
-If you want to make changes to the css style, you will need [yarn](https://yarnpkg.com/) installed. I know it sucks using npm and yarn in the same project...deal with it? Who am I talking to? Anyway, you will need to run:
+If you want to make changes to the css style, you will need [yarn](https://yarnpkg.com/) installed. I know it sucks using npm and yarn in the same project, but it won't matter unless you make changes to the style. Anyway, you will need to run:
 
 ```bash
 $ cd src/www/uikit
