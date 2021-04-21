@@ -1,6 +1,6 @@
 # DnDCent
 
-The best (and only) knock of DnDBeyond (that I could find) (I might be biased)!
+The best (and only) knock-off of DnDBeyond (that I could find) (I might be biased)!
 
 ## Setup
 
