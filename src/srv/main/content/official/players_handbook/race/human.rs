@@ -7,8 +7,6 @@ pub struct Human {
 
 #[content]
 impl Race for Human {
-    properties! {}
-
     fn iterate(&self, c: &mut Character) {
         common_race_rules::iterate(c, self);
 

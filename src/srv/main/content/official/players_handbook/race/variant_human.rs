@@ -10,8 +10,6 @@ pub struct VariantHuman {
 
 #[content]
 impl Race for VariantHuman {
-    properties! {}
-
     fn iterate(&self, c: &mut Character) {
         common_race_rules::iterate(c, self);
 

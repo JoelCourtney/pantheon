@@ -1,9 +1,4 @@
 //! This sub-crate contains macros that make content management easier.
-//!
-//! The intent is to make adding a new Modifier (see top-level crate) as easy as making a new struct
-//! in a new file. Without macros or other means of generating source, that would require the
-//! dev to also add module imports and map entries to register the new struct with the rest of dndcent,
-//! and that sounds terrible and error-prone. These macros automate that process.
 
 extern crate proc_macro;
 
@@ -24,12 +19,6 @@ use proc_macro::TokenStream;
 /// Note that the FS crawl happens at compile-time, not runtime, and that every value placed in the
 /// hashmap is a compile-time constant.
 ///
-/// # Input
-///
-/// The input arg is a usize, the number of content files it its expected to find. If it does not find exactly
-/// that number of files, it throws a compile error. This count does not include mod.rs's, only
-/// content files.
-///
 /// # Example
 ///
 /// Don't use this macro yourself. It should only be used in `content/mod.rs`.
@@ -47,7 +36,8 @@ pub fn registry(_: TokenStream) -> TokenStream {
 /// # Example
 ///
 /// Suppose the dev wants to give the user a choice (for example Rogue expertise: choice between
-/// two skills or one skill and Thieves' Tools).
+/// two skills or one skill and Thieves' Tools). This is a fake example, and not how it is actually
+/// implemented in the Rogue class.
 ///
 /// ```
 /// #[macros::class("Example Rogue")]
@@ -70,16 +60,15 @@ pub fn registry(_: TokenStream) -> TokenStream {
 /// The enum can now be used to give the user a choice in the Featured trait.
 ///
 /// ```
-/// impl Featured for ExampleRogue {
-///     fn features(&self) -> Vec<Feature> {
-///         let mut features = vec![
-///             Feature {
-///                 name: "Expertise",
-///                 description: "do the expertise thing",
-///                 choice: ExpertiseChoice::choose(&mut self.choice)
-///             },
-///         ];
-///         // ... add more choice features depending on the result. See rogue.rs for full example.
+/// impl Race for VariantHuman {
+///     fn last(&mut self, c: &mut Character) {
+///         c.race_traits.extend(vec! [
+///             Feature (
+///                 "**Ability Score Increase:** Two different ability scores of your choice increase by 1.",
+///                 Any(&mut self.abilities)
+///             ),
+///             // ... add more choice features depending on the result. See rogue.rs for full example.
+///         ]);
 ///     }
 /// }
 /// ```
@@ -96,6 +85,15 @@ pub fn dynamic_choose(_: TokenStream, input: TokenStream) -> TokenStream {
     choose::dynamic_choose(ast)
 }
 
+/// Derives the count_unresolved and finalize methods for the Character struct. It also generates
+/// the FinalCharacter struct, which is returned from finalize.
+///
+/// count_unresolved counts the number of initializers, modifiers, and finalizers that
+/// have not yet run. This is used to look for deadlock. If the count is nonzero
+/// and doesn't decrease after an iteration, then there is a deadlock.
+///
+/// finalize unwraps all the Staged-wrapped and Map<Staged>-wrapped values in Character, so
+/// it can be serialized without the unnecessary Staged structs.
 #[proc_macro_derive(FinalizeCharacter)]
 pub fn derive_finalize(input: TokenStream) -> TokenStream {
     let ast: syn::DeriveInput = syn::parse(input).expect("expected derive input");

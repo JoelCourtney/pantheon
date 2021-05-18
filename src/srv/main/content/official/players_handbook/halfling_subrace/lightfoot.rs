@@ -5,8 +5,6 @@ pub struct Lightfoot;
 
 #[content]
 impl HalflingSubrace for Lightfoot {
-    properties! {}
-
     fn iterate(&self, c: &mut Character) {
         m! { c.abilities.charisma += 1 }
     }

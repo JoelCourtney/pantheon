@@ -5,8 +5,6 @@ pub struct Alert;
 
 #[content]
 impl Feat for Alert {
-    properties! {}
-
     fn iterate(&self, c: &mut Character) {
         m! { c.initiative += 5 }
     }

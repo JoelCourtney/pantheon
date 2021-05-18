@@ -7,8 +7,6 @@ pub struct Halfling {
 
 #[content]
 impl Race for Halfling {
-    properties! {}
-
     fn iterate(&self, c: &mut Character) {
         common_race_rules::iterate(c, self);
 

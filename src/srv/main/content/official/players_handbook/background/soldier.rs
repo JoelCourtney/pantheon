@@ -7,8 +7,6 @@ pub struct Soldier {
 
 #[content]
 impl Background for Soldier {
-    properties! {}
-
     fn iterate(&self, c: &mut Character) {
         common_background_rules::iterate(c, self);
         i! {
