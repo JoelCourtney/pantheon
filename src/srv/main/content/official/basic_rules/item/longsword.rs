@@ -16,7 +16,7 @@ impl Item for Longsword {
         match equipped {
             Equipped::Held(Hand::Both) => {
                 i! {
-                    c.attack_moves <<= AttackMove {
+                    c.moves <<= Move::Attack {
                         name: NAME,
                         time: MoveTime::Action,
                         hit: 0,
@@ -30,7 +30,7 @@ impl Item for Longsword {
             }
             Equipped::Held(_) => {
                 i! {
-                    c.attack_moves <<= AttackMove {
+                    c.moves <<= Move::Attack {
                         name: NAME,
                         time: MoveTime::Action,
                         hit: 0,

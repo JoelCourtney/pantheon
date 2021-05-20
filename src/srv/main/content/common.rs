@@ -3,6 +3,7 @@ pub(crate) mod common_rules {
     use crate::misc::{Ability, ProficiencyType, Skill, PassiveSkill};
     use enum_iterator::IntoEnumIterator;
     use proc_macros::i;
+    use crate::moves::Move;
 
     const NAME: &'static str = "Common Rules";
 
@@ -67,23 +68,43 @@ pub(crate) mod common_rules {
 
         // MODIFIERS
 
+
         // ATTACK SKILL MODIFIERS
-        if c.attack_moves.request_modify(NAME) {
-            if c.ability_modifiers.strength.finalized() &&
-                c.ability_modifiers.dexterity.finalized() &&
-                c.proficiency_bonus.finalized() &&
-                c.weapon_proficiencies.finalized() {
-                for attack in &mut *c.attack_moves {
-                    match attack.use_modifier {
-                        Ability::Strength => attack.hit += *c.ability_modifiers.strength,
-                        Ability::Dexterity => attack.hit += *c.ability_modifiers.dexterity,
-                        _ => panic!("unsupported modifier")
-                    }
-                    if (*c.weapon_proficiencies).contains(&attack.name) {
-                        attack.hit += *c.proficiency_bonus as i32;
+        if c.moves.request_modify(NAME) {
+            let mut ready = true;
+            for r#move in &*c.moves {
+                if let Move::Attack { use_modifier, ..} = r#move {
+                    if let Some(modifier) = c.ability_modifiers.get(*use_modifier) {
+                        if !modifier.finalized() {
+                            ready = false;
+                            break;
+                        }
                     }
                 }
-                c.attack_moves.confirm_modify(NAME);
+            }
+
+            if ready &&
+                c.proficiency_bonus.finalized() &&
+                c.weapon_proficiencies.finalized() {
+                for r#move in &mut *c.moves {
+                    match r#move {
+                        Move::Attack {
+                            name,
+                            use_modifier,
+                            hit,
+                            ..
+                        } => {
+                            if let Some(modifier) = c.ability_modifiers.get(*use_modifier) {
+                                *hit += **modifier
+                            }
+                            if (*c.weapon_proficiencies).contains(name) {
+                                *hit += *c.proficiency_bonus as i32;
+                            }
+                        }
+                        _ => {}
+                    }
+                }
+                c.moves.confirm_modify(NAME);
             }
         }
     }

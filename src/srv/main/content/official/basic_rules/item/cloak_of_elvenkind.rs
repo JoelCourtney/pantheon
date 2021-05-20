@@ -25,15 +25,15 @@ impl Item for CloakOfElvenkind {
     fn last(&mut self, c: &mut Character, equipped: Equipped, attuned: bool) {
         if attuned {
             match equipped {
-                Equipped::Yes => c.misc_moves.push(
-                    MiscMove {
+                Equipped::Yes => c.moves.push(
+                    Move::Other {
                         name: "Cloak of Elvenkind",
                         description: "Pulling the hood down requires an action.",
                         time: MoveTime::Action
                     }
                 ),
-                _ => c.misc_moves.push(
-                    MiscMove {
+                _ => c.moves.push(
+                    Move::Other {
                         name: "Cloak of Elvenkind",
                         description: "Pulling the hood up requires an action.",
                         time: MoveTime::Action

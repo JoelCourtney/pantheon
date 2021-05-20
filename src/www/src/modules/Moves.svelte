@@ -3,21 +3,32 @@
 
     export let c;
 
-    let attackActions: Array<Array<string>> = [];
-    let castActions: string = '';
-    for (let attack of $c.attack_moves) {
-        let range = attack.range.Fixed;
-        let row = [
-            attack.name,
-            signedInt(attack.hit),
-            `${range} ft`,
-            attack.damage,
-            attack.properties.join(', ')
-        ];
-        if (attack.time === 'Action') {
-            attackActions.push(row);
-        }
+    $: console.log($c.moves);
+
+    let attackActions = 0;
+    let castActions = 0;
+    for (let move of $c.moves) {
+        if (move.type === 'Attack' && move.time === 'Action') attackActions++;
+        if (move.type === 'Cast' && move.time === 'Action') castActions++;
     }
+
+    console.log(attackActions);
+
+    // let attackActions: Array<Array<string>> = [];
+    // let castActions: string = '';
+    // for (let attack of $c.attack_moves) {
+    //     let range = attack.range.Fixed;
+    //     let row = [
+    //         attack.name,
+    //         signedInt(attack.hit),
+    //         `${range} ft`,
+    //         attack.damage,
+    //         attack.properties.join(', ')
+    //     ];
+    //     if (attack.time === 'Action') {
+    //         attackActions.push(row);
+    //     }
+    // }
 </script>
 
 <div class="sheet-box uk-width-2xlarge">
@@ -28,7 +39,7 @@
         <li><a>Other</a></li>
     </ul>
     <div id="move-actions">
-        {#if attackActions.length}
+        {#if attackActions !== 0}
             <table class="uk-table uk-table-small uk-table-divider uk-text-left">
                 <caption>Attacks ({$c.attacks_per_action} per action)</caption>
                 <thead>
@@ -41,17 +52,21 @@
                 </tr>
                 </thead>
                 <tbody>
-                {#each attackActions as attack}
-                    <tr>
-                        {#each attack as cell}
-                            <td>{cell}</td>
-                        {/each}
-                    </tr>
-                {/each}
+                    {#each $c.moves as move}
+                        {#if move.type === 'Attack' && move.time === 'Action'}
+                            <tr>
+                                <td>{move.name}</td>
+                                <td>{signedInt(move.hit)}</td>
+                                <td>{move.range.Fixed} ft</td>
+                                <td>{move.damage}</td>
+                                <td>{move.properties.join(', ')}</td>
+                            </tr>
+                        {/if}
+                    {/each}
                 </tbody>
             </table>
         {/if}
-        {#if castActions.length}
+        {#if castActions !== 0}
             <table class="uk-table uk-table-small uk-table-divider uk-text-left">
                 <caption>Casts</caption>
                 <thead>

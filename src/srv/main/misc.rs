@@ -99,6 +99,14 @@ pub enum Range {
     Tiered(u32, u32)
 }
 
+#[allow(dead_code)] // TODO remove
+#[derive(Debug, Serialize)]
+pub enum WeaponType {
+    Simple,
+    Martial,
+    Other
+}
+
 #[derive(Debug, Serialize)]
 pub enum CastingTime {
     Action,

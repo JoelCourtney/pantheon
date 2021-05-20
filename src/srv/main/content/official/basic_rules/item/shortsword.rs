@@ -15,7 +15,7 @@ impl Item for Shortsword {
     fn iterate(&self, c: &mut Character, equipped: Equipped, _attuned: bool) {
         if let Equipped::Held(_) = equipped {
             i! {
-                c.attack_moves <<= AttackMove {
+                c.moves <<= Move::Attack {
                     name: NAME,
                     time: MoveTime::Action,
                     hit: 0,

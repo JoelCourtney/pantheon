@@ -3,7 +3,6 @@
 
     export let c;
 
-    import {render} from "../helpers.ts";
     import {editCharacter} from '../state.ts';
 
     function updateField(field, value) {

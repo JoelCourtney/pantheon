@@ -11,6 +11,12 @@ use std::collections::{HashMap};
 use maplit::hashmap;
 use crate::moves::*;
 
+/// Version of the Character struct that is stored as a json file for saving.
+///
+/// It contains the minimal amount of information to completely reconstruct the character.
+/// Much of the information is stored in the content structs (like races, classes, etc),
+/// and the content-creator should also try to be as minimal as possible. (de)Serialization
+/// of the nested content information is handled automatically by Serde and Typetag.
 #[derive(Debug, Deserialize, Serialize)]
 pub struct StoredCharacter {
     pub(crate) name: String,
@@ -44,6 +50,14 @@ impl StoredCharacter {
         let json = serde_json::to_string_pretty(&self).expect("SERIALIZATION FAILED");
         std::fs::write(path, json).expect(&format!("WRITING FAILED: {}", path));
     }
+
+    /// This performs all of the logic of expanding the stored character into a full character.
+    ///
+    /// 1. Copy some quantities from the stored character directly into the character struct. (like health and alignment)
+    /// 2. Repeatedly call iterate on all content attached to the character. The Staged objects,
+    ///    combined with the i!, m!, and f! macros (see proc_macros/src/content.rs) will self-organize
+    ///    the dependencies.
+    /// 3. Call last once on all content attached to the character.
     pub fn resolve(&mut self) -> Result<FinalCharacter, ()> {
         let mut char = Character {
             health: Staged::new(self.health),
@@ -181,6 +195,12 @@ impl Default for StoredCharacter {
     }
 }
 
+/// The struct that the StoredCharacter's content is expanded into.
+///
+/// I've created a derive proc macro `FinalizeCharacter` that produces a
+/// FinalCharacter struct, which has all the same fields, except the Staged<>
+/// values are unwrapped, and also produces a consumer method that converts Character
+/// into FinalCharacter. FinalCharacter is what is serialized and sent to the frontend.
 #[derive(Debug, Default, FinalizeCharacter)]
 pub struct Character {
     pub total_level: Staged<u32>,
@@ -239,10 +259,12 @@ pub struct Character {
     pub attacks_per_action: Staged<u32>,
 
     // MOVES
-    pub attack_moves: Staged<Vec<AttackMove>>,
-    pub cast_moves: Staged<Vec<CastMove>>,
+    // pub attack_moves: Staged<Vec<AttackMove>>,
+    // pub cast_moves: Staged<Vec<CastMove>>,
+    // pub misc_moves: Vec<MiscMove>,
+    pub moves: Staged<Vec<Move>>,
 
-    // DO NOT MODIFY FIELDS AFTER THIS POINT IN THE DECLARE AND ITERATE STEPS
+    // DO NOT MODIFY FIELDS AFTER THIS POINT IN THE ITERATE STEP
 
     name: String,
 
@@ -255,8 +277,6 @@ pub struct Character {
     pub class_features: Vec<Feature>,
     pub background_features: Vec<Feature>,
     pub feats: Vec<Feature>,
-
-    pub misc_moves: Vec<MiscMove>,
 
     // NOT EDITABLE BY YOU. YES, YOU.
 
