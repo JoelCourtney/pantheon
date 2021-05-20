@@ -10,7 +10,7 @@ pub struct VariantHuman {
 
 #[content]
 impl Race for VariantHuman {
-    fn iterate(&mut self, c: &mut Character) {
+    fn resolve(&mut self, c: &mut Character) {
         i! {
             c.size = CreatureSize::Medium;
             c.speeds.walk = 30;
@@ -59,7 +59,7 @@ impl Race for VariantHuman {
             ];
         }
 
-        self.feat.iterate(c);
+        self.feat.resolve(c);
     }
 
     description! { r#"

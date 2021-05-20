@@ -7,7 +7,7 @@ pub struct Soldier {
 
 #[content]
 impl Background for Soldier {
-    fn iterate(&mut self, c: &mut Character) {
+    fn resolve(&mut self, c: &mut Character) {
         i! {
             c.skill_proficiencies.athletics = ProficiencyType::Single;
             c.skill_proficiencies.intimidation = ProficiencyType::Single;

@@ -7,7 +7,7 @@ pub struct Halfling {
 
 #[content]
 impl Race for Halfling {
-    fn iterate(&mut self, c: &mut Character) {
+    fn resolve(&mut self, c: &mut Character) {
         i! {
             c.size = CreatureSize::Small;
             c.speeds.walk = 25;
@@ -62,7 +62,7 @@ impl Race for Halfling {
             ];
         }
 
-        self.subrace.iterate(c);
+        self.subrace.resolve(c);
     }
 
     description! {r#"

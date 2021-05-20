@@ -85,19 +85,19 @@ impl StoredCharacter {
         while count != 0 && old_count != count {
             old_count = count;
 
-            common_rules::iterate(&mut char);
-            common_race_rules::iterate(&mut char, &self.race);
-            self.race.iterate(&mut char);
+            common_rules::resolve(&mut char);
+            common_race_rules::resolve(&mut char, &self.race);
+            self.race.resolve(&mut char);
             for (i, (class, level)) in self.classes.iter_mut().enumerate() {
                 let first = i == 0;
-                common_class_rules::iterate(&mut char, class, *level, first);
-                class.iterate(&mut char, *level, first);
+                common_class_rules::resolve(&mut char, class, *level, first);
+                class.resolve(&mut char, *level, first);
             }
-            common_background_rules::iterate(&mut char, &self.background);
-            self.background.iterate(&mut char);
+            common_background_rules::resolve(&mut char, &self.background);
+            self.background.resolve(&mut char);
             for (item, equipped, attuned) in &mut self.inventory {
-                common_item_rules::iterate(&mut char, item, *equipped, *attuned);
-                item.iterate(&mut char, *equipped, *attuned);
+                common_item_rules::resolve(&mut char, item, *equipped, *attuned);
+                item.resolve(&mut char, *equipped, *attuned);
             }
 
             count = char.count_unresolved().into();
@@ -107,7 +107,7 @@ impl StoredCharacter {
         // dbg!(iterations);
         if count != 0 {
             dbg!(&char);
-            println!("ITERATOR DEADLOCK");
+            println!("RESOLUTION DEADLOCK");
             Err(())
         } else {
 

@@ -7,7 +7,7 @@ pub(crate) mod common_rules {
 
     const NAME: &'static str = "Common Rules";
 
-    pub fn iterate(c: &mut Character) {
+    pub fn resolve(c: &mut Character) {
         // INITIALIZERS
 
         // ABILITY SCORE MODIFIERS
@@ -128,7 +128,7 @@ pub(crate) mod common_class_rules {
     use crate::content::traits::Class;
     use proc_macros::{i, m};
 
-    pub fn iterate(c: &mut Character, class: &Box<dyn Class>, level: u32, first: bool) {
+    pub fn resolve(c: &mut Character, class: &Box<dyn Class>, level: u32, first: bool) {
         #[allow(non_snake_case)] let NAME = class.name();
         let hd = class.hit_dice();
         i! {
@@ -151,7 +151,7 @@ pub(crate) mod common_race_rules {
     use crate::content::traits::Race;
     use proc_macros::i;
 
-    pub fn iterate(c: &mut Character, race: &Box<dyn Race>) {
+    pub fn resolve(c: &mut Character, race: &Box<dyn Race>) {
         #[allow(non_snake_case)]
         let NAME = race.name();
 
@@ -164,7 +164,7 @@ pub(crate) mod common_background_rules {
     use crate::content::traits::Background;
     use proc_macros::i;
 
-    pub fn iterate(c: &mut Character, background: &Box<dyn Background>) {
+    pub fn resolve(c: &mut Character, background: &Box<dyn Background>) {
         #[allow(non_snake_case)]
         let NAME = background.name();
 
@@ -178,7 +178,7 @@ pub(crate) mod common_item_rules {
     use crate::misc::{Equipped, Equipable, Holdable, Hand};
     use crate::character::Character;
 
-    pub fn iterate(c: &mut Character, item: &Box<dyn Item>, equipped: Equipped, _attuned: bool) {
+    pub fn resolve(c: &mut Character, item: &Box<dyn Item>, equipped: Equipped, _attuned: bool) {
         #[allow(non_snake_case)]
         let NAME = item.name();
 

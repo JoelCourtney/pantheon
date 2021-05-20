@@ -5,7 +5,7 @@ pub struct Stout;
 
 #[content]
 impl HalflingSubrace for Stout {
-    fn iterate(&mut self, c: &mut Character) {
+    fn resolve(&mut self, c: &mut Character) {
         i! {
             c.saving_throw_notes <<= "**ADV** against poisoned";
             c.defenses <<= "**RES** poison";

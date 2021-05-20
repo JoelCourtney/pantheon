@@ -5,7 +5,7 @@ pub struct Alert;
 
 #[content]
 impl Feat for Alert {
-    fn iterate(&mut self, c: &mut Character) {
+    fn resolve(&mut self, c: &mut Character) {
         m! { c.initiative += 5 }
         i! {
             c.feats <<= Feature (

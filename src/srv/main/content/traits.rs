@@ -10,7 +10,7 @@ pub trait Race: Debug {
     fn description(&self) -> &'static str;
     fn description_no_title(&self) -> &'static str;
 
-    fn iterate(&mut self, _c: &mut Character) {}
+    fn resolve(&mut self, _c: &mut Character) {}
 }
 
 #[dynamic_choose]
@@ -21,7 +21,7 @@ pub trait Class: Debug {
 
     fn hit_dice(&self) -> u32;
 
-    fn iterate(&mut self, _c: &mut Character, _level: u32, _first: bool) {}
+    fn resolve(&mut self, _c: &mut Character, _level: u32, _first: bool) {}
 }
 
 #[dynamic_choose]
@@ -30,7 +30,7 @@ pub trait Feat: Debug {
     fn description(&self) -> &'static str;
     fn description_no_title(&self) -> &'static str;
 
-    fn iterate(&mut self, _c: &mut Character) {}
+    fn resolve(&mut self, _c: &mut Character) {}
 }
 
 #[dynamic_choose]
@@ -39,7 +39,7 @@ pub trait Background: Debug {
     fn description(&self) -> &'static str;
     fn description_no_title(&self) -> &'static str;
 
-    fn iterate(&mut self, _c: &mut Character) {}
+    fn resolve(&mut self, _c: &mut Character) {}
 }
 
 #[dynamic_choose]
@@ -55,7 +55,7 @@ pub trait Spell: Debug {
 }
 
 /// NOTE if implementing a Weapon item, do:
-/// - declare and initialize c.attack_moves
+/// - initialize c.attack_moves
 /// - add the attack associated with this item IN INITIALIZATION
 /// - mark the ability score associated with the +hit modifier.
 /// - set the name of the attack identically to the name of the weapon.
@@ -78,7 +78,7 @@ pub trait Item: Debug {
     fn attunable(&self) -> bool { false }
     fn ammunition(&self) -> bool { false }
 
-    fn iterate(&mut self, _c: &mut Character, _equipped: Equipped, _attuned: bool) {}
+    fn resolve(&mut self, _c: &mut Character, _equipped: Equipped, _attuned: bool) {}
 }
 
 #[dynamic_choose]
@@ -87,7 +87,7 @@ pub trait HalflingSubrace: Debug {
     fn description(&self) -> &'static str;
     fn description_no_title(&self) -> &'static str;
 
-    fn iterate(&mut self, _c: &mut Character) {}
+    fn resolve(&mut self, _c: &mut Character) {}
 }
 
 #[dynamic_choose]
@@ -96,7 +96,7 @@ pub trait RoguishArchetype: Debug {
     fn description(&self) -> &'static str;
     fn description_no_title(&self) -> &'static str;
 
-    fn iterate(&mut self, _c: &mut Character, _lvl: u32) {}
+    fn resolve(&mut self, _c: &mut Character, _lvl: u32) {}
 }
 
 #[dynamic_choose]
@@ -105,5 +105,5 @@ pub trait EldritchInvocation: Debug {
     fn description(&self) -> &'static str;
     fn description_no_title(&self) -> &'static str;
 
-    fn iterate(&mut self, _c: &mut Character, _lvl: u32) {}
+    fn resolve(&mut self, _c: &mut Character, _lvl: u32) {}
 }

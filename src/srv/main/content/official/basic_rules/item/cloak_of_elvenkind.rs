@@ -14,7 +14,7 @@ impl Item for CloakOfElvenkind {
         cost: Option<u32> = None
     }
 
-    fn iterate(&mut self, c: &mut Character, equipped: Equipped, attuned: bool) {
+    fn resolve(&mut self, c: &mut Character, equipped: Equipped, attuned: bool) {
         if attuned {
             if equipped == Equipped::Yes {
                 m! { c.skill_vantages.stealth += 1 }

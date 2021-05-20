@@ -12,7 +12,7 @@ impl Item for Rapier {
         cost: Option<u32> = Some(25)
     }
 
-    fn iterate(&mut self, c: &mut Character, equipped: Equipped, _attuned: bool) {
+    fn resolve(&mut self, c: &mut Character, equipped: Equipped, _attuned: bool) {
         if let Equipped::Held(_) = equipped {
             i! {
                 c.moves <<= Move::Attack {

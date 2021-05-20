@@ -14,7 +14,7 @@ impl Class for Rogue {
         hit_dice: u32 = 8
     }
 
-    fn iterate(&mut self, c: &mut Character, level: u32, _first: bool) {
+    fn resolve(&mut self, c: &mut Character, level: u32, _first: bool) {
         i! {
             c.armor_proficiencies <<= "Light Armor";
             c.weapon_proficiencies >>= vec! [
@@ -38,7 +38,7 @@ impl Class for Rogue {
             }
         }
 
-        self.subclass.iterate(c, level);
+        self.subclass.resolve(c, level);
     }
 
     description! {r#"

@@ -7,7 +7,7 @@ pub struct Human {
 
 #[content]
 impl Race for Human {
-    fn iterate(&mut self, c: &mut Character) {
+    fn resolve(&mut self, c: &mut Character) {
         i! {
             c.size = CreatureSize::Medium;
             c.speeds.walk = 30;

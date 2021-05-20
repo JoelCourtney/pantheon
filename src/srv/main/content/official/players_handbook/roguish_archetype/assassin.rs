@@ -9,7 +9,7 @@ pub struct Assassin;
 impl RoguishArchetype for Assassin {
     properties! {}
 
-    fn iterate(&mut self, c: &mut Character, lvl: u32) {
+    fn resolve(&mut self, c: &mut Character, lvl: u32) {
         if lvl >= 3 {
             i! {
                 c.class_features <<= Feature (

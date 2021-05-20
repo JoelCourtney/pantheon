@@ -5,7 +5,7 @@ pub struct Lightfoot;
 
 #[content]
 impl HalflingSubrace for Lightfoot {
-    fn iterate(&mut self, c: &mut Character) {
+    fn resolve(&mut self, c: &mut Character) {
         i! {
             c.race_traits >>= vec![
                 Feature (

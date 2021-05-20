@@ -26,11 +26,7 @@ pub(crate) fn stages(input: TokenStream, stage: &'static str) -> TokenStream2 {
     let ast = match syn::punctuated::Punctuated::<syn::Expr, Token![;]>::parse_terminated
         .parse(input.clone()) {
         Ok(ast) => ast.into_iter(),
-        Err(..) => match syn::punctuated::Punctuated::<syn::Expr, Token![,]>::parse_terminated
-            .parse(input) {
-            Ok(ast) => ast.into_iter(),
-            Err(..) => panic!("must be separated with semicolons or commas")
-        }
+        Err(..) => panic!("input to resolution macros must be expressions separated by semicolons.")
     };
     let request_stage = format_ident!("request_{}", stage);
     let confirm_stage = format_ident!("confirm_{}", stage);

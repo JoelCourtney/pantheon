@@ -12,7 +12,7 @@ impl Item for Longsword {
         cost: Option<u32> = Some(15)
     }
 
-    fn iterate(&mut self, c: &mut Character, equipped: Equipped, _attuned: bool) {
+    fn resolve(&mut self, c: &mut Character, equipped: Equipped, _attuned: bool) {
         match equipped {
             Equipped::Held(Hand::Both) => {
                 i! {
