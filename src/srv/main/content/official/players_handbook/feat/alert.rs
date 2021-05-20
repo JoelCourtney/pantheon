@@ -5,12 +5,10 @@ pub struct Alert;
 
 #[content]
 impl Feat for Alert {
-    fn iterate(&self, c: &mut Character) {
+    fn iterate(&mut self, c: &mut Character) {
         m! { c.initiative += 5 }
-    }
-    fn last(&mut self, c: &mut Character) {
-        c.feats.extend(vec! [
-            Feature (
+        i! {
+            c.feats <<= Feature (
                 indoc! { "
                     **Alert:** Always on the lookout for danger, you gain the following benefits:
 
@@ -19,8 +17,8 @@ impl Feat for Alert {
                     - Other creatures don't gain advantage on attack rolls against you as a result of being unseen by you.
                 " },
                 Empty
-            )
-        ]);
+            );
+        }
     }
 
     description! { r#"

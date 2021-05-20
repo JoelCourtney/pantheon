@@ -4,7 +4,7 @@ use crate::feature::Feature;
 use crate::misc::*;
 use std::fmt::Debug;
 use proc_macros::FinalizeCharacter;
-use crate::content::common::common_rules;
+use crate::content::common::{common_rules, common_race_rules, common_class_rules, common_item_rules, common_background_rules};
 use crate::content::traits::{Race, Class, Item, Background};
 use std::ops::{Deref, DerefMut};
 use std::collections::{HashMap};
@@ -63,24 +63,18 @@ impl StoredCharacter {
             health: Staged::new(self.health),
             temp_health: Staged::new(self.temp_health),
 
-            abilities: AbilityMap {
-                strength: Staged::new(self.base_abilities.strength),
-                dexterity: Staged::new(self.base_abilities.dexterity),
-                constitution: Staged::new(self.base_abilities.constitution),
-                intelligence: Staged::new(self.base_abilities.intelligence),
-                wisdom: Staged::new(self.base_abilities.wisdom),
-                charisma: Staged::new(self.base_abilities.charisma),
-            },
+            abilities: self.base_abilities.wrap_staged(),
 
-            base_abilities: self.base_abilities.clone(),
+            base_abilities: self.base_abilities.wrap_staged(),
 
-            name: self.name.clone(),
-            description: self.description.clone(),
+            name: Staged::new(self.name.clone()),
+            description: Staged::new(self.description.clone()),
 
-            money: self.money.clone(),
-            inspiration: self.inspiration,
+            money: self.money.wrap_staged(),
 
-            alignment: self.alignment,
+            inspiration: Staged::new(self.inspiration),
+
+            alignment: Staged::new(self.alignment),
 
             ..Default::default()
         };
@@ -92,13 +86,17 @@ impl StoredCharacter {
             old_count = count;
 
             common_rules::iterate(&mut char);
+            common_race_rules::iterate(&mut char, &self.race);
             self.race.iterate(&mut char);
-            for (i, (class, level)) in self.classes.iter().enumerate() {
+            for (i, (class, level)) in self.classes.iter_mut().enumerate() {
                 let first = i == 0;
+                common_class_rules::iterate(&mut char, class, *level, first);
                 class.iterate(&mut char, *level, first);
             }
+            common_background_rules::iterate(&mut char, &self.background);
             self.background.iterate(&mut char);
-            for (item, equipped, attuned) in &self.inventory {
+            for (item, equipped, attuned) in &mut self.inventory {
+                common_item_rules::iterate(&mut char, item, *equipped, *attuned);
                 item.iterate(&mut char, *equipped, *attuned);
             }
 
@@ -112,52 +110,7 @@ impl StoredCharacter {
             println!("ITERATOR DEADLOCK");
             Err(())
         } else {
-            common_rules::last(&mut char);
-            self.race.last(&mut char);
-            for (i, (class, level)) in self.classes.iter_mut().enumerate() {
-                let first = i == 0;
-                class.last(&mut char, *level, first);
-            }
-            self.background.last(&mut char);
-            for (item, equipped, attuned) in &mut self.inventory {
-                item.last(&mut char, *equipped, *attuned);
-                match item.equipable() {
-                    Equipable::Armor => {
-                        match equipped {
-                            Equipped::Yes => char.armor = Some(item.name()),
-                            Equipped::No => char.armor_choices.push(item.name()),
-                            Equipped::Held(_) => panic!("armor isn't holdable")
-                        }
-                    }
-                    Equipable::Holdable(hold) => {
-                        match hold {
-                            Holdable::Ammunition => {
-                                match equipped {
-                                    Equipped::Yes => char.ammunition = Some(item.name()),
-                                    Equipped::No => char.ammunition_choices.push(item.name()),
-                                    Equipped::Held(_) => panic!("ammunition isn't holdable")
-                                }
-                            }
-                            _ => {
-                                match equipped {
-                                    Equipped::Held(hand) => {
-                                        match hand {
-                                            Hand::Left => char.left_hand = Some(item.name()),
-                                            Hand::Right => char.right_hand = Some(item.name()),
-                                            Hand::Both => char.both_hands = Some(item.name())
-                                        }
-                                    }
-                                    Equipped::No => {
-                                        char.hold_choices.push(item.name());
-                                    }
-                                    Equipped::Yes => panic!("holdables aren't generically equippable")
-                                }
-                            }
-                        }
-                    }
-                    _ => {}
-                }
-            }
+
             Ok(char.finalize())
         }
     }
@@ -203,6 +156,7 @@ impl Default for StoredCharacter {
 /// into FinalCharacter. FinalCharacter is what is serialized and sent to the frontend.
 #[derive(Debug, Default, FinalizeCharacter)]
 pub struct Character {
+    pub name: Staged<String>,
     pub total_level: Staged<u32>,
     pub race_name: Staged<String>,
     pub class_names: Staged<Vec<String>>,
@@ -259,46 +213,39 @@ pub struct Character {
     pub attacks_per_action: Staged<u32>,
 
     // MOVES
-    // pub attack_moves: Staged<Vec<AttackMove>>,
-    // pub cast_moves: Staged<Vec<CastMove>>,
-    // pub misc_moves: Vec<MiscMove>,
     pub moves: Staged<Vec<Move>>,
 
-    // DO NOT MODIFY FIELDS AFTER THIS POINT IN THE ITERATE STEP
-
-    name: String,
-
     // FEATURES, TRAITS, AND FEATS
-    pub race_choices: Vec<&'static str>,
-    pub class_choices: Vec<&'static str>,
-    pub background_choices: Vec<&'static str>,
+    pub race_choices: Staged<Vec<&'static str>>,
+    pub class_choices: Staged<Vec<&'static str>>,
+    pub background_choices: Staged<Vec<&'static str>>,
 
-    pub race_traits: Vec<Feature>,
-    pub class_features: Vec<Feature>,
-    pub background_features: Vec<Feature>,
-    pub feats: Vec<Feature>,
+    pub race_traits: Staged<Vec<Feature>>,
+    pub class_features: Staged<Vec<Feature>>,
+    pub background_features: Staged<Vec<Feature>>,
+    pub feats: Staged<Vec<Feature>>,
 
     // NOT EDITABLE BY YOU. YES, YOU.
 
-    left_hand: Option<&'static str>,
-    right_hand: Option<&'static str>,
-    both_hands: Option<&'static str>,
-    ammunition: Option<&'static str>,
-    armor: Option<&'static str>,
+    pub left_hand: Staged<Option<&'static str>>,
+    pub right_hand: Staged<Option<&'static str>>,
+    pub both_hands: Staged<Option<&'static str>>,
+    pub ammunition: Staged<Option<&'static str>>,
+    pub armor: Staged<Option<&'static str>>,
 
-    hold_choices: Vec<&'static str>,
-    armor_choices: Vec<&'static str>,
-    ammunition_choices: Vec<&'static str>,
+    pub hold_choices: Staged<Vec<&'static str>>,
+    pub armor_choices: Staged<Vec<&'static str>>,
+    pub ammunition_choices: Staged<Vec<&'static str>>,
 
-    money: MoneyTypeMap<u32>,
+    pub money: MoneyTypeMap<Staged<u32>>,
 
-    inspiration: bool,
+    pub inspiration: Staged<bool>,
 
-    alignment: Alignment,
+    pub alignment: Staged<Alignment>,
 
-    description: String,
+    pub description: Staged<String>,
 
-    base_abilities: AbilityMap<u32>
+    pub base_abilities: AbilityMap<Staged<u32>>
 }
 
 #[derive(Default, Debug, Serialize)]
@@ -313,7 +260,7 @@ pub struct Staged<T>
 impl<T> Staged<T>
     where T: Serialize + Default + Debug {
 
-    fn new(v: T) -> Self {
+    pub fn new(v: T) -> Self {
         Staged {
             value: v,
             initializers: hashmap! {},

@@ -7,8 +7,7 @@ pub struct Soldier {
 
 #[content]
 impl Background for Soldier {
-    fn iterate(&self, c: &mut Character) {
-        common_background_rules::iterate(c, self);
+    fn iterate(&mut self, c: &mut Character) {
         i! {
             c.skill_proficiencies.athletics = ProficiencyType::Single;
             c.skill_proficiencies.intimidation = ProficiencyType::Single;
@@ -18,23 +17,22 @@ impl Background for Soldier {
                 c.tool_proficiencies <<= (self.game.name(), ProficiencyType::Single)
             }
         }
-    }
-
-    fn last(&mut self, c: &mut Character) {
-        c.background_features.extend(vec! [
-            Feature (
-                "**Military Rank:** You have a military rank from your career as a soldier. Soldiers loyal to your former military organization still recognize your authority and influence, and they defer to you if they are of a lower rank. You can invoke your rank to exert influence over other soldiers and requisition simple equipment or horses for temporary use. You can also usually gain access to friendly military encampments and fortresses where your rank is recognized.",
-                Empty
-            ),
-            Feature (
-                "**Skill Proficiencies:** `Athletics`, `Intimidation`",
-                Empty
-            ),
-            Feature (
-                "**Tool Proficiencies:** One gaming set of your choice",
-                Any(&mut self.game)
-            ),
-        ]);
+        i! {
+            c.background_features >>= vec! [
+                Feature (
+                    "**Military Rank:** You have a military rank from your career as a soldier. Soldiers loyal to your former military organization still recognize your authority and influence, and they defer to you if they are of a lower rank. You can invoke your rank to exert influence over other soldiers and requisition simple equipment or horses for temporary use. You can also usually gain access to friendly military encampments and fortresses where your rank is recognized.",
+                    Empty
+                ),
+                Feature (
+                    "**Skill Proficiencies:** `Athletics`, `Intimidation`",
+                    Empty
+                ),
+                Feature (
+                    "**Tool Proficiencies:** One gaming set of your choice",
+                    Any(&mut self.game)
+                ),
+            ];
+        }
     }
 
     description! { r#"

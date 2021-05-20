@@ -3,8 +3,6 @@
 
     export let c;
 
-    $: console.log($c.moves);
-
     let attackActions = 0;
     let castActions = 0;
     for (let move of $c.moves) {

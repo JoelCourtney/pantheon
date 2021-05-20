@@ -5,16 +5,13 @@ pub struct Stout;
 
 #[content]
 impl HalflingSubrace for Stout {
-    fn iterate(&self, c: &mut Character) {
+    fn iterate(&mut self, c: &mut Character) {
         i! {
             c.saving_throw_notes <<= "**ADV** against poisoned";
             c.defenses <<= "**RES** poison";
         }
         m! { c.abilities.constitution += 1 }
-    }
-
-    fn last(&mut self, c: &mut Character) {
-        c.race_traits.extend(vec![
+        i! {c.race_traits >>= vec![
             Feature (
                 "**Ability Score Increase:** Your Constitution score increases by 1.",
                 Empty
@@ -23,7 +20,8 @@ impl HalflingSubrace for Stout {
                 "**Stout Resilience:** You have advantage on saving throws against poison, and you have resistance against poison damage.",
                 Empty
             )
-        ]);
+        ];
+        }
     }
 
     description! {r#"

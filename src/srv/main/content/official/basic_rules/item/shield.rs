@@ -12,7 +12,7 @@ impl Item for Shield {
         cost: Option<u32> = Some(10)
     }
 
-    fn iterate(&self, c: &mut Character, e: Equipped, _: bool) {
+    fn iterate(&mut self, c: &mut Character, e: Equipped, _: bool) {
         match e {
             Equipped::Held(_) => {
                 m! { c.armor_class += 2 }

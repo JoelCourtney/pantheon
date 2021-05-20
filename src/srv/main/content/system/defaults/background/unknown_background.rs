@@ -7,10 +7,6 @@ pub struct UnknownBackground;
 impl Background for UnknownBackground {
     properties! {}
 
-    fn iterate(&self, c: &mut Character) {
-        common_background_rules::iterate(c, self);
-    }
-
     description! {r#"
         # Unknown Background
 

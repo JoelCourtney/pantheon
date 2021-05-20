@@ -14,9 +14,7 @@ impl Class for Rogue {
         hit_dice: u32 = 8
     }
 
-    fn iterate(&self, c: &mut Character, level: u32, first: bool) {
-        common_class_rules::iterate(self, c, level, first);
-
+    fn iterate(&mut self, c: &mut Character, level: u32, _first: bool) {
         i! {
             c.armor_proficiencies <<= "Light Armor";
             c.weapon_proficiencies >>= vec! [
@@ -41,10 +39,6 @@ impl Class for Rogue {
         }
 
         self.subclass.iterate(c, level);
-    }
-    fn last(&mut self, c: &mut Character, level: u32, first: bool) {
-        common_class_rules::last(self, c, level, first);
-        self.subclass.last(c, level);
     }
 
     description! {r#"

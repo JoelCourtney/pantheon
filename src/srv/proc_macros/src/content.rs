@@ -88,17 +88,7 @@ pub(crate) fn stages(input: TokenStream, stage: &'static str) -> TokenStream2 {
                     }
                 };
             },
-            _ => {
-                // acc = if acc.is_empty() {
-                //     quote! {
-                //         #seg.#declare_ident(NAME)
-                //     }
-                // } else {
-                //     quote! {
-                //         #acc; #seg.#declare_ident(NAME)
-                //     }
-                // }
-            }
+            _ => {}
         }
     }
     acc

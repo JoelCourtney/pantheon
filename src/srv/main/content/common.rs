@@ -107,10 +107,10 @@ pub(crate) mod common_rules {
                 c.moves.confirm_modify(NAME);
             }
         }
-    }
-    pub fn last(c: &mut Character) {
-        c.race_choices = crate::content::get_all_race();
-        c.background_choices = crate::content::get_all_background();
+        i! {
+            c.race_choices = crate::content::get_all_race();
+            c.background_choices = crate::content::get_all_background();
+        }
     }
 
     fn calculate_proficiency(bonus: u32, proficiency: ProficiencyType) -> i32 {
@@ -128,7 +128,7 @@ pub(crate) mod common_class_rules {
     use crate::content::traits::Class;
     use proc_macros::{i, m};
 
-    pub fn iterate(class: &dyn Class, c: &mut Character, level: u32, first: bool) {
+    pub fn iterate(c: &mut Character, class: &Box<dyn Class>, level: u32, first: bool) {
         #[allow(non_snake_case)] let NAME = class.name();
         let hd = class.hit_dice();
         i! {
@@ -144,9 +144,6 @@ pub(crate) mod common_class_rules {
         }
         m! { c.total_level += level }
     }
-    pub fn last(_class: &dyn Class, _c: &mut Character, _level: u32, _first: bool) {
-
-    }
 }
 
 pub(crate) mod common_race_rules {
@@ -154,7 +151,7 @@ pub(crate) mod common_race_rules {
     use crate::content::traits::Race;
     use proc_macros::i;
 
-    pub fn iterate(c: &mut Character, race: &dyn Race) {
+    pub fn iterate(c: &mut Character, race: &Box<dyn Race>) {
         #[allow(non_snake_case)]
         let NAME = race.name();
 
@@ -167,10 +164,57 @@ pub(crate) mod common_background_rules {
     use crate::content::traits::Background;
     use proc_macros::i;
 
-    pub fn iterate(c: &mut Character, background: &dyn Background) {
+    pub fn iterate(c: &mut Character, background: &Box<dyn Background>) {
         #[allow(non_snake_case)]
         let NAME = background.name();
 
         i! { c.background_name = NAME.to_string()}
+    }
+}
+
+pub(crate) mod common_item_rules {
+    use crate::content::traits::Item;
+    use proc_macros::i;
+    use crate::misc::{Equipped, Equipable, Holdable, Hand};
+    use crate::character::Character;
+
+    pub fn iterate(c: &mut Character, item: &Box<dyn Item>, equipped: Equipped, _attuned: bool) {
+        #[allow(non_snake_case)]
+        let NAME = item.name();
+
+        match item.equipable() {
+            Equipable::Armor => {
+                match equipped {
+                    Equipped::Yes => i! { c.armor = Some(item.name()) },
+                    Equipped::No => i! { c.armor_choices <<= item.name() },
+                    Equipped::Held(_) => panic!("armor isn't holdable")
+                }
+            }
+            Equipable::Holdable(hold) => {
+                match hold {
+                    Holdable::Ammunition => {
+                        match equipped {
+                            Equipped::Yes => i! { c.ammunition = Some(item.name()) },
+                            Equipped::No => i! { c.ammunition_choices <<= item.name() },
+                            Equipped::Held(_) => panic!("ammunition isn't holdable")
+                        }
+                    }
+                    _ => {
+                        match equipped {
+                            Equipped::Held(hand) => {
+                                match hand {
+                                    Hand::Left => i! { c.left_hand = Some(item.name()) },
+                                    Hand::Right => i! { c.right_hand = Some(item.name()) },
+                                    Hand::Both => i! { c.both_hands = Some(item.name()) }
+                                }
+                            }
+                            Equipped::No => i! { c.hold_choices <<= item.name() },
+                            Equipped::Yes => panic!("holdables aren't generically equippable")
+                        }
+                    }
+                }
+            }
+            _ => {}
+        }
     }
 }

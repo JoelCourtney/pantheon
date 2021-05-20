@@ -7,10 +7,6 @@ pub struct UnknownRace;
 impl Race for UnknownRace {
     properties! {}
 
-    fn iterate(&self, c: &mut Character) {
-        common_race_rules::iterate(c, self);
-    }
-
     description! { r#"
         # Unknown Race
 

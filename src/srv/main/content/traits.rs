@@ -10,8 +10,7 @@ pub trait Race: Debug {
     fn description(&self) -> &'static str;
     fn description_no_title(&self) -> &'static str;
 
-    fn iterate(&self, _c: &mut Character) {}
-    fn last(&mut self, _c: &mut Character) {}
+    fn iterate(&mut self, _c: &mut Character) {}
 }
 
 #[dynamic_choose]
@@ -22,8 +21,7 @@ pub trait Class: Debug {
 
     fn hit_dice(&self) -> u32;
 
-    fn iterate(&self, _c: &mut Character, _level: u32, _first: bool) {}
-    fn last(&mut self, _c: &mut Character, _level: u32, _first: bool) {}
+    fn iterate(&mut self, _c: &mut Character, _level: u32, _first: bool) {}
 }
 
 #[dynamic_choose]
@@ -32,8 +30,7 @@ pub trait Feat: Debug {
     fn description(&self) -> &'static str;
     fn description_no_title(&self) -> &'static str;
 
-    fn iterate(&self, _c: &mut Character) {}
-    fn last(&mut self, _c: &mut Character) {}
+    fn iterate(&mut self, _c: &mut Character) {}
 }
 
 #[dynamic_choose]
@@ -42,8 +39,7 @@ pub trait Background: Debug {
     fn description(&self) -> &'static str;
     fn description_no_title(&self) -> &'static str;
 
-    fn iterate(&self, _c: &mut Character) {}
-    fn last(&mut self, _c: &mut Character) {}
+    fn iterate(&mut self, _c: &mut Character) {}
 }
 
 #[dynamic_choose]
@@ -82,8 +78,7 @@ pub trait Item: Debug {
     fn attunable(&self) -> bool { false }
     fn ammunition(&self) -> bool { false }
 
-    fn iterate(&self, _c: &mut Character, _equipped: Equipped, _attuned: bool) {}
-    fn last(&mut self, _c: &mut Character, _equipped: Equipped, _attuned: bool) {}
+    fn iterate(&mut self, _c: &mut Character, _equipped: Equipped, _attuned: bool) {}
 }
 
 #[dynamic_choose]
@@ -92,8 +87,7 @@ pub trait HalflingSubrace: Debug {
     fn description(&self) -> &'static str;
     fn description_no_title(&self) -> &'static str;
 
-    fn iterate(&self, _c: &mut Character) {}
-    fn last(&mut self, _c: &mut Character) {}
+    fn iterate(&mut self, _c: &mut Character) {}
 }
 
 #[dynamic_choose]
@@ -102,8 +96,7 @@ pub trait RoguishArchetype: Debug {
     fn description(&self) -> &'static str;
     fn description_no_title(&self) -> &'static str;
 
-    fn iterate(&self, _c: &mut Character, _lvl: u32) {}
-    fn last(&mut self, _c: &mut Character, _lvl: u32) {}
+    fn iterate(&mut self, _c: &mut Character, _lvl: u32) {}
 }
 
 #[dynamic_choose]
@@ -112,6 +105,5 @@ pub trait EldritchInvocation: Debug {
     fn description(&self) -> &'static str;
     fn description_no_title(&self) -> &'static str;
 
-    fn iterate(&self, _c: &mut Character, _lvl: u32) {}
-    fn last(&self, _c: &mut Character, _lvl: u32) {}
+    fn iterate(&mut self, _c: &mut Character, _lvl: u32) {}
 }

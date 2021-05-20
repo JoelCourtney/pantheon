@@ -36,6 +36,7 @@ pub fn choose(ast: syn::ItemEnum) -> TokenStream {
     let mut reverse_match_rules = "".to_string();
     let mut map_fields = "".to_string();
     let mut map_unwrap_fields = "".to_string();
+    let mut map_wrap_staged_fields = "".to_string();
     let mut map_get_rules = "".to_string();
     let mut map_get_mut_rules = "".to_string();
     let mut map_count = "".to_string();
@@ -48,6 +49,7 @@ pub fn choose(ast: syn::ItemEnum) -> TokenStream {
             match_rules.extend(format!(r#""{}" => {}::{},{}"#, pretty, name, var, "\n").chars());
             map_fields.extend(format!("pub {}: T,\n", snake_var).chars());
             map_unwrap_fields.extend(format!("{}: self.{}.unwrap(),\n", snake_var, snake_var).chars());
+            map_wrap_staged_fields.extend(format!("{}: crate::character::Staged::new(self.{}),\n", snake_var, snake_var).chars());
             map_get_rules.extend(format!("{}::{} => Some(&self.{}),\n", name, var, snake_var).chars());
             map_get_mut_rules.extend(format!("{}::{} => Some(&mut self.{}),\n", name, var, snake_var).chars());
             map_count.extend(format!("self.{}.count_unresolved() +\n", snake_var).chars());
@@ -61,6 +63,7 @@ pub fn choose(ast: syn::ItemEnum) -> TokenStream {
     let reverse_match_rules_tokens: TokenStream2 = reverse_match_rules.parse().expect("reverse match rules failed");
     let map_fields_tokens: TokenStream2 = map_fields.parse().expect("map fields parse failed");
     let map_unwrap_fields_tokens: TokenStream2 = map_unwrap_fields.parse().expect("map unwrap fields parse failed");
+    let map_wrap_staged_fields_tokens: TokenStream2 = map_wrap_staged_fields.parse().expect("map wrap staged fields parse failed");
     let map_get_rules_tokens: TokenStream2 = map_get_rules.parse().expect("map get rules parse failed");
     let map_get_mut_rules_tokens: TokenStream2 = map_get_mut_rules.parse().expect("map get mut rules parse failed");
     let map_count_tokens: TokenStream2 = map_count.parse().expect("map count parse failed");
@@ -171,6 +174,17 @@ pub fn choose(ast: syn::ItemEnum) -> TokenStream {
 
             pub fn get_mut_known(&mut self, var: #enum_ident) -> &mut T {
                 self.get_mut(var).unwrap()
+            }
+
+
+        }
+
+        impl<T> #map_ident<T>
+            where T: std::fmt::Debug + serde::Serialize + Default + Copy {
+            pub fn wrap_staged(&self) -> #map_ident<crate::character::Staged<T>> {
+                #map_ident {
+                    #map_wrap_staged_fields_tokens
+                }
             }
         }
 

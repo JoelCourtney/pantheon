@@ -23,9 +23,8 @@ pub enum Move {
         range: Range,
     },
     Other {
-        name: &'static str,
+        text: &'static str,
         time: MoveTime,
-        description: &'static str
     }
 }
 

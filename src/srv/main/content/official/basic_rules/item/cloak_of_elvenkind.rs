@@ -14,31 +14,23 @@ impl Item for CloakOfElvenkind {
         cost: Option<u32> = None
     }
 
-    fn iterate(&self, c: &mut Character, equipped: Equipped, attuned: bool) {
+    fn iterate(&mut self, c: &mut Character, equipped: Equipped, attuned: bool) {
         if attuned {
             if equipped == Equipped::Yes {
                 m! { c.skill_vantages.stealth += 1 }
-            }
-        }
-    }
-
-    fn last(&mut self, c: &mut Character, equipped: Equipped, attuned: bool) {
-        if attuned {
-            match equipped {
-                Equipped::Yes => c.moves.push(
-                    Move::Other {
-                        name: "Cloak of Elvenkind",
-                        description: "Pulling the hood down requires an action.",
+                i! {
+                    c.moves <<= Move::Other {
+                        text: "**Cloak of Elvenkind:** Pull the hood down to deactivate.",
                         time: MoveTime::Action
                     }
-                ),
-                _ => c.moves.push(
-                    Move::Other {
-                        name: "Cloak of Elvenkind",
-                        description: "Pulling the hood up requires an action.",
+                }
+            } else {
+                i! {
+                    c.moves <<= Move::Other {
+                        text: "**Cloak of Elvenkind:** Pool the hood up to activate.",
                         time: MoveTime::Action
                     }
-                )
+                }
             }
         }
     }

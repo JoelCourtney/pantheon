@@ -22,12 +22,12 @@
   "race": {
     "VariantHuman": {
       "abilities": [
-        "Dexterity",
-        "Unknown"
+        "Strength",
+        "Dexterity"
       ],
-      "skill": "Unknown",
+      "skill": "Perception",
       "feat": {
-        "Alert": null
+        "UnknownFeat": null
       },
       "language": "Unknown"
     }
@@ -52,7 +52,7 @@
   ],
   "background": {
     "Soldier": {
-      "game": "Three-Dragon Ante Set"
+      "game": "Dice Set"
     }
   },
   "inventory": [
