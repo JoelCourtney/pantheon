@@ -1,7 +1,9 @@
 crate::name!("Cloak of Elvenkind");
 
 #[derive(Debug, Deserialize, Serialize, Default)]
-pub struct CloakOfElvenkind;
+pub struct CloakOfElvenkind {
+    active: bool
+}
 
 #[content]
 impl Item for CloakOfElvenkind {
@@ -20,14 +22,19 @@ impl Item for CloakOfElvenkind {
                 m! { c.skill_vantages.stealth += 1 }
                 i! {
                     c.moves <<= Move::Other {
-                        text: "**Cloak of Elvenkind:** Pull the hood down to deactivate.",
-                        time: MoveTime::Action
-                    }
-                }
-            } else {
-                i! {
-                    c.moves <<= Move::Other {
-                        text: "**Cloak of Elvenkind:** Pool the hood up to activate.",
+                        element: Element::Toggle {
+                            text: if self.active {
+                                "**Cloak of Elvenkind:** Pull the hood down to deactivate."
+                            } else {
+                                "**Cloak of Elvenkind:** Pull the hood up to activate."
+                            },
+                            data: &mut self.active,
+                            button: if self.active {
+                                "Pull Down"
+                            } else {
+                                "Pull Up"
+                            }
+                        },
                         time: MoveTime::Action
                     }
                 }

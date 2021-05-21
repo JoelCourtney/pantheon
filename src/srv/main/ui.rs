@@ -18,7 +18,13 @@ pub enum Element {
     },
     Trigger {
         text: &'static str,
-        event: Event
+        event: Event,
+        button: &'static str
+    },
+    Toggle {
+        text: &'static str,
+        data: *mut bool,
+        button: &'static str
     }
 }
 
@@ -46,11 +52,18 @@ impl serde::Serialize for Element {
                 state.serialize_field("data", &**data)?;
                 state.serialize_field("unique", max)?;
             }
-            Element::Trigger { text, event } => {
-                state = serializer.serialize_struct("Element", 3)?;
+            Element::Trigger { text, event, button } => {
+                state = serializer.serialize_struct("Element", 4)?;
                 state.serialize_field("type", "trigger")?;
                 state.serialize_field("text", text)?;
                 state.serialize_field("event", event)?;
+                state.serialize_field("button", button)?;
+            }
+            Element::Toggle { text, button, ..} => {
+                state = serializer.serialize_struct("Element", 3)?;
+                state.serialize_field("type", "toggle")?;
+                state.serialize_field("text", text)?;
+                state.serialize_field("button", button)?;
             }
         }
         state.end()

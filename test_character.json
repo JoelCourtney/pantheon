@@ -58,7 +58,9 @@
   "inventory": [
     [
       {
-        "CloakOfElvenkind": null
+        "CloakOfElvenkind": {
+          "active": true
+        }
       },
       "Yes",
       true
