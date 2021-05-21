@@ -13,7 +13,10 @@ export function updateCharacter() {
 }
 
 export async function editCharacter(request: any) {
-    sendRequest(true, request).then((value) => c.set(value));
+    sendRequest(true, request).then((value) => {
+        c.set(value)
+        window.dispatchEvent(new CustomEvent('repack'));
+    });
 }
 
 async function sendRequest(edit: boolean, data: any) {

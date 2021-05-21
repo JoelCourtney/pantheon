@@ -4,7 +4,7 @@
 macro_rules! name {
     ($name:literal) => {
         #[allow(unused_imports)] use crate::character::*;
-        #[allow(unused_imports)] use crate::ui::{Element, Choose};
+        #[allow(unused_imports)] use crate::ui::{Element, Chooseable};
         #[allow(unused_imports)] use crate::misc::*;
         #[allow(unused_imports)] use crate::moves::*;
         #[allow(unused_imports)] use crate::{properties, description};

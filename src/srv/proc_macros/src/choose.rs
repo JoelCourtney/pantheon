@@ -89,7 +89,7 @@ pub fn choose(ast: syn::ItemEnum) -> TokenStream {
             }
         }
 
-        impl Choose for #enum_ident {
+        impl Chooseable for #enum_ident {
             fn choose(&mut self, choice: &str, index: usize) {
                 if index == 0 {
                     *self = match choice {
@@ -100,7 +100,7 @@ pub fn choose(ast: syn::ItemEnum) -> TokenStream {
                     panic!("choice index should be zero for single choice, was {}", index)
                 }
             }
-            fn to_choice(&self) -> crate::ui::ChoiceSerial {
+            fn to_serial(&self) -> crate::ui::ChoiceSerial {
                 crate::ui::ChoiceSerial {
                     current_choices: vec! [ self.name() ],
                     all_choices: vec![ #choices_tokens ]
@@ -108,7 +108,7 @@ pub fn choose(ast: syn::ItemEnum) -> TokenStream {
             }
         }
 
-        impl<const N: usize> Choose for [#enum_ident; N] {
+        impl<const N: usize> Chooseable for [#enum_ident; N] {
             fn choose(&mut self, choice: &str, index: usize) {
                 if index < N {
                     self[index] = match choice {
@@ -117,14 +117,14 @@ pub fn choose(ast: syn::ItemEnum) -> TokenStream {
                     }
                 }
             }
-            fn to_choice(&self) -> crate::ui::ChoiceSerial {
+            fn to_serial(&self) -> crate::ui::ChoiceSerial {
                 let all_choices: Vec<&str> = vec![ #choices_tokens ];
                 let current_choices: Vec<&str> = self.iter().map(|v| v.name()).collect();
                 crate::ui::ChoiceSerial::from_vecs(current_choices, all_choices)
             }
         }
 
-        impl Choose for Vec<#enum_ident> {
+        impl Chooseable for Vec<#enum_ident> {
             fn choose(&mut self, choice: &str, index: usize) {
                 if index < self.len() {
                     self[index] = match choice {
@@ -133,7 +133,7 @@ pub fn choose(ast: syn::ItemEnum) -> TokenStream {
                     }
                 }
             }
-            fn to_choice(&self) -> crate::ui::ChoiceSerial {
+            fn to_serial(&self) -> crate::ui::ChoiceSerial {
                 let all_choices: Vec<&str> = vec![ #choices_tokens ];
                 let current_choices: Vec<&str> = self.iter().map(|v| v.name()).collect();
                 crate::ui::ChoiceSerial::from_vecs(current_choices, all_choices)
@@ -246,7 +246,7 @@ pub(crate) fn dynamic_choose(ast: syn::ItemTrait) -> TokenStream {
         #[typetag::serde]
         #ast
 
-        impl Choose for Box<dyn #ident> {
+        impl Chooseable for Box<dyn #ident> {
             fn choose(&mut self, choice: &str, index: usize) {
                 if index == 0 {
                     *self = crate::content::#lower_ident(choice).expect(&format!("choice not found: {:?}", choice));
@@ -254,7 +254,7 @@ pub(crate) fn dynamic_choose(ast: syn::ItemTrait) -> TokenStream {
                     panic!("index must be 0 for dynamic single choice, was {}", index)
                 }
             }
-            fn to_choice(&self) -> crate::ui::ChoiceSerial {
+            fn to_serial(&self) -> crate::ui::ChoiceSerial {
                 crate::ui::ChoiceSerial {
                     current_choices: vec! [ self.name() ],
                     all_choices: crate::content::#get_all_ident()
@@ -262,7 +262,7 @@ pub(crate) fn dynamic_choose(ast: syn::ItemTrait) -> TokenStream {
             }
         }
 
-        impl<const N: usize> Choose for [Box<dyn #ident>; N] {
+        impl<const N: usize> Chooseable for [Box<dyn #ident>; N] {
             fn choose(&mut self, choice: &str, index: usize) {
                 if index < N {
                     self[index] = crate::content::#lower_ident(choice).expect(&format!("choice not found: {}", choice));
@@ -270,14 +270,14 @@ pub(crate) fn dynamic_choose(ast: syn::ItemTrait) -> TokenStream {
                     panic!("index must be less than {}, was {}", N, index)
                 }
             }
-            fn to_choice(&self) -> crate::ui::ChoiceSerial {
+            fn to_serial(&self) -> crate::ui::ChoiceSerial {
                 let current_choices: Vec<&str> = self.iter().map(|v| v.name()).collect();
                 let all_choices: Vec<&str> = crate::content::#get_all_ident();
                 crate::ui::ChoiceSerial::from_vecs(current_choices, all_choices)
             }
         }
 
-        impl Choose for Vec<Box<dyn #ident>> {
+        impl Chooseable for Vec<Box<dyn #ident>> {
             fn choose(&mut self, choice: &str, index: usize) {
                 if index < self.len() {
                     self[index] = crate::content::#lower_ident(choice).expect(&format!("choice not found: {}", choice));
@@ -285,7 +285,7 @@ pub(crate) fn dynamic_choose(ast: syn::ItemTrait) -> TokenStream {
                     panic!("index must be less than {}, was {}", self.len(), index)
                 }
             }
-            fn to_choice(&self) -> crate::ui::ChoiceSerial {
+            fn to_serial(&self) -> crate::ui::ChoiceSerial {
                 let current_choices: Vec<&str> = self.iter().map(|v| v.name()).collect();
                 let all_choices: Vec<&str> = crate::content::#get_all_ident();
                 crate::ui::ChoiceSerial::from_vecs(current_choices, all_choices)

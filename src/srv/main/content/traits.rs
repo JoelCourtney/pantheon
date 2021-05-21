@@ -1,6 +1,6 @@
 use std::fmt::Debug;
 use proc_macros::dynamic_choose;
-use crate::ui::Choose;
+use crate::ui::Chooseable;
 use crate::character::Character;
 use crate::misc::{CastingTime, Equipable, Rarity, Equipped};
 

@@ -8,6 +8,7 @@ use rocket_contrib::serve::StaticFiles;
 use rocket::config::LoggingLevel;
 use crate::misc::Ability;
 use crate::ui::Element;
+use crate::moves::Move;
 
 struct SharedData {
     path: String,
@@ -71,6 +72,11 @@ enum EditRequest<'a> {
         choice_index: usize,
         choice: &'a str
     },
+    Toggle {
+        container: &'a str,
+        element_index: usize,
+        toggle_index: usize
+    },
     Race(&'a str),
     Background(&'a str),
     AbilityScore(Ability, u32)
@@ -92,7 +98,7 @@ fn edit_character(data: Json<EditRequest>, state: State<SharedData>) -> content:
         Background(b) => (*stored_char).background = crate::content::background(b).unwrap(),
         Choice {
             container,
-            element_index: feature_index,
+            element_index,
             choice_index,
             choice
         } => {
@@ -101,14 +107,31 @@ fn edit_character(data: Json<EditRequest>, state: State<SharedData>) -> content:
                 "class" => &mut (*final_char).class_features,
                 "background" => &mut (*final_char).background_features,
                 "feat" => &mut (*final_char).feats,
-                _ => panic!("no container found: {}", container)
-            }.get_mut(feature_index)
-                .expect(&format!("feature index out of bounds: {}", feature_index)) {
+                _ => panic!("no choice container found: {}", container)
+            }.get_mut(element_index)
+                .expect(&format!("element index out of bounds: {}", element_index)) {
                 Element::Choice {
-                    data,
-                    ..
+                    data, ..
                 } => unsafe { (**data).choose(choice, choice_index) }
-                _ => panic!("feature element must be a choice")
+                _ => panic!("element must be a choice")
+            }
+        }
+        Toggle {
+            container,
+            element_index,
+            toggle_index
+        } => {
+            match match container {
+                "moves" => &mut (*final_char).moves,
+                _ => panic!("no toggle container found: {}", container)
+            }.get_mut(element_index)
+                .expect(&format!("element index out of bounds: {}", element_index)) {
+                Move::Other {
+                    element: Element::Toggle {
+                        data, ..
+                    }, ..
+                } => unsafe { (**data).toggle(toggle_index) }
+                _ => panic!("element must be a toggle")
             }
         }
         AbilityScore(a, n) => {

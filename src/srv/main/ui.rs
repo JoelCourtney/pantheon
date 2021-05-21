@@ -8,7 +8,7 @@ pub enum Element {
     Text(&'static str),
     Choice {
         text: &'static str,
-        data: *mut dyn Choose,
+        data: *mut dyn Chooseable,
         unique: bool
     },
     Resource {
@@ -23,8 +23,8 @@ pub enum Element {
     },
     Toggle {
         text: &'static str,
-        data: *mut bool,
-        button: &'static str
+        data: *mut dyn Toggleable,
+        button: Vec<&'static str>
     }
 }
 
@@ -42,7 +42,7 @@ impl serde::Serialize for Element {
                 state = serializer.serialize_struct("Element", 4)?;
                 state.serialize_field("type", "choice")?;
                 state.serialize_field("text", text)?;
-                state.serialize_field("data", &(**data).to_choice())?;
+                state.serialize_field("data", &(**data).to_serial())?;
                 state.serialize_field("unique", unique)?;
             }
             Element::Resource { text, data, max } => unsafe {
@@ -92,7 +92,41 @@ impl ChoiceSerial {
     }
 }
 
-pub trait Choose: Debug {
+pub trait Chooseable: Debug {
     fn choose(&mut self, choice: &str, index: usize);
-    fn to_choice(&self) -> ChoiceSerial;
+    fn to_serial(&self) -> ChoiceSerial;
+}
+
+pub trait Toggleable {
+    fn toggle(&mut self, index: usize);
+}
+
+impl Toggleable for bool {
+    fn toggle(&mut self, index: usize) {
+        if index == 0 {
+            *self = !*self;
+        } else {
+            panic!("toggle index out of bounds: {}. length is 1", index)
+        }
+    }
+}
+
+impl<const N: usize> Toggleable for [bool; N] {
+    fn toggle(&mut self, index: usize) {
+        if index < N {
+            self[index] = !self[index]
+        } else {
+            panic!("toggle index out of bounds: {}. length is {}", index, N)
+        }
+    }
+}
+
+impl Toggleable for Vec<bool> {
+    fn toggle(&mut self, index: usize) {
+        if index < self.len() {
+            self[index] = !self[index]
+        } else {
+            panic!("toggle index out of bounds: {}. length is {}", index, self.len())
+        }
+    }
 }

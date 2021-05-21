@@ -12,6 +12,7 @@
     setTimeout(pack, 25);
     setTimeout(pack, 200);
     window.addEventListener('resize', pack);
+    window.addEventListener('repack', pack);
 </script>
 
 <div class="sheet-endcap" id="endcap-{id}">

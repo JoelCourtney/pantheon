@@ -1,13 +1,32 @@
 <script lang="ts">
     import {signedInt} from "../helpers";
+    import ElementList from "./ElementList.svelte";
 
     export let c;
 
-    let attackActions = 0;
-    let castActions = 0;
-    for (let move of $c.moves) {
-        if (move.type === 'Attack' && move.time === 'Action') attackActions++;
-        if (move.type === 'Cast' && move.time === 'Action') castActions++;
+    let time = 'Action';
+
+    let attackActions: number;
+    let castActions: number;
+    let elements: Array<any>;
+    let indices: Array<number>;
+    $: {
+        attackActions = 0;
+        castActions = 0;
+        elements = [];
+        indices = [];
+        let i = 0;
+        for (let move of $c.moves) {
+            if (move.time === time) {
+                if (move.type === 'Attack') attackActions++;
+                else if (move.type === 'Cast') castActions++;
+                else {
+                    elements.push(move.element);
+                    indices.push(i);
+                }
+            }
+            i += 1;
+        }
     }
 </script>
 
@@ -62,5 +81,6 @@
                 </tbody>
             </table>
         {/if}
+        <ElementList {elements} {indices} container={'moves'} />
     </div>
 </div>

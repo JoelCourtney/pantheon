@@ -1,12 +1,17 @@
 <script lang="ts">
     export let elements;
+    export let indices;
     export let container;
+
+    if (!indices) {
+        indices = [...Array(elements.size).keys()]
+    }
 
     import {editCharacter} from "../state";
     import {render} from "../helpers";
 </script>
 
-<ul class="uk-list uk-list-bullet uk-margin-remove-top">
+<ul class="uk-list uk-list-bullet uk-margin-remove-top element-list">
     {#each elements as element, i}
         <li>
             {@html render(element.text)}
@@ -16,7 +21,7 @@
                         editCharacter({
                             choice: {
                                 container: container,
-                                element_index: i,
+                                element_index: indices[i],
                                 choice_index: j,
                                 choice: elements[i].data.all_choices[this.value]
                             }
@@ -34,6 +39,16 @@
                         {/each}
                     </select>
                 {/each}
+            {:else if element.type === 'toggle'}
+                <button class="uk-button uk-button-default" type="button" on:click={
+                    editCharacter({
+                        toggle: {
+                            container: container,
+                            element_index: indices[i],
+                            toggle_index: 0
+                        }
+                    })
+                }>{element.button}</button>
             {/if}
         </li>
     {/each}

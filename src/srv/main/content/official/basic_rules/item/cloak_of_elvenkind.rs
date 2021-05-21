@@ -19,7 +19,9 @@ impl Item for CloakOfElvenkind {
     fn resolve(&mut self, c: &mut Character, equipped: Equipped, attuned: bool) {
         if attuned {
             if equipped == Equipped::Yes {
-                m! { c.skill_vantages.stealth += 1 }
+                if self.active {
+                    m! { c.skill_vantages.stealth += 1 }
+                }
                 i! {
                     c.moves <<= Move::Other {
                         element: Element::Toggle {
@@ -29,11 +31,13 @@ impl Item for CloakOfElvenkind {
                                 "**Cloak of Elvenkind:** Pull the hood up to activate."
                             },
                             data: &mut self.active,
-                            button: if self.active {
-                                "Pull Down"
-                            } else {
-                                "Pull Up"
-                            }
+                            button: vec! [
+                                if self.active {
+                                    "Pull Down"
+                                } else {
+                                    "Pull Up"
+                                }
+                            ]
                         },
                         time: MoveTime::Action
                     }

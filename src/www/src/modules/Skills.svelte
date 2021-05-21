@@ -2,6 +2,16 @@
     import { signedInt } from '../helpers.ts';
 
     export let c;
+
+    function vantageToText(v: string): string {
+        if (v === 'None') {
+            return '';
+        } else if (v === 'Advantage') {
+            return ' (A)';
+        } else {
+            return ' (D)';
+        }
+    }
 </script>
 
 <div class="sheet-box uk-width-auto">
@@ -31,24 +41,24 @@
         </div>
         <div class="uk-width-auto uk-text-left">
             <ul class="uk-list uk-list-collapse">
-                <li>{signedInt($c.skills.acrobatics)}</li>
-                <li>{signedInt($c.skills.animal_handling)}</li>
-                <li>{signedInt($c.skills.arcana)}</li>
-                <li>{signedInt($c.skills.athletics)}</li>
-                <li>{signedInt($c.skills.deception)}</li>
-                <li>{signedInt($c.skills.history)}</li>
-                <li>{signedInt($c.skills.insight)}</li>
-                <li>{signedInt($c.skills.intimidation)}</li>
-                <li>{signedInt($c.skills.investigation)}</li>
-                <li>{signedInt($c.skills.medicine)}</li>
-                <li>{signedInt($c.skills.nature)}</li>
-                <li>{signedInt($c.skills.perception)}</li>
-                <li>{signedInt($c.skills.performance)}</li>
-                <li>{signedInt($c.skills.persuasion)}</li>
-                <li>{signedInt($c.skills.religion)}</li>
-                <li>{signedInt($c.skills.sleight_of_hand)}</li>
-                <li>{signedInt($c.skills.stealth)}</li>
-                <li>{signedInt($c.skills.survival)}</li>
+                <li>{signedInt($c.skills.acrobatics)}{vantageToText($c.skill_vantages.acrobatics)}</li>
+                <li>{signedInt($c.skills.animal_handling)}{vantageToText($c.skill_vantages.animal_handling)}</li>
+                <li>{signedInt($c.skills.arcana)}{vantageToText($c.skill_vantages.arcana)}</li>
+                <li>{signedInt($c.skills.athletics)}{vantageToText($c.skill_vantages.athletics)}</li>
+                <li>{signedInt($c.skills.deception)}{vantageToText($c.skill_vantages.deception)}</li>
+                <li>{signedInt($c.skills.history)}{vantageToText($c.skill_vantages.history)}</li>
+                <li>{signedInt($c.skills.insight)}{vantageToText($c.skill_vantages.insight)}</li>
+                <li>{signedInt($c.skills.intimidation)}{vantageToText($c.skill_vantages.intimidation)}</li>
+                <li>{signedInt($c.skills.investigation)}{vantageToText($c.skill_vantages.investigation)}</li>
+                <li>{signedInt($c.skills.medicine)}{vantageToText($c.skill_vantages.medicine)}</li>
+                <li>{signedInt($c.skills.nature)}{vantageToText($c.skill_vantages.nature)}</li>
+                <li>{signedInt($c.skills.perception)}{vantageToText($c.skill_vantages.perception)}</li>
+                <li>{signedInt($c.skills.performance)}{vantageToText($c.skill_vantages.performance)}</li>
+                <li>{signedInt($c.skills.persuasion)}{vantageToText($c.skill_vantages.persuasion)}</li>
+                <li>{signedInt($c.skills.religion)}{vantageToText($c.skill_vantages.religion)}</li>
+                <li>{signedInt($c.skills.sleight_of_hand)}{vantageToText($c.skill_vantages.sleight_of_hand)}</li>
+                <li>{signedInt($c.skills.stealth)}{vantageToText($c.skill_vantages.stealth)}</li>
+                <li>{signedInt($c.skills.survival)}{vantageToText($c.skill_vantages.survival)}</li>
             </ul>
         </div>
     </div>
