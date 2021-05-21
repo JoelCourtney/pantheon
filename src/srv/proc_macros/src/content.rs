@@ -3,6 +3,7 @@ use proc_macro2::TokenStream as TokenStream2;
 use quote::{quote, format_ident, ToTokens};
 use syn::Token;
 use syn::parse::Parser;
+use std::sync::atomic::{AtomicU64, Ordering};
 
 pub(crate) fn content(ast: syn::ItemImpl) -> TokenStream {
     let clone = ast.clone();
@@ -41,13 +42,14 @@ pub(crate) fn stages(input: TokenStream, stage: &'static str) -> TokenStream2 {
                 }
             ) => {
                 let expanded_right = expand_carriers(right.to_token_stream());
+                let id = next_id();
                 acc = quote! {
                     #acc
-                    if (#left).#request_stage(NAME) {
+                    if (#left).#request_stage(#id) {
                         match (|| -> Result<_, ()> {Ok(#expanded_right)})() {
                             Ok(v) => {
                                 *#left = v;
-                                (#left).#confirm_stage(NAME);
+                                (#left).#confirm_stage(#id);
                             }
                             _ => {}
                         }
@@ -70,14 +72,15 @@ pub(crate) fn stages(input: TokenStream, stage: &'static str) -> TokenStream2 {
                     _ => ""
                 });
                 let expanded_right = expand_carriers(right.to_token_stream());
+                let id = next_id();
                 acc = quote! {
                     #acc
-                    if (#left).#request_stage(NAME) {
+                    if (#left).#request_stage(#id) {
                         match (|| -> Result<_, ()> {Ok(#expanded_right)})() {
                             Ok(v) => {
                                 use std::ops::{AddAssign, SubAssign};
                                 (*#left).#func(v);
-                                (#left).#confirm_stage(NAME);
+                                (#left).#confirm_stage(#id);
                             }
                             _ => {}
                         }
@@ -88,6 +91,11 @@ pub(crate) fn stages(input: TokenStream, stage: &'static str) -> TokenStream2 {
         }
     }
     acc
+}
+
+static ID: AtomicU64 = AtomicU64::new(0);
+pub fn next_id() -> u64 {
+    ID.fetch_add(1, Ordering::SeqCst)
 }
 
 fn expand_carriers(stream: TokenStream2) -> TokenStream2 {
@@ -107,7 +115,7 @@ fn expand_carriers(stream: TokenStream2) -> TokenStream2 {
                         proc_macro2::Delimiter::Parenthesis => ('(', ')'),
                         proc_macro2::Delimiter::Brace => ('{', '}'),
                         proc_macro2::Delimiter::Bracket => ('[', ']'),
-                        _ => panic!("how")
+                        proc_macro2::Delimiter::None => panic!("how")
                     };
                     format!("{}{}{}",
                             open,

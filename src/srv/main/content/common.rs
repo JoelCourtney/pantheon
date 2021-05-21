@@ -2,10 +2,8 @@ pub(crate) mod common_rules {
     use crate::character::Character;
     use crate::misc::{Ability, ProficiencyType, Skill, PassiveSkill};
     use enum_iterator::IntoEnumIterator;
-    use proc_macros::i;
+    use proc_macros::{i, unique_id};
     use crate::moves::Move;
-
-    const NAME: &'static str = "Common Rules";
 
     pub fn resolve(c: &mut Character) {
         // INITIALIZERS
@@ -68,9 +66,9 @@ pub(crate) mod common_rules {
 
         // MODIFIERS
 
-
         // ATTACK SKILL MODIFIERS
-        if c.moves.request_modify(NAME) {
+        let id = unique_id!();
+        if c.moves.request_modify(id) {
             let mut ready = true;
             for r#move in &*c.moves {
                 if let Move::Attack { use_modifier, ..} = r#move {
@@ -104,7 +102,7 @@ pub(crate) mod common_rules {
                         _ => {}
                     }
                 }
-                c.moves.confirm_modify(NAME);
+                c.moves.confirm_modify(id);
             }
         }
         i! {
@@ -129,7 +127,6 @@ pub(crate) mod common_class_rules {
     use proc_macros::{i, m};
 
     pub fn resolve(c: &mut Character, class: &Box<dyn Class>, level: u32, first: bool) {
-        #[allow(non_snake_case)] let NAME = class.name();
         let hd = class.hit_dice();
         i! {
             c.max_health = {
@@ -140,7 +137,7 @@ pub(crate) mod common_class_rules {
                 res += ((hd / 2 + 1) as i32 + c.ability_modifiers.constitution?) * level as i32;
                 res as u32
             };
-            c.class_names <<= format!("{} {}", NAME, level);
+            c.class_names <<= format!("{} {}", class.name(), level);
         }
         m! { c.total_level += level }
     }
@@ -152,10 +149,7 @@ pub(crate) mod common_race_rules {
     use proc_macros::i;
 
     pub fn resolve(c: &mut Character, race: &Box<dyn Race>) {
-        #[allow(non_snake_case)]
-        let NAME = race.name();
-
-        i! { c.race_name = NAME.to_string() }
+        i! { c.race_name = race.name().to_string() }
     }
 }
 
@@ -165,10 +159,7 @@ pub(crate) mod common_background_rules {
     use proc_macros::i;
 
     pub fn resolve(c: &mut Character, background: &Box<dyn Background>) {
-        #[allow(non_snake_case)]
-        let NAME = background.name();
-
-        i! { c.background_name = NAME.to_string()}
+        i! { c.background_name = background.name().to_string()}
     }
 }
 
@@ -179,9 +170,6 @@ pub(crate) mod common_item_rules {
     use crate::character::Character;
 
     pub fn resolve(c: &mut Character, item: &Box<dyn Item>, equipped: Equipped, _attuned: bool) {
-        #[allow(non_snake_case)]
-        let NAME = item.name();
-
         match item.equipable() {
             Equipable::Armor => {
                 match equipped {

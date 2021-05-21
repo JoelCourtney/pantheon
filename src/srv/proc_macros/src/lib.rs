@@ -128,3 +128,8 @@ pub fn f(input: TokenStream) -> TokenStream {
     content::stages(input, "finalize").into()
 }
 
+#[proc_macro]
+pub fn unique_id(_input: TokenStream) -> TokenStream {
+    let id = content::next_id();
+    (quote::quote! { #id }).into()
+}

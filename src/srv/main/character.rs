@@ -251,9 +251,9 @@ pub struct Character {
 pub struct Staged<T>
     where T: Default + Debug + Serialize {
     value: T,
-    initializers: HashMap<&'static str, bool>,
-    modifiers: HashMap<&'static str, bool>,
-    finalizers: HashMap<&'static str, bool>,
+    initializers: HashMap<u64, bool>,
+    modifiers: HashMap<u64, bool>,
+    finalizers: HashMap<u64, bool>,
 }
 
 impl<T> Staged<T>
@@ -287,8 +287,8 @@ impl<T> Staged<T>
         self.modified() && self.finalizers.values().all(|b| *b)
     }
 
-    pub fn request_initialize(&mut self, who: &'static str) -> bool {
-        match self.initializers.get(who) {
+    pub fn request_initialize(&mut self, who: u64) -> bool {
+        match self.initializers.get(&who) {
             Some(b) if !*b => true,
             None => {
                 self.initializers.insert(who, false);
@@ -297,8 +297,8 @@ impl<T> Staged<T>
             _ => false
         }
     }
-    pub fn request_modify(&mut self, who: &'static str) -> bool {
-        match self.modifiers.get(who) {
+    pub fn request_modify(&mut self, who: u64) -> bool {
+        match self.modifiers.get(&who) {
             Some(b) if !*b => self.initialized(),
             None => {
                 self.modifiers.insert(who, false);
@@ -307,8 +307,8 @@ impl<T> Staged<T>
             _ => false
         }
     }
-    pub fn request_finalize(&mut self, who: &'static str) -> bool {
-        match self.finalizers.get(who) {
+    pub fn request_finalize(&mut self, who: u64) -> bool {
+        match self.finalizers.get(&who) {
             Some(b) if !*b => self.initialized() && self.modified(),
             None => {
                 self.finalizers.insert(who, false);
@@ -318,20 +318,20 @@ impl<T> Staged<T>
         }
     }
 
-    pub fn confirm_initialize(&mut self, who: &'static str) {
-        match self.initializers.get_mut(who) {
+    pub fn confirm_initialize(&mut self, who: u64) {
+        match self.initializers.get_mut(&who) {
             Some(b) if !*b => *b = true,
             _ => panic!("nope")
         }
     }
-    pub fn confirm_modify(&mut self, who: &'static str) {
-        match self.modifiers.get_mut(who) {
+    pub fn confirm_modify(&mut self, who: u64) {
+        match self.modifiers.get_mut(&who) {
             Some(b) if !*b => *b = true,
             _ => panic!("nope")
         }
     }
-    pub fn confirm_finalize(&mut self, who: &'static str) {
-        match self.finalizers.get_mut(who) {
+    pub fn confirm_finalize(&mut self, who: u64) {
+        match self.finalizers.get_mut(&who) {
             Some(b) if !*b => *b = true,
             _ => panic!("nope")
         }
