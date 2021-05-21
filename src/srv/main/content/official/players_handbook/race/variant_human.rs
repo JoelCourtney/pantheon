@@ -40,22 +40,26 @@ impl Race for VariantHuman {
 
         i! {
             c.race_traits >>= vec! [
-                Feature (
-                    "**Ability Score Increase:** Two different ability scores of your choice increase by 1.",
-                    Any(&mut self.abilities)
-                ),
-                Feature (
-                    "**Skills:** You gain proficiency in one skill of your choice.",
-                    Any(&mut self.skill)
-                ),
-                Feature (
-                    "**Languages:** You can speak, read, and write Common and one extra language of your choice. Humans typically learn the languages of other peoples they deal with, including obscure dialects. They are fond of sprinkling their speech with words borrowed from other tongues: Orc curses, Elvish musical expressions, Dwarvish military phrases, and so on.",
-                    Any(&mut self.language)
-                ),
-                Feature (
-                    "**Feat:** You gain one feat of your choice.",
-                    Any(&mut self.feat)
-                )
+                Element::Choice {
+                    text: "**Ability Score Increase:** Two different ability scores of your choice increase by 1.",
+                    data: &mut self.abilities,
+                    unique: false
+                },
+                Element::Choice {
+                    text: "**Skills:** You gain proficiency in one skill of your choice.",
+                    data: &mut self.skill,
+                    unique: false
+                },
+                Element::Choice {
+                    text: "**Languages:** You can speak, read, and write Common and one extra language of your choice. Humans typically learn the languages of other peoples they deal with, including obscure dialects. They are fond of sprinkling their speech with words borrowed from other tongues: Orc curses, Elvish musical expressions, Dwarvish military phrases, and so on.",
+                    data: &mut self.language,
+                    unique: false
+                },
+                Element::Choice {
+                    text: "**Feat:** You gain one feat of your choice.",
+                    data: &mut self.feat,
+                    unique: false
+                }
             ];
         }
 

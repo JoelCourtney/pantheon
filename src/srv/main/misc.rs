@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize, Serializer};
-use crate::feature::Choose;
+use crate::ui::Choose;
 use std::collections::HashMap;
 use maplit::hashmap;
 use std::fmt::{Display, Formatter};

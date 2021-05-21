@@ -27,7 +27,7 @@ use colored::Colorize;
 mod server;
 mod character;
 mod content;
-mod feature;
+mod ui;
 mod moves;
 mod misc;
 mod macros;

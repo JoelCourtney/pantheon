@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::feature::Feature;
+use crate::ui::Element;
 use crate::misc::*;
 use std::fmt::Debug;
 use proc_macros::FinalizeCharacter;
@@ -53,11 +53,10 @@ impl StoredCharacter {
 
     /// This performs all of the logic of expanding the stored character into a full character.
     ///
-    /// 1. Copy some quantities from the stored character directly into the character struct. (like health and alignment)
-    /// 2. Repeatedly call iterate on all content attached to the character. The Staged objects,
+    /// 1. Copy/clone some quantities from the stored character directly into the character struct. (like health and alignment)
+    /// 2. Repeatedly call resolve on all content attached to the character. The Staged objects,
     ///    combined with the i!, m!, and f! macros (see proc_macros/src/content.rs) will self-organize
     ///    the dependencies.
-    /// 3. Call last once on all content attached to the character.
     pub fn resolve(&mut self) -> Result<FinalCharacter, ()> {
         let mut char = Character {
             health: Staged::new(self.health),
@@ -220,10 +219,10 @@ pub struct Character {
     pub class_choices: Staged<Vec<&'static str>>,
     pub background_choices: Staged<Vec<&'static str>>,
 
-    pub race_traits: Staged<Vec<Feature>>,
-    pub class_features: Staged<Vec<Feature>>,
-    pub background_features: Staged<Vec<Feature>>,
-    pub feats: Staged<Vec<Feature>>,
+    pub race_traits: Staged<Vec<Element>>,
+    pub class_features: Staged<Vec<Element>>,
+    pub background_features: Staged<Vec<Element>>,
+    pub feats: Staged<Vec<Element>>,
 
     // NOT EDITABLE BY YOU. YES, YOU.
 

@@ -100,10 +100,10 @@ pub fn choose(ast: syn::ItemEnum) -> TokenStream {
                     panic!("choice index should be zero for single choice, was {}", index)
                 }
             }
-            fn to_choice(&self, _unique: bool) -> crate::feature::ChoiceSerial {
-                crate::feature::ChoiceSerial {
+            fn to_choice(&self) -> crate::ui::ChoiceSerial {
+                crate::ui::ChoiceSerial {
                     current_choices: vec! [ self.name() ],
-                    all_choices: vec![ vec![ #choices_tokens ] ]
+                    all_choices: vec![ #choices_tokens ]
                 }
             }
         }
@@ -117,10 +117,10 @@ pub fn choose(ast: syn::ItemEnum) -> TokenStream {
                     }
                 }
             }
-            fn to_choice(&self, unique: bool) -> crate::feature::ChoiceSerial {
+            fn to_choice(&self) -> crate::ui::ChoiceSerial {
                 let all_choices: Vec<&str> = vec![ #choices_tokens ];
                 let current_choices: Vec<&str> = self.iter().map(|v| v.name()).collect();
-                crate::feature::ChoiceSerial::from_vecs(current_choices, all_choices, unique)
+                crate::ui::ChoiceSerial::from_vecs(current_choices, all_choices)
             }
         }
 
@@ -133,10 +133,10 @@ pub fn choose(ast: syn::ItemEnum) -> TokenStream {
                     }
                 }
             }
-            fn to_choice(&self, unique: bool) -> crate::feature::ChoiceSerial {
+            fn to_choice(&self) -> crate::ui::ChoiceSerial {
                 let all_choices: Vec<&str> = vec![ #choices_tokens ];
                 let current_choices: Vec<&str> = self.iter().map(|v| v.name()).collect();
-                crate::feature::ChoiceSerial::from_vecs(current_choices, all_choices, unique)
+                crate::ui::ChoiceSerial::from_vecs(current_choices, all_choices)
             }
         }
 
@@ -254,12 +254,10 @@ pub(crate) fn dynamic_choose(ast: syn::ItemTrait) -> TokenStream {
                     panic!("index must be 0 for dynamic single choice, was {}", index)
                 }
             }
-            fn to_choice(&self, _unique: bool) -> crate::feature::ChoiceSerial {
-                crate::feature::ChoiceSerial {
+            fn to_choice(&self) -> crate::ui::ChoiceSerial {
+                crate::ui::ChoiceSerial {
                     current_choices: vec! [ self.name() ],
-                    all_choices: vec! [
-                        crate::content::#get_all_ident()
-                    ]
+                    all_choices: crate::content::#get_all_ident()
                 }
             }
         }
@@ -272,10 +270,10 @@ pub(crate) fn dynamic_choose(ast: syn::ItemTrait) -> TokenStream {
                     panic!("index must be less than {}, was {}", N, index)
                 }
             }
-            fn to_choice(&self, unique: bool) -> crate::feature::ChoiceSerial {
+            fn to_choice(&self) -> crate::ui::ChoiceSerial {
                 let current_choices: Vec<&str> = self.iter().map(|v| v.name()).collect();
                 let all_choices: Vec<&str> = crate::content::#get_all_ident();
-                crate::feature::ChoiceSerial::from_vecs(current_choices, all_choices, unique)
+                crate::ui::ChoiceSerial::from_vecs(current_choices, all_choices)
             }
         }
 
@@ -287,10 +285,10 @@ pub(crate) fn dynamic_choose(ast: syn::ItemTrait) -> TokenStream {
                     panic!("index must be less than {}, was {}", self.len(), index)
                 }
             }
-            fn to_choice(&self, unique: bool) -> crate::feature::ChoiceSerial {
+            fn to_choice(&self) -> crate::ui::ChoiceSerial {
                 let current_choices: Vec<&str> = self.iter().map(|v| v.name()).collect();
                 let all_choices: Vec<&str> = crate::content::#get_all_ident();
-                crate::feature::ChoiceSerial::from_vecs(current_choices, all_choices, unique)
+                crate::ui::ChoiceSerial::from_vecs(current_choices, all_choices)
             }
         }
 

@@ -22,7 +22,7 @@
   "race": {
     "VariantHuman": {
       "abilities": [
-        "Strength",
+        "Charisma",
         "Dexterity"
       ],
       "skill": "Perception",

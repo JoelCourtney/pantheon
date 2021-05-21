@@ -8,13 +8,11 @@ impl HalflingSubrace for Lightfoot {
     fn resolve(&mut self, c: &mut Character) {
         i! {
             c.race_traits >>= vec![
-                Feature (
+                Element::Text (
                     "**Ability Score Increase:** Your Charisma score increases by 1.",
-                    Empty
                 ),
-                Feature (
+                Element::Text (
                     "**Naturally Stealthy:** You can attempt to hide even when you are obscured only by a creature that is at least one size larger than you.",
-                    Empty
                 )
             ];
         }

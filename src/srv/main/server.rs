@@ -4,10 +4,10 @@ use crate::character::{StoredCharacter,FinalCharacter};
 use rocket::response::content;
 use rocket_contrib::json::Json;
 use serde::Deserialize;
-use crate::feature::Choice;
 use rocket_contrib::serve::StaticFiles;
 use rocket::config::LoggingLevel;
 use crate::misc::Ability;
+use crate::ui::Element;
 
 struct SharedData {
     path: String,
@@ -65,9 +65,9 @@ enum EditRequest<'a> {
     Description(String),
     Health(u32),
     TempHealth(u32),
-    Feature {
+    Choice {
         container: &'a str,
-        feature_index: usize,
+        element_index: usize,
         choice_index: usize,
         choice: &'a str
     },
@@ -90,9 +90,9 @@ fn edit_character(data: Json<EditRequest>, state: State<SharedData>) -> content:
         TempHealth(u) => (*stored_char).temp_health = u,
         Race(r) => (*stored_char).race = crate::content::race(r).unwrap(),
         Background(b) => (*stored_char).background = crate::content::background(b).unwrap(),
-        Feature {
+        Choice {
             container,
-            feature_index,
+            element_index: feature_index,
             choice_index,
             choice
         } => {
@@ -103,11 +103,12 @@ fn edit_character(data: Json<EditRequest>, state: State<SharedData>) -> content:
                 "feat" => &mut (*final_char).feats,
                 _ => panic!("no container found: {}", container)
             }.get_mut(feature_index)
-                .expect(&format!("feature index out of bounds: {}", feature_index)).1 {
-                Choice::Any(c) | Choice::Unique(c) => unsafe {
-                    (*c).choose(choice, choice_index);
-                }
-                Choice::Empty => panic!("no choice here to choose from: {:?}", feature_index)
+                .expect(&format!("feature index out of bounds: {}", feature_index)) {
+                Element::Choice {
+                    data,
+                    ..
+                } => unsafe { (**data).choose(choice, choice_index) }
+                _ => panic!("feature element must be a choice")
             }
         }
         AbilityScore(a, n) => {

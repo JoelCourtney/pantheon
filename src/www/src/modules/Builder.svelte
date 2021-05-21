@@ -1,5 +1,5 @@
 <script lang="ts">
-    import FeatureList from "./FeatureList.svelte";
+    import ElementList from "./ElementList.svelte";
 
     export let c;
 
@@ -85,7 +85,7 @@
                 <li><a>Traits</a></li>
                 <li><a>Description</a></li>
             </ul>
-            <FeatureList features={$c.race_traits} container={'race'}/>
+            <ElementList elements={$c.race_traits} container={'race'}/>
         {/if}
     </div>
     <div class="builder-box">
@@ -114,13 +114,13 @@
                 <li><a>Features</a></li>
                 <li><a>Description</a></li>
             </ul>
-            <FeatureList features={$c.background_features} container={'background'}/>
+            <ElementList elements={$c.background_features} container={'background'}/>
         {/if}
     </div>
     <div class="builder-box">
         <h1 class="box-title">Feats</h1>
         {#if $c.feats.length !== 0}
-            <FeatureList features={$c.feats} container={'feat'} />
+            <ElementList elements={$c.feats} container={'feat'} />
         {/if}
     </div>
     <div class="builder-box">

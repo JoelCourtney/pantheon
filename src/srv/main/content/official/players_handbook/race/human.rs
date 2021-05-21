@@ -28,30 +28,26 @@ impl Race for Human {
 
         i! {
             c.race_traits >>= vec! [
-                Feature (
+                Element::Text (
                     "**Ability Score Increase:** Your ability scores each increase by `1`.",
-                    Empty
                 ),
-                Feature (
+                Element::Text (
                     "**Alignment:** Humans tend toward no particular alignment. The best and the worst are found among them.",
-                    Empty
                 ),
-                Feature (
+                Element::Text (
                     "**Age:** Humans reach adulthood in their late teens and live less than a century.",
-                    Empty
                 ),
-                Feature (
+                Element::Text (
                     "**Size:** Humans vary widely in height and build, from barely `5 feet` to well over `6 feet` tall. Regardless of your position in that range, your size is `Medium`.",
-                    Empty
                 ),
-                Feature (
+                Element::Text (
                     "**Speed:** Your base walking speed is `30 feet`.",
-                    Empty
                 ),
-                Feature (
-                    "**Languages:** You can speak, read, and write `Common` and one extra language of your choice. Humans typically learn the languages of other peoples they deal with, including obscure dialects. They are fond of sprinkling their speech with words borrowed from other tongues: Orc curses, Elvish musical expressions, Dwarvish military phrases, and so on.",
-                    Any(&mut self.extra_language)
-                )
+                Element::Choice {
+                    text: "**Languages:** You can speak, read, and write `Common` and one extra language of your choice. Humans typically learn the languages of other peoples they deal with, including obscure dialects. They are fond of sprinkling their speech with words borrowed from other tongues: Orc curses, Elvish musical expressions, Dwarvish military phrases, and so on.",
+                    data: &mut self.extra_language,
+                    unique: false
+                }
             ];
         }
     }

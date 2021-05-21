@@ -9,24 +9,6 @@
         if (move.type === 'Attack' && move.time === 'Action') attackActions++;
         if (move.type === 'Cast' && move.time === 'Action') castActions++;
     }
-
-    console.log(attackActions);
-
-    // let attackActions: Array<Array<string>> = [];
-    // let castActions: string = '';
-    // for (let attack of $c.attack_moves) {
-    //     let range = attack.range.Fixed;
-    //     let row = [
-    //         attack.name,
-    //         signedInt(attack.hit),
-    //         `${range} ft`,
-    //         attack.damage,
-    //         attack.properties.join(', ')
-    //     ];
-    //     if (attack.time === 'Action') {
-    //         attackActions.push(row);
-    //     }
-    // }
 </script>
 
 <div class="sheet-box uk-width-2xlarge">
