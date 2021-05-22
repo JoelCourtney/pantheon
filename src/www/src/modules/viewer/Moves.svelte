@@ -1,6 +1,6 @@
 <script lang="ts">
-    import {signedInt} from "../helpers";
-    import ElementList from "./ElementList.svelte";
+    import {signedInt} from "../../helpers";
+    import ElementList from "../ElementList.svelte";
 
     export let c;
 

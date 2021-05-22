@@ -14,7 +14,7 @@
     }
 </script>
 
-<div class="uk-grid-small uk-child-width-2-3 uk-flex-center" uk-grid>
+<div class="uk-grid-row-small uk-grid-column-collapse uk-child-width-2-3 uk-flex-center" uk-grid>
     <div class="builder-box">
         <h1 class="box-title">Name</h1>
         <input class="uk-input" placeholder="Person McPersonFace" value={$c.name}

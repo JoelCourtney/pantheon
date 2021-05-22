@@ -1,1 +1,4 @@
-crate::register!( defaults );
+crate::register! {
+    "System"
+    defaults
+}

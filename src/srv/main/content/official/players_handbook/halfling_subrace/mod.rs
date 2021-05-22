@@ -1,2 +1,5 @@
-pub mod lightfoot;
-pub mod stout;
+crate::register! {
+    "Halfling Subrace"
+    lightfoot
+    stout
+}

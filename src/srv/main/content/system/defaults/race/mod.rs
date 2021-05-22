@@ -1,1 +1,4 @@
-crate::register!( unknown_race );
+crate::register! {
+    "Race"
+    unknown_race
+}

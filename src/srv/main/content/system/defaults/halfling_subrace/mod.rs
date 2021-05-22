@@ -1,1 +1,4 @@
-crate::register!( unknown_halfling_subrace );
+crate::register! {
+    "Halfling Subrace"
+    unknown_halfling_subrace
+}

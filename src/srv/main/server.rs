@@ -9,6 +9,7 @@ use rocket::config::LoggingLevel;
 use crate::misc::Ability;
 use crate::ui::Element;
 use crate::moves::Move;
+use crate::content::Registration;
 
 struct SharedData {
     path: String,
@@ -35,7 +36,7 @@ pub(crate) fn ignite(path: String) -> Rocket {
     };
     let rocket = rocket::custom(config)
         .manage(state)
-        .mount("/", routes![get_character, edit_character]);
+        .mount("/", routes![get_character, edit_character, serve_registry, serve_description]);
     return if dev {
         rocket.mount("/", StaticFiles::from("src/www/build"))
     } else {
@@ -152,7 +153,6 @@ fn edit_character(data: Json<EditRequest>, state: State<SharedData>) -> content:
     get_character(state)
 }
 
-#[allow(dead_code)]
 #[get("/")]
 fn serve_root() -> rocket::response::Content<&'static [u8]> {
     use rocket::response::content::Content;
@@ -161,7 +161,6 @@ fn serve_root() -> rocket::response::Content<&'static [u8]> {
     Content(ContentType::HTML, include_bytes!("../../www/build/index.html"))
 }
 
-#[allow(dead_code)]
 #[get("/<path..>")]
 fn serve_static_file(path: std::path::PathBuf) -> Option<rocket::response::Content<&'static [u8]>> {
     use rocket::response::content::Content;
@@ -172,4 +171,20 @@ fn serve_static_file(path: std::path::PathBuf) -> Option<rocket::response::Conte
         ""
     ]);
     Some(Content(content_type, bytes))
+}
+
+#[post("/registry")]
+fn serve_registry() -> content::Json<String> {
+    content::Json(
+        serde_json::to_string(&crate::content::get_registrations())
+            .expect("could not convert registrations to json")
+    )
+}
+
+#[post("/description", format="json", data="<data>")]
+fn serve_description(data: Json<Registration>) -> content::Json<String> {
+    content::Json(
+        serde_json::to_string(&crate::content::get_description(data.into_inner()))
+            .expect("could not convert description to json")
+    )
 }

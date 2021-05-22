@@ -1,1 +1,4 @@
-pub mod assassin;
+crate::register! {
+    "Roguish Archetype"
+    assassin
+}

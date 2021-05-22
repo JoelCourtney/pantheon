@@ -1,1 +1,4 @@
-pub mod rogue;
+crate::register! {
+    "Class"
+    rogue
+}

@@ -1,1 +1,4 @@
-crate::register!( unknown_feat );
+crate::register! {
+    "Feat"
+    unknown_feat
+}

@@ -1,5 +1,5 @@
-crate::register!(
-    "Official",
-    players_handbook,
+crate::register! {
+    "Official"
+    players_handbook
     basic_rules
-);
+}

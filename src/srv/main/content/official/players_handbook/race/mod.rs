@@ -1,3 +1,6 @@
-pub mod halfling;
-pub mod human;
-pub mod variant_human;
+crate::register! {
+    "Race"
+    halfling
+    human
+    variant_human
+}

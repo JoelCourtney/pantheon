@@ -1,1 +1,4 @@
-pub mod alert;
+crate::register! {
+    "Feat"
+    alert
+}

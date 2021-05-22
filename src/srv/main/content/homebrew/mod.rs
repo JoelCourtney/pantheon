@@ -1,1 +1,3 @@
-// pub const NAME: &'static str = "Homebrew";
+crate::register! {
+    "Homebrew"
+}

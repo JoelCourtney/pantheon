@@ -3,8 +3,8 @@
     export let indices;
     export let container;
 
-    if (!indices) {
-        indices = [...Array(elements.size).keys()]
+    if (indices === undefined) {
+        indices = [...Array(elements.length).keys()]
     }
 
     import {editCharacter} from "../state";

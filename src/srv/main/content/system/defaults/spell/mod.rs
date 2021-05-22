@@ -1,1 +1,4 @@
-crate::register!( unknown_spell );
+crate::register! {
+    "Spell"
+    unknown_spell
+}

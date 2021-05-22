@@ -1,7 +1,7 @@
 <script lang="ts">
     export let c;
 
-    import {render} from '../helpers.ts';
+    import {render} from '../../helpers.ts';
 </script>
 
 <div class="sheet-box uk-width-small">

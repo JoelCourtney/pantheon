@@ -1,1 +1,4 @@
-crate::register!( unknown_class );
+crate::register! {
+    "Class"
+    unknown_class
+}

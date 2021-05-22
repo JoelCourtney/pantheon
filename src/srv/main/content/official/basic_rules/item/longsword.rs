@@ -17,7 +17,7 @@ impl Item for Longsword {
             Equipped::Held(Hand::Both) => {
                 i! {
                     c.moves <<= Move::Attack {
-                        name: NAME,
+                        name: name!(),
                         time: MoveTime::Action,
                         hit: 0,
                         damage: Damage::from_die(10, DamageType::Slashing),
@@ -31,7 +31,7 @@ impl Item for Longsword {
             Equipped::Held(_) => {
                 i! {
                     c.moves <<= Move::Attack {
-                        name: NAME,
+                        name: name!(),
                         time: MoveTime::Action,
                         hit: 0,
                         damage: Damage::from_die(8, DamageType::Slashing),

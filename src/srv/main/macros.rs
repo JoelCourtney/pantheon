@@ -1,13 +1,16 @@
 /// Imports a common prelude for all content, and
-/// sets the NAME const for the module.
+/// sets the DNDCENT_NAME const for the module.
 #[macro_export]
 macro_rules! name {
+    () => {
+        DNDCENT_NAME
+    };
     ($name:literal) => {
         #[allow(unused_imports)] use crate::character::*;
         #[allow(unused_imports)] use crate::ui::{Element, Chooseable};
         #[allow(unused_imports)] use crate::misc::*;
         #[allow(unused_imports)] use crate::moves::*;
-        #[allow(unused_imports)] use crate::{properties, description};
+        #[allow(unused_imports)] use crate::{properties, description, name};
         #[allow(unused_imports)] use crate::content::traits::*;
         #[allow(unused_imports)] use crate::content::common::*;
         #[allow(unused_imports)] use proc_macros::{choose, dynamic_choose, content, i, m, f};
@@ -16,7 +19,7 @@ macro_rules! name {
         #[allow(unused_imports)] use enum_iterator::IntoEnumIterator;
         #[allow(unused_imports)] use indoc::indoc;
 
-        pub const NAME: &'static str = $name;
+        pub const DNDCENT_NAME: &'static str = $name;
     }
 }
 
@@ -66,23 +69,22 @@ macro_rules! properties {
 /// ## Example
 ///
 /// ```
-/// crate::register!(
-///     "Player's Handbook",
-///     background,
-///     class,
-///     feat,
-///     halfling_subrace,
-///     race,
+/// crate::register! {
+///     "Player's Handbook"
+///     background
+///     class
+///     feat
+///     halfling_subrace
+///     race
 ///     roguish_archetype
-/// );
+/// }
 /// ```
 #[macro_export]
 macro_rules! register {
-    ($($mods:ident),*) => {
-        $(pub mod $mods;)*
-    };
-    ($name:literal, $($mods:ident),*) => {
-        pub const NAME: &'static str = $name;
+    ($name:literal $($mods:ident)*) => {
+        #[allow(dead_code)]
+        pub const DNDCENT_NAME: &'static str = $name;
+
         $(pub mod $mods;)*
     }
 }
@@ -93,7 +95,7 @@ macro_rules! register {
 #[macro_export]
 macro_rules! description {
     ($text:tt) => {
-        fn name(&self) -> &'static str { NAME }
+        fn name(&self) -> &'static str { DNDCENT_NAME }
         fn description(&self) -> &'static str {
             indoc! { $text }
         }

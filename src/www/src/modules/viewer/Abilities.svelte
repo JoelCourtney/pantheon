@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { signedInt } from '../helpers.ts';
+    import { signedInt } from '../../helpers.ts';
 
     export let c;
 </script>

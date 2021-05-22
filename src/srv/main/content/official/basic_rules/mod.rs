@@ -1,4 +1,4 @@
-crate::register!(
-    "Basic Rules",
+crate::register! {
+    "Basic Rules"
     item
-);
+}

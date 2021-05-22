@@ -16,7 +16,7 @@ impl Item for Shortsword {
         if let Equipped::Held(_) = equipped {
             i! {
                 c.moves <<= Move::Attack {
-                    name: NAME,
+                    name: name!(),
                     time: MoveTime::Action,
                     hit: 0,
                     damage: Damage::from_die(6, DamageType::Piercing),

@@ -1,1 +1,4 @@
-pub mod unknown_background;
+crate::register! {
+    "Background"
+    unknown_background
+}

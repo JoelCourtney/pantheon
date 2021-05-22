@@ -1,8 +1,9 @@
-crate::register!(
-    cloak_of_elvenkind,
-    shield,
-    padded,
-    rapier,
-    longsword,
+crate::register! {
+    "Item"
+    cloak_of_elvenkind
+    shield
+    padded
+    rapier
+    longsword
     shortsword
-);
+}

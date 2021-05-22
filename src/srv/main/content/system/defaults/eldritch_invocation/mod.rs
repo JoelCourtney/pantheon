@@ -1,1 +1,4 @@
-crate::register!( unknown_eldritch_invocation );
+crate::register! {
+    "Eldritch Invocation"
+    unknown_eldritch_invocation
+}

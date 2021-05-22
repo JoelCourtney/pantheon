@@ -1,5 +1,5 @@
 {
-  "name": "Hello ther",
+  "name": "Helloasdf ",
   "health": 3,
   "temp_health": 4,
   "base_abilities": {
@@ -20,16 +20,8 @@
     "copper": 0
   },
   "race": {
-    "VariantHuman": {
-      "abilities": [
-        "Dexterity",
-        "Dexterity"
-      ],
-      "skill": "Perception",
-      "feat": {
-        "UnknownFeat": null
-      },
-      "language": "Unknown"
+    "Human": {
+      "extra_language": "Goblin"
     }
   },
   "classes": [

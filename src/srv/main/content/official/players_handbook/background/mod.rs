@@ -1,1 +1,4 @@
-pub mod soldier;
+crate::register! {
+    "Background"
+    soldier
+}
