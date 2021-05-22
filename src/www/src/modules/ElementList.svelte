@@ -3,10 +3,6 @@
     export let indices;
     export let container;
 
-    if (indices === undefined) {
-        indices = [...Array(elements.length).keys()]
-    }
-
     import {editCharacter} from "../state";
     import {render} from "../helpers";
 </script>

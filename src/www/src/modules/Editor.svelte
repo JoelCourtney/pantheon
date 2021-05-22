@@ -85,7 +85,7 @@
                 <li><a>Traits</a></li>
                 <li><a>Description</a></li>
             </ul>
-            <ElementList elements={$c.race_traits} container={'race'}/>
+            <ElementList elements={$c.race_traits} indices={[...$c.race_traits.keys()]} container={'race'}/>
         {/if}
     </div>
     <div class="builder-box">
@@ -114,13 +114,13 @@
                 <li><a>Features</a></li>
                 <li><a>Description</a></li>
             </ul>
-            <ElementList elements={$c.background_features} container={'background'}/>
+            <ElementList elements={$c.background_features} indices={[...$c.background_features.keys()]} container={'background'}/>
         {/if}
     </div>
     <div class="builder-box">
         <h1 class="box-title">Feats</h1>
         {#if $c.feats.length !== 0}
-            <ElementList elements={$c.feats} container={'feat'} />
+            <ElementList elements={$c.feats} indices={[...$c.feats.keys()]} container={'feat'} />
         {/if}
     </div>
     <div class="builder-box">

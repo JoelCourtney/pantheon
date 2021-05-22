@@ -33,7 +33,7 @@
                                 location = reg;
                                 browserHistory.push(reg);
                             }
-                        }>{reg.name}</a><br/><span class="uk-text-small">{reg.kind}<br/>{reg.collection}/{reg.source}</span></li>
+                        }>{reg.name}</a><br/><span class="uk-text-small">{reg.kind}<br/>{reg.collection} / {reg.source}</span></li>
                     {/if}
                 {/each}
             </ul>
