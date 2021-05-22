@@ -79,6 +79,11 @@ enum EditRequest<'a> {
         toggle_index: usize
     },
     Race(&'a str),
+    Class {
+        index: usize,
+        name: &'a str,
+        level: u32
+    },
     Background(&'a str),
     AbilityScore(Ability, u32)
 }
@@ -96,6 +101,15 @@ fn edit_character(data: Json<EditRequest>, state: State<SharedData>) -> content:
         Health(u) => (*stored_char).health = u,
         TempHealth(u) => (*stored_char).temp_health = u,
         Race(r) => (*stored_char).race = crate::content::race(r).unwrap(),
+        Class { index, name, level } => {
+            if index == (*stored_char).classes.len() {
+                (*stored_char).classes.push(
+                    (crate::content::class(name).unwrap(), level)
+                );
+            } else {
+                (*stored_char).classes[index] = (crate::content::class(name).unwrap(), level);
+            }
+        }
         Background(b) => (*stored_char).background = crate::content::background(b).unwrap(),
         Choice {
             container,

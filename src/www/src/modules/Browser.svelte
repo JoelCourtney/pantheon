@@ -21,7 +21,7 @@
         </div>
         <div class="uk-margin-top">
             <ul class="uk-list uk-list-large">
-                {#each registry as reg, i}
+                {#each registry as reg}
                     {#if
                         reg.collection.toLowerCase().includes(search.toLowerCase())
                         || reg.source.toLowerCase().includes(search.toLowerCase())

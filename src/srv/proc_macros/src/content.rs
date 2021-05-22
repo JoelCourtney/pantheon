@@ -29,10 +29,28 @@ pub(crate) fn stages(input: TokenStream, stage: &'static str) -> TokenStream2 {
         Ok(ast) => ast.into_iter(),
         Err(..) => panic!("input to resolution macros must be expressions separated by semicolons.")
     };
+
+    let mut tag: Option<u64> = None;
+
     let request_stage = format_ident!("request_{}", stage);
     let confirm_stage = format_ident!("confirm_{}", stage);
     let mut acc: TokenStream2 = quote! {};
     for seg in ast {
+        let id = next_id();
+        let (id_expr, make_hash) = match tag {
+            Some(t) => {
+                let hash_ident = format_ident!("dndcent_stage_hash_{}", id);
+                let hasher_ident = format_ident!("dndcent_stage_hasher_{}", t);
+                (
+                    quote! {#hash_ident},
+                    quote! {
+                        #id.hash(&mut #hasher_ident);
+                        let #hash_ident = #hasher_ident.finish();
+                    }
+                )
+            }
+            None => (quote! { #id }, quote! {})
+        };
         match seg {
             syn::Expr::Assign(
                 syn::ExprAssign {
@@ -42,14 +60,14 @@ pub(crate) fn stages(input: TokenStream, stage: &'static str) -> TokenStream2 {
                 }
             ) => {
                 let expanded_right = expand_carriers(right.to_token_stream());
-                let id = next_id();
                 acc = quote! {
                     #acc
-                    if (#left).#request_stage(#id) {
+                    #make_hash
+                    if (#left).#request_stage(#id_expr) {
                         match (|| -> Result<_, ()> {Ok(#expanded_right)})() {
                             Ok(v) => {
                                 *#left = v;
-                                (#left).#confirm_stage(#id);
+                                (#left).#confirm_stage(#id_expr);
                             }
                             _ => {}
                         }
@@ -72,25 +90,38 @@ pub(crate) fn stages(input: TokenStream, stage: &'static str) -> TokenStream2 {
                     _ => ""
                 });
                 let expanded_right = expand_carriers(right.to_token_stream());
-                let id = next_id();
                 acc = quote! {
                     #acc
-                    if (#left).#request_stage(#id) {
+                    #make_hash
+                    if (#left).#request_stage(#id_expr) {
                         match (|| -> Result<_, ()> {Ok(#expanded_right)})() {
                             Ok(v) => {
                                 use std::ops::{AddAssign, SubAssign};
                                 (*#left).#func(v);
-                                (#left).#confirm_stage(#id);
+                                (#left).#confirm_stage(#id_expr);
                             }
                             _ => {}
                         }
                     }
                 };
             },
-            _ => {}
+            expr => {
+                tag = Some(id);
+                let hasher_ident = format_ident!("dndcent_stage_hasher_{}", id);
+                acc = quote! {
+                    #acc
+                    let mut #hasher_ident = std::collections::hash_map::DefaultHasher::new();
+                    (#expr).hash(&mut #hasher_ident);
+                }
+            }
         }
     }
-    acc
+    quote! {
+        {
+            use std::hash::{Hash, Hasher};
+            #acc
+        }
+    }
 }
 
 static ID: AtomicU64 = AtomicU64::new(0);

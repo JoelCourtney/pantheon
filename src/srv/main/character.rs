@@ -33,7 +33,7 @@ pub struct StoredCharacter {
     money: MoneyTypeMap<u32>,
 
     pub(crate) race: Box<dyn Race>,
-    classes: Vec<(Box<dyn Class>, u32)>,
+    pub(crate) classes: Vec<(Box<dyn Class>, u32)>,
     pub(crate) background: Box<dyn Background>,
 
     inventory: Vec<(Box<dyn Item>, Equipped, bool)>,

@@ -28,6 +28,14 @@ export async function getDescription(reg: Registration) {
     return sendRequest('/description', reg);
 }
 
+export async function updateField(c: any, field: string, value: any) {
+    if (value !== c[field]) {
+        let request: any = {};
+        request[field] = value;
+        editCharacter(request);
+    }
+}
+
 async function sendRequest(path: string, data: any) {
     const location = window.location.hostname;
     const port = window.location.port;

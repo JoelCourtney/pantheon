@@ -1,5 +1,5 @@
 {
-  "name": "Its a me ",
+  "name": "Its a meeee",
   "health": 3,
   "temp_health": 4,
   "base_abilities": {
@@ -20,10 +20,16 @@
     "copper": 0
   },
   "race": {
-    "Halfling": {
-      "subrace": {
-        "Lightfoot": null
-      }
+    "VariantHuman": {
+      "abilities": [
+        "Unknown",
+        "Unknown"
+      ],
+      "skill": "Unknown",
+      "feat": {
+        "UnknownFeat": null
+      },
+      "language": "Unknown"
     }
   },
   "classes": [
@@ -46,7 +52,7 @@
   ],
   "background": {
     "Soldier": {
-      "game": "Dice Set"
+      "game": "Playing Card Set"
     }
   },
   "inventory": [

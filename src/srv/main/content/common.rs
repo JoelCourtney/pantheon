@@ -108,6 +108,7 @@ pub(crate) mod common_rules {
         i! {
             c.race_choices = crate::content::get_all_race();
             c.background_choices = crate::content::get_all_background();
+            c.class_choices = crate::content::get_all_class();
         }
     }
 
@@ -124,12 +125,13 @@ pub(crate) mod common_rules {
 pub(crate) mod common_class_rules {
     use crate::character::Character;
     use crate::content::traits::Class;
-    use proc_macros::{i, m};
+    use proc_macros::i;
 
     pub fn resolve(c: &mut Character, class: &Box<dyn Class>, level: u32, first: bool) {
         let hd = class.hit_dice();
         i! {
-            c.max_health = {
+            (class.name(), level, first);
+            c.max_health += {
                 let mut res: i32 = 0;
                 if first && level >= 1 {
                     res += (hd / 2 - 1) as i32;
@@ -138,8 +140,8 @@ pub(crate) mod common_class_rules {
                 res as u32
             };
             c.class_names <<= format!("{} {}", class.name(), level);
+            c.total_level += level
         }
-        m! { c.total_level += level }
     }
 }
 
@@ -174,7 +176,10 @@ pub(crate) mod common_item_rules {
             Equipable::Armor => {
                 match equipped {
                     Equipped::Yes => i! { c.armor = Some(item.name()) },
-                    Equipped::No => i! { c.armor_choices <<= item.name() },
+                    Equipped::No => i! {
+                        item.name();
+                        c.armor_choices <<= item.name();
+                    },
                     Equipped::Held(_) => panic!("armor isn't holdable")
                 }
             }
@@ -183,7 +188,10 @@ pub(crate) mod common_item_rules {
                     Holdable::Ammunition => {
                         match equipped {
                             Equipped::Yes => i! { c.ammunition = Some(item.name()) },
-                            Equipped::No => i! { c.ammunition_choices <<= item.name() },
+                            Equipped::No => i! {
+                                item.name();
+                                c.ammunition_choices <<= item.name();
+                            },
                             Equipped::Held(_) => panic!("ammunition isn't holdable")
                         }
                     }
@@ -196,7 +204,10 @@ pub(crate) mod common_item_rules {
                                     Hand::Both => i! { c.both_hands = Some(item.name()) }
                                 }
                             }
-                            Equipped::No => i! { c.hold_choices <<= item.name() },
+                            Equipped::No => i! {
+                                item.name();
+                                c.hold_choices <<= item.name();
+                            },
                             Equipped::Yes => panic!("holdables aren't generically equippable")
                         }
                     }
