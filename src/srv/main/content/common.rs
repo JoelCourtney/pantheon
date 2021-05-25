@@ -127,19 +127,20 @@ pub(crate) mod common_class_rules {
     use crate::content::traits::Class;
     use proc_macros::i;
 
-    pub fn resolve(c: &mut Character, class: &Box<dyn Class>, level: u32, first: bool) {
+    pub fn resolve(c: &mut Character, class: &Box<dyn Class>, level: u32, index: usize) {
         let hd = class.hit_dice();
         i! {
-            (class.name(), level, first);
+            index;
             c.max_health += {
                 let mut res: i32 = 0;
-                if first && level >= 1 {
+                if index == 0 {
                     res += (hd / 2 - 1) as i32;
                 }
                 res += ((hd / 2 + 1) as i32 + c.ability_modifiers.constitution?) * level as i32;
                 res as u32
             };
-            c.class_names <<= format!("{} {}", class.name(), level);
+            c.class_names <<= class.name().to_string();
+            c.class_levels <<= level;
             c.total_level += level
         }
     }

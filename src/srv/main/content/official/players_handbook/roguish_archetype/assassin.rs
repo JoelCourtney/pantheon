@@ -9,11 +9,11 @@ pub struct Assassin;
 impl RoguishArchetype for Assassin {
     properties! {}
 
-    fn resolve(&mut self, c: &mut Character, lvl: u32) {
-        if lvl >= 3 {
+    fn resolve(&mut self, c: &mut Character, level: u32, index: usize) {
+        if level >= 3 {
             i! {
-                c.class_features <<= Element::Text (
-                   "**Bonus Proficiencies:** When you choose this archetype at 3rd level, you gain proficiency with the disguise kit and poisoner's kit.",
+                c.class_features[index] <<= Element::Text (
+                   "**[Assassin] Bonus Proficiencies:** When you choose this archetype at 3rd level, you gain proficiency with the disguise kit and poisoner's kit.",
                 )
             }
             m! {

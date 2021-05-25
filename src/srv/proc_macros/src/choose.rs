@@ -175,8 +175,6 @@ pub fn choose(ast: syn::ItemEnum) -> TokenStream {
             pub fn get_mut_known(&mut self, var: #enum_ident) -> &mut T {
                 self.get_mut(var).unwrap()
             }
-
-
         }
 
         impl<T> #map_ident<T>
@@ -188,15 +186,17 @@ pub fn choose(ast: syn::ItemEnum) -> TokenStream {
             }
         }
 
-        impl<T> #map_ident<crate::character::Staged<T>>
+        impl<T> crate::character::Resolveable for #map_ident<crate::character::Staged<T>>
             where T: std::fmt::Debug + serde::Serialize + Default {
-            pub fn unwrap(self) -> #map_ident<T> {
+            type Inner = #map_ident<T>;
+
+            fn unwrap(self) -> #map_ident<T> {
                 #map_ident {
                     #map_unwrap_fields_tokens
                 }
             }
 
-            pub fn count_unresolved(&self) -> u32 {
+            fn count_unresolved(&self) -> u32 {
                 #map_count_tokens 0
             }
         }

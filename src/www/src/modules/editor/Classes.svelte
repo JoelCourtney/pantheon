@@ -3,8 +3,7 @@
 
     import {editCharacter} from "../../state.ts";
 
-    console.log($c.class_names);
-    console.log($c.total_level);
+    import ElementList from "../ElementList.svelte";
 
     function editAndReset(data) {
         editCharacter(data);
@@ -15,12 +14,11 @@
 <div class="editor-box">
     <h1 class="box-title">Classes</h1>
     {#each $c.class_names as cls, i}
-        <select class="uk-select" on:change={
+        <select class="uk-select uk-width-3-4" on:change={
             editCharacter({
                 class: {
                     index: i,
-                    name: $c.class_choices[this.value],
-                    level: 1
+                    name: $c.class_choices[this.value]
                 }
             })
         }>
@@ -31,14 +29,31 @@
                     <option value={i}>{choice}</option>
                 {/if}
             {/each}
-        </select>
+        </select><input class="uk-input uk-width-1-4" type="number" placeholder="level" value={$c.class_levels[i]}
+            on:focusout={(e) => { if (e.target.value !== $c.class_levels[i]) editCharacter({
+                level: {
+                    index: i,
+                    level: Number(e.target.value)
+                }
+            })}}
+            on:keypress={(e) => {if (e.keyCode === 13) editCharacter({
+                level: {
+                    index: i,
+                    level: Number(e.target.value)
+                }
+            })}}
+        />
+        <ul uk-tab class="editor-box-nav">
+            <li><a>Traits</a></li>
+            <li><a>Description</a></li>
+        </ul>
+        <ElementList elements={$c.class_features[i]} indices={[...$c.class_features[i].keys()]} container={{'class': i}} />
     {/each}
     <select class="uk-select" on:change={
         editAndReset({
             class: {
                 index: $c.class_names.length,
                 name: $c.class_choices[this.value],
-                level: 1
             }
         })
     } id="new-class-select">

@@ -78,6 +78,10 @@ impl StoredCharacter {
             ..Default::default()
         };
 
+        for _ in 0..self.classes.len() {
+            char.class_features.push(Staged::new(vec![]));
+        }
+
         let mut old_count: i64  = -2;
         let mut count: i64 = -1;
         // let mut iterations = 0;
@@ -88,9 +92,8 @@ impl StoredCharacter {
             common_race_rules::resolve(&mut char, &self.race);
             self.race.resolve(&mut char);
             for (i, (class, level)) in self.classes.iter_mut().enumerate() {
-                let first = i == 0;
-                common_class_rules::resolve(&mut char, class, *level, first);
-                class.resolve(&mut char, *level, first);
+                common_class_rules::resolve(&mut char, class, *level, i);
+                class.resolve(&mut char, *level, i);
             }
             common_background_rules::resolve(&mut char, &self.background);
             self.background.resolve(&mut char);
@@ -159,6 +162,7 @@ pub struct Character {
     pub total_level: Staged<u32>,
     pub race_name: Staged<String>,
     pub class_names: Staged<Vec<String>>,
+    pub class_levels: Staged<Vec<u32>>,
     pub background_name: Staged<String>,
 
     // PROFICIENCY BONUS AND INITIATIVE
@@ -220,7 +224,7 @@ pub struct Character {
     pub background_choices: Staged<Vec<&'static str>>,
 
     pub race_traits: Staged<Vec<Element>>,
-    pub class_features: Staged<Vec<Element>>,
+    pub class_features: Vec<Staged<Vec<Element>>>,
     pub background_features: Staged<Vec<Element>>,
     pub feats: Staged<Vec<Element>>,
 
@@ -247,6 +251,13 @@ pub struct Character {
     pub base_abilities: AbilityMap<Staged<u32>>
 }
 
+pub trait Resolveable {
+    type Inner;
+
+    fn count_unresolved(&self) -> u32;
+    fn unwrap(self) -> Self::Inner;
+}
+
 #[derive(Default, Debug, Serialize)]
 pub struct Staged<T>
     where T: Default + Debug + Serialize {
@@ -267,15 +278,7 @@ impl<T> Staged<T>
             finalizers: hashmap! {}
         }
     }
-    pub fn unwrap(self) -> T {
-        self.value
-    }
 
-    pub fn count_unresolved(&self) -> u32 {
-        self.initializers.values().fold(0, |acc, b| acc + !*b as u32)
-            + self.modifiers.values().fold(0, |acc, b| acc + !*b as u32)
-            + self.finalizers.values().fold(0, |acc, b| acc + !*b as u32)
-    }
 
     fn initialized(&self) -> bool {
         self.initializers.values().all(|b| *b)
@@ -338,6 +341,20 @@ impl<T> Staged<T>
     }
 }
 
+impl<T> Resolveable for Staged<T>
+    where T: Serialize + Default + Debug {
+    type Inner = T;
+
+    fn count_unresolved(&self) -> u32 {
+        self.initializers.values().fold(0, |acc, b| acc + !*b as u32)
+            + self.modifiers.values().fold(0, |acc, b| acc + !*b as u32)
+            + self.finalizers.values().fold(0, |acc, b| acc + !*b as u32)
+    }
+    fn unwrap(self) -> T {
+    self.value
+}
+}
+
 impl<T> Staged<T>
     where T: Serialize + Default + Debug + Clone {
     pub fn r#final(&self) -> Result <T, () > {
@@ -361,6 +378,23 @@ impl<T> DerefMut for Staged<T>
     where T: Debug + Default + Serialize {
     fn deref_mut(&mut self) -> &mut Self::Target {
         &mut self.value
+    }
+}
+
+impl<T> Resolveable for Vec<Staged<T>>
+    where T: Debug + Default + Serialize {
+    type Inner = Vec<T>;
+
+    fn count_unresolved(&self) -> u32 {
+        let mut acc = 0;
+        for stage in self {
+            acc += stage.count_unresolved();
+        }
+        acc
+    }
+
+    fn unwrap(self) -> Vec<T> {
+        self.into_iter().map(|stage| stage.unwrap()).collect()
     }
 }
 

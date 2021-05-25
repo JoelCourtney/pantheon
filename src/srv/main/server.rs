@@ -68,13 +68,13 @@ enum EditRequest<'a> {
     Health(u32),
     TempHealth(u32),
     Choice {
-        container: &'a str,
+        container: Container,
         element_index: usize,
         choice_index: usize,
         choice: &'a str
     },
     Toggle {
-        container: &'a str,
+        container: Container,
         element_index: usize,
         toggle_index: usize
     },
@@ -82,10 +82,23 @@ enum EditRequest<'a> {
     Class {
         index: usize,
         name: &'a str,
+    },
+    Level {
+        index: usize,
         level: u32
     },
     Background(&'a str),
     AbilityScore(Ability, u32)
+}
+
+#[derive(Deserialize, Debug)]
+#[serde(rename_all = "snake_case")]
+enum Container {
+    Race,
+    Class(usize),
+    Background,
+    Feat,
+    Moves
 }
 
 #[post("/edit", format="json", data="<data>")]
@@ -101,14 +114,17 @@ fn edit_character(data: Json<EditRequest>, state: State<SharedData>) -> content:
         Health(u) => (*stored_char).health = u,
         TempHealth(u) => (*stored_char).temp_health = u,
         Race(r) => (*stored_char).race = crate::content::race(r).unwrap(),
-        Class { index, name, level } => {
+        Class { index, name} => {
             if index == (*stored_char).classes.len() {
                 (*stored_char).classes.push(
-                    (crate::content::class(name).unwrap(), level)
+                    (crate::content::class(name).unwrap(), 1)
                 );
             } else {
-                (*stored_char).classes[index] = (crate::content::class(name).unwrap(), level);
+                (*stored_char).classes[index] = (crate::content::class(name).unwrap(), 1);
             }
+        }
+        Level { index, level } => {
+            (*stored_char).classes[index].1 = level;
         }
         Background(b) => (*stored_char).background = crate::content::background(b).unwrap(),
         Choice {
@@ -118,11 +134,11 @@ fn edit_character(data: Json<EditRequest>, state: State<SharedData>) -> content:
             choice
         } => {
             match match container {
-                "race" => &mut (*final_char).race_traits,
-                "class" => &mut (*final_char).class_features,
-                "background" => &mut (*final_char).background_features,
-                "feat" => &mut (*final_char).feats,
-                _ => panic!("no choice container found: {}", container)
+                Container::Race => &mut (*final_char).race_traits,
+                Container::Class(index) => &mut (*final_char).class_features[index],
+                Container::Background => &mut (*final_char).background_features,
+                Container::Feat => &mut (*final_char).feats,
+                _ => panic!("no choice container found: {:?}", container)
             }.get_mut(element_index)
                 .expect(&format!("element index out of bounds: {}", element_index)) {
                 Element::Choice {
@@ -137,8 +153,8 @@ fn edit_character(data: Json<EditRequest>, state: State<SharedData>) -> content:
             toggle_index
         } => {
             match match container {
-                "moves" => &mut (*final_char).moves,
-                _ => panic!("no toggle container found: {}", container)
+                Container::Moves => &mut (*final_char).moves,
+                _ => panic!("no toggle container found: {:?}", container)
             }.get_mut(element_index)
                 .expect(&format!("element index out of bounds: {}", element_index)) {
                 Move::Other {

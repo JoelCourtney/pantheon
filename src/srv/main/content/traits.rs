@@ -21,7 +21,7 @@ pub trait Class: Debug {
 
     fn hit_dice(&self) -> u32;
 
-    fn resolve(&mut self, _c: &mut Character, _level: u32, _first: bool) {}
+    fn resolve(&mut self, _c: &mut Character, _level: u32, _index: usize) {}
 }
 
 #[dynamic_choose]
@@ -96,7 +96,7 @@ pub trait RoguishArchetype: Debug {
     fn description(&self) -> &'static str;
     fn description_no_title(&self) -> &'static str;
 
-    fn resolve(&mut self, _c: &mut Character, _lvl: u32) {}
+    fn resolve(&mut self, _c: &mut Character, _level: u32, _index: usize) {}
 }
 
 #[dynamic_choose]
@@ -105,5 +105,5 @@ pub trait EldritchInvocation: Debug {
     fn description(&self) -> &'static str;
     fn description_no_title(&self) -> &'static str;
 
-    fn resolve(&mut self, _c: &mut Character, _lvl: u32) {}
+    fn resolve(&mut self, _c: &mut Character, _level: u32, _index: usize) {}
 }

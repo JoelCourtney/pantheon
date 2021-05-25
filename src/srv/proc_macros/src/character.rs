@@ -52,8 +52,7 @@ pub(crate) fn finalize(ast: syn::DeriveInput) -> TokenStream {
                                 #finalize_acc
                                 #id: self.#id.unwrap(),
                             };
-                        } else if first.ident.to_string().contains("Map")
-                            && extract_type_argument(first).path.segments.first().unwrap().ident.to_string() == "Staged" {
+                        } else if extract_type_argument(first).path.segments.first().unwrap().ident.to_string() == "Staged" {
                             let target = extract_type_argument(extract_type_argument(first).path.segments.first().unwrap());
                             let map_ident = &first.ident;
                             count_unresolved_acc = quote! {

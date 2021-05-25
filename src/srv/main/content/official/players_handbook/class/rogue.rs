@@ -12,7 +12,7 @@ impl Class for Rogue {
         hit_dice: u32 = 8
     }
 
-    fn resolve(&mut self, c: &mut Character, level: u32, _first: bool) {
+    fn resolve(&mut self, c: &mut Character, level: u32, index: usize) {
         i! {
             c.armor_proficiencies <<= "Light Armor";
             c.weapon_proficiencies >>= vec! [
@@ -36,7 +36,28 @@ impl Class for Rogue {
             }
         }
 
-        self.subclass.resolve(c, level);
+        i! {
+            c.class_features[index] <<= Element::Text(
+                indoc! { r#"
+                    **Hit Points:**
+                    - *Hit Dice:* 1d8 per rogue level
+                    - *Hit Points at 1st Level:* 8 + your Constitution modifier
+                    - *Hit Points at Higher Levels:* 1d8 (or 5) + your Constitution modifier per rogue level after 1st
+                "# }
+            )
+        }
+
+        if level >= 3 {
+            i! {
+                c.class_features[index] <<= Element::Choice {
+                    text: "**Roguish Archetype:** At 3rd level, you choose an archetype that you emulate in the exercise of your rogue abilities. Your archetype choice grants you features at 3rd level and then again at 9th, 13th, and 17th level.",
+                    data: &mut self.subclass,
+                    unique: false
+                }
+            }
+        }
+
+        self.subclass.resolve(c, level, index);
     }
 
     description! {r#"

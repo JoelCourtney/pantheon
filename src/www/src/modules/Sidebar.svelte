@@ -4,9 +4,9 @@
 
     let class_names: string;
     $: {
-        class_names = $c.class_names[0];
+        class_names = `${$c.class_names[0]} ${$c.class_levels[0]}`;
         for (let i = 1; i < $c.class_names.length; i++) {
-            class_names += " | " + $c.class_names[i];
+            class_names += ` | ${$c.class_names[i]} ${$c.class_levels[i]}`;
         }
     }
 

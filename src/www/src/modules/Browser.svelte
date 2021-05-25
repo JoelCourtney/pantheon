@@ -51,6 +51,7 @@
                 &nbsp;&nbsp;&nbsp;&nbsp;{location.collection} / {location.source} / {location.kind}
             </p>
             {#await getDescription(location)}
+
             {:then description}
                 {@html render(description)}
             {/await}

@@ -9,10 +9,10 @@ impl HalflingSubrace for Lightfoot {
         i! {
             c.race_traits >>= vec![
                 Element::Text (
-                    "**Ability Score Increase:** Your Charisma score increases by 1.",
+                    "**[Lightfoot] Ability Score Increase:** Your Charisma score increases by 1.",
                 ),
                 Element::Text (
-                    "**Naturally Stealthy:** You can attempt to hide even when you are obscured only by a creature that is at least one size larger than you.",
+                    "**[Lightfoot] Naturally Stealthy:** You can attempt to hide even when you are obscured only by a creature that is at least one size larger than you.",
                 )
             ];
         }
