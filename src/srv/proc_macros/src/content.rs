@@ -210,7 +210,7 @@ pub fn asi_or_feat(level: u32) -> TokenStream {
     }).into()
 }
 
-pub fn asi_or_feats(levels: Vec<u32>, mut ast: syn::ItemStruct) -> TokenStream {
+pub fn asi_or_feat_fields(levels: Vec<u32>, mut ast: syn::ItemStruct) -> TokenStream {
     let new_fields: Vec<Field> = levels.into_iter().flat_map(
         |level| vec! [
             Field {

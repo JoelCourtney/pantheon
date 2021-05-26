@@ -6,10 +6,29 @@ export function signedInt(i: number): string {
 import "/scripts/remarkable.min.js";
 // @ts-ignore
 const md = new Remarkable();
-export function render(text: string): string {
+md.core.ruler.enable([
+    'abbr'
+]);
+export function render(text: string, outerTags: boolean = true): string {
     let result: string = md.render(text);
     result = result.replace('<table>', '<table class="uk-table uk-table-small uk-divider">');
-    return result;
+    let start_tag = result.search('<abbr title="');
+    while (start_tag != -1) {
+        let sub = result.substring(start_tag);
+        let end_quote = sub.search('">')
+        let end_tag = sub.search('</abbr>')
+        let title = sub.substring(13, end_quote);
+        let content = sub.substring(end_quote + 2, end_tag);
+        result = result.substring(0, start_tag) +
+            '<u>' + content + '</u><span uk-dropdown="pos: bottom-center" class="uk-width-medium">' + title + '</span>' +
+            result.substring(result.search('</abbr>') + 7);
+        start_tag = result.search('<abbr title="');
+    }
+    if (outerTags) {
+        return result;
+    } else {
+        return result.substring(3, result.length - 5);
+    }
 }
 
 export class Registration {

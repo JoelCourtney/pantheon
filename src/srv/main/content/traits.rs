@@ -1,6 +1,6 @@
 use std::fmt::Debug;
 use proc_macros::dynamic_choose;
-use crate::ui::Chooseable;
+use crate::ui::{Chooseable, Event};
 use crate::character::Character;
 use crate::misc::{CastingTime, Equipable, Rarity, Equipped};
 
@@ -11,6 +11,7 @@ pub trait Race: Debug {
     fn description_no_title(&self) -> &'static str;
 
     fn resolve(&mut self, _c: &mut Character) {}
+    fn event(&mut self, _e: &Event) {}
 }
 
 #[dynamic_choose]
@@ -22,6 +23,7 @@ pub trait Class: Debug {
     fn hit_dice(&self) -> u32;
 
     fn resolve(&mut self, _c: &mut Character, _level: u32, _index: usize) {}
+    fn event(&mut self, _e: &Event, _level: u32, _index: usize) {}
 }
 
 #[dynamic_choose]
@@ -31,6 +33,7 @@ pub trait Feat: Debug {
     fn description_no_title(&self) -> &'static str;
 
     fn resolve(&mut self, _c: &mut Character) {}
+    fn event(&mut self, _e: &Event) {}
 }
 
 #[dynamic_choose]
@@ -40,6 +43,7 @@ pub trait Background: Debug {
     fn description_no_title(&self) -> &'static str;
 
     fn resolve(&mut self, _c: &mut Character) {}
+    fn event(&mut self, _e: &Event) {}
 }
 
 #[dynamic_choose]
@@ -79,6 +83,7 @@ pub trait Item: Debug {
     fn ammunition(&self) -> bool { false }
 
     fn resolve(&mut self, _c: &mut Character, _equipped: Equipped, _attuned: bool) {}
+    fn event(&mut self, _e: &Event, _equipped: Equipped, _attuned: bool) {}
 }
 
 #[dynamic_choose]
@@ -88,6 +93,7 @@ pub trait HalflingSubrace: Debug {
     fn description_no_title(&self) -> &'static str;
 
     fn resolve(&mut self, _c: &mut Character) {}
+    fn event(&mut self, _e: &Event) {}
 }
 
 #[dynamic_choose]
@@ -97,6 +103,7 @@ pub trait RoguishArchetype: Debug {
     fn description_no_title(&self) -> &'static str;
 
     fn resolve(&mut self, _c: &mut Character, _level: u32, _index: usize) {}
+    fn event(&mut self, _e: &Event, _level: u32, _index: usize) {}
 }
 
 #[dynamic_choose]
@@ -106,4 +113,5 @@ pub trait EldritchInvocation: Debug {
     fn description_no_title(&self) -> &'static str;
 
     fn resolve(&mut self, _c: &mut Character, _level: u32, _index: usize) {}
+    fn event(&mut self, _e: &Event, _level: u32, _index: usize) {}
 }

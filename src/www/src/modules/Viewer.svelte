@@ -1,4 +1,6 @@
 <script lang="ts">
+    import Rests from "./viewer/Rests.svelte";
+
     export let c;
 
     import Health from './viewer/Health.svelte';
@@ -46,4 +48,5 @@
 <Endcap id={1}>
     <Statuses {c}/>
 </Endcap>
+<Rests {c}/>
 <Money {c}/>

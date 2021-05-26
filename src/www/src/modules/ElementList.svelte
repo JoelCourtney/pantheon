@@ -45,6 +45,12 @@
                         }
                     })
                 }>{element.button}</button>
+            {:else if element.type === 'trigger'}
+                <button class="uk-button uk-button-default" type="button" on:click={
+                    editCharacter({
+                        event: element['event']
+                    })
+                }>{element.button}</button>
             {/if}
         </li>
     {/each}

@@ -103,4 +103,5 @@
         {/if}
         <ElementList {elements} {indices} container={'moves'} />
     </div>
+
 </div>

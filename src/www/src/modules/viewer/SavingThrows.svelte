@@ -31,6 +31,6 @@
         </div>
     </div>
     {#if $c.saving_throw_notes.length}
-        <p class="uk-margin-remove-bottom">{@html render($c.saving_throw_notes.join('  \n'))}</p>
+        <p class="uk-margin-remove-bottom">{@html $c.saving_throw_notes.map((n) => render(n, false)).join('<br/>')}</p>
     {/if}
 </div>

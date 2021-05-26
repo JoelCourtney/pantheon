@@ -1,14 +1,14 @@
 {
-  "name": "Its a ",
+  "name": "Its a fully implemented rogue",
   "health": 3,
   "temp_health": 4,
   "base_abilities": {
-    "strength": 12,
-    "dexterity": 9,
-    "constitution": 9,
-    "intelligence": 9,
-    "wisdom": 9,
-    "charisma": 9
+    "strength": 11,
+    "dexterity": 15,
+    "constitution": 10,
+    "intelligence": 10,
+    "wisdom": 10,
+    "charisma": 10
   },
   "alignment": "Chaotic Neutral",
   "inspiration": false,
@@ -20,10 +20,16 @@
     "copper": 0
   },
   "race": {
-    "Halfling": {
-      "subrace": {
-        "Stout": null
-      }
+    "VariantHuman": {
+      "abilities": [
+        "Strength",
+        "Constitution"
+      ],
+      "skill": "Athletics",
+      "feat": {
+        "Alert": null
+      },
+      "language": "Deep Speech"
     }
   },
   "classes": [
@@ -31,42 +37,43 @@
       {
         "Rogue": {
           "subclass": {
-            "UnknownRoguishArchetype": null
+            "Assassin": null
           },
           "skill_proficiencies": [
-            "Unknown",
-            "Unknown",
-            "Unknown",
-            "Unknown"
+            "Deception",
+            "Sleight of Hand",
+            "Investigation",
+            "Perception"
           ],
           "first_expertise": [
-            "Unknown",
-            "Unknown"
+            "Deception",
+            "Sleight of Hand"
           ],
           "sixth_expertise": [
-            "Unknown",
-            "Unknown"
+            "Thieves' Tools",
+            "Perception"
           ],
+          "luck": true,
           "asi_or_feat_4": "Ability Score Increase",
           "asi_choices_4": [
-            "Charisma",
-            "Charisma"
+            "Dexterity",
+            "Dexterity"
           ],
           "feat_choice_4": {
             "UnknownFeat": null
           },
           "asi_or_feat_8": "Ability Score Increase",
           "asi_choices_8": [
-            "Charisma",
-            "Charisma"
+            "Dexterity",
+            "Constitution"
           ],
           "feat_choice_8": {
             "UnknownFeat": null
           },
           "asi_or_feat_10": "Ability Score Increase",
           "asi_choices_10": [
-            "Charisma",
-            "Charisma"
+            "Dexterity",
+            "Dexterity"
           ],
           "feat_choice_10": {
             "UnknownFeat": null
@@ -79,25 +86,25 @@
           "feat_choice_12": {
             "UnknownFeat": null
           },
-          "asi_or_feat_16": "Feat",
+          "asi_or_feat_16": "Ability Score Increase",
           "asi_choices_16": [
-            "Charisma",
-            "Charisma"
+            "Strength",
+            "Constitution"
           ],
           "feat_choice_16": {
             "Alert": null
           },
-          "asi_or_feat_19": "Feat",
+          "asi_or_feat_19": "Ability Score Increase",
           "asi_choices_19": [
-            "Charisma",
-            "Charisma"
+            "Strength",
+            "Constitution"
           ],
           "feat_choice_19": {
             "Alert": null
           }
         }
       },
-      4
+      20
     ]
   ],
   "background": {
@@ -109,7 +116,7 @@
     [
       {
         "CloakOfElvenkind": {
-          "active": false
+          "active": true
         }
       },
       "Yes",

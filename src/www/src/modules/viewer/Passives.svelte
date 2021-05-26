@@ -1,5 +1,7 @@
 <script lang="ts">
     export let c;
+
+    import {render} from "../../helpers";
 </script>
 
 <div class="sheet-box uk-width-auto">
@@ -23,6 +25,6 @@
         </div>
     </div>
     {#if $c.passive_notes.length}
-        <p class="uk-margin-remove-bottom">{@html $c.passive_notes.join('<br/>')}</p>
+        <p class="uk-margin-remove-bottom">{@html $c.passive_notes.map((n) => render(n, false)).join('<br/>')}</p>
     {/if}
 </div>

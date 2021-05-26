@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::ui::Element;
+use crate::ui::{Element, Event};
 use crate::misc::*;
 use std::fmt::Debug;
 use proc_macros::FinalizeCharacter;
@@ -116,6 +116,17 @@ impl StoredCharacter {
             Ok(char.finalize())
         }
     }
+
+    pub fn event(&mut self, e: Event) {
+        self.race.event(&e);
+        for (i, (class, level)) in self.classes.iter_mut().enumerate() {
+            class.event(&e, *level, i);
+        }
+        self.background.event(&e);
+        for (item, equipped, attuned) in &mut self.inventory {
+            item.event(&e, *equipped, *attuned);
+        }
+    }
 }
 
 impl Default for StoredCharacter {
@@ -223,10 +234,10 @@ pub struct Character {
     pub class_choices: Staged<Vec<&'static str>>,
     pub background_choices: Staged<Vec<&'static str>>,
 
-    pub race_traits: Staged<Vec<Element>>,
-    pub class_features: Vec<Staged<Vec<Element>>>,
-    pub background_features: Staged<Vec<Element>>,
-    pub feats: Staged<Vec<Element>>,
+    pub race_traits: Staged<Vec<Element<'static>>>,
+    pub class_features: Vec<Staged<Vec<Element<'static>>>>,
+    pub background_features: Staged<Vec<Element<'static>>>,
+    pub feats: Staged<Vec<Element<'static>>>,
 
     // NOT EDITABLE BY YOU. YES, YOU.
 

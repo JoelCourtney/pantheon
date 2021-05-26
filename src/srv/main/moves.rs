@@ -24,7 +24,7 @@ pub enum Move {
         range: Range,
     },
     Other {
-        element: Element,
+        element: Element<'static>,
         time: MoveTime,
     }
 }

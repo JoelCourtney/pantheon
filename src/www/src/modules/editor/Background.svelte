@@ -23,10 +23,7 @@
         {/each}
     </select>
     {#if $c.background_features.length !== 0}
-        <ul uk-tab class="editor-box-nav">
-            <li><a>Features</a></li>
-            <li><a>Description</a></li>
-        </ul>
+        <br/><br/>
         <ElementList elements={$c.background_features} indices={[...$c.background_features.keys()]} container={'background'}/>
     {/if}
 </div>

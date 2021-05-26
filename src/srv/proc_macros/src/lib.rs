@@ -9,7 +9,6 @@ mod character;
 mod server;
 
 use proc_macro::TokenStream;
-use syn::token::Token;
 
 /// Generates the Registry struct and some of its methods.
 ///
@@ -142,10 +141,10 @@ pub fn asi_or_feat(input: TokenStream) -> TokenStream {
 }
 
 #[proc_macro_attribute]
-pub fn asi_or_feats(args: TokenStream, input: TokenStream) -> TokenStream {
+pub fn asi_or_feat_fields(args: TokenStream, input: TokenStream) -> TokenStream {
     let ast: syn::ItemStruct = syn::parse(input).expect("asi_or_feats must be applied to structs");
     let levels: syn::punctuated::Punctuated<syn::Expr, syn::Token![,]> = syn::parse::<syn::ExprArray>(args).expect("argument must be array of ints").elems;
-    content::asi_or_feats(levels.into_iter().map(
+    content::asi_or_feat_fields(levels.into_iter().map(
         |level| match level {
             syn::Expr::Lit(l) => match l.lit {
                 syn::Lit::Int(li) => li,

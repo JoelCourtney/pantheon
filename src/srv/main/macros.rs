@@ -7,13 +7,13 @@ macro_rules! name {
     };
     ($name:literal) => {
         #[allow(unused_imports)] use crate::character::*;
-        #[allow(unused_imports)] use crate::ui::{Element, Chooseable};
+        #[allow(unused_imports)] use crate::ui::{Element, Chooseable, Event};
         #[allow(unused_imports)] use crate::misc::*;
         #[allow(unused_imports)] use crate::moves::*;
         #[allow(unused_imports)] use crate::{properties, description, name};
         #[allow(unused_imports)] use crate::content::traits::*;
         #[allow(unused_imports)] use crate::content::common::*;
-        #[allow(unused_imports)] use proc_macros::{choose, dynamic_choose, content, i, m, f, asi_or_feat, asi_or_feats};
+        #[allow(unused_imports)] use proc_macros::{choose, dynamic_choose, content, i, m, f, asi_or_feat, asi_or_feat_fields};
         #[allow(unused_imports)] use serde::{Serialize, Deserialize};
         #[allow(unused_imports)] use std::fmt::Debug;
         #[allow(unused_imports)] use enum_iterator::IntoEnumIterator;

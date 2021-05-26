@@ -4,32 +4,32 @@ use serde::ser::SerializeStruct;
 use serde::{Serialize, Deserialize};
 
 #[derive(Debug)]
-pub enum Element {
-    Str(&'static str),
+pub enum Element<'a> {
+    Str(&'a str),
     String(String),
     Choice {
-        text: &'static str,
+        text: &'a str,
         data: *mut dyn Chooseable,
         unique: bool
     },
     Resource {
-        text: &'static str,
+        text: &'a str,
         data: *mut u32,
         max: u32
     },
     Trigger {
-        text: &'static str,
-        event: Event,
-        button: &'static str
+        text: &'a str,
+        event: Event<'a>,
+        button: &'a str
     },
     Toggle {
         text: &'static str,
         data: *mut dyn Toggleable,
-        button: Vec<&'static str>
+        button: Vec<&'a str>
     }
 }
 
-impl serde::Serialize for Element {
+impl serde::Serialize for Element<'_> {
     fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error> where
         S: Serializer {
         let mut state;
@@ -77,10 +77,10 @@ impl serde::Serialize for Element {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-pub enum Event {
+pub enum Event<'a> {
     LongRest,
     ShortRest,
-    Custom(&'static str)
+    Other(&'a str)
 }
 
 #[derive(Serialize, Clone)]

@@ -1,6 +1,6 @@
 crate::name!("Rogue");
 
-#[asi_or_feats([4, 8, 10, 12, 16, 19])]
+#[asi_or_feat_fields([4, 8, 10, 12, 16, 19])]
 #[derive(Debug, Default, Deserialize, Serialize)]
 pub struct Rogue {
     subclass: Box<dyn RoguishArchetype>,
@@ -8,6 +8,8 @@ pub struct Rogue {
     skill_proficiencies: [RogueSkill; 4],
     first_expertise: [RogueExpertiseChoice; 2],
     sixth_expertise: [RogueExpertiseChoice; 2],
+
+    luck: bool
 }
 
 #[content]
@@ -147,20 +149,151 @@ impl Class for Rogue {
                     unique: false
                 }
             }
-            self.subclass.resolve(c, level, index);
         }
 
         // LEVEL 4
 
         asi_or_feat!(4);
-        asi_or_feat!(8);
-        asi_or_feat!(10);
-        asi_or_feat!(12);
-        asi_or_feat!(16);
-        asi_or_feat!(19);
 
         // LEVEL 5
 
+        if level >= 5 {
+            i! {
+                c.moves <<= Move::Other {
+                    element: Element::Str("**Uncanny Dodge:** When an attacker that you can see hits you with an attack, you can use your reaction to halve the attack's damage against you."),
+                    time: MoveTime::Reaction
+                };
+                c.class_features[index] <<= Element::Str(
+                    "**Uncanny Dodge:** Starting at 5th level, when an attacker that you can see hits you with an attack, you can use your reaction to halve the attack's damage against you."
+                );
+            }
+        }
+
+        // LEVEL 6
+
+        if level >= 6 {
+            for expertise in &self.sixth_expertise {
+                match expertise.into() {
+                    Some(skill) => {
+                        match c.skill_proficiencies.get_mut(skill) {
+                            Some(s) => m! { *s = ProficiencyType::Double },
+                            None => {}
+                        }
+                    }
+                    None => {}
+                }
+            }
+
+            i! {
+                c.class_features[index] <<= Element::Choice {
+                    text: "**Expertise:** At 6th level, choose two more of your skill proficiencies, or one more of your skill proficiencies and your proficiency with thieves’ tools. Your proficiency bonus is doubled for any ability check you make that uses either of the chosen proficiencies.",
+                    data: &mut self.sixth_expertise,
+                    unique: true
+                };
+            }
+        }
+
+        // LEVEL 7
+
+        if level >= 7 {
+            i! {
+                c.saving_throw_notes <<= "**DEX:** hover\n\n*[hover]: When you are subjected to an effect that allows you to make a Dexterity saving throw to take only half damage, you instead take no damage if you succeed on the saving throw, and only half damage if you fail.";
+                c.class_features[index] <<= Element::Str(
+                    "**Evasion:** Beginning at 7th level, you can nimbly dodge out of the way of certain area effects, such as a red dragon's fiery breath or an Ice Storm spell. When you are subjected to an effect that allows you to make a `Dexterity saving throw` to take only half damage, you instead take no damage if you succeed on the saving throw, and only half damage if you fail."
+                )
+            }
+        }
+
+        asi_or_feat!(8);
+
+        asi_or_feat!(10);
+
+        if level >= 11 {
+            i! {
+                c.moves <<= Move::Other {
+                    element: Element::Str("**Reliable Talent:** You can treat a `d20` roll of 9 or lower as 10."),
+                    time: MoveTime::Other("when you make an `ability check` that lets you add your `proficiency bonus`")
+                };
+                c.class_features[index] <<= Element::Str(
+                    "**Reliable Talent:** By 11th level, you have refined your chosen skills until they approach perfection. Whenever you make an ability check that lets you add your proficiency bonus, you can treat a d20 roll of 9 or lower as a 10."
+                );
+            }
+        }
+        asi_or_feat!(12);
+
+        // LEVEL 14
+
+        if level >= 14 {
+            i! {
+                c.passive_notes <<= "**Blindsense:** hover\n\n*[hover]: If you are able to hear, you are aware of the location of any hidden or invisible creature within 10 feet of you.";
+                c.class_features[index] <<= Element::Str(
+                    "**Blindsense:** Starting at 14th level, if you are able to hear, you are aware of the location of any hidden or invisible creature within 10 feet of you."
+                )
+            }
+        }
+
+        // LEVEL 15
+
+        if level >= 15 {
+            i! {
+                c.save_proficiencies.wisdom = ProficiencyType::Single;
+                c.class_features[index] <<= Element::Str(
+                    "**Slippery Mind:** By 15th level, you have acquired greater mental strength. You gain proficiency in `Wisdom saving throws`."
+                );
+            }
+        }
+
+        asi_or_feat!(16);
+
+        // LEVEL 18
+
+        if level >= 18 {
+            i! {
+                c.defenses <<= "Elusive\n\n*[Elusive]: No attack roll has advantage against you while you aren't incapacitated.";
+                c.class_features[index] <<= Element::Str(
+                    "**Elusive:** Beginning at 18th level, you are so evasive that attackers rarely gain the upper hand against you. No attack roll has advantage against you while you aren't incapacitated."
+                )
+            }
+        }
+
+        asi_or_feat!(19);
+
+        // LEVEL 20
+
+        if level == 20 {
+            i! {
+                c.moves <<= Move::Other {
+                    element: if self.luck {
+                        Element::Trigger {
+                            text: "**Stroke of Luck:** You can turn an attack miss into a hit, or you can treat a failed `d20` roll as a 20. Once you use this feature, you can't use it again until you finish a short or long rest.",
+                            event: Event::Other("rogue stroke of luck"),
+                            button: "Use"
+                        }
+                    } else {
+                        Element::Str("**Stroke of Luck:** You can turn a missed attack into a hit, or you can treat a failed `d20` roll as a 20. You can't use this feature again until you finish a short or long rest.")
+                    },
+                    time: MoveTime::Other("When your attack misses a target within range, or you fail an ability check.")
+                };
+                c.class_features[index] <<= Element::Str(
+                    indoc! { r#"
+                        **Stroke of Luck:** At 20th level, you have an uncanny knack for succeeding when you need to. If your attack misses a target within range, you can turn the miss into a hit. Alternatively, if you fail an ability check, you can treat the d20 roll as a 20.
+
+                        Once you use this feature, you can't use it again until you finish a short or long rest.
+                    "# }
+                )
+            }
+        }
+
+        self.subclass.resolve(c, level, index);
+    }
+
+    fn event(&mut self, e: &Event, level: u32, index: usize) {
+        match e {
+            Event::ShortRest | Event::LongRest => self.luck = true,
+            Event::Other("rogue stroke of luck") => self.luck = false,
+            _ => {}
+        }
+        self.subclass.event(e, level, index);
     }
 
     description! {r#"

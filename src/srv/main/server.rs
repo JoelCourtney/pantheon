@@ -7,7 +7,7 @@ use serde::Deserialize;
 use rocket_contrib::serve::StaticFiles;
 use rocket::config::LoggingLevel;
 use crate::misc::Ability;
-use crate::ui::Element;
+use crate::ui::{Element, Event};
 use crate::moves::Move;
 use crate::content::Registration;
 
@@ -78,6 +78,7 @@ enum EditRequest<'a> {
         element_index: usize,
         toggle_index: usize
     },
+    Event(Event<'a>),
     Race(&'a str),
     Class {
         index: usize,
@@ -170,6 +171,9 @@ fn edit_character(data: Json<EditRequest>, state: State<SharedData>) -> content:
                 } => unsafe { (**data).toggle(toggle_index) }
                 _ => panic!("element must be a toggle")
             }
+        }
+        Event(e) => {
+            (*stored_char).event(e);
         }
         AbilityScore(a, n) => {
             match a {
