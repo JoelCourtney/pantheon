@@ -1,9 +1,13 @@
 crate::name!("Rogue");
 
+#[asi_or_feats([4, 8, 10, 12, 16, 19])]
 #[derive(Debug, Default, Deserialize, Serialize)]
 pub struct Rogue {
-    skill_proficiencies: [RogueSkill; 4],
     subclass: Box<dyn RoguishArchetype>,
+
+    skill_proficiencies: [RogueSkill; 4],
+    first_expertise: [RogueExpertiseChoice; 2],
+    sixth_expertise: [RogueExpertiseChoice; 2],
 }
 
 #[content]
@@ -13,6 +17,16 @@ impl Class for Rogue {
     }
 
     fn resolve(&mut self, c: &mut Character, level: u32, index: usize) {
+
+        // LEVEL 1
+
+        let diebs_tools_proficiency = if self.first_expertise.contains(&RogueExpertiseChoice::DiebsTools)
+            || self.sixth_expertise.contains(&RogueExpertiseChoice::DiebsTools) {
+            ProficiencyType::Double
+        } else {
+            ProficiencyType::Single
+        };
+
         i! {
             c.armor_proficiencies <<= "Light Armor";
             c.weapon_proficiencies >>= vec! [
@@ -22,30 +36,108 @@ impl Class for Rogue {
                 "Rapiers",
                 "Shortswords"
             ];
-            c.tool_proficiencies <<= ("Diebs' Tools", ProficiencyType::Single);
+            c.tool_proficiencies <<= ("Thieves' Tools", diebs_tools_proficiency);
             c.save_proficiencies.dexterity = ProficiencyType::Single;
             c.save_proficiencies.intelligence = ProficiencyType::Single;
         }
 
         for skill in &self.skill_proficiencies {
             match c.skill_proficiencies.get_mut(skill.into()) {
-                Some(s) => {
-                    i!{ *s = ProficiencyType::Single }
+                Some(s) => i!{ *s = ProficiencyType::Single },
+                None => {}
+            }
+        }
+
+        for expertise in &self.first_expertise {
+            match expertise.into() {
+                Some(skill) => {
+                    match c.skill_proficiencies.get_mut(skill) {
+                        Some(s) => m! { *s = ProficiencyType::Double },
+                        None => {}
+                    }
                 }
                 None => {}
             }
         }
 
+        let sneak_dice = (level + 1) / 2;
         i! {
-            c.class_features[index] <<= Element::Text(
-                indoc! { r#"
-                    **Hit Points:**
-                    - *Hit Dice:* 1d8 per rogue level
-                    - *Hit Points at 1st Level:* 8 + your Constitution modifier
-                    - *Hit Points at Higher Levels:* 1d8 (or 5) + your Constitution modifier per rogue level after 1st
-                "# }
-            )
+            c.moves <<= Move::Other {
+                element: Element::String(format!("**Sneak Attack:** You can deal an extra `{}d6` damage to one creature you hit with a `ranged` or `finesse` attack if you have `advantage` on the attack roll. You don’t need `advantage` on the attack roll if another enemy of the target is within `5 ft` of it, that enemy isn’t `incapacitated`, and you don’t have `disadvantage` on the attack roll.", sneak_dice)),
+                time: MoveTime::Other("Once per turn, during an attack")
+            }
         }
+
+        i! {
+            c.class_features[index] >>= vec! [
+                Element::Str(
+                    indoc! { r#"
+                        **Hit Points:**
+                        - *Hit Dice:* 1d8 per rogue level
+                        - *Hit Points at 1st Level:* 8 + your Constitution modifier
+                        - *Hit Points at Higher Levels:* 1d8 (or 5) + your Constitution modifier per rogue level after 1st
+                    "# }
+                ),
+                Element::Choice {
+                    text: indoc! { r#"
+                        **Proficiencies:**
+                        - *Armor:* Light armor
+                        - *Weapons:* Simple weapons, hand crossbows, longswords, rapiers, shortswords
+                        - *Tools:* Thieves’ tools
+                        - *Saving Throws:* Dexterity, Intelligence
+                        - *Skills:* Choose four from Acrobatics, Athletics, Deception, Insight, Intimidation, Investigation, Perception, Performance, Persuasion, Sleight of Hand, and Stealth
+                    "# },
+                    data: &mut self.skill_proficiencies,
+                    unique: true
+                },
+                Element::Str(
+                    indoc! { r#"
+                        **Equipment:** You start with the following equipment, in addition to the equipment granted by your background:
+                        - (a) a rapier or (b) a shortsword
+                        - (a) a shortbow and quiver of 20 arrows or (b) a shortsword
+                        - (a) a burglar’s pack, (b) a dungeoneer’s pack, or (c) an explorer’s pack
+                        - Leather armor, two daggers, and thieves’ tools
+                    "#}
+                ),
+                Element::Choice {
+                    text: "**Expertise:** At 1st level, choose two of your skill proficiencies, or one of your skill proficiencies and your proficiency with thieves’ tools. Your proficiency bonus is doubled for any ability check you make that uses either of the chosen proficiencies.",
+                    data: &mut self.first_expertise,
+                    unique: true
+                },
+                Element::Str(
+                    indoc! { r#"
+                        **Sneak Attack:** Beginning at 1st level, you know how to strike subtly and exploit a foe’s distraction. Once per turn, you can deal an extra `1d6` damage to one creature you hit with an attack if you have `advantage` on the attack roll. The attack must use a `finesse` or a `ranged` weapon.
+
+                        You don’t need `advantage` on the attack roll if another enemy of the target is within `5 feet` of it, that enemy isn’t `incapacitated`, and you don’t have `disadvantage` on the attack roll.
+
+                        The amount of the extra damage increases as you gain levels in this class, as shown in the Sneak Attack column of the Rogue table.
+                    "#}
+                ),
+                Element::Str(
+                    indoc! {r#"
+                        **Thieves' Cant**: During your rogue training you learned thieves' cant, a secret mix of dialect, jargon, and code that allows you to hide messages in seemingly normal conversation. Only another creature that knows thieves' cant understands such messages. It takes four times longer to convey such a message than it does to speak the same idea plainly.
+
+                        In addition, you understand a set of secret signs and symbols used to convey short, simple messages, such as whether an area is dangerous or the territory of a thieves' guild, whether loot is nearby, or whether the people in an area are easy marks or will provide a safe house for thieves on the run.
+                    "# }
+                )
+            ];
+        }
+
+        // LEVEL 2
+
+        if level >= 2 {
+            i! {
+                c.moves <<= Move::Other {
+                    element: Element::Str("**Cunning Action:** `Dash`, `Disengage`, or `Hide`."),
+                    time: MoveTime::BonusAction
+                };
+                c.class_features[index] <<= Element::Str(
+                    "**Cunning Action:** Starting at 2nd level, your quick thinking and agility allow you to move and act quickly. You can take a bonus action on each of your turns in combat. This action can be used only to take the `Dash`, `Disengage`, or `Hide` action."
+                );
+            }
+        }
+
+        // LEVEL 3
 
         if level >= 3 {
             i! {
@@ -55,9 +147,20 @@ impl Class for Rogue {
                     unique: false
                 }
             }
+            self.subclass.resolve(c, level, index);
         }
 
-        self.subclass.resolve(c, level, index);
+        // LEVEL 4
+
+        asi_or_feat!(4);
+        asi_or_feat!(8);
+        asi_or_feat!(10);
+        asi_or_feat!(12);
+        asi_or_feat!(16);
+        asi_or_feat!(19);
+
+        // LEVEL 5
+
     }
 
     description! {r#"
@@ -95,7 +198,7 @@ impl Class for Rogue {
 
         ## The Rogue Table
 
-        | Level | Proficiency<br>Bonus | Sneak<br>Attack | Features                   |
+        | Level | Proficiency Bonus | Sneak Attack | Features                   |
         | ----- | -------------------- | --------------- | -------------------------------------- |
         | 1st   | +2             | 1d6         | Expertise, Sneak Attack, Thieves’ Cant |
         | 2nd   | +2             | 1d6         | Cunning Action               |
@@ -246,6 +349,57 @@ impl From<&RogueSkill> for Skill {
             RogueSkill::SleightOfHand => Skill::SleightOfHand,
             RogueSkill::Stealth => Skill::Stealth,
             RogueSkill::Unknown => Skill::Unknown
+        }
+    }
+}
+
+#[choose]
+pub enum RogueExpertiseChoice {
+    Acrobatics,
+    AnimalHandling = "Animal Handling",
+    Arcana,
+    Athletics,
+    Deception,
+    History,
+    Insight,
+    Intimidation,
+    Investigation,
+    Medicine,
+    Nature,
+    Perception,
+    Performance,
+    Persuasion,
+    Religion,
+    SleightOfHand = "Sleight of Hand",
+    Stealth,
+    Survival,
+    DiebsTools = "Thieves' Tools",
+    Unknown
+}
+
+impl From<&RogueExpertiseChoice> for Option<Skill> {
+    fn from(e: &RogueExpertiseChoice) -> Self {
+        match e {
+            RogueExpertiseChoice::Acrobatics => Some(Skill::Acrobatics),
+            RogueExpertiseChoice::AnimalHandling => Some(Skill::AnimalHandling),
+            RogueExpertiseChoice::Arcana => Some(Skill::Arcana),
+            RogueExpertiseChoice::Athletics => Some(Skill::Athletics),
+            RogueExpertiseChoice::Deception => Some(Skill::Deception),
+            RogueExpertiseChoice::History => Some(Skill::History),
+            RogueExpertiseChoice::Insight => Some(Skill::Insight),
+            RogueExpertiseChoice::Intimidation => Some(Skill::Intimidation),
+            RogueExpertiseChoice::Investigation => Some(Skill::Investigation),
+            RogueExpertiseChoice::Medicine => Some(Skill::Medicine),
+            RogueExpertiseChoice::Nature => Some(Skill::Nature),
+            RogueExpertiseChoice::Perception => Some(Skill::Perception),
+            RogueExpertiseChoice::Performance => Some(Skill::Performance),
+            RogueExpertiseChoice::Persuasion => Some(Skill::Persuasion),
+            RogueExpertiseChoice::Religion => Some(Skill::Religion),
+            RogueExpertiseChoice::SleightOfHand => Some(Skill::SleightOfHand),
+            RogueExpertiseChoice::Stealth => Some(Skill::Stealth),
+            RogueExpertiseChoice::Survival => Some(Skill::Survival),
+            RogueExpertiseChoice::DiebsTools => None,
+            RogueExpertiseChoice::Unknown => Some(Skill::Unknown),
         }
     }
 }

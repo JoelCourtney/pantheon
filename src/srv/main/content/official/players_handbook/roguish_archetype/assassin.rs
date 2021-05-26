@@ -12,7 +12,7 @@ impl RoguishArchetype for Assassin {
     fn resolve(&mut self, c: &mut Character, level: u32, index: usize) {
         if level >= 3 {
             i! {
-                c.class_features[index] <<= Element::Text (
+                c.class_features[index] <<= Element::Str (
                    "**[Assassin] Bonus Proficiencies:** When you choose this archetype at 3rd level, you gain proficiency with the disguise kit and poisoner's kit.",
                 )
             }

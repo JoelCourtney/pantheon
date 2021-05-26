@@ -5,7 +5,8 @@ use serde::{Serialize, Deserialize};
 
 #[derive(Debug)]
 pub enum Element {
-    Text(&'static str),
+    Str(&'static str),
+    String(String),
     Choice {
         text: &'static str,
         data: *mut dyn Chooseable,
@@ -33,7 +34,12 @@ impl serde::Serialize for Element {
         S: Serializer {
         let mut state;
         match self {
-            Element::Text(text) => {
+            Element::Str(text) => {
+                state = serializer.serialize_struct("Element", 2)?;
+                state.serialize_field("type", "text")?;
+                state.serialize_field("text", text)?;
+            }
+            Element::String(text) => {
                 state = serializer.serialize_struct("Element", 2)?;
                 state.serialize_field("type", "text")?;
                 state.serialize_field("text", text)?;

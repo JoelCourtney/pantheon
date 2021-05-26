@@ -30,18 +30,74 @@
     [
       {
         "Rogue": {
-          "skill_proficiencies": [
-            "Deception",
-            "Intimidation",
-            "Stealth",
-            "Persuasion"
-          ],
           "subclass": {
-            "Assassin": null
+            "UnknownRoguishArchetype": null
+          },
+          "skill_proficiencies": [
+            "Unknown",
+            "Unknown",
+            "Unknown",
+            "Unknown"
+          ],
+          "first_expertise": [
+            "Unknown",
+            "Unknown"
+          ],
+          "sixth_expertise": [
+            "Unknown",
+            "Unknown"
+          ],
+          "asi_or_feat_4": "Ability Score Increase",
+          "asi_choices_4": [
+            "Charisma",
+            "Charisma"
+          ],
+          "feat_choice_4": {
+            "UnknownFeat": null
+          },
+          "asi_or_feat_8": "Ability Score Increase",
+          "asi_choices_8": [
+            "Charisma",
+            "Charisma"
+          ],
+          "feat_choice_8": {
+            "UnknownFeat": null
+          },
+          "asi_or_feat_10": "Ability Score Increase",
+          "asi_choices_10": [
+            "Charisma",
+            "Charisma"
+          ],
+          "feat_choice_10": {
+            "UnknownFeat": null
+          },
+          "asi_or_feat_12": "Ability Score Increase",
+          "asi_choices_12": [
+            "Charisma",
+            "Charisma"
+          ],
+          "feat_choice_12": {
+            "UnknownFeat": null
+          },
+          "asi_or_feat_16": "Feat",
+          "asi_choices_16": [
+            "Charisma",
+            "Charisma"
+          ],
+          "feat_choice_16": {
+            "Alert": null
+          },
+          "asi_or_feat_19": "Feat",
+          "asi_choices_19": [
+            "Charisma",
+            "Charisma"
+          ],
+          "feat_choice_19": {
+            "Alert": null
           }
         }
       },
-      7
+      4
     ]
   ],
   "background": {

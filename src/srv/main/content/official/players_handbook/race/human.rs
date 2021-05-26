@@ -28,19 +28,19 @@ impl Race for Human {
 
         i! {
             c.race_traits >>= vec! [
-                Element::Text (
+                Element::Str (
                     "**Ability Score Increase:** Your ability scores each increase by `1`.",
                 ),
-                Element::Text (
+                Element::Str (
                     "**Alignment:** Humans tend toward no particular alignment. The best and the worst are found among them.",
                 ),
-                Element::Text (
+                Element::Str (
                     "**Age:** Humans reach adulthood in their late teens and live less than a century.",
                 ),
-                Element::Text (
+                Element::Str (
                     "**Size:** Humans vary widely in height and build, from barely `5 feet` to well over `6 feet` tall. Regardless of your position in that range, your size is `Medium`.",
                 ),
-                Element::Text (
+                Element::Str (
                     "**Speed:** Your base walking speed is `30 feet`.",
                 ),
                 Element::Choice {

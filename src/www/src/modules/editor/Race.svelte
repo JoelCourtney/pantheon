@@ -25,10 +25,11 @@
         {/each}
     </select>
     {#if $c.race_traits.length !== 0}
-        <ul uk-tab class="editor-box-nav">
-            <li><a>Traits</a></li>
-            <li><a>Description</a></li>
-        </ul>
+<!--        <ul uk-tab class="editor-box-nav">-->
+<!--            <li><a>Traits</a></li>-->
+<!--            <li><a>Description</a></li>-->
+<!--        </ul>-->
+        <br/><br/>
         <ElementList elements={$c.race_traits} indices={[...$c.race_traits.keys()]} container={'race'}/>
     {/if}
 </div>

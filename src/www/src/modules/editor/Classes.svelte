@@ -43,10 +43,11 @@
                 }
             })}}
         />
-        <ul uk-tab class="editor-box-nav">
-            <li><a>Traits</a></li>
-            <li><a>Description</a></li>
-        </ul>
+<!--        <ul uk-tab class="editor-box-nav">-->
+<!--            <li><a>Traits</a></li>-->
+<!--            <li><a>Description</a></li>-->
+<!--        </ul>-->
+        <br/><br/>
         <ElementList elements={$c.class_features[i]} indices={[...$c.class_features[i].keys()]} container={{'class': i}} />
     {/each}
     <select class="uk-select" on:change={

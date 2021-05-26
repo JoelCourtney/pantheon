@@ -124,7 +124,13 @@ fn edit_character(data: Json<EditRequest>, state: State<SharedData>) -> content:
             }
         }
         Level { index, level } => {
-            (*stored_char).classes[index].1 = level;
+            if level == 0 {
+                (*stored_char).classes.remove(index);
+            } else if level > 20 {
+                panic!("levels can't go above 20");
+            } else {
+                (*stored_char).classes[index].1 = level;
+            }
         }
         Background(b) => (*stored_char).background = crate::content::background(b).unwrap(),
         Choice {

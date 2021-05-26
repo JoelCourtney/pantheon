@@ -7,7 +7,9 @@ import "/scripts/remarkable.min.js";
 // @ts-ignore
 const md = new Remarkable();
 export function render(text: string): string {
-    return md.render(text);
+    let result: string = md.render(text);
+    result = result.replace('<table>', '<table class="uk-table uk-table-small uk-divider">');
+    return result;
 }
 
 export class Registration {

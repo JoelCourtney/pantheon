@@ -13,11 +13,11 @@ impl HalflingSubrace for Stout {
         m! { c.abilities.constitution += 1 }
         i! {
             c.race_traits >>= vec![
-                Element::Text (
-                    "**[Stout] Ability Score Increase:** Your Constitution score increases by 1.",
+                Element::Str (
+                    "**[Stout] Ability Score Increase:** Your `Constitution` score increases by 1.",
                 ),
-                Element::Text (
-                    "**[Stout] Stout Resilience:** You have advantage on saving throws against poison, and you have resistance against poison damage.",
+                Element::Str (
+                    "**[Stout] Stout Resilience:** You have `advantage` on saving throws against poison, and you have `resistance` against poison damage.",
                 )
             ];
         }

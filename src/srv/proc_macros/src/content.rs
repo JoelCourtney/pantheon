@@ -1,9 +1,11 @@
 use proc_macro::TokenStream;
 use proc_macro2::TokenStream as TokenStream2;
 use quote::{quote, format_ident, ToTokens};
-use syn::Token;
+use syn::{Token, Fields, Field};
 use syn::parse::Parser;
 use std::sync::atomic::{AtomicU64, Ordering};
+use syn::Type::Verbatim;
+use std::iter::FromIterator;
 
 pub(crate) fn content(ast: syn::ItemImpl) -> TokenStream {
     let clone = ast.clone();
@@ -159,4 +161,97 @@ fn expand_carriers(stream: TokenStream2) -> TokenStream2 {
         }
     ).collect();
     return res
+}
+
+pub fn asi_or_feat(level: u32) -> TokenStream {
+    let asi_or_feat_ident = format_ident!("asi_or_feat_{}", level);
+    let asi_choices_ident = format_ident!("asi_choices_{}", level);
+    let feat_choice_ident = format_ident!("feat_choice_{}", level);
+    (quote! {
+        if level >= #level {
+            i! {
+                c.class_features[index] <<= Element::Choice {
+                    text: "**ASI or Feat:** You can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1, or you can take a Feat. As normal, you can't increase an ability score above 20 using this feature.",
+                    data: &mut self.#asi_or_feat_ident,
+                    unique: false
+                };
+            }
+            match self.#asi_or_feat_ident {
+                ASIOrFeat::ASI => {
+                    let mut i = 0;
+                    for ability in &self.#asi_choices_ident {
+                        match c.abilities.get_mut(*ability) {
+                            Some(a) => m!{ i; *a += 1 },
+                            None => {}
+                        }
+                        i += 1;
+                    }
+                    i! {
+                        c.class_features[index] <<= Element::Choice {
+                            text: "**Ability Score Increase:** Choose two ability scores to increase.",
+                            data: &mut self.#asi_choices_ident,
+                            unique: false
+                        }
+                    }
+                }
+                ASIOrFeat::Feat => {
+                    self.#feat_choice_ident.resolve(c);
+                    i! {
+                        c.class_features[index] <<= Element::Choice {
+                            text: "**Feat:** Choose a feat.",
+                            data: &mut self.#feat_choice_ident,
+                            unique: false
+                        }
+                    }
+                }
+                ASIOrFeat::Unknown => {}
+            }
+        }
+    }).into()
+}
+
+pub fn asi_or_feats(levels: Vec<u32>, mut ast: syn::ItemStruct) -> TokenStream {
+    let new_fields: Vec<Field> = levels.into_iter().flat_map(
+        |level| vec! [
+            Field {
+                attrs: vec![],
+                vis: syn::Visibility::Inherited,
+                ident: Some(format_ident!("asi_or_feat_{}", level)),
+                // colon_token: Some(Token!(:)),
+                colon_token: None,
+                ty: Verbatim(quote! {ASIOrFeat})
+            },
+            Field {
+                attrs: vec![],
+                vis: syn::Visibility::Inherited,
+                ident: Some(format_ident!("asi_choices_{}", level)),
+                // colon_token: Some(Token!(:)),
+                colon_token: None,
+                ty: Verbatim(quote! {[Ability; 2]})
+            },
+            Field {
+                attrs: vec![],
+                vis: syn::Visibility::Inherited,
+                ident: Some(format_ident!("feat_choice_{}", level)),
+                // colon_token: Some(Token!(:)),
+                colon_token: None,
+                ty: Verbatim(quote! {Box<dyn Feat>})
+            }
+        ]
+    ).collect();
+    match &mut ast.fields {
+        Fields::Named(fields) => {
+            fields.named.extend(new_fields);
+        }
+        Fields::Unnamed(_) => panic!("asi_or_feats only supports named fields"),
+        u@Fields::Unit => {
+            *u = Fields::Named(syn::FieldsNamed {
+                brace_token: Default::default(),
+                named: syn::punctuated::Punctuated::<Field, syn::Token![,]>::from_iter(new_fields)
+            })
+        }
+    }
+    (quote! {
+        #ast
+    }).into()
 }

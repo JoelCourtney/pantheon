@@ -423,3 +423,10 @@ pub enum GamingSet {
     ThreeDragonAnteSet = "Three-Dragon Ante Set",
     Unknown
 }
+
+#[choose]
+pub enum ASIOrFeat {
+    ASI = "Ability Score Increase",
+    Feat,
+    Unknown
+}

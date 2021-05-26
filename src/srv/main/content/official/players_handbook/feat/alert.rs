@@ -8,7 +8,7 @@ impl Feat for Alert {
     fn resolve(&mut self, c: &mut Character) {
         m! { c.initiative += 5 }
         i! {
-            c.feats <<= Element::Text (
+            c.feats <<= Element::Str (
                 indoc! { "
                     **Alert:** Always on the lookout for danger, you gain the following benefits:
 
