@@ -3,4 +3,5 @@ crate::register! {
     halfling
     human
     variant_human
+    dwarf
 }

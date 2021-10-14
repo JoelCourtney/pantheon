@@ -22,14 +22,14 @@
   "race": {
     "VariantHuman": {
       "abilities": [
-        "Strength",
-        "Constitution"
+        "Unknown",
+        "Unknown"
       ],
-      "skill": "Athletics",
+      "skill": "Unknown",
       "feat": {
-        "Alert": null
+        "UnknownFeat": null
       },
-      "language": "Deep Speech"
+      "language": "Unknown"
     }
   },
   "classes": [

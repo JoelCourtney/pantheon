@@ -115,3 +115,13 @@ pub trait EldritchInvocation: Debug {
     fn resolve(&mut self, _c: &mut Character, _level: u32, _index: usize) {}
     fn event(&mut self, _e: &Event, _level: u32, _index: usize) {}
 }
+
+#[dynamic_choose]
+pub trait DwarfSubrace: Debug {
+    fn name(&self) -> &'static str;
+    fn description(&self) -> &'static str;
+    fn description_no_title(&self) -> &'static str;
+
+    fn resolve(&mut self, _c: &mut Character) {}
+    fn event(&mut self, _e: &Event) {}
+}

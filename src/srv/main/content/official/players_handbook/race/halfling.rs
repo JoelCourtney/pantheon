@@ -12,7 +12,7 @@ impl Race for Halfling {
             c.size = CreatureSize::Small;
             c.speeds.walk = 25;
             c.saving_throw_notes <<= "**ADV** against frightened";
-            c.languages <<= Language::Common;
+            c.languages >>= vec![Language::Common, Language::Halfling];
         }
 
         m! { c.abilities.dexterity += 2 }

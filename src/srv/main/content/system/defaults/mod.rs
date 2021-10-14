@@ -5,6 +5,7 @@ crate::register! {
     eldritch_invocation
     feat
     halfling_subrace
+    dwarf_subrace
     item
     race
     roguish_archetype
