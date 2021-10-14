@@ -53,7 +53,7 @@ async function sendRequest(path: string, data: any) {
         const url = `http://${location}:${port}${path}`;
         const fetchResponse = await fetch(url, settings);
         return await fetchResponse.json();
-    } catch (e) {
+    } catch (e: any) {
         return {error: e.toString()};
     }
 }
