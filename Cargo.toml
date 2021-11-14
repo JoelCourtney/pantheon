@@ -2,23 +2,23 @@
 name = "dndcent"
 version = "0.1.0"
 authors = ["Joel Courtney <joel.e.courtney@gmail.com>"]
-edition = "2018"
+edition = "2021"
 
 [profile.dev]
 split-debuginfo = "packed"
 
 [dependencies]
-serde = { version = "1.0.122", features = ["derive"] }
-serde_json = "1.0.59"
-typetag = "0.1.6"
-indoc = "1.0"
+serde = { version = "1.0.130", features = ["derive"] }
+serde_json = "1.0.70"
+typetag = "0.1.8"
+indoc = "1.0.3"
 maplit = "1.0.2"
 lazy_static = "1.4.0"
-rocket = "0.4.6"
-rocket_contrib = { version = "0.4.6", default-features = false, features = ["json", "serve"] }
+rocket = "0.4.10"
+rocket_contrib = { version = "0.4.10", default-features = false, features = ["json", "serve"] }
 base64 = "0.13.0"
-rand = "0.8.2"
-enum-iterator = "0.6.0"
+rand = "0.8.4"
+enum-iterator = "0.7.0"
 colored = "2.0.0"
 
 proc_macros = { path = "src/srv/proc_macros" }

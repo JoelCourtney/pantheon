@@ -4,4 +4,5 @@ crate::register! {
     human
     variant_human
     dwarf
+    dragonborn
 }
