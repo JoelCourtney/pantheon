@@ -41,3 +41,6 @@ Rocket.toml
 
 # all new .json files
 *.json
+
+# Trunk
+dist/

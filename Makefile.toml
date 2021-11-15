@@ -1,0 +1,17 @@
+[tasks.clean]
+dependencies = [
+    { name = "clean", path = "client" },
+    { name = "clean", path = "server" },
+]
+
+[tasks.format]
+dependencies = [
+    { name = "format", path = "client" },
+    { name = "format", path = "server" },
+]
+
+[tasks.build]
+dependencies = [
+    { name = "build", path = "client" },
+    { name = "build", path = "server" },
+]
