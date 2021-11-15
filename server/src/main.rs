@@ -1,7 +1,35 @@
 use actix_web::dev::BodyEncoding;
 use actix_web::http::ContentEncoding;
 use actix_web::{get, middleware, web, App, HttpResponse, HttpServer};
-use std::path::Path;
+use std::path::{Path, PathBuf};
+use structopt::StructOpt;
+
+#[actix_web::main]
+async fn main() -> std::io::Result<()> {
+    let opt = Opt::from_args();
+    HttpServer::new(|| {
+        App::new()
+            .wrap(middleware::Compress::new(ContentEncoding::Br))
+            .service(serve_root)
+            .service(serve_static_files)
+    })
+    .bind(format!("127.0.0.1:{}", opt.port))?
+    .run()
+    .await
+}
+
+/// Server for DnDCent.
+#[derive(StructOpt, Debug)]
+#[structopt(name = "dndcent")]
+struct Opt {
+    /// Path prefix to serve characters from (optional).
+    #[structopt(short, long, parse(from_os_str))]
+    prefix: Option<PathBuf>,
+
+    /// Port to host site on.
+    #[structopt(short, long, default_value = "8080")]
+    port: u32,
+}
 
 #[get("/")]
 async fn serve_root() -> HttpResponse {
@@ -22,17 +50,4 @@ async fn serve_static_files(web::Path(file): web::Path<String>) -> HttpResponse 
         )
         .encoding(ContentEncoding::Auto)
         .body(bytes)
-}
-
-#[actix_web::main]
-async fn main() -> std::io::Result<()> {
-    HttpServer::new(|| {
-        App::new()
-            .wrap(middleware::Compress::new(ContentEncoding::Br))
-            .service(serve_root)
-            .service(serve_static_files)
-    })
-    .bind("127.0.0.1:8080")?
-    .run()
-    .await
 }
