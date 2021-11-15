@@ -1,6 +1,7 @@
 [workspace]
 
 members = [
+    "macros",
     "client",
-    "server",
+    "server"
 ]

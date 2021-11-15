@@ -9,5 +9,5 @@ args = ["fmt", "--", "--emit=files"]
 
 [tasks.build]
 command = "cargo"
-args = ["build"]
+args = ["build", "--release"]
 dependencies = ["format"]

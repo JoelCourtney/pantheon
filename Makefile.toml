@@ -1,17 +1,23 @@
+[config]
+default_to_workspace = false
+
+[env]
+RUST_BACKTRACE = 0
+
 [tasks.clean]
 dependencies = [
-    { name = "clean", path = "client" },
-    { name = "clean", path = "server" },
-]
-
-[tasks.format]
-dependencies = [
-    { name = "format", path = "client" },
-    { name = "format", path = "server" },
+    { name = "clean", path = "client" }
 ]
 
 [tasks.build]
+clear = true
 dependencies = [
+    "format",
     { name = "build", path = "client" },
     { name = "build", path = "server" },
 ]
+
+[tasks.run]
+clear = true
+dependencies = ["build"]
+command = "target/release/dndcent"

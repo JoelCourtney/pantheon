@@ -13,3 +13,5 @@ install_crate = "trunk"
 command = "trunk"
 args = ["build"]
 dependencies = ["format"]
+
+[tasks.run]
