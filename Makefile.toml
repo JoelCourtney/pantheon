@@ -28,6 +28,8 @@ dependencies = ["default"]
 command = "target/debug/dndcent"
 
 [tasks.install]
-dependencies = ["release"]
+dependencies = [
+    { name = "build_release", path = "client" }
+]
 command = "cargo"
 args = ["install", "--path", "server"]
