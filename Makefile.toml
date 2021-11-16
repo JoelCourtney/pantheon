@@ -26,3 +26,8 @@ dependencies = [
 clear = true
 dependencies = ["default"]
 command = "target/debug/dndcent"
+
+[tasks.install]
+dependencies = ["release"]
+command = "cargo"
+args = ["install", "--path", "server"]
