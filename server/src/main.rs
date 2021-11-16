@@ -4,15 +4,17 @@ use actix_web::http::header::ContentType;
 use actix_web::http::ContentEncoding;
 use actix_web::{get, middleware, post, web, App, HttpResponse, HttpServer};
 use std::path::{Path, PathBuf};
+use colored::Colorize;
 use structopt::StructOpt;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     let opt = Opt::from_args();
-    let prefix = match opt.prefix {
+    let prefix = match opt.dir {
         Some(path) => path,
         None => std::env::current_dir()?,
     };
+    println!("Serving {} on {}{}", prefix.as_path().to_str().unwrap().green(), "http://localhost:".green(), opt.port.to_string().green());
     HttpServer::new(move || {
         App::new()
             .data(prefix.clone())
@@ -34,7 +36,7 @@ async fn main() -> std::io::Result<()> {
 struct Opt {
     /// Path prefix to serve characters from (optional).
     #[structopt(short, long, parse(from_os_str))]
-    prefix: Option<PathBuf>,
+    dir: Option<PathBuf>,
 
     /// Port to host site on.
     #[structopt(short, long, default_value = "8080")]

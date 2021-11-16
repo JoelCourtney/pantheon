@@ -25,4 +25,4 @@ dependencies = [
 [tasks.run]
 clear = true
 dependencies = ["default"]
-command = "target/release/dndcent"
+command = "target/debug/dndcent"
