@@ -7,6 +7,18 @@
 <!--    <link data-trunk rel="css" href="public/index.css" />-->
     <base data-trunk-public-url />
     <link rel="icon" href="/icon.png" />
+
+    <script>
+        function query(path, args) {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                console.log(this.responseText);
+            }
+            xhttp.open("POST", path);
+            xhttp.setRequestHeader("Content-type", "text/plain");
+            xhttp.send(args);
+        }
+    </script>
 </head>
 
 <body>

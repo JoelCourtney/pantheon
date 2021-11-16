@@ -12,3 +12,5 @@ actix-web = "3"
 macros = { path = "../macros", features = ["server"]}
 mime_guess = "*"
 structopt = "0.3"
+walkdir = "2"
+bincode = "1.3"
