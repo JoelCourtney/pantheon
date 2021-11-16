@@ -17,7 +17,7 @@ async fn main() -> std::io::Result<()> {
     println!("Serving {} on {}{}", prefix.as_path().to_str().unwrap().green(), "http://localhost:".green(), opt.port.to_string().green());
     HttpServer::new(move || {
         App::new()
-            .data(prefix.clone())
+            .app_data(prefix.clone())
             .wrap(middleware::Compress::new(ContentEncoding::Br))
             .service(serve_root)
             .service(serve_static_files)
@@ -51,11 +51,11 @@ async fn serve_root() -> HttpResponse {
 }
 
 #[get("/{file}")]
-async fn serve_static_files(web::Path(file): web::Path<String>) -> HttpResponse {
+async fn serve_static_files(file: web::Path<String>) -> HttpResponse {
     let bytes = macros::match_raw_files!(["../..", "file", "client/dist", "client/public"]);
     HttpResponse::Ok()
         .content_type(
-            mime_guess::from_path(Path::new(&file))
+            mime_guess::from_path(Path::new(&file.into_inner()))
                 .first()
                 .unwrap()
                 .essence_str(),
@@ -74,11 +74,11 @@ async fn list_characters(prefix: web::Data<PathBuf>) -> HttpResponse {
 
 #[post("/read/{base_path:.+}")]
 async fn read_character(
-    web::Path(base_path): web::Path<PathBuf>,
+    base_path: web::Path<PathBuf>,
     prefix: web::Data<PathBuf>,
 ) -> std::io::Result<HttpResponse> {
     let mut path = prefix.to_path_buf();
-    path.push(base_path);
+    path.push(base_path.into_inner());
     let bytes = std::fs::read(path)?;
     Ok(HttpResponse::Ok()
         .content_type(ContentType::octet_stream().essence_str())
@@ -87,12 +87,12 @@ async fn read_character(
 
 #[post("/write/{base_path:.+}")]
 async fn write_character(
-    web::Path(base_path): web::Path<PathBuf>,
+    base_path: web::Path<PathBuf>,
     prefix: web::Data<PathBuf>,
     bytes: web::Bytes,
 ) -> std::io::Result<HttpResponse> {
     let mut path = prefix.to_path_buf();
-    path.push(base_path);
+    path.push(base_path.into_inner());
 
     std::fs::write(path, bytes)?;
 

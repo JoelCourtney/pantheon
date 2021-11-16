@@ -1,12 +1,13 @@
+mod character;
+
 use seed::{*, prelude::*};
+use character::StoredCharacter;
 
 struct Model {
-    character: Option<Character>,
+    character: Option<StoredCharacter>,
     content: Option<u32>,
     page: Page
 }
-
-enum Character{}
 
 #[derive(Debug)]
 enum Page {
@@ -22,6 +23,15 @@ enum Msg {
 }
 
 fn init(_: Url, _: &mut impl Orders<Msg>) -> Model {
+    // tokio::runtime::Builder::new_current_thread()
+    //     .enable_all()
+    //     .build()
+    //     .unwrap()
+    //     .block_on(async {
+    //         let greeter = tokio::spawn(greet());
+    //         let _ = tokio::join!(greeter);
+    //     });
+    character::try_it();
     Model {
         character: None,
         content: None,
@@ -49,6 +59,10 @@ fn view(model: &Model) -> impl IntoNodes<Msg> {
         ],
     ]
 }
+
+// async fn greet() {
+//     log!("hello world");
+// }
 
 fn main() {
     App::start("app", init, update, view);

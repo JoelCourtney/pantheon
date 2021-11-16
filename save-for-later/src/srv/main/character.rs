@@ -11,35 +11,6 @@ use std::collections::{HashMap};
 use maplit::hashmap;
 use crate::moves::*;
 
-/// Version of the Character struct that is stored as a json file for saving.
-///
-/// It contains the minimal amount of information to completely reconstruct the character.
-/// Much of the information is stored in the content structs (like races, classes, etc),
-/// and the content-creator should also try to be as minimal as possible. (de)Serialization
-/// of the nested content information is handled automatically by Serde and Typetag.
-#[derive(Debug, Deserialize, Serialize)]
-pub struct StoredCharacter {
-    pub(crate) name: String,
-
-    pub(crate) health: u32,
-    pub(crate) temp_health: u32,
-
-    pub(crate) base_abilities: AbilityMap<u32>,
-
-    alignment: Alignment,
-
-    inspiration: bool,
-
-    money: MoneyTypeMap<u32>,
-
-    pub(crate) race: Box<dyn Race>,
-    pub(crate) classes: Vec<(Box<dyn Class>, u32)>,
-    pub(crate) background: Box<dyn Background>,
-
-    inventory: Vec<(Box<dyn Item>, Equipped, bool)>,
-
-    pub(crate) description: String
-}
 
 impl StoredCharacter {
     pub fn read(path: &str) -> StoredCharacter {
