@@ -12,7 +12,6 @@ dependencies = [
 [tasks.build]
 clear = true
 dependencies = [
-    "format",
     { name = "build", path = "client" },
     { name = "build", path = "server" },
 ]

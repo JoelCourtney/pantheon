@@ -3,15 +3,9 @@ install_crate = "trunk"
 command = "trunk"
 args = [ "clean" ]
 
-[tasks.format]
-install_crate = "rustfmt"
-command = "cargo"
-args = ["fmt", "--", "--emit=files"]
-
 [tasks.build]
 install_crate = "trunk"
 command = "trunk"
 args = ["build"]
-dependencies = ["format"]
 
 [tasks.run]
