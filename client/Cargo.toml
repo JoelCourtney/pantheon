@@ -9,3 +9,4 @@ authors = ["Joel Courtney <joel.e.courtney@gmail.com>"]
 [dependencies]
 seed = "0.8"
 serde = { version = "*", features = ["derive"] }
+macros = { path = "../macros", features = ["client"] }

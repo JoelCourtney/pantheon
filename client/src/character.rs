@@ -1,6 +1,7 @@
 use std::cell::{Ref, RefCell};
 use seed::log;
 use serde::{Serialize, Deserialize};
+use crate::{eval, ops};
 
 /// Version of the Character struct that is stored as a json file for saving.
 ///
@@ -32,40 +33,22 @@ pub struct StoredCharacter {
     pub(crate) description: String
 }
 
-pub fn try_it() {
+pub fn try_it() -> CharacterResult<()> {
     let char = Character::default();
-    char.x.register(Box::new(
-        |x, char| {
-            log!("initng x");
-            *x = "hello".to_string();
-            Ok(())
-        }
-    ));
-    char.x.register(Box::new(
-        |x, char| {
-            log!("evaling x");
-            x.push_str(&*char.y.evaluate(char)?);
-            Ok(())
-        }
-    ));
-    char.y.register(Box::new(
-        |y, _char| {
-            log!("evaling y");
-            *y = " world!".to_string();
-            Ok(())
-        }
-    ));
-    char.z.register(Box::new(
-        |z, char| {
-            log!("evaling z");
-            z.push_str(&*char.y.evaluate(char)?);
+    ops! { char
+        x 1 => x.push_str(y?)
+        x 0 => *x = "hello".to_string()
+        y 0 => *y = " world!".to_string()
+        z 1 => {
+            z.push_str(y?);
             z.make_ascii_uppercase();
-            Ok(())
         }
-    ));
-    log!(&*char.y.evaluate(&char).unwrap());
-    log!(&*char.z.evaluate(&char).unwrap());
-    log!(&*char.x.evaluate(&char).unwrap());
+    }
+    let ref_char = &char;
+    log!(eval!(ref_char.x));
+    log!(eval!(ref_char.y));
+    log!(eval!(ref_char.z));
+    Ok(())
 }
 
 #[derive(Default)]
@@ -106,7 +89,7 @@ type CharacterOperation<T> = Box<dyn FnOnce(&mut T, &Character) -> CharacterResu
 /// and `y` are used explicitly.
 #[derive(Default)]
 #[repr(transparent)]
-struct LazyValue<T: Default>(RefCell<(T, Vec<CharacterOperation<T>>)>);
+struct LazyValue<T: Default>(RefCell<(T, Vec<(u8,CharacterOperation<T>)>)>);
 
 impl<T: Default> LazyValue<T> {
     /// Evaluate the value if needed, and return a [Ref] to it.
@@ -116,7 +99,8 @@ impl<T: Default> LazyValue<T> {
             std::mem::drop(immutable_borrow);
             if let Ok(mut mutable_borrow) = self.0.try_borrow_mut() {
                 let (value, ops) = &mut *mutable_borrow;
-                for op in ops.drain(..) {
+                ops.sort_unstable_by(|(first_rank,_), (second_rank,_)| first_rank.cmp(second_rank));
+                for (_,op) in ops.drain(..) {
                     op(value, character)?;
                 }
             } else {
@@ -128,7 +112,7 @@ impl<T: Default> LazyValue<T> {
     }
 
     /// Registers an operation to be performed later.
-    fn register(&self, op: CharacterOperation<T>) {
-        self.0.borrow_mut().1.push(op);
+    fn register(&self, rank: u8, op: CharacterOperation<T>) {
+        self.0.borrow_mut().1.push((rank, op));
     }
 }

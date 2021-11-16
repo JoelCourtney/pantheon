@@ -1,4 +1,5 @@
 mod character;
+mod macros;
 
 use seed::{*, prelude::*};
 use character::StoredCharacter;
@@ -23,14 +24,6 @@ enum Msg {
 }
 
 fn init(_: Url, _: &mut impl Orders<Msg>) -> Model {
-    // tokio::runtime::Builder::new_current_thread()
-    //     .enable_all()
-    //     .build()
-    //     .unwrap()
-    //     .block_on(async {
-    //         let greeter = tokio::spawn(greet());
-    //         let _ = tokio::join!(greeter);
-    //     });
     character::try_it();
     Model {
         character: None,

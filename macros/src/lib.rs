@@ -10,3 +10,12 @@ pub fn match_raw_files(input: proc_macro::TokenStream) -> proc_macro::TokenStrea
     let ast: syn::ExprArray = syn::parse(input).expect("expected expr array");
     server::match_raw_files(ast)
 }
+
+#[cfg(feature = "client")]
+mod client;
+
+#[cfg(feature = "client")]
+#[proc_macro]
+pub fn expand_carriers(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+    client::expand_carriers(input.into()).into()
+}

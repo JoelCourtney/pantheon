@@ -131,38 +131,6 @@ pub fn next_id() -> u64 {
     ID.fetch_add(1, Ordering::SeqCst)
 }
 
-fn expand_carriers(stream: TokenStream2) -> TokenStream2 {
-    use proc_macro2::TokenTree;
-
-    let done: TokenStream2 = ". r#final ( ) ?".parse().unwrap();
-
-    let res: TokenStream2 = stream.into_iter().flat_map(
-        |token| {
-            match token.clone() {
-                TokenTree::Punct(p) => match p.as_char() {
-                    '?' => done.clone(),
-                    _ => p.to_token_stream()
-                }
-                TokenTree::Group(g) => {
-                    let (open, close) = match g.delimiter() {
-                        proc_macro2::Delimiter::Parenthesis => ('(', ')'),
-                        proc_macro2::Delimiter::Brace => ('{', '}'),
-                        proc_macro2::Delimiter::Bracket => ('[', ']'),
-                        proc_macro2::Delimiter::None => panic!("how")
-                    };
-                    format!("{}{}{}",
-                            open,
-                            expand_carriers(g.stream()),
-                            close
-                    ).parse().expect("expand parse failed")
-                },
-                t => t.to_token_stream()
-            }
-        }
-    ).collect();
-    return res
-}
-
 pub fn asi_or_feat(level: u32) -> TokenStream {
     let asi_or_feat_ident = format_ident!("asi_or_feat_{}", level);
     let asi_choices_ident = format_ident!("asi_choices_{}", level);
