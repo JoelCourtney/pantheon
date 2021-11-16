@@ -583,12 +583,7 @@ dependencies = [
 name = "dndcent-client"
 version = "0.1.0"
 dependencies = [
- "enclose",
- "indexmap",
  "seed",
- "serde",
- "uuid",
- "wasm-bindgen",
 ]
 
 [[package]]
@@ -943,7 +938,6 @@ checksum = "bc633605454125dec4b66843673f01c7df2b89479b32e0ed634e43a91cff62a5"
 dependencies = [
  "autocfg",
  "hashbrown",
- "serde",
 ]
 
 [[package]]
@@ -1996,7 +1990,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bc5cf98d8186244414c848017f0e2676b3fcb46807f6668a97dfe67359a3c4b7"
 dependencies = [
  "getrandom 0.2.3",
- "serde",
 ]
 
 [[package]]
