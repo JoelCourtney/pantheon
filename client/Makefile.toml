@@ -1,4 +1,4 @@
-[tasks.clean]
+[tasks.dist_clean]
 install_crate = "trunk"
 command = "trunk"
 args = [ "clean" ]
@@ -6,6 +6,9 @@ args = [ "clean" ]
 [tasks.build]
 install_crate = "trunk"
 command = "trunk"
-args = ["build"]
+args = ["build", "${@}"]
 
-[tasks.run]
+[tasks.build_release]
+install_crate = "trunk"
+command = "trunk"
+args = ["build", "--release"]

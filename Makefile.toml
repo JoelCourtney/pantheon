@@ -6,17 +6,23 @@ RUST_BACKTRACE = 0
 
 [tasks.clean]
 dependencies = [
-    { name = "clean", path = "client" }
+    { name = "dist_clean", path = "client" }
 ]
 
-[tasks.build]
+[tasks.default]
 clear = true
 dependencies = [
     { name = "build", path = "client" },
     { name = "build", path = "server" },
 ]
 
+[tasks.release]
+dependencies = [
+    { name = "build_release", path = "client" },
+    { name = "build_release", path = "server" },
+]
+
 [tasks.run]
 clear = true
-dependencies = ["build"]
+dependencies = ["default"]
 command = "target/release/dndcent"
