@@ -6,50 +6,43 @@ use character::StoredCharacter;
 
 struct Model {
     character: Option<StoredCharacter>,
-    content: Option<u32>,
-    page: Page
+    overlay: Overlay
 }
 
 #[derive(Debug)]
-enum Page {
-    CharacterBrowser,
-    CharacterViewer,
-    CharacterBuilder,
-    ContentBrowser
+enum Overlay {
+    Full,
+    Partial,
+    None
 }
 
 #[derive(Debug)]
 enum Msg {
-    ChangePage(Page)
+    SetCharacter(Option<StoredCharacter>),
+    SetOverlay(Overlay)
 }
 
 fn init(_: Url, _: &mut impl Orders<Msg>) -> Model {
     character::try_it();
     Model {
         character: None,
-        content: None,
-        page: Page::CharacterBrowser
+        overlay: Overlay::None
     }
 }
 
 fn update(msg: Msg, model: &mut Model, _: &mut impl Orders<Msg>) {
     match msg {
-        Msg::ChangePage(page) => model.page = page
+        Msg::SetCharacter(new_char) => model.character = new_char,
+        Msg::SetOverlay(new_overlay) => model.overlay = new_overlay
     }
 }
 
 fn view(model: &Model) -> impl IntoNodes<Msg> {
-    div![
-        format!("{:?}", model.page),
-        // C!["counter"],
-        button![
-            "Character Browser",
-            ev(Ev::Click, |_| Msg::ChangePage(Page::CharacterBrowser)),
-        ],
-        button![
-            "Character Viewer",
-            ev(Ev::Click, |_| Msg::ChangePage(Page::CharacterViewer)),
-        ],
+    svg![
+        style! {
+            "width" => unit!(100, %)
+            "height" => unit!(100, %)
+        }
     ]
 }
 
