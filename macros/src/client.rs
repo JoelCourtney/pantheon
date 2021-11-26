@@ -1,7 +1,5 @@
 use proc_macro2::TokenStream as TokenStream2;
 use proc_macro2::{Group, TokenTree};
-use quote::quote;
-use quote::ToTokens;
 
 pub(crate) fn expand_carriers(stream: TokenStream2) -> TokenStream2 {
 

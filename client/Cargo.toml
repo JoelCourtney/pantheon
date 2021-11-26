@@ -10,3 +10,5 @@ authors = ["Joel Courtney <joel.e.courtney@gmail.com>"]
 seed = "0.8"
 serde = { version = "*", features = ["derive"] }
 macros = { path = "../macros", features = ["client"] }
+reqwest = "0.11.6"
+bincode = "1.3"

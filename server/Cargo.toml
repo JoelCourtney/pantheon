@@ -8,7 +8,7 @@ authors = ["Joel Courtney <joel.e.courtney@gmail.com>"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-actix-web = "4.0.0-beta.11"
+actix-web = "4.0.0-beta.12"
 macros = { path = "../macros", features = ["server"]}
 mime_guess = "*"
 structopt = "0.3"

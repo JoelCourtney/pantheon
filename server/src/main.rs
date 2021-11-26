@@ -17,7 +17,7 @@ async fn main() -> std::io::Result<()> {
     println!("Serving {} on {}{}", prefix.as_path().to_str().unwrap().green(), "http://localhost:".green(), opt.port.to_string().green());
     HttpServer::new(move || {
         App::new()
-            .app_data(prefix.clone())
+            .app_data(web::Data::new(prefix.clone()))
             .wrap(middleware::Compress::new(ContentEncoding::Br))
             .service(serve_root)
             .service(serve_static_files)
