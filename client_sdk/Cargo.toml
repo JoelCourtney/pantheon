@@ -1,19 +1,14 @@
 [package]
-name = "dndcent"
+name = "dndcent-client"
 version = "0.1.0"
 edition = "2021"
-default-run = "dndcent"
 authors = ["Joel Courtney <joel.e.courtney@gmail.com>"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-actix-web = "4"
-server_macros = { path = "../server_macros" }
-mime_guess = "*"
-structopt = "0.3"
-jwalk = "*"
+seed = "0.8"
+serde = { version = "*", features = ["derive"] }
+client_macros = { path = "../client_macros" }
+reqwest = "0.11.6"
 bincode = "1.3"
-colored = "*"
-anyhow = "*"
-shrinkwraprs = "*"

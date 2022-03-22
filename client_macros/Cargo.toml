@@ -1,14 +1,15 @@
 [package]
-name = "dndcent-client"
+name = "client_macros"
 version = "0.1.0"
 edition = "2021"
 authors = ["Joel Courtney <joel.e.courtney@gmail.com>"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[lib]
+proc-macro = true
+
 [dependencies]
-seed = "0.8"
-serde = { version = "*", features = ["derive"] }
-macros = { path = "../macros", features = ["client"] }
-reqwest = "0.11.6"
-bincode = "1.3"
+syn = { version="1.0.60", features=["full"] }
+quote = "1.0.8"
+proc-macro2 = "1.0"

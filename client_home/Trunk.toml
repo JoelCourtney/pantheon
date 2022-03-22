@@ -4,12 +4,12 @@ target = "index.html"
 # Build in release mode.
 release = false
 # The output dir for all final assets.
-dist = "dist"
+dist = "dist/"
 # The public URL from which assets are to be served.
 public_url = "/"
 
 [clean]
 # The output dir for all final assets.
-dist = "dist"
+dist = "dist/"
 # Optionally perform a cargo clean.
 cargo = false

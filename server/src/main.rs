@@ -1,11 +1,11 @@
 mod filesystem;
 
 use actix_web::http::header::ContentType;
-use actix_web::http::ContentEncoding;
 use actix_web::{get, middleware, post, web, App, HttpResponse, HttpServer};
 use std::path::{Path, PathBuf};
 use colored::Colorize;
 use structopt::StructOpt;
+use filesystem::StarpgRoot;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -14,13 +14,17 @@ async fn main() -> std::io::Result<()> {
         Some(path) => path,
         None => std::env::current_dir()?,
     };
+    let starpg_root = filesystem::starpg_root().unwrap();
     println!("Serving {} on {}{}", prefix.as_path().to_str().unwrap().green(), "http://localhost:".green(), opt.port.to_string().green());
     HttpServer::new(move || {
         App::new()
             .app_data(web::Data::new(prefix.clone()))
-            .wrap(middleware::Compress::new(ContentEncoding::Br))
+            .app_data(web::Data::new(starpg_root.clone()))
+            .wrap(middleware::Compress::default())
             .service(serve_root)
-            .service(serve_static_files)
+            .service(serve_icon)
+            .service(serve_home)
+            // .service(serve_static_files)
             .service(list_characters)
             .service(read_character)
             .service(write_character)
@@ -32,7 +36,7 @@ async fn main() -> std::io::Result<()> {
 
 /// Server for DnDCent.
 #[derive(StructOpt, Debug)]
-#[structopt(name = "DnDCent")]
+#[structopt(name = "starpg")]
 struct Opt {
     /// Path prefix to serve characters from (optional).
     #[structopt(short, long, parse(from_os_str))]
@@ -44,26 +48,37 @@ struct Opt {
 }
 
 #[get("/")]
-async fn serve_root() -> HttpResponse {
+async fn serve_root(root: web::Data<StarpgRoot>) -> HttpResponse {
+    let root = root.into_inner();
     HttpResponse::Ok()
         .content_type("text/html")
-        .body(include_str!("../../client/dist/index.html"))
+        .body(std::fs::read(format!("{root}/client_home/dist/index.html")).unwrap())
+}
+
+#[get("/icon.png")]
+async fn serve_icon(root: web::Data<StarpgRoot>) -> HttpResponse {
+    let root = root.into_inner();
+    let path = format!("{root}/client_home/public/icon.png");
+    HttpResponse::Ok()
+        .content_type(ContentType::png())
+        .body(std::fs::read(&path).expect(&format!("file not found: {path}")))
 }
 
 #[get("/{file}")]
-async fn serve_static_files(file: web::Path<String>) -> HttpResponse {
-    let bytes = macros::match_raw_files!(["../..", "file", "client/dist", "client/public"]);
+async fn serve_home(root: web::Data<StarpgRoot>, file: web::Path<String>) -> HttpResponse {
+    let root = root.into_inner();
+    let file = &file.into_inner();
+    let path = format!("{root}/client_home/dist/{file}");
     HttpResponse::Ok()
         .content_type(
-            mime_guess::from_path(Path::new(&file.into_inner()))
-                .first()
-                .unwrap()
-                .essence_str(),
+            mime_guess::from_path(Path::new(file))
+                .first().unwrap()
+                .essence_str()
         )
-        .body(bytes)
+        .body(std::fs::read(&path).expect(&format!("file not found: {path}")))
 }
 
-#[post("/list")]
+#[post("/list_characters")]
 async fn list_characters(prefix: web::Data<PathBuf>) -> HttpResponse {
     let characters = filesystem::list_characters(&prefix);
     let encoded = bincode::serialize(&characters).unwrap();
@@ -72,7 +87,7 @@ async fn list_characters(prefix: web::Data<PathBuf>) -> HttpResponse {
         .body(encoded)
 }
 
-#[post("/read/{base_path:.+}")]
+#[post("/read_character/{base_path:.+}")]
 async fn read_character(
     base_path: web::Path<PathBuf>,
     prefix: web::Data<PathBuf>,
@@ -85,7 +100,7 @@ async fn read_character(
         .body(bytes))
 }
 
-#[post("/write/{base_path:.+}")]
+#[post("/write_character/{base_path:.+}")]
 async fn write_character(
     base_path: web::Path<PathBuf>,
     prefix: web::Data<PathBuf>,
