@@ -31,7 +31,7 @@ build/
 
 # Cargo
 target/
-Cargo.toml
+Cargo.lock
 
 # Vim
 *.swp
