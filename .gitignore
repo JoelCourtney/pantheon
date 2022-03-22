@@ -45,3 +45,6 @@ Rocket.toml
 
 # Trunk
 dist/
+
+# Testing
+characters/

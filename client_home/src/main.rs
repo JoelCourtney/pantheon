@@ -2,43 +2,124 @@ use seed::{*, prelude::*};
 use reqwest::Body;
 use serde::de::DeserializeOwned;
 use std::path::PathBuf;
-use anyhow::Result;
+use anyhow::*;
 
 struct Model {
+    characters: Option<Vec<CharacterEntry>>
+}
+
+#[derive(Eq, PartialEq, Ord, PartialOrd)]
+struct CharacterEntry {
+    system: String,
+    prefix: String,
+    name: String
+}
+
+impl TryFrom<PathBuf> for CharacterEntry {
+    type Error = anyhow::Error;
+    fn try_from(path: PathBuf) -> Result<Self> {
+        let full_path = path.to_str().ok_or(anyhow!("couldn't covert full path"))?;
+        log!(&full_path);
+        let file_name = path.file_name().ok_or(anyhow!("no file name"))?
+            .to_str().ok_or(anyhow!("could not convert OS string"))?
+            .to_owned();
+        let prefix_end = full_path.find(&file_name).unwrap();
+        log!(file_name);
+        let first_dot = file_name.find(".").ok_or(anyhow!("no first dot"))?;
+        let second_dot = &file_name[first_dot+1..].find(".").ok_or(anyhow!("no second dot"))? + first_dot + 1;
+        Ok(
+            CharacterEntry {
+                system: file_name[first_dot+1..second_dot].to_string(),
+                prefix: full_path[..prefix_end].to_string(),
+                name: file_name[..first_dot].to_string()
+            }
+        )
+    }
 }
 
 #[derive(Debug)]
 enum Msg {
-    Hello
+    CharactersReceived(Vec<PathBuf>)
 }
 
 fn init(_url: Url, orders: &mut impl Orders<Msg>) -> Model {
     orders.perform_cmd(async {
         let list: Vec<PathBuf> = query("list_characters", "").await.unwrap();
-        log!(&list);
-        // let _: () = query("write_character/asdf.bin", bincode::serialize("Hello World!").unwrap()).await.unwrap();
-        // let character: String = query("read_character/asdf.bin", "").await.unwrap();
-        // log(character);
-        Msg::Hello
+        Msg::CharactersReceived(list)
     });
     Model {
+        characters: None
     }
 }
 
-fn update(_msg: Msg, _model: &mut Model, _: &mut impl Orders<Msg>) {
+fn update(msg: Msg, model: &mut Model, _: &mut impl Orders<Msg>) {
+    match msg {
+        Msg::CharactersReceived(list) => {
+            let mut list: Vec<CharacterEntry> = list.into_iter().map(|path| path.try_into().unwrap()).collect();
+            list.sort();
+            model.characters = Some(list);
+        }
+    }
 }
 
-fn view(_model: &Model) -> impl IntoNodes<Msg> {
-    section! {
-        C!["section"],
-        h1! {
-            C!["title"],
-            "Hello World!"
+fn view(model: &Model) -> impl IntoNodes<Msg> {
+    match &model.characters {
+        None => section! {
+            C!["section"],
+            h1! {
+                C!("title"),
+                "Pantheon"
+            },
+            p! {
+                C!("subtitle"),
+                "Loading characters..."
+            },
+            progress! {
+                C!("progress is-small is-primary"),
+                attrs! {
+                    At::Max => "100"
+                }
+            }
         },
-        p! {
-            C!["subtitle"],
-            "My first website with ",
-            strong!("Bulma!")
+        Some(list) => {
+            let mut menu_lists = Vec::new();
+            let mut system_name = String::new();
+            let mut system_characters = Vec::new();
+            for character in list.iter() {
+                if system_name != character.system {
+                    menu_lists.push((system_name, system_characters));
+                    system_name = character.system.clone();
+                    system_characters = Vec::new();
+                }
+                system_characters.push(character);
+            }
+            menu_lists.remove(0);
+            menu_lists.push((system_name, system_characters));
+            section! {
+                C!["section"],
+                h1! {
+                    C!("title"),
+                    "Pantheon"
+                },
+                div! {
+                    C!("container"),
+                    aside! {
+                        C!("menu"),
+                        menu_lists.into_iter().map(|(name, characters)| vec![
+                            p! {
+                                C!("menu-label"),
+                                name
+                            },
+                            ul! {
+                                C!("menu-list"),
+                                characters.iter().map(|character| li! {
+                                    a!(character.name.clone())
+                                })
+                            }
+                        ])
+                    }
+                }
+            }
         }
     }
 }
