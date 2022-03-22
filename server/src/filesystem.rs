@@ -4,7 +4,7 @@ use anyhow::Result;
 use shrinkwraprs::Shrinkwrap;
 
 pub(crate) fn list_characters(prefix: &PathBuf) -> Vec<PathBuf> {
-    WalkDir::new(dbg!(prefix))
+    WalkDir::new(prefix)
         .sort(true)
         .into_iter()
         .filter_map(|entry| {

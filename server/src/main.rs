@@ -24,7 +24,6 @@ async fn main() -> std::io::Result<()> {
             .service(serve_root)
             .service(serve_icon)
             .service(serve_home)
-            // .service(serve_static_files)
             .service(list_characters)
             .service(read_character)
             .service(write_character)
