@@ -25,7 +25,7 @@ dependencies = [
 [tasks.run]
 clear = true
 dependencies = ["default"]
-command = "target/debug/dndcent"
+command = "target/debug/pantheon"
 
 [tasks.install]
 dependencies = [

@@ -5,7 +5,7 @@ use actix_web::{get, middleware, post, web, App, HttpResponse, HttpServer};
 use std::path::{Path, PathBuf};
 use colored::Colorize;
 use structopt::StructOpt;
-use filesystem::StarpgRoot;
+use filesystem::PantheonRoot;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -14,12 +14,12 @@ async fn main() -> std::io::Result<()> {
         Some(path) => path,
         None => std::env::current_dir()?,
     };
-    let starpg_root = filesystem::starpg_root().unwrap();
+    let pantheon_root = filesystem::pantheon_root().unwrap();
     println!("Serving {} on {}{}", prefix.as_path().to_str().unwrap().green(), "http://localhost:".green(), opt.port.to_string().green());
     HttpServer::new(move || {
         App::new()
             .app_data(web::Data::new(prefix.clone()))
-            .app_data(web::Data::new(starpg_root.clone()))
+            .app_data(web::Data::new(pantheon_root.clone()))
             .wrap(middleware::Compress::default())
             .service(serve_root)
             .service(serve_icon)
@@ -34,9 +34,9 @@ async fn main() -> std::io::Result<()> {
     .await
 }
 
-/// Server for DnDCent.
+/// Server for Pantheon.
 #[derive(StructOpt, Debug)]
-#[structopt(name = "starpg")]
+#[structopt(name = "pantheon")]
 struct Opt {
     /// Path prefix to serve characters from (optional).
     #[structopt(short, long, parse(from_os_str))]
@@ -48,7 +48,7 @@ struct Opt {
 }
 
 #[get("/")]
-async fn serve_root(root: web::Data<StarpgRoot>) -> HttpResponse {
+async fn serve_root(root: web::Data<PantheonRoot>) -> HttpResponse {
     let root = root.into_inner();
     HttpResponse::Ok()
         .content_type("text/html")
@@ -56,7 +56,7 @@ async fn serve_root(root: web::Data<StarpgRoot>) -> HttpResponse {
 }
 
 #[get("/icon.png")]
-async fn serve_icon(root: web::Data<StarpgRoot>) -> HttpResponse {
+async fn serve_icon(root: web::Data<PantheonRoot>) -> HttpResponse {
     let root = root.into_inner();
     let path = format!("{root}/client_home/public/icon.png");
     HttpResponse::Ok()
@@ -65,7 +65,7 @@ async fn serve_icon(root: web::Data<StarpgRoot>) -> HttpResponse {
 }
 
 #[get("/{file}")]
-async fn serve_home(root: web::Data<StarpgRoot>, file: web::Path<String>) -> HttpResponse {
+async fn serve_home(root: web::Data<PantheonRoot>, file: web::Path<String>) -> HttpResponse {
     let root = root.into_inner();
     let file = &file.into_inner();
     let path = format!("{root}/client_home/dist/{file}");
