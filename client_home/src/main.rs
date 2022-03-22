@@ -110,7 +110,7 @@ fn view(model: &Model) -> impl IntoNodes<Msg> {
                             },
                             ul! {
                                 C!("menu-list"),
-                                characters.iter().map(|character| li! {
+                                characters.into_iter().map(|character| li! {
                                     a!(character.name.clone())
                                 })
                             }
