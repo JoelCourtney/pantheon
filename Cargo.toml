@@ -2,7 +2,6 @@
 
 members = [
     "client_macros",
-    "server_macros",
     "client_home",
     "client_sdk",
     "server"

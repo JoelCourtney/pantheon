@@ -9,7 +9,6 @@ authors = ["Joel Courtney <joel.e.courtney@gmail.com>"]
 
 [dependencies]
 actix-web = "4"
-server_macros = { path = "../server_macros" }
 mime_guess = "*"
 structopt = "0.3"
 jwalk = "*"
