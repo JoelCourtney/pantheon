@@ -21,4 +21,4 @@ colored = "*"
 anyhow = "*"
 serde = { version = "*" }
 shrinkwraprs = "*"
-pantheon = { path="../pantheon-lib" }
+pantheon = { path="../pantheon-lib", default-features = false }

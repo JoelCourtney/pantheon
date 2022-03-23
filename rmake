@@ -4,18 +4,33 @@
 //! [dependencies]
 //! structopt = { version = "0.3", features = [ "paw" ] }
 //! paw = "1.0"
+//! thiserror = "1.0.30"
+//! colored = "2.0.0"
 //! ```
 
 extern crate structopt;
+extern crate thiserror;
+extern crate colored;
 
-const WEBSITES: [&str; 1] = [
-    "home"
+use colored::Colorize;
+
+const WEBSITES: [&str; 2] = [
+    "home",
+    "systems/template"
 ];
 const SERVER: &str = "pantheon-bin";
 const OTHER_CRATES: [&str; 2] = [
     "macros",
     "pantheon-lib"
 ];
+
+
+fn prefix() -> colored::ColoredString {
+    "rmake > ".green()
+}
+fn error_prefix() -> colored::ColoredString {
+    "rmake > ".red()
+}
 
 
 /// Pantheon build runner.
@@ -44,7 +59,7 @@ enum Command {
 }
 
 impl Command {
-    fn exec(&self) -> Result<(), std::io::Error> {
+    fn exec(&self) -> Result<(), Error> {
         use Command::*;
 
         match self {
@@ -77,29 +92,49 @@ impl Command {
                 }
                 invoke("cargo", vec!["clean"], SERVER)
             }
-            _ => todo!()
         }
     }
 }
 
 #[paw::main]
-fn main(args: Args) -> Result<(), std::io::Error> {
-    match args.command {
+fn main(args: Args) {
+    match match args.command {
         None => Command::Build.exec(),
         Some(command) => command.exec()
+    } {
+        Ok(()) => println!("{}great success", prefix()),
+        Err(e) => eprintln!("{}{}", error_prefix(), e)
     }
 }
 
-fn invoke(command: &str, args: Vec<&str>, path: &str) -> Result<(), std::io::Error> {
-    print!("> {}: {}", &path, &command);
+fn invoke(command: &str, args: Vec<&str>, path: &str) -> Result<(), Error> {
+    print!("{}{}: {}", prefix(), &path, &command);
     for arg in &args {
         print!(" {}", arg);
     }
     print!("\n");
-    std::process::Command::new(command)
+    let exit_code = std::process::Command::new(command)
         .args(args)
         .current_dir(path)
         .stdout(std::process::Stdio::inherit())
         .stderr(std::process::Stdio::inherit())
-        .output().map(|_| ())
+        .output()?.status
+        .code().ok_or(Error::NoStatusCode)?;
+    if exit_code == 0 {
+        Ok(())
+    } else {
+        Err(Error::StatusCode(exit_code))
+    }
+}
+
+#[derive(thiserror::Error, Debug)]
+enum Error {
+    #[error("could not run command: {}", .0)]
+    Io(#[from] std::io::Error),
+
+    #[error("command exited with code: {}", .0)]
+    StatusCode(i32),
+
+    #[error("command exited with no status code")]
+    NoStatusCode
 }

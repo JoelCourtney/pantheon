@@ -60,5 +60,6 @@ pub fn expand_carriers(input: proc_macro::TokenStream) -> proc_macro::TokenStrea
             other => res.insert(0, other.clone()),
         }
     }
-    res.into_iter().collect().into()
+    let result: TokenStream2 = res.into_iter().collect();
+    result.into()
 }

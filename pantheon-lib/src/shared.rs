@@ -1,4 +1,4 @@
-use anyhow::*;
+use thiserror::Error;
 use serde::{Deserialize, Serialize};
 use std::path::PathBuf;
 
@@ -10,20 +10,22 @@ pub struct CharacterFile {
 }
 
 impl TryFrom<PathBuf> for CharacterFile {
-    type Error = anyhow::Error;
-    fn try_from(path: PathBuf) -> Result<Self> {
-        let full_path = path.to_str().ok_or(anyhow!("couldn't covert full path"))?;
+    type Error = CharacterFileError;
+    fn try_from(path: PathBuf) -> Result<Self, Self::Error> {
+        use CharacterFileError::*;
+
+        let full_path = path.to_str().ok_or(FullPath)?;
         let file_name = path
             .file_name()
-            .ok_or(anyhow!("no file name"))?
+            .ok_or(NoFileName)?
             .to_str()
-            .ok_or(anyhow!("could not convert OS string"))?
+            .ok_or(OsString)?
             .to_owned();
-        let prefix_end = full_path.find(&file_name).unwrap();
-        let first_dot = file_name.find(".").ok_or(anyhow!("no first dot"))?;
+        let prefix_end = full_path.find(&file_name).ok_or(CouldntFindFileName)?;
+        let first_dot = file_name.find(".").ok_or(NoFirstDot)?;
         let second_dot = &file_name[first_dot + 1..]
             .find(".")
-            .ok_or(anyhow!("no second dot"))?
+            .ok_or(NoSecondDot)?
             + first_dot
             + 1;
         Ok(CharacterFile {
@@ -32,4 +34,14 @@ impl TryFrom<PathBuf> for CharacterFile {
             name: file_name[..first_dot].to_string(),
         })
     }
+}
+
+#[derive(Error, Debug)]
+pub enum CharacterFileError {
+    #[error("couldn't convert full path to str")] FullPath,
+    #[error("path didn't have a file name")] NoFileName,
+    #[error("couldn't convert OsStr to str")] OsString,
+    #[error("file name wasn't in full path")] CouldntFindFileName,
+    #[error("file name has no dots")] NoFirstDot,
+    #[error("file name has only one dot")] NoSecondDot
 }
