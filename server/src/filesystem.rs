@@ -1,6 +1,5 @@
 use std::path::PathBuf;
 use jwalk::WalkDir;
-use anyhow::Result;
 use shrinkwraprs::Shrinkwrap;
 
 pub(crate) fn list_characters(prefix: &PathBuf) -> Vec<PathBuf> {
@@ -21,14 +20,17 @@ pub(crate) fn list_characters(prefix: &PathBuf) -> Vec<PathBuf> {
         .collect()
 }
 
-pub(crate) fn pantheon_root() -> Result<PantheonRoot> {
-    Ok(PantheonRoot(std::env::var("PANTHEON_ROOT")?))
+#[derive(Clone, Shrinkwrap)]
+pub(crate) struct ServeRoot(String);
+
+impl Default for ServeRoot {
+    fn default() -> ServeRoot {
+        ServeRoot(format!("{}/www", std::env::var("PANTHEON_ROOT")
+            .expect("Set PANTHEON_ROOT env variable.")))
+    }
 }
 
-#[derive(Clone, Shrinkwrap)]
-pub(crate) struct PantheonRoot(String);
-
-impl std::fmt::Display for PantheonRoot {
+impl std::fmt::Display for ServeRoot {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(f, "{}", self.0)
     }

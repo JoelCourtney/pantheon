@@ -5,7 +5,7 @@ use actix_web::{get, middleware, post, web, App, HttpResponse, HttpServer};
 use std::path::{Path, PathBuf};
 use colored::Colorize;
 use structopt::StructOpt;
-use filesystem::PantheonRoot;
+use filesystem::ServeRoot;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -14,12 +14,12 @@ async fn main() -> std::io::Result<()> {
         Some(path) => path,
         None => std::env::current_dir()?,
     };
-    let pantheon_root = filesystem::pantheon_root().unwrap();
+    let root = filesystem::ServeRoot::default();
     println!("Serving {} on {}{}", prefix.as_path().to_str().unwrap().green(), "http://localhost:".green(), opt.port.to_string().green());
     HttpServer::new(move || {
         App::new()
             .app_data(web::Data::new(prefix.clone()))
-            .app_data(web::Data::new(pantheon_root.clone()))
+            .app_data(web::Data::new(root.clone()))
             .wrap(middleware::Compress::default())
             .service(serve_root)
             .service(serve_icon)
@@ -47,7 +47,7 @@ struct Opt {
 }
 
 #[get("/")]
-async fn serve_root(root: web::Data<PantheonRoot>) -> HttpResponse {
+async fn serve_root(root: web::Data<ServeRoot>) -> HttpResponse {
     let root = root.into_inner();
     HttpResponse::Ok()
         .content_type("text/html")
@@ -55,7 +55,7 @@ async fn serve_root(root: web::Data<PantheonRoot>) -> HttpResponse {
 }
 
 #[get("/icon.png")]
-async fn serve_icon(root: web::Data<PantheonRoot>) -> HttpResponse {
+async fn serve_icon(root: web::Data<ServeRoot>) -> HttpResponse {
     let root = root.into_inner();
     let path = format!("{root}/icon.png");
     HttpResponse::Ok()
@@ -64,7 +64,7 @@ async fn serve_icon(root: web::Data<PantheonRoot>) -> HttpResponse {
 }
 
 #[get("/{file}")]
-async fn serve_home(root: web::Data<PantheonRoot>, file: web::Path<String>) -> HttpResponse {
+async fn serve_home(root: web::Data<ServeRoot>, file: web::Path<String>) -> HttpResponse {
     let root = root.into_inner();
     let file = &file.into_inner();
     let path = format!("{root}/home/{file}");
