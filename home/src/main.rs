@@ -1,59 +1,26 @@
-use seed::{*, prelude::*};
-use reqwest::Body;
-use serde::de::DeserializeOwned;
-use std::path::PathBuf;
-use anyhow::*;
+use pantheon::reexports::seed::{prelude::*, *};
+use pantheon::{requests::query, shared::CharacterFile};
 
 struct Model {
-    characters: Option<Vec<CharacterEntry>>
-}
-
-#[derive(Eq, PartialEq, Ord, PartialOrd)]
-struct CharacterEntry {
-    system: String,
-    prefix: String,
-    name: String
-}
-
-impl TryFrom<PathBuf> for CharacterEntry {
-    type Error = anyhow::Error;
-    fn try_from(path: PathBuf) -> Result<Self> {
-        let full_path = path.to_str().ok_or(anyhow!("couldn't covert full path"))?;
-        let file_name = path.file_name().ok_or(anyhow!("no file name"))?
-            .to_str().ok_or(anyhow!("could not convert OS string"))?
-            .to_owned();
-        let prefix_end = full_path.find(&file_name).unwrap();
-        let first_dot = file_name.find(".").ok_or(anyhow!("no first dot"))?;
-        let second_dot = &file_name[first_dot+1..].find(".").ok_or(anyhow!("no second dot"))? + first_dot + 1;
-        Ok(
-            CharacterEntry {
-                system: file_name[first_dot+1..second_dot].to_string(),
-                prefix: full_path[..prefix_end].to_string(),
-                name: file_name[..first_dot].to_string()
-            }
-        )
-    }
+    characters: Option<Vec<CharacterFile>>,
 }
 
 #[derive(Debug)]
 enum Msg {
-    CharactersReceived(Vec<PathBuf>)
+    CharactersReceived(Vec<CharacterFile>),
 }
 
 fn init(_url: Url, orders: &mut impl Orders<Msg>) -> Model {
     orders.perform_cmd(async {
-        let list: Vec<PathBuf> = query("list_characters", "").await.unwrap();
+        let list: Vec<CharacterFile> = query("list_characters", "").await.unwrap();
         Msg::CharactersReceived(list)
     });
-    Model {
-        characters: None
-    }
+    Model { characters: None }
 }
 
 fn update(msg: Msg, model: &mut Model, _: &mut impl Orders<Msg>) {
     match msg {
-        Msg::CharactersReceived(list) => {
-            let mut list: Vec<CharacterEntry> = list.into_iter().map(|path| path.try_into().unwrap()).collect();
+        Msg::CharactersReceived(mut list) => {
             list.sort();
             model.characters = Some(list);
         }
@@ -91,8 +58,8 @@ fn view(model: &Model) -> impl IntoNodes<Msg> {
                 }
                 system_characters.push(character);
             }
-            menu_lists.remove(0);
             menu_lists.push((system_name, system_characters));
+            menu_lists.remove(0);
             section! {
                 C!["section"],
                 h1! {
@@ -124,13 +91,4 @@ fn view(model: &Model) -> impl IntoNodes<Msg> {
 
 fn main() {
     App::start("app", init, update, view);
-}
-
-async fn query<T: DeserializeOwned>(path: impl AsRef<str>, body: impl Into<Body>) -> Result<T> {
-    let client = reqwest::Client::new();
-    let res = client.post(format!("{}/{}", seed::window().location().origin().unwrap(), path.as_ref()))
-        .body(body).send()
-        .await?;
-    let bytes = res.bytes().await?;
-    Ok(bincode::deserialize(&bytes)?)
 }

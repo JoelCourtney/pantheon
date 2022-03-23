@@ -10,4 +10,4 @@ dist = "../www/home/"
 # The output dir for all final assets.
 dist = "../www/home"
 # Optionally perform a cargo clean.
-cargo = false
+cargo = true

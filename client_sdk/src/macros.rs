@@ -3,7 +3,7 @@ macro_rules! ops {
     ($char_name:ident $($var:ident $rank:expr => $op:expr)*) => {
         $($char_name.$var.register($rank, Box::new(
             |$var: &mut _, ops_macro_character: &Character| {
-                client_macros::expand_carriers!($op);
+                macros::expand_carriers!($op);
                 Ok(())
             }
         )));*

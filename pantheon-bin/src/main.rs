@@ -2,10 +2,10 @@ mod filesystem;
 
 use actix_web::http::header::ContentType;
 use actix_web::{get, middleware, post, web, App, HttpResponse, HttpServer};
-use std::path::{Path, PathBuf};
 use colored::Colorize;
-use structopt::StructOpt;
 use filesystem::ServeRoot;
+use std::path::{Path, PathBuf};
+use structopt::StructOpt;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -15,7 +15,12 @@ async fn main() -> std::io::Result<()> {
         None => std::env::current_dir()?,
     };
     let root = filesystem::ServeRoot::default();
-    println!("Serving {} on {}{}", prefix.as_path().to_str().unwrap().green(), "http://localhost:".green(), opt.port.to_string().green());
+    println!(
+        "Serving {} on {}{}",
+        prefix.as_path().to_str().unwrap().green(),
+        "http://localhost:".green(),
+        opt.port.to_string().green()
+    );
     HttpServer::new(move || {
         App::new()
             .app_data(web::Data::new(prefix.clone()))
@@ -71,8 +76,9 @@ async fn serve_home(root: web::Data<ServeRoot>, file: web::Path<String>) -> Http
     HttpResponse::Ok()
         .content_type(
             mime_guess::from_path(Path::new(file))
-                .first().unwrap()
-                .essence_str()
+                .first()
+                .unwrap()
+                .essence_str(),
         )
         .body(std::fs::read(&path).expect(&format!("file not found: {path}")))
 }

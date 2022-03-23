@@ -1,8 +1,9 @@
-use std::path::PathBuf;
 use jwalk::WalkDir;
+use pantheon::shared::CharacterFile;
 use shrinkwraprs::Shrinkwrap;
+use std::path::PathBuf;
 
-pub(crate) fn list_characters(prefix: &PathBuf) -> Vec<PathBuf> {
+pub(crate) fn list_characters(prefix: &PathBuf) -> Vec<CharacterFile> {
     WalkDir::new(prefix)
         .sort(true)
         .into_iter()
@@ -13,7 +14,13 @@ pub(crate) fn list_characters(prefix: &PathBuf) -> Vec<PathBuf> {
             }
             let path: PathBuf = entry.path();
             match path.extension() {
-                Some(ext) if ext == "panth" => Some(path.strip_prefix(prefix).ok()?.to_path_buf()),
+                Some(ext) if ext == "panth" => Some(
+                    path.strip_prefix(prefix)
+                        .ok()?
+                        .to_path_buf()
+                        .try_into()
+                        .unwrap(),
+                ),
                 _ => None,
             }
         })
@@ -25,8 +32,10 @@ pub(crate) struct ServeRoot(String);
 
 impl Default for ServeRoot {
     fn default() -> ServeRoot {
-        ServeRoot(format!("{}/www", std::env::var("PANTHEON_ROOT")
-            .expect("Set PANTHEON_ROOT env variable.")))
+        ServeRoot(format!(
+            "{}/www",
+            std::env::var("PANTHEON_ROOT").expect("Set PANTHEON_ROOT env variable.")
+        ))
     }
 }
 

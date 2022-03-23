@@ -1,0 +1,105 @@
+#!/usr/bin/env run-cargo-script
+
+//! ```cargo
+//! [dependencies]
+//! structopt = { version = "0.3", features = [ "paw" ] }
+//! paw = "1.0"
+//! ```
+
+extern crate structopt;
+
+const WEBSITES: [&str; 1] = [
+    "home"
+];
+const SERVER: &str = "pantheon-bin";
+const OTHER_CRATES: [&str; 2] = [
+    "macros",
+    "pantheon-lib"
+];
+
+
+/// Pantheon build runner.
+#[derive(structopt::StructOpt)]
+struct Args {
+    #[structopt(subcommand)]
+    command: Option<Command>
+}
+
+#[derive(structopt::StructOpt)]
+enum Command {
+    /// Builds debug artifacts (default if no command specified)
+    Build,
+
+    /// Builds release artifacts
+    BuildRelease,
+
+    /// Builds debug artifacts and runs the server in the root
+    Run,
+
+    /// Installs the release server
+    Install,
+
+    /// Cleans all target and artifact directories
+    Clean
+}
+
+impl Command {
+    fn exec(&self) -> Result<(), std::io::Error> {
+        use Command::*;
+
+        match self {
+            Build => {
+                for site in WEBSITES {
+                    invoke("trunk", vec!["build"], site)?;
+                }
+                invoke("cargo", vec!["build"], SERVER)
+            }
+            BuildRelease => {
+                for site in WEBSITES {
+                    invoke("trunk", vec!["build", "--release"], site)?;
+                }
+                invoke("cargo", vec!["build", "--release"], SERVER)
+            }
+            Run => {
+                Command::Build.exec()?;
+                invoke("cargo", vec!["run", "--manifest-path", &format!("{}/Cargo.toml", SERVER)], ".")
+            }
+            Install => {
+                Command::BuildRelease.exec()?;
+                invoke("cargo", vec!["install", "--path", "."], SERVER)
+            }
+            Clean => {
+                for site in WEBSITES {
+                    invoke("trunk", vec!["clean"], site)?;
+                }
+                for other in OTHER_CRATES {
+                    invoke("cargo", vec!["clean"], other)?;
+                }
+                invoke("cargo", vec!["clean"], SERVER)
+            }
+            _ => todo!()
+        }
+    }
+}
+
+#[paw::main]
+fn main(args: Args) -> Result<(), std::io::Error> {
+    match args.command {
+        None => Command::Build.exec(),
+        Some(command) => command.exec()
+    }
+}
+
+fn invoke(command: &str, args: Vec<&str>, path: &str) -> Result<(), std::io::Error> {
+    print!("> {}: {}", &path, &command);
+    for arg in &args {
+        print!(" {}", arg);
+    }
+    print!("\n");
+    std::process::Command::new(command)
+        .args(args)
+        .current_dir(path)
+        .stdout(std::process::Stdio::inherit())
+        .stderr(std::process::Stdio::inherit())
+        .output().map(|_| ())
+}

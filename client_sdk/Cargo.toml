@@ -9,6 +9,6 @@ authors = ["Joel Courtney <joel.e.courtney@gmail.com>"]
 [dependencies]
 seed = "0.8"
 serde = { version = "*", features = ["derive"] }
-client_macros = { path = "../client_macros" }
+macros = { path = "../macros" }
 reqwest = "0.11.6"
 bincode = "1.3"
