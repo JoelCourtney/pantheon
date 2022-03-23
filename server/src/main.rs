@@ -51,13 +51,13 @@ async fn serve_root(root: web::Data<PantheonRoot>) -> HttpResponse {
     let root = root.into_inner();
     HttpResponse::Ok()
         .content_type("text/html")
-        .body(std::fs::read(format!("{root}/client_home/dist/index.html")).unwrap())
+        .body(std::fs::read(format!("{root}/home/index.html")).unwrap())
 }
 
 #[get("/icon.png")]
 async fn serve_icon(root: web::Data<PantheonRoot>) -> HttpResponse {
     let root = root.into_inner();
-    let path = format!("{root}/client_home/public/icon.png");
+    let path = format!("{root}/icon.png");
     HttpResponse::Ok()
         .content_type(ContentType::png())
         .body(std::fs::read(&path).expect(&format!("file not found: {path}")))
@@ -67,7 +67,7 @@ async fn serve_icon(root: web::Data<PantheonRoot>) -> HttpResponse {
 async fn serve_home(root: web::Data<PantheonRoot>, file: web::Path<String>) -> HttpResponse {
     let root = root.into_inner();
     let file = &file.into_inner();
-    let path = format!("{root}/client_home/dist/{file}");
+    let path = format!("{root}/home/{file}");
     HttpResponse::Ok()
         .content_type(
             mime_guess::from_path(Path::new(file))
