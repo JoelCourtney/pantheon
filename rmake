@@ -129,10 +129,10 @@ fn invoke(command: &str, args: Vec<&str>, path: &str) -> Result<(), Error> {
 
 #[derive(thiserror::Error, Debug)]
 enum Error {
-    #[error("could not run command: {}", .0)]
+    #[error("could not run command: {0}")]
     Io(#[from] std::io::Error),
 
-    #[error("command exited with code: {}", .0)]
+    #[error("command exited with code: {0}")]
     StatusCode(i32),
 
     #[error("command exited with no status code")]
