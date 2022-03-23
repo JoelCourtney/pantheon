@@ -1,3 +1,10 @@
+//! The server for Pantheon.
+//! 
+//! All things considered, its actually pretty simple.
+//! It serves files over `GET` out of `PANTHEON_ROOT/www`,
+//! and exposes a few `POST` endpoints for listing, reading,
+//! and writing character files.
+
 mod filesystem;
 
 use actix_web::http::header::ContentType;
@@ -39,6 +46,9 @@ async fn main() -> std::io::Result<()> {
 }
 
 /// Server for Pantheon.
+///
+/// Serves an rpg-system-agnostic home page at http://localhost:<port>
+/// and links to character viewers in any implemented systems.
 #[derive(StructOpt, Debug)]
 #[structopt(name = "pantheon")]
 struct Opt {
@@ -51,6 +61,7 @@ struct Opt {
     port: u32,
 }
 
+/// Serves the index page.
 #[get("/")]
 async fn serve_root(root: web::Data<ServeRoot>) -> HttpResponse {
     let root = root.into_inner();
@@ -59,6 +70,7 @@ async fn serve_root(root: web::Data<ServeRoot>) -> HttpResponse {
         .body(std::fs::read(format!("{root}/home/index.html")).unwrap())
 }
 
+/// Serves just the favicon.
 #[get("/icon.png")]
 async fn serve_icon(root: web::Data<ServeRoot>) -> HttpResponse {
     let root = root.into_inner();
@@ -68,6 +80,7 @@ async fn serve_icon(root: web::Data<ServeRoot>) -> HttpResponse {
         .body(std::fs::read(&path).expect(&format!("file not found: {path}")))
 }
 
+/// Serves files for the home page, before a system/character is chosen.
 #[get("/{file}")]
 async fn serve_home(root: web::Data<ServeRoot>, file: web::Path<String>) -> HttpResponse {
     let root = root.into_inner();
@@ -83,6 +96,7 @@ async fn serve_home(root: web::Data<ServeRoot>, file: web::Path<String>) -> Http
         .body(std::fs::read(&path).expect(&format!("file not found: {path}")))
 }
 
+/// Serves a list of all characters found in this directory.
 #[post("/list_characters")]
 async fn list_characters(prefix: web::Data<PathBuf>) -> HttpResponse {
     let characters = filesystem::list_characters(&prefix);
@@ -92,6 +106,7 @@ async fn list_characters(prefix: web::Data<PathBuf>) -> HttpResponse {
         .body(encoded)
 }
 
+/// Serves the raw bytes of a character file.
 #[post("/read_character/{base_path:.+}")]
 async fn read_character(
     base_path: web::Path<PathBuf>,
@@ -105,6 +120,7 @@ async fn read_character(
         .body(bytes))
 }
 
+/// Writes the raw bytes of a character to file.
 #[post("/write_character/{base_path:.+}")]
 async fn write_character(
     base_path: web::Path<PathBuf>,

@@ -26,11 +26,13 @@ The server is built for Unix systems, but the websites it serves should run anyw
     export PANTHEON_ROOT=/path/to/pantheon
     ```
 
+In total, this process will compile trunk, cargo-script, the rmake script, the Pantheon server, the home page, and a page for each implemented system. It will take a while.
+
 ## Running
 
 Run `pantheon` wherever you want. It will ~~erase~~ scan your files (recursively into subdirectories) and serve any files with the extension `.panth`.
 
-Open up your browser to 
+Open up your browser to http://localhost:8080. You can use a different port as a command line option (see `pantheon --help`).
 
 ## Important Considerations
 

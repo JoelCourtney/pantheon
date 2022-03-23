@@ -1,8 +1,15 @@
+//! Helper functions and structs that deal with the filesystem.
+
 use jwalk::WalkDir;
 use pantheon::shared::CharacterFile;
 use shrinkwraprs::Shrinkwrap;
 use std::path::PathBuf;
 
+/// File extension for Pantheon character files.
+const PANTHEON_EXTENSION: &str = "panth";
+
+/// Uses [jwalk](https://docs.rs/jwalk/0.6.0/jwalk/) to find all files
+/// ending in [PANTHEON_EXTENSION].
 pub(crate) fn list_characters(prefix: &PathBuf) -> Vec<CharacterFile> {
     WalkDir::new(prefix)
         .sort(true)
@@ -14,7 +21,7 @@ pub(crate) fn list_characters(prefix: &PathBuf) -> Vec<CharacterFile> {
             }
             let path: PathBuf = entry.path();
             match path.extension() {
-                Some(ext) if ext == "panth" => Some(
+                Some(ext) if ext == PANTHEON_EXTENSION => Some(
                     path.strip_prefix(prefix)
                         .ok()?
                         .to_path_buf()
