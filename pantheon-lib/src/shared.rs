@@ -22,9 +22,9 @@ impl TryFrom<PathBuf> for CharacterFile {
             .ok_or(OsString)?
             .to_owned();
         let prefix_end = full_path.find(&file_name).ok_or(CouldntFindFileName)?;
-        let first_dot = file_name.find(".").ok_or(NoFirstDot)?;
-        let second_dot = &file_name[first_dot + 1..]
-            .find(".")
+        let first_dot = file_name.find('.').ok_or(NoFirstDot)?;
+        let second_dot = file_name[first_dot + 1..]
+            .find('.')
             .ok_or(NoSecondDot)?
             + first_dot
             + 1;

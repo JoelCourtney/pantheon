@@ -3,14 +3,14 @@
 use jwalk::WalkDir;
 use pantheon::shared::CharacterFile;
 use shrinkwraprs::Shrinkwrap;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 /// File extension for Pantheon character files.
 const PANTHEON_EXTENSION: &str = "panth";
 
 /// Uses [jwalk](https://docs.rs/jwalk/0.6.0/jwalk/) to find all files
 /// ending in [PANTHEON_EXTENSION].
-pub(crate) fn list_characters(prefix: &PathBuf) -> Vec<CharacterFile> {
+pub(crate) fn list_characters(prefix: &Path) -> Vec<CharacterFile> {
     WalkDir::new(prefix)
         .sort(true)
         .into_iter()

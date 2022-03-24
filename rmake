@@ -55,7 +55,10 @@ enum Command {
     Install,
 
     /// Cleans all target and artifact directories
-    Clean
+    Clean,
+
+    /// Runs clippy
+    Clippy
 }
 
 impl Command {
@@ -91,6 +94,15 @@ impl Command {
                     invoke("cargo", vec!["clean"], other)?;
                 }
                 invoke("cargo", vec!["clean"], SERVER)
+            }
+            Clippy => {
+                for site in WEBSITES {
+                    invoke("cargo", vec!["clippy"], site)?;
+                }
+                for other in OTHER_CRATES {
+                    invoke("cargo", vec!["clippy"], other)?;
+                }
+                invoke("cargo", vec!["clippy"], SERVER)
             }
         }
     }

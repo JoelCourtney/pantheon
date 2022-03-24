@@ -77,7 +77,7 @@ async fn serve_icon(root: web::Data<ServeRoot>) -> HttpResponse {
     let path = format!("{root}/icon.png");
     HttpResponse::Ok()
         .content_type(ContentType::png())
-        .body(std::fs::read(&path).expect(&format!("file not found: {path}")))
+        .body(std::fs::read(&path).unwrap_or_else(|_| panic!("file not found: {path}")))
 }
 
 /// Serves files for the home page, before a system/character is chosen.
@@ -93,7 +93,7 @@ async fn serve_home(root: web::Data<ServeRoot>, file: web::Path<String>) -> Http
                 .unwrap()
                 .essence_str(),
         )
-        .body(std::fs::read(&path).expect(&format!("file not found: {path}")))
+        .body(std::fs::read(&path).unwrap_or_else(|_| panic!("file not found: {path}")))
 }
 
 /// Serves a list of all characters found in this directory.

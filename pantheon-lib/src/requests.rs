@@ -9,7 +9,7 @@ pub async fn query<T: DeserializeOwned>(path: impl AsRef<str>, body: impl Into<B
     let res = client
         .post(format!(
             "{}/{}",
-            seed::window().location().origin().map_err(|e| WindowLocation(e))?,
+            seed::window().location().origin().map_err(WindowLocation)?,
             path.as_ref()
         ))
         .body(body)

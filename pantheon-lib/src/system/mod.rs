@@ -20,6 +20,7 @@ pub trait System: Default {
 /// access `x` or `y`, neither value will be computed. If `x` is evaluated, it will
 /// trigger `y`'s evaluation first. `y` will only be computed once even if both `x`
 /// and `y` are used explicitly.
+#[allow(clippy::type_complexity)]
 pub struct Lazy<T, S: System, E: Display>(RefCell<(T, Vec<(u8,CharacterOperation<T, S, E>)>)>);
 
 impl<T: Default, S: System, E: Display> Lazy<T, S, E> {
