@@ -227,7 +227,7 @@ fn sanitize_path(raw: &str) -> String {
 }
 
 fn format_file_stem(raw: &str) -> String {
-    sanitize_path(raw).to_snek_case()
+    sanitize_path(&raw.to_snek_case())
 }
 
 struct NameInfo {

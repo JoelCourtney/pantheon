@@ -71,28 +71,28 @@ async fn serve_root(root: web::Data<ServeRoot>) -> HttpResponse {
 
 /// Serves just the favicon.
 #[get("/favicon.ico")]
-async fn serve_icon(root: web::Data<ServeRoot>) -> HttpResponse {
+async fn serve_icon(root: web::Data<ServeRoot>) -> std::io::Result<HttpResponse> {
     let root = root.into_inner();
     let path = format!("{root}/favicon.ico");
-    HttpResponse::Ok()
+    Ok(HttpResponse::Ok()
         .content_type(ContentType::png())
-        .body(std::fs::read(&path).unwrap_or_else(|_| panic!("file not found: {path}")))
+        .body(std::fs::read(&path)?))
 }
 
 /// Serves files for the home page, before a system/character is chosen.
 #[get("/{file}")]
-async fn serve_home(root: web::Data<ServeRoot>, file: web::Path<String>) -> HttpResponse {
+async fn serve_home(root: web::Data<ServeRoot>, file: web::Path<String>) -> std::io::Result<HttpResponse> {
     let root = root.into_inner();
     let file = &file.into_inner();
     let path = format!("{root}/home/{file}");
-    HttpResponse::Ok()
+    Ok(HttpResponse::Ok()
         .content_type(
             mime_guess::from_path(Path::new(file))
                 .first()
                 .unwrap()
                 .essence_str(),
         )
-        .body(std::fs::read(&path).unwrap_or_else(|_| panic!("file not found: {path}")))
+        .body(std::fs::read(&path)?))
 }
 
 #[post("/query")]
@@ -121,43 +121,4 @@ async fn post_queries(bytes: web::Bytes, prefix: web::Data<PathBuf>, root: web::
             }
         })
     )
-}
-
-/// Serves a list of all characters found in this directory.
-#[post("/list_characters")]
-async fn list_characters(prefix: web::Data<PathBuf>) -> HttpResponse {
-    let characters = filesystem::list_characters(&prefix);
-    let encoded = bincode::serialize(&characters).unwrap();
-    HttpResponse::Ok()
-        .content_type(ContentType::octet_stream().essence_str())
-        .body(encoded)
-}
-
-/// Serves the raw bytes of a character file.
-#[post("/read_character/{base_path:.+}")]
-async fn read_character(
-    base_path: web::Path<PathBuf>,
-    prefix: web::Data<PathBuf>,
-) -> std::io::Result<HttpResponse> {
-    let mut path = prefix.to_path_buf();
-    path.push(base_path.into_inner());
-    let bytes = std::fs::read(path)?;
-    Ok(HttpResponse::Ok()
-        .content_type(ContentType::octet_stream().essence_str())
-        .body(bytes))
-}
-
-/// Writes the raw bytes of a character to file.
-#[post("/write_character/{base_path:.+}")]
-async fn write_character(
-    base_path: web::Path<PathBuf>,
-    prefix: web::Data<PathBuf>,
-    bytes: web::Bytes,
-) -> std::io::Result<HttpResponse> {
-    let mut path = prefix.to_path_buf();
-    path.push(base_path.into_inner());
-
-    std::fs::write(path, bytes)?;
-
-    Ok(HttpResponse::Ok().into())
 }
