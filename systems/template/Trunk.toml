@@ -6,6 +6,9 @@ release = false
 # The output dir for all final assets.
 dist = "../../www/systems/template"
 
+# why
+public_url = "./"
+
 [clean]
 # The output dir for all final assets.
 dist = "../../www/systems/template"

@@ -11,3 +11,6 @@ pub mod macros;
 
 #[cfg(feature = "client")]
 pub mod system;
+
+#[cfg(feature = "client")]
+pub mod ui;

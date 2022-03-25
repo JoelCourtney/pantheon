@@ -17,4 +17,4 @@ www/*
 !www/favicon.ico
 
 # Testing
-characters/
+*.panth

@@ -1,15 +1,15 @@
-pub mod ui;
-
 use std::cell::{Ref, RefCell};
 use std::fmt::Display;
 use serde::{Serialize, de::DeserializeOwned};
 
-pub trait System: Default {
-    type MinCharacter: Serialize + DeserializeOwned + Default + SetName;
+pub trait System: Default + Clone {
+    type MinCharacter: Serialize + DeserializeOwned + Default + SetName + Clone;
     type Character: From<Self::MinCharacter>;
 
-    type State;
-    type Message;
+    type State: Default;
+    type Message: Clone;
+
+    const NAME: &'static str;
 }
 
 pub trait SetName {

@@ -1,4 +1,5 @@
 use pantheon::reexports::seed::{prelude::*, *};
+use pantheon::ui::elements::UiError;
 use pantheon::{requests::send_query, shared::{CharacterFile, Query}};
 use heck::*;
 use sanitise_file_name::{Options, sanitise_with_options};
@@ -7,15 +8,19 @@ struct Model {
     characters: Option<Vec<CharacterFile>>,
     systems: Option<Vec<String>>,
     character_name: String,
-    system: Option<String>
+    system: Option<String>,
+    character_error: Option<UiError<Msg>>
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 enum Msg {
     CharactersReceived(Vec<CharacterFile>),
     SystemsReceived(Vec<String>),
     NameChanged(String),
-    SystemChanged(String)
+    SystemChanged(String),
+    CreateCharacter,
+    CreateSuccess(String),
+    ErrorDeleted
 }
 
 fn init(_url: Url, orders: &mut impl Orders<Msg>) -> Model {
@@ -31,11 +36,12 @@ fn init(_url: Url, orders: &mut impl Orders<Msg>) -> Model {
         characters: None,
         systems: None,
         character_name: "".to_string(),
-        system: None
+        system: None,
+        character_error: None
     }
 }
 
-fn update(msg: Msg, model: &mut Model, _: &mut impl Orders<Msg>) {
+fn update(msg: Msg, model: &mut Model, orders: &mut impl Orders<Msg>) {
     match msg {
         Msg::CharactersReceived(mut list) => {
             list.sort();
@@ -51,13 +57,49 @@ fn update(msg: Msg, model: &mut Model, _: &mut impl Orders<Msg>) {
         Msg::SystemChanged(s) => {
             model.system = Some(s);
         }
+        Msg::CreateCharacter => {
+            let name_info = process_name(&model.character_name);
+            if let Some(system) = &model.system {
+                let without_extension = format!(
+                    "{}{}",
+                    &name_info.prefix,
+                    &name_info.file_stem
+                );
+                let full_path = format!(
+                    "{without_extension}.{}.panth",
+                    system
+                );
+                let contents = pantheon::reexports::bincode::serialize(&name_info.pretty_name).unwrap();
+                orders.perform_cmd(async move {
+                    let _: () = send_query(Query::WriteCharacter(full_path.into(), contents)).await.unwrap();
+                    Msg::CreateSuccess(without_extension)
+                });
+            } else {
+                model.character_error = Some(
+                    UiError {
+                        title: "Creation failed.".to_string(),
+                        body: "Please select an RPG system.".to_string(),
+                        message: Box::new(Msg::ErrorDeleted)
+                    }
+                )
+            }
+        }
+        Msg::CreateSuccess(path) => {
+            let full_path = format!("systems/{}/?c={path}", model.system.clone().unwrap());
+            orders.perform_cmd(async move {
+                Url::go_and_load_with_str(full_path);
+            });
+        }
+        Msg::ErrorDeleted => {
+            model.character_error = None;
+        }
     }
 }
 
 fn view(model: &Model) -> impl IntoNodes<Msg> {
     match &model.characters {
         None => nodes! [
-            view_menu(),
+            pantheon::ui::elements::MenuBar(vec![]),
             view_center_box(
                 vec![
                     p! {
@@ -82,12 +124,16 @@ fn view(model: &Model) -> impl IntoNodes<Msg> {
             menu_lists.push((system_name, system_characters));
             menu_lists.remove(0);
             nodes! [
-                view_menu(),
+                pantheon::ui::elements::MenuBar(vec![]),
                 view_center_box(
                     vec![
                         p! {
                             C!("subtitle"),
                             "Create a character:"
+                        },
+                        div! {
+                            C!("block"),
+                            IF!(model.character_error.is_some() => model.character_error.clone().unwrap().into_nodes()),
                         },
                         div! {
                             C!("box"),
@@ -99,7 +145,7 @@ fn view(model: &Model) -> impl IntoNodes<Msg> {
                                         input! {
                                             C!("input"),
                                             attrs! {
-                                                At::Type => "text",
+                                                At::Type => "text"
                                                 At::Placeholder => "Name"
                                             },
                                             input_ev(Ev::Input, Msg::NameChanged)
@@ -141,7 +187,7 @@ fn view(model: &Model) -> impl IntoNodes<Msg> {
                                                 At::Type => "submit",
                                             },
                                             "Create",
-                                            ev(Ev::Click, |_| log!("hello the"))
+                                            ev(Ev::Click, |_| Msg::CreateCharacter)
                                         }
                                     },
                                 },
@@ -182,7 +228,13 @@ fn view(model: &Model) -> impl IntoNodes<Msg> {
                                         characters.into_iter().map(|character| li! {
                                             a! {
                                                 attrs! {
-                                                    At::Href => format!("/{}{}.{}.panth", &character.prefix, &character.name, &character.system)
+                                                    At::Href => format!(
+                                                        "{}/systems/{}/?c={}{}",
+                                                        window().location().origin().unwrap(),
+                                                        &character.system,
+                                                        &character.prefix,
+                                                        &character.name
+                                                    )
                                                 },
                                                 span! {
                                                     C!("has-text-grey"),
@@ -208,7 +260,7 @@ fn view(model: &Model) -> impl IntoNodes<Msg> {
 fn process_name(raw: &str) -> NameInfo {
     let last_slash = raw.rfind('/');
     let (prefix, pretty_name) = if let Some(i) = last_slash {
-        (format!("{}/", sanitize_path(&raw[..=i])), raw[i+1..].to_string())
+        (raw[..=i].to_string(), raw[i+1..].to_string())
     } else {
         ("".to_string(), raw.to_string())
     };
@@ -234,73 +286,6 @@ struct NameInfo {
     pretty_name: String,
     file_stem: String,
     prefix: String
-}
-
-fn view_menu() -> impl IntoNodes<Msg> {
-    nav! {
-        C!("navbar"),
-        style! {
-            St::Padding => rem(1),
-        },
-        attrs! {
-            At::from("role") => "navigation",
-            At::AriaLabel => "main navigation"
-        },
-        div! {
-            C!("navbar-brand"),
-            a! {
-                attrs! {
-                    At::Href => "/"
-                },
-                img! {
-                    C!("navbar-item"),
-                    attrs! {
-                        At::Src => "/favicon.ico",
-                        At::Width => 60,
-                    }
-                },
-            },
-            a! {
-                attrs! {
-                    At::Href => "/"
-                },
-                div! {
-                    C!("navbar-item"),
-                    h1! {
-                        C!("title"),
-                        "Pantheon"
-                    }
-                }
-            },
-            a! {
-                C!("navbar-burger"),
-                attrs! {
-                    At::from("role") => "button",
-                    At::AriaLabel => "menu",
-                    At::AriaExpanded => false,
-                    At::from("data-target") => "navbar"
-                },
-                span! { attrs! { At::from("aria-hidden") => true }},
-                span! { attrs! { At::from("aria-hidden") => true }},
-                span! { attrs! { At::from("aria-hidden") => true }}
-            }
-        },
-        div! {
-            C!("navbar-menu"),
-            id!("navbar"),
-            div! {
-                C!("navbar-start")
-            },
-            div! {
-                C!("navbar-end"),
-                a! {
-                    C!("navbar-item"),
-                    attrs!{At::Href => "https://github.com/JoelCourtney/pantheon"},
-                    "Github"
-                }
-            }
-        }
-    }
 }
 
 fn view_center_box(content: Vec<Node<Msg>>) -> impl IntoNodes<Msg> {

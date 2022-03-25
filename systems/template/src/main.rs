@@ -2,7 +2,7 @@ use pantheon::system::*;
 use pantheon::reexports::serde::{Serialize, Deserialize};
 use pantheon::reexports::thiserror::Error;
 
-#[derive(Default)]
+#[derive(Default, Clone)]
 struct Template;
 
 impl System for Template {
@@ -11,9 +11,11 @@ impl System for Template {
 
     type State = ();
     type Message = ();
+
+    const NAME: &'static str = "template";
 }
 
-#[derive(Serialize, Deserialize, Default)]
+#[derive(Serialize, Deserialize, Default, Clone)]
 #[serde(crate = "pantheon::reexports::serde")]
 struct MinCharacter {
     name: String
@@ -47,5 +49,5 @@ impl From<MinCharacter> for Character {
 enum EvalError {}
 
 fn main() {
-    pantheon::system::ui::run::<Template>();
+    pantheon::ui::run::<Template>();
 }

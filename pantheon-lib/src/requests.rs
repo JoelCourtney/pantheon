@@ -18,7 +18,6 @@ pub async fn send_query<T: DeserializeOwned>(query: Query) -> Result<T, QueryErr
     Ok(bincode::deserialize(&bytes)?)
 }
 
-
 #[derive(Error, Debug)]
 pub enum QueryError {
     #[error("couldn't get window location origin")]

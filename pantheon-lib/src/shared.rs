@@ -10,7 +10,7 @@ pub enum Query {
     WriteCharacter(PathBuf, Vec<u8>)
 }
 
-#[derive(Eq, PartialEq, Ord, PartialOrd, Serialize, Deserialize, Debug)]
+#[derive(Eq, PartialEq, Ord, PartialOrd, Serialize, Deserialize, Debug, Clone)]
 pub struct CharacterFile {
     pub system: String,
     pub prefix: String,
@@ -44,7 +44,7 @@ impl TryFrom<PathBuf> for CharacterFile {
     }
 }
 
-#[derive(Error, Debug)]
+#[derive(Error, Debug, Serialize, Deserialize)]
 pub enum CharacterFileError {
     #[error("couldn't convert full path to str")] FullPath,
     #[error("path didn't have a file name")] NoFileName,

@@ -37,6 +37,7 @@ async fn main() -> std::io::Result<()> {
             .service(serve_root)
             .service(serve_icon)
             .service(serve_home)
+            .service(serve_system)
             .service(post_queries)
     })
     .bind(format!("127.0.0.1:{}", opt.port))?
@@ -62,11 +63,11 @@ struct Opt {
 
 /// Serves the index page.
 #[get("/")]
-async fn serve_root(root: web::Data<ServeRoot>) -> HttpResponse {
+async fn serve_root(root: web::Data<ServeRoot>) -> std::io::Result<HttpResponse> {
     let root = root.into_inner();
-    HttpResponse::Ok()
+    Ok(HttpResponse::Ok()
         .content_type("text/html")
-        .body(std::fs::read(format!("{root}/home/index.html")).unwrap())
+        .body(std::fs::read(format!("{root}/home/index.html"))?))
 }
 
 /// Serves just the favicon.
@@ -77,6 +78,27 @@ async fn serve_icon(root: web::Data<ServeRoot>) -> std::io::Result<HttpResponse>
     Ok(HttpResponse::Ok()
         .content_type(ContentType::png())
         .body(std::fs::read(&path)?))
+}
+
+#[get("/systems/{system}/{file:.*}")]
+async fn serve_system(root: web::Data<ServeRoot>, path: web::Path<(String,String)>) -> std::io::Result<HttpResponse> {
+    let (system, file) = path.into_inner();
+    let root = root.into_inner();
+    dbg!(&file);
+    dbg!(&system);
+    let (path, mime) = if file.is_empty() || file == "/" {
+        (format!("{root}/systems/{system}/index.html"), ContentType::html().to_string())
+    } else {
+        (
+            format!("{root}/systems/{system}/{file}"),
+            mime_guess::from_path(Path::new(&file))
+                .first()
+                .unwrap()
+                .essence_str().to_string()
+        )
+    };
+    Ok(HttpResponse::Ok()
+        .content_type(mime).body(std::fs::read(dbg!(&(path))).unwrap()))
 }
 
 /// Serves files for the home page, before a system/character is chosen.
@@ -91,8 +113,7 @@ async fn serve_home(root: web::Data<ServeRoot>, file: web::Path<String>) -> std:
                 .first()
                 .unwrap()
                 .essence_str(),
-        )
-        .body(std::fs::read(&path)?))
+        ).body(std::fs::read(&path)?))
 }
 
 #[post("/query")]
@@ -111,7 +132,7 @@ async fn post_queries(bytes: web::Bytes, prefix: web::Data<PathBuf>, root: web::
             Query::ReadCharacter(base_path) => {
                 let mut path = prefix.to_path_buf();
                 path.push(base_path);
-                std::fs::read(path)?
+                std::fs::read(dbg!(path))?
             }
             Query::WriteCharacter(base_path, bytes) => {
                 let mut path = prefix.to_path_buf();
