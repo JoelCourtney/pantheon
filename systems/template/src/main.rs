@@ -8,12 +8,21 @@ struct Template;
 impl System for Template {
     type MinCharacter = MinCharacter;
     type Character = Character;
+
+    type State = ();
+    type Message = ();
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Default)]
 #[serde(crate = "pantheon::reexports::serde")]
 struct MinCharacter {
     name: String
+}
+
+impl SetName for MinCharacter {
+    fn set_name(&mut self, name: String) {
+        self.name = name;
+    }
 }
 
 type L<T> = Lazy<T, Template, EvalError>;

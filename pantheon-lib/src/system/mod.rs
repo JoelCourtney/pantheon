@@ -5,8 +5,15 @@ use std::fmt::Display;
 use serde::{Serialize, de::DeserializeOwned};
 
 pub trait System: Default {
-    type MinCharacter: Serialize + DeserializeOwned;
+    type MinCharacter: Serialize + DeserializeOwned + Default + SetName;
     type Character: From<Self::MinCharacter>;
+
+    type State;
+    type Message;
+}
+
+pub trait SetName {
+    fn set_name(&mut self, name: String);
 }
 
 /// A value computed lazily with a list of operations to perform.

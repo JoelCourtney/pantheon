@@ -13,6 +13,7 @@ use colored::Colorize;
 use filesystem::ServeRoot;
 use std::path::{Path, PathBuf};
 use structopt::StructOpt;
+use pantheon::shared::Query;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -36,9 +37,7 @@ async fn main() -> std::io::Result<()> {
             .service(serve_root)
             .service(serve_icon)
             .service(serve_home)
-            .service(list_characters)
-            .service(read_character)
-            .service(write_character)
+            .service(post_queries)
     })
     .bind(format!("127.0.0.1:{}", opt.port))?
     .run()
@@ -71,10 +70,10 @@ async fn serve_root(root: web::Data<ServeRoot>) -> HttpResponse {
 }
 
 /// Serves just the favicon.
-#[get("/icon.png")]
+#[get("/favicon.ico")]
 async fn serve_icon(root: web::Data<ServeRoot>) -> HttpResponse {
     let root = root.into_inner();
-    let path = format!("{root}/icon.png");
+    let path = format!("{root}/favicon.ico");
     HttpResponse::Ok()
         .content_type(ContentType::png())
         .body(std::fs::read(&path).unwrap_or_else(|_| panic!("file not found: {path}")))
@@ -94,6 +93,34 @@ async fn serve_home(root: web::Data<ServeRoot>, file: web::Path<String>) -> Http
                 .essence_str(),
         )
         .body(std::fs::read(&path).unwrap_or_else(|_| panic!("file not found: {path}")))
+}
+
+#[post("/query")]
+async fn post_queries(bytes: web::Bytes, prefix: web::Data<PathBuf>, root: web::Data<ServeRoot>) -> std::io::Result<HttpResponse> {
+    let query: Query = bincode::deserialize(&bytes).unwrap();
+    Ok(
+        HttpResponse::Ok()
+        .content_type(ContentType::octet_stream().essence_str())
+        .body(match query {
+            Query::ListCharacters => {
+                bincode::serialize(&filesystem::list_characters(&prefix)).unwrap()
+            }
+            Query::ListSystems => {
+                bincode::serialize(&filesystem::list_systems(root.get_ref())).unwrap()
+            }
+            Query::ReadCharacter(base_path) => {
+                let mut path = prefix.to_path_buf();
+                path.push(base_path);
+                std::fs::read(path)?
+            }
+            Query::WriteCharacter(base_path, bytes) => {
+                let mut path = prefix.to_path_buf();
+                path.push(base_path);
+                std::fs::write(path, bytes)?;
+                bincode::serialize(&()).unwrap()
+            }
+        })
+    )
 }
 
 /// Serves a list of all characters found in this directory.

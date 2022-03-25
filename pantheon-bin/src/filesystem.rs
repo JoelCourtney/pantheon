@@ -51,3 +51,21 @@ impl std::fmt::Display for ServeRoot {
         write!(f, "{}", self.0)
     }
 }
+
+pub(crate) fn list_systems(root: &ServeRoot) -> Vec<String> {
+    WalkDir::new(format!("{root}/systems/"))
+        .sort(true)
+        .min_depth(1)
+        .max_depth(1)
+        .into_iter()
+        .filter_map(|entry| {
+            let entry = entry.unwrap();
+            if !entry.file_type.is_dir() {
+                return None;
+            }
+            match entry.file_name.to_str().unwrap() {
+                "template" => None,
+                other => Some(other.to_string())
+            }
+        }).collect()
+}

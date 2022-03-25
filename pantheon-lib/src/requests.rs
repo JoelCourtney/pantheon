@@ -1,23 +1,23 @@
 use thiserror::Error;
-use reqwest::Body;
 use serde::de::DeserializeOwned;
+use crate::shared::Query;
 
-pub async fn query<T: DeserializeOwned>(path: impl AsRef<str>, body: impl Into<Body>) -> Result<T, QueryError> {
+pub async fn send_query<T: DeserializeOwned>(query: Query) -> Result<T, QueryError> {
     use QueryError::*;
 
     let client = reqwest::Client::new();
     let res = client
         .post(format!(
-            "{}/{}",
-            seed::window().location().origin().map_err(WindowLocation)?,
-            path.as_ref()
+            "{}/query",
+            seed::window().location().origin().map_err(WindowLocation)?
         ))
-        .body(body)
+        .body(bincode::serialize(&query)?)
         .send()
         .await?;
     let bytes = res.bytes().await?;
     Ok(bincode::deserialize(&bytes)?)
 }
+
 
 #[derive(Error, Debug)]
 pub enum QueryError {

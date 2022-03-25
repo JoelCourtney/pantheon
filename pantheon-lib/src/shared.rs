@@ -2,6 +2,14 @@ use thiserror::Error;
 use serde::{Deserialize, Serialize};
 use std::path::PathBuf;
 
+#[derive(Serialize, Deserialize)]
+pub enum Query {
+    ListCharacters,
+    ListSystems,
+    ReadCharacter(PathBuf),
+    WriteCharacter(PathBuf, Vec<u8>)
+}
+
 #[derive(Eq, PartialEq, Ord, PartialOrd, Serialize, Deserialize, Debug)]
 pub struct CharacterFile {
     pub system: String,
