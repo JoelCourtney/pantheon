@@ -3,15 +3,53 @@ use serde::{de::DeserializeOwned, Serialize};
 use std::cell::{Ref, RefCell};
 use std::fmt::Display;
 
+/// The interface that all RPG systems implement.
+///
+/// This allows the pantheon library to wrap the system's UI and behavior
+/// in common features like a menu bar. It also automates the process of
+/// expanding expanding a minimal character into a full character.
 pub trait System: Default + Clone {
+    /// The single source of truth for the full state of the character.
+    ///
+    /// This is the data stored in the filesystem and edited by the player.
+    /// It may not be in a usable state for generating the UI character sheet,
+    /// which is the reason for conversion to a full Character.
+    ///
+    /// # Example
+    ///
+    /// In D&D 5e, you would not store the Athletics modifier, because this can
+    /// be calculated from the following:
+    ///
+    /// 1. Base strength score
+    /// 2. Manual proficiency choices
+    /// 3. Race
+    ///     - Feats chosen
+    /// 4. Class information
+    ///     - Total level (for proficiency bonus)
+    ///     - Classes chosen
+    ///     - Strength ASI's
+    ///     - Feats chosen
+    /// 5. Manual Ability Score overrides
+    ///
+    /// You need to store the above information anyway. If you also store
+    /// the Athletics modifier, you could potentially run into conflict.
     type MinCharacter: Serialize + DeserializeOwned + Default + SetName + Clone;
-    type Character: From<Self::MinCharacter>;
 
+    /// Expanded character generated from the minimal character.
+    ///
+    /// In the example for the [System::MinCharacter] type, this expanded
+    /// character is where you would either eagerly or lazily calculate the
+    /// Athletics modifier.
+    type Character: TryFrom<Self::MinCharacter, Error = Self::SystemError>;
+
+    /// A custom error type for errors that occur during either character conversion
+    /// or viewing
     type SystemError: Display;
 
     type State: Default;
     type Message: Clone;
 
+    /// The name of the system. E.g. "D&D 5e"
     const NAME: &'static str;
 
     fn view(
@@ -20,6 +58,8 @@ pub trait System: Default + Clone {
     ) -> CharacterResult<Vec<Node<crate::ui::Message<Self>>>, Self::SystemError>;
 }
 
+/// When a new character is first created, the library needs to tell the
+/// system the character's name by setting it in the minimal character.
 pub trait SetName {
     fn set_name(&mut self, name: String);
 }

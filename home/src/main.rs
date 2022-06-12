@@ -1,6 +1,6 @@
 use heck::*;
 use pantheon::reexports::seed::{prelude::*, *};
-use pantheon::ui::elements::UiError;
+use pantheon::ui::elements::{UiError, view_center_box};
 use pantheon::{
     requests::send_query,
     shared::{CharacterFile, Query},
@@ -281,16 +281,6 @@ struct NameInfo {
     pretty_name: String,
     file_stem: String,
     prefix: String,
-}
-
-fn view_center_box(content: Vec<Node<Msg>>) -> impl IntoNodes<Msg> {
-    section! {
-        C!["section"],
-        div! {
-            C!("container is-max-desktop"),
-            content
-        }
-    }
 }
 
 fn main() {

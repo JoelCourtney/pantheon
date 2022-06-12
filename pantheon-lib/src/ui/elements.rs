@@ -113,3 +113,15 @@ impl<M: Clone + 'static> IntoNodes<M> for MenuBar<M> {
         }]
     }
 }
+
+pub fn view_center_box<Msg>(content: Vec<Node<Msg>>) -> Vec<Node<Msg>> {
+    nodes! {
+        section! {
+            C!["section"],
+            div! {
+                C!("container is-max-desktop"),
+                content
+            }
+        }
+    }
+}

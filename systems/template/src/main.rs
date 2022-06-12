@@ -24,15 +24,9 @@ impl System for Template {
         character: Character,
     ) -> CharacterResult<Vec<Node<Message<Self>>>, EvalError> {
         Ok(nodes! {
-            section! {
-                C!("section"),
-                div! {
-                    C!("container is-max-desktop"),
-                    h1! {
-                        C!("title"),
-                        eval!(character.name)
-                    }
-                }
+            h1! {
+                C!("title"),
+                eval!(character.name)
             }
         })
     }
@@ -57,14 +51,16 @@ struct Character {
     name: L<String>,
 }
 
-impl From<MinCharacter> for Character {
-    fn from(min: MinCharacter) -> Character {
+impl TryFrom<MinCharacter> for Character {
+    type Error = EvalError;
+
+    fn try_from(min: MinCharacter) -> Result<Character, EvalError> {
         let c = Character::default();
         ops! {
             c;
             name 0 => *name = min.name;
         }
-        c
+        Ok(c)
     }
 }
 

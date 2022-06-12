@@ -7,6 +7,7 @@ use crate::{
 };
 use seed::{prelude::*, *};
 use std::path::PathBuf;
+use elements::view_center_box;
 
 use self::elements::UiError;
 
@@ -137,25 +138,32 @@ fn view<S: System>(state: &State<S>) -> Vec<Node<Message<S>>> {
             ("Build".to_string(), Message::Menu(MenuOption::Build)),
             ("Browse".to_string(), Message::Menu(MenuOption::Browse))
         ]),
-        match &state.character {
+        view_center_box(match &state.character {
             CharacterRequest::Failure(fail) => fail.clone().into_nodes(),
             CharacterRequest::Success(min) => {
-                let character = min.clone().into();
-                match S::view(&state.system_state, character) {
-                    Ok(nodes) => nodes,
-                    Err(CharacterError::Deadlock) => UiError {
-                        title: "Character Evaluation Deadlock".to_string(),
-                        body: "Encountered a dependency cycle when evaluating character.".to_string(),
-                        message: Box::new(Message::CharacterRequest(CharacterRequest::None))
-                    }.into_nodes(),
-                    Err(CharacterError::SystemError(error)) => UiError {
-                        title: format!("Custom {} error encountered", S::NAME),
+                let character_result = min.clone().try_into();
+                match character_result {
+                    Ok(character) => match S::view(&state.system_state, character) {
+                        Ok(nodes) => nodes,
+                        Err(CharacterError::Deadlock) => UiError {
+                            title: "Character Evaluation Deadlock".to_string(),
+                            body: "Encountered a dependency cycle when evaluating character.".to_string(),
+                            message: Box::new(Message::CharacterRequest(CharacterRequest::None))
+                        }.into_nodes(),
+                        Err(CharacterError::SystemError(error)) => UiError {
+                            title: format!("Custom {} error encountered during view", S::NAME),
+                            body: error.to_string(),
+                            message: Box::new(Message::CharacterRequest(CharacterRequest::None))
+                        }.into_nodes()
+                    }
+                    Err(error) => UiError {
+                        title: format!("Custom {} error encountered during character expansion", S::NAME),
                         body: error.to_string(),
                         message: Box::new(Message::CharacterRequest(CharacterRequest::None))
                     }.into_nodes()
                 }
             }
             _ => vec![]
-        }
+        })
     }
 }

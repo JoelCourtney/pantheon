@@ -1,8 +1,8 @@
 #[macro_export]
 macro_rules! ops {
-    ($char_name:ident; $($var:ident $rank:expr => $op:expr;)*) => {
+    ($char_name:ident; $( $(!$keyword:ident)? $var:ident $rank:expr => $op:expr;)*) => {
         $($char_name.$var.register($rank, Box::new(
-            move |$var: &mut _, ops_macro_character: &Character| {
+            $($keyword)? |$var: &mut _, ops_macro_character: &Character| {
                 pantheon::reexports::macros::expand_carriers!($op);
                 Ok(())
             }
