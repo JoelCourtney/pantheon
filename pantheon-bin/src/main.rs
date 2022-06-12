@@ -84,8 +84,6 @@ async fn serve_icon(root: web::Data<ServeRoot>) -> std::io::Result<HttpResponse>
 async fn serve_system(root: web::Data<ServeRoot>, path: web::Path<(String,String)>) -> std::io::Result<HttpResponse> {
     let (system, file) = path.into_inner();
     let root = root.into_inner();
-    dbg!(&file);
-    dbg!(&system);
     let (path, mime) = if file.is_empty() || file == "/" {
         (format!("{root}/systems/{system}/index.html"), ContentType::html().to_string())
     } else {
@@ -98,7 +96,7 @@ async fn serve_system(root: web::Data<ServeRoot>, path: web::Path<(String,String
         )
     };
     Ok(HttpResponse::Ok()
-        .content_type(mime).body(std::fs::read(dbg!(&(path))).unwrap()))
+        .content_type(mime).body(std::fs::read(&(path)).unwrap()))
 }
 
 /// Serves files for the home page, before a system/character is chosen.
@@ -132,7 +130,7 @@ async fn post_queries(bytes: web::Bytes, prefix: web::Data<PathBuf>, root: web::
             Query::ReadCharacter(base_path) => {
                 let mut path = prefix.to_path_buf();
                 path.push(base_path);
-                std::fs::read(dbg!(path))?
+                std::fs::read(path)?
             }
             Query::WriteCharacter(base_path, bytes) => {
                 let mut path = prefix.to_path_buf();
