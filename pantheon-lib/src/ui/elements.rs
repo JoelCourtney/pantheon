@@ -1,5 +1,3 @@
-use std::marker::PhantomData;
-
 use seed::{*, prelude::*};
 
 #[derive(Clone)]
@@ -22,7 +20,7 @@ impl<M: Clone + 'static> IntoNodes<M> for UiError<M> {
                         attrs! {
                             At::AriaLabel => "delete"
                         },
-                        ev(Ev::Click, |_| self.message)
+                        ev(Ev::Click, |_| *self.message)
                     }
                 },
                 div! {
@@ -52,7 +50,10 @@ impl<M: Clone + 'static> IntoNodes<M> for MenuBar<M> {
                     C!("navbar-brand"),
                     a! {
                         attrs! {
-                            At::Href => "/"
+                            At::Href => format!(
+                                "{}/",
+                                window().location().origin().unwrap(),
+                            )
                         },
                         img! {
                             C!("navbar-item"),
@@ -64,7 +65,10 @@ impl<M: Clone + 'static> IntoNodes<M> for MenuBar<M> {
                     },
                     a! {
                         attrs! {
-                            At::Href => "/"
+                            At::Href => format!(
+                                "{}/",
+                                window().location().origin().unwrap(),
+                            )
                         },
                         div! {
                             C!("navbar-item"),

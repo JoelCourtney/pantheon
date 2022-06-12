@@ -2,31 +2,37 @@ pub mod elements;
 
 use std::path::PathBuf;
 use seed::{*, prelude::*};
-use crate::{system::{System, SetName}, requests::{send_query, QueryError}, shared::Query};
+use crate::{system::{System, SetName, CharacterError}, requests::{send_query, QueryError}, shared::Query};
 
 use self::elements::UiError;
 
 struct State<S: System + 'static> {
     character: CharacterRequest<S>,
-    system_state: Option<S::State>
+    system_state: S::State
 }
 
 #[derive(Clone)]
-enum Message<S: System + 'static> {
+pub enum Message<S: System + 'static> {
     CharacterRequest(CharacterRequest<S>),
     Menu(MenuOption),
-    SystemMessage(S::Message)
+    Custom(S::Message)
+}
+
+impl<S: System + 'static> Message<S> {
+    pub fn from(custom: S::Message) -> Self {
+        Message::Custom(custom)
+    }
 }
 
 #[derive(Clone)]
-enum CharacterRequest<S: System + 'static> {
+pub enum CharacterRequest<S: System + 'static> {
     Success(S::MinCharacter),
     Failure(UiError<Message<S>>),
     None
 }
 
 #[derive(Clone)]
-enum MenuOption {
+pub enum MenuOption {
     Play,
     Build,
     Browse
@@ -36,6 +42,7 @@ pub fn run<S: System + 'static>() {
     App::start(
         "app",
         // *vomit*
+        // Future Joel here. WTF is this shit
         &init as &dyn Fn(Url, &mut seed::app::OrdersContainer<Message<S>, State<S>, Vec<Node<Message<S>>>>) -> State<S>,
         update,
         view
@@ -101,11 +108,11 @@ fn init<S: System>(_url: Url, orders: &mut impl Orders<Message<S>>) -> State<S> 
     });
     State {
         character: CharacterRequest::None,
-        system_state: None
+        system_state: S::State::default()
     }
 }
 
-fn update<S: System>(msg: Message<S>, state: &mut State<S>, orders: &mut impl Orders<Message<S>>) {
+fn update<S: System>(msg: Message<S>, state: &mut State<S>, _orders: &mut impl Orders<Message<S>>) {
     use Message::*;
     match msg {
         CharacterRequest(r) => state.character = r,
@@ -115,12 +122,30 @@ fn update<S: System>(msg: Message<S>, state: &mut State<S>, orders: &mut impl Or
 
 fn view<S: System>(state: &State<S>) -> Vec<Node<Message<S>>> {
     nodes! {
-        {
-            elements::MenuBar(vec![
-                ("Play".to_string(), Message::Menu(MenuOption::Play)),
-                ("Build".to_string(), Message::Menu(MenuOption::Build)),
-                ("Browse".to_string(), Message::Menu(MenuOption::Browse))
-            ])
+        elements::MenuBar(vec![
+            ("Play".to_string(), Message::Menu(MenuOption::Play)),
+            ("Build".to_string(), Message::Menu(MenuOption::Build)),
+            ("Browse".to_string(), Message::Menu(MenuOption::Browse))
+        ]),
+        match &state.character {
+            CharacterRequest::Failure(fail) => fail.clone().into_nodes(),
+            CharacterRequest::Success(min) => {
+                let character = min.clone().into();
+                match S::view(&state.system_state, character) {
+                    Ok(nodes) => nodes,
+                    Err(CharacterError::Deadlock) => UiError {
+                        title: "Character Evaluation Deadlock".to_string(),
+                        body: "Encountered a dependency cycle when evaluating character.".to_string(),
+                        message: Box::new(Message::CharacterRequest(CharacterRequest::None))
+                    }.into_nodes(),
+                    Err(CharacterError::SystemError(error)) => UiError {
+                        title: format!("Custom {} error encountered", S::NAME),
+                        body: error.to_string(),
+                        message: Box::new(Message::CharacterRequest(CharacterRequest::None))
+                    }.into_nodes()
+                }
+            }
+            _ => vec![]
         }
     }
 }

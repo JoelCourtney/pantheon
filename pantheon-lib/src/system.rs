@@ -1,15 +1,20 @@
 use std::cell::{Ref, RefCell};
 use std::fmt::Display;
+use seed::prelude::Node;
 use serde::{Serialize, de::DeserializeOwned};
 
 pub trait System: Default + Clone {
     type MinCharacter: Serialize + DeserializeOwned + Default + SetName + Clone;
     type Character: From<Self::MinCharacter>;
 
+    type SystemError: Display;
+
     type State: Default;
     type Message: Clone;
 
     const NAME: &'static str;
+
+    fn view(state: &Self::State, character: Self::Character) -> CharacterResult<Vec<Node<crate::ui::Message<Self>>>, Self::SystemError>;
 }
 
 pub trait SetName {
@@ -66,7 +71,7 @@ impl<T: Default, S: System, E: Display> Default for Lazy<T,S,E> {
 type CharacterOperation<T, S, E> = Box<dyn FnOnce(&mut T, &<S as System>::Character) -> CharacterResult<(), E>>;
 
 /// Special result for character operations.
-type CharacterResult<T, E> = Result<T, CharacterError<E>>;
+pub type CharacterResult<T, E> = Result<T, CharacterError<E>>;
 
 /// Possible errors during character evaluation.
 #[derive(Debug)]
