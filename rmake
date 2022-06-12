@@ -61,7 +61,10 @@ enum Command {
     Clippy,
 
     /// Runs cargo update in all crates
-    Update
+    Update,
+
+    /// Runs cargo fmt
+    Format
 }
 
 impl Command {
@@ -116,6 +119,15 @@ impl Command {
                     invoke("cargo", vec!["update"], other)?;
                 }
                 invoke("cargo", vec!["update"], SERVER)
+            }
+            Format => {
+                for site in WEBSITES {
+                    invoke("cargo", vec!["fmt"], site)?;
+                }
+                for other in OTHER_CRATES {
+                    invoke("cargo", vec!["fmt"], other)?;
+                }
+                invoke("cargo", vec!["fmt"], SERVER)
             }
         }
     }

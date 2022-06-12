@@ -65,7 +65,8 @@ pub(crate) fn list_systems(root: &ServeRoot) -> Vec<String> {
             }
             match entry.file_name.to_str().unwrap() {
                 // "template" => None,
-                other => Some(other.to_string())
+                other => Some(other.to_string()),
             }
-        }).collect()
+        })
+        .collect()
 }

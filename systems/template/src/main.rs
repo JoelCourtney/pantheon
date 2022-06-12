@@ -1,9 +1,9 @@
-use pantheon::system::*;
-use pantheon::reexports::serde::{Serialize, Deserialize};
+use pantheon::reexports::seed::{prelude::*, *};
+use pantheon::reexports::serde::{Deserialize, Serialize};
 use pantheon::reexports::thiserror::Error;
-use pantheon::reexports::seed::{*, prelude::*};
+use pantheon::system::*;
 use pantheon::ui::Message;
-use pantheon::{ops, eval};
+use pantheon::{eval, ops};
 
 #[derive(Default, Clone)]
 struct Template;
@@ -19,7 +19,10 @@ impl System for Template {
 
     const NAME: &'static str = "template";
 
-    fn view(_state: &(), character: Character) -> CharacterResult<Vec<Node<Message<Self>>>, EvalError> {
+    fn view(
+        _state: &(),
+        character: Character,
+    ) -> CharacterResult<Vec<Node<Message<Self>>>, EvalError> {
         Ok(nodes! {
             section! {
                 C!("section"),
@@ -38,7 +41,7 @@ impl System for Template {
 #[derive(Serialize, Deserialize, Default, Clone)]
 #[serde(crate = "pantheon::reexports::serde")]
 struct MinCharacter {
-    name: String
+    name: String,
 }
 
 impl SetName for MinCharacter {
@@ -51,7 +54,7 @@ type L<T> = Lazy<T, Template, EvalError>;
 
 #[derive(Default)]
 struct Character {
-    name: L<String>
+    name: L<String>,
 }
 
 impl From<MinCharacter> for Character {

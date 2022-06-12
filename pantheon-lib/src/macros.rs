@@ -14,5 +14,5 @@ macro_rules! ops {
 macro_rules! eval {
     ($char_name:ident.$var:ident) => {
         &*$char_name.$var.evaluate(&$char_name)?
-    }
+    };
 }

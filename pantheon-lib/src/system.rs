@@ -1,7 +1,7 @@
+use seed::prelude::Node;
+use serde::{de::DeserializeOwned, Serialize};
 use std::cell::{Ref, RefCell};
 use std::fmt::Display;
-use seed::prelude::Node;
-use serde::{Serialize, de::DeserializeOwned};
 
 pub trait System: Default + Clone {
     type MinCharacter: Serialize + DeserializeOwned + Default + SetName + Clone;
@@ -14,7 +14,10 @@ pub trait System: Default + Clone {
 
     const NAME: &'static str;
 
-    fn view(state: &Self::State, character: Self::Character) -> CharacterResult<Vec<Node<crate::ui::Message<Self>>>, Self::SystemError>;
+    fn view(
+        state: &Self::State,
+        character: Self::Character,
+    ) -> CharacterResult<Vec<Node<crate::ui::Message<Self>>>, Self::SystemError>;
 }
 
 pub trait SetName {
@@ -33,7 +36,7 @@ pub trait SetName {
 /// trigger `y`'s evaluation first. `y` will only be computed once even if both `x`
 /// and `y` are used explicitly.
 #[allow(clippy::type_complexity)]
-pub struct Lazy<T, S: System, E: Display>(RefCell<(T, Vec<(u8,CharacterOperation<T, S, E>)>)>);
+pub struct Lazy<T, S: System, E: Display>(RefCell<(T, Vec<(u8, CharacterOperation<T, S, E>)>)>);
 
 impl<T: Default, S: System, E: Display> Lazy<T, S, E> {
     /// Evaluate the value if needed, and return a [Ref] to it.
@@ -43,12 +46,14 @@ impl<T: Default, S: System, E: Display> Lazy<T, S, E> {
             std::mem::drop(immutable_borrow);
             if let Ok(mut mutable_borrow) = self.0.try_borrow_mut() {
                 let (value, ops) = &mut *mutable_borrow;
-                ops.sort_unstable_by(|(first_rank,_), (second_rank,_)| first_rank.cmp(second_rank));
-                for (_,op) in ops.drain(..) {
+                ops.sort_unstable_by(|(first_rank, _), (second_rank, _)| {
+                    first_rank.cmp(second_rank)
+                });
+                for (_, op) in ops.drain(..) {
                     op(value, character)?;
                 }
             } else {
-                return Err(CharacterError::Deadlock)
+                return Err(CharacterError::Deadlock);
             }
             immutable_borrow = self.0.borrow();
         }
@@ -61,14 +66,15 @@ impl<T: Default, S: System, E: Display> Lazy<T, S, E> {
     }
 }
 
-impl<T: Default, S: System, E: Display> Default for Lazy<T,S,E> {
+impl<T: Default, S: System, E: Display> Default for Lazy<T, S, E> {
     fn default() -> Self {
         Lazy(RefCell::new((T::default(), Vec::new())))
     }
 }
 
 /// An operation performed on the character by a piece of content.
-type CharacterOperation<T, S, E> = Box<dyn FnOnce(&mut T, &<S as System>::Character) -> CharacterResult<(), E>>;
+type CharacterOperation<T, S, E> =
+    Box<dyn FnOnce(&mut T, &<S as System>::Character) -> CharacterResult<(), E>>;
 
 /// Special result for character operations.
 pub type CharacterResult<T, E> = Result<T, CharacterError<E>>;
@@ -82,5 +88,5 @@ pub enum CharacterError<E: Display> {
     Deadlock,
 
     /// Allows systems to create their own errors.
-    SystemError(E)
+    SystemError(E),
 }

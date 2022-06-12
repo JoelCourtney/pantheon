@@ -1,6 +1,6 @@
-use thiserror::Error;
-use serde::de::DeserializeOwned;
 use crate::shared::Query;
+use serde::de::DeserializeOwned;
+use thiserror::Error;
 
 pub async fn send_query<T: DeserializeOwned>(query: Query) -> Result<T, QueryError> {
     use QueryError::*;
@@ -25,5 +25,5 @@ pub enum QueryError {
     #[error(transparent)]
     Reqwest(#[from] reqwest::Error),
     #[error(transparent)]
-    Bincode(#[from] bincode::Error)
+    Bincode(#[from] bincode::Error),
 }

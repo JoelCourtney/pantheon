@@ -1,5 +1,5 @@
 //! Procedural macros used by RPG system implementations.
-//! 
+//!
 //! This crate is re-exported through `pantheon::prelude::*`,
 //! don't import it directly.
 
@@ -7,7 +7,7 @@ use proc_macro2::TokenStream as TokenStream2;
 use proc_macro2::{Group, TokenTree};
 
 /// Expands instances of `x?` into `&*ops_macro_character.x.evaluate(ops_macro_character)?`.
-/// 
+///
 /// *DO NOT USE DIRECTLY.* This is used automatically by the `ops` macro.
 #[proc_macro]
 pub fn expand_carriers(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
