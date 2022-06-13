@@ -66,17 +66,27 @@ fn init<S: System>(_url: Url, orders: &mut impl Orders<Message<S>>) -> State<S> 
             if v.len() == 1 {
                 let mut path = PathBuf::from(v.first().unwrap());
                 path.set_extension(format!("{}.panth", S::NAME));
-                let query = send_query::<S::MinCharacter>(Query::ReadCharacter(path.clone())).await;
+                let query = send_query::<Result<S::MinCharacter, String>>(Query::ReadCharacter(path.clone())).await;
                 match query {
-                    Ok(min) => Message::<S>::CharacterRequest(CharacterRequest::Success(min)),
+                    Ok(Ok(min)) => Message::<S>::CharacterRequest(CharacterRequest::Success(min)),
+                    Ok(Err(err)) => Message::CharacterRequest(CharacterRequest::Failure(UiError {
+                        title: "Could not get character.".to_string(),
+                        body: err,
+                        message: Box::new(Message::CharacterRequest(CharacterRequest::None)),
+                    })),
                     Err(QueryError::Bincode(_)) => {
-                        let string_query = send_query::<String>(Query::ReadCharacter(path)).await;
+                        let string_query = send_query::<Result<String, String>>(Query::ReadCharacter(path)).await;
                         match string_query {
-                            Ok(name) => {
+                            Ok(Ok(name)) => {
                                 let mut default = S::MinCharacter::default();
                                 default.set_name(name);
                                 Message::CharacterRequest(CharacterRequest::Success(default))
                             }
+                            Ok(Err(err)) => Message::CharacterRequest(CharacterRequest::Failure(UiError {
+                                title: "Could not get character.".to_string(),
+                                body: err,
+                                message: Box::new(Message::CharacterRequest(CharacterRequest::None)),
+                            })),
                             Err(e) => {
                                 Message::CharacterRequest(CharacterRequest::Failure(UiError {
                                     title: "Could not deserialize character.".to_string(),

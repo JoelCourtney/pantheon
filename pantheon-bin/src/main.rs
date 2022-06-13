@@ -145,7 +145,7 @@ async fn post_queries(
             Query::ReadCharacter(base_path) => {
                 let mut path = prefix.to_path_buf();
                 path.push(base_path);
-                std::fs::read(path)?
+                bincode::serialize(&std::fs::read(path).map_err(|e| e.to_string())).unwrap()
             }
             Query::WriteCharacter(base_path, bytes) => {
                 let mut path = prefix.to_path_buf();

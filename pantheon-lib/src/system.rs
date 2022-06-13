@@ -49,7 +49,9 @@ pub trait System: Default + Clone {
     type State: Default;
     type Message: Clone;
 
-    /// The name of the system. E.g. "D&D 5e"
+    /// The name of the system. Must be equal to the system's directory name.
+    ///
+    /// E.g. "dnd5e" is valid. "D&D 5e" will cause file errors.
     const NAME: &'static str;
 
     fn view(

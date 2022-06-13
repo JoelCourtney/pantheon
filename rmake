@@ -14,9 +14,10 @@ extern crate colored;
 
 use colored::Colorize;
 
-const WEBSITES: [&str; 2] = [
+const WEBSITES: [&str; 3] = [
     "home",
-    "systems/template"
+    "systems/template",
+    "systems/dnd5e"
 ];
 const SERVER: &str = "pantheon-bin";
 const OTHER_CRATES: [&str; 2] = [
