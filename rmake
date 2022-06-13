@@ -14,9 +14,9 @@ extern crate colored;
 
 use colored::Colorize;
 
-const WEBSITES: [&str; 3] = [
+const TEMPLATE_WEBSITE: &str = "systems/template";
+const WEBSITES: [&str; 2] = [
     "home",
-    "systems/template",
     "systems/dnd5e"
 ];
 const SERVER: &str = "pantheon-bin";
@@ -74,6 +74,7 @@ impl Command {
 
         match self {
             Build => {
+                invoke("trunk", vec!["build"], TEMPLATE_WEBSITE)?;
                 for site in WEBSITES {
                     invoke("trunk", vec!["build"], site)?;
                 }
@@ -95,6 +96,7 @@ impl Command {
                 invoke("cargo", vec!["install", "--path", "."], SERVER)
             }
             Clean => {
+                invoke("trunk", vec!["clean"], TEMPLATE_WEBSITE)?;
                 for site in WEBSITES {
                     invoke("trunk", vec!["clean"], site)?;
                 }
@@ -104,6 +106,7 @@ impl Command {
                 invoke("cargo", vec!["clean"], SERVER)
             }
             Clippy => {
+                invoke("cargo", vec!["clippy"], TEMPLATE_WEBSITE)?;
                 for site in WEBSITES {
                     invoke("cargo", vec!["clippy"], site)?;
                 }
@@ -113,6 +116,7 @@ impl Command {
                 invoke("cargo", vec!["clippy"], SERVER)
             }
             Update => {
+                invoke("cargo", vec!["update"], TEMPLATE_WEBSITE)?;
                 for site in WEBSITES {
                     invoke("cargo", vec!["update"], site)?;
                 }
@@ -122,6 +126,7 @@ impl Command {
                 invoke("cargo", vec!["update"], SERVER)
             }
             Format => {
+                invoke("cargo", vec!["fmt"], TEMPLATE_WEBSITE)?;
                 for site in WEBSITES {
                     invoke("cargo", vec!["fmt"], site)?;
                 }
