@@ -12,6 +12,7 @@ struct Model {
     systems: Option<Vec<String>>,
     character_name: String,
     system: Option<String>,
+    system_dropdown_active: bool,
     character_error: Option<UiError<Msg>>,
 }
 
@@ -24,6 +25,7 @@ enum Msg {
     CreateCharacter,
     CreateSuccess(String),
     ErrorDeleted,
+    ToggleDropdown
 }
 
 fn init(_url: Url, orders: &mut impl Orders<Msg>) -> Model {
@@ -40,6 +42,7 @@ fn init(_url: Url, orders: &mut impl Orders<Msg>) -> Model {
         systems: None,
         character_name: "".to_string(),
         system: None,
+        system_dropdown_active: false,
         character_error: None,
     }
 }
@@ -59,6 +62,7 @@ fn update(msg: Msg, model: &mut Model, orders: &mut impl Orders<Msg>) {
         }
         Msg::SystemChanged(s) => {
             model.system = Some(s);
+            model.system_dropdown_active = false;
         }
         Msg::CreateCharacter => {
             let name_info = process_name(&model.character_name);
@@ -89,6 +93,9 @@ fn update(msg: Msg, model: &mut Model, orders: &mut impl Orders<Msg>) {
         }
         Msg::ErrorDeleted => {
             model.character_error = None;
+        }
+        Msg::ToggleDropdown => {
+            model.system_dropdown_active = !model.system_dropdown_active;
         }
     }
 }
@@ -144,25 +151,46 @@ fn view(model: &Model) -> impl IntoNodes<Msg> {
                                     }
                                 },
                                 div! {
-                                    C!("control"),
+                                    C!("control dropdown", IF!(model.system_dropdown_active => "is-active")),
                                     div! {
-                                        C!("select"),
-                                        select! {
-                                            input_ev(Ev::Input, Msg::SystemChanged),
-                                            option! {
-                                                attrs! {
-                                                    At::Selected => model.system.is_none().as_at_value(),
-                                                    At::Disabled => true.as_at_value()
-                                                },
-                                                "system"
+                                        C!("dropdown-trigger"),
+                                        button! {
+                                            C!("button"),
+                                            attrs! {
+                                                At::AriaHasPopup => true.as_at_value(),
+                                                At::AriaControls => "system-dropdown-menu",
+                                                At::Type => "button"
                                             },
+                                            span! {
+                                                if let Some(sys) = &model.system {
+                                                    sys
+                                                } else {
+                                                    "choose system"
+                                                }
+                                            },
+                                            ev(Ev::Click, |_| Msg::ToggleDropdown)
+                                        }
+                                    },
+                                    div! {
+                                        C!("dropdown-menu"),
+                                        attrs! {
+                                            At::Id => "system-dropdown-menu",
+                                            At::Role => "menu"
+                                        },
+                                        div! {
+                                            C!("dropdown-content"),
                                             {
                                                 if let Some(list) = &model.systems {
-                                                    list.iter().map(|sys| option! {
-                                                        attrs! {
-                                                            At::Selected => (model.system.as_ref() == Some(sys)).as_at_value()
-                                                        },
-                                                        sys
+                                                    list.clone().into_iter().map(|sys| {
+                                                        let sys_clone = sys.clone();
+                                                        return a! {
+                                                            C!("dropdown-item", IF!(model.system.is_some() && model.system.as_ref().unwrap() == &sys => "is-active")),
+                                                            attrs! {
+                                                                At::Href => "javascript:void(0);",
+                                                            },
+                                                            sys,
+                                                            ev(Ev::Click, move |_| Msg::SystemChanged(sys_clone))
+                                                        }
                                                     }).collect()
                                                 } else {
                                                     vec![]
