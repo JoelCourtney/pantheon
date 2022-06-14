@@ -65,6 +65,14 @@ fn update(msg: Msg, model: &mut Model, orders: &mut impl Orders<Msg>) {
             model.system_dropdown_active = false;
         }
         Msg::CreateCharacter => {
+            if model.character_name.is_empty() {
+                model.character_error = Some(UiError {
+                    title: "Creation failed.".to_string(),
+                    body: "Please enter a name.".to_string(),
+                    message: Box::new(Msg::ErrorDeleted)
+                });
+                return;
+            }
             let name_info = process_name(&model.character_name);
             if let Some(system) = &model.system {
                 let without_extension = format!("{}{}", &name_info.prefix, &name_info.file_stem);
