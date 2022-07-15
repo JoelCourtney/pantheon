@@ -6,7 +6,7 @@
     "watch": "nodemon --watch src -e svelte,ts,js,css -x \"snowpack build\""
   },
   "dependencies": {
-    "svelte": "^3.24.0"
+    "svelte": "^3.49.0"
   },
   "devDependencies": {
     "@snowpack/plugin-dotenv": "^2.0.5",
