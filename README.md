@@ -1,69 +1,56 @@
-# DnDCent
+# Pantheon
 
-The best (and only) knock-off of DnDBeyond (that I could find) (I might be biased)!
+A framework and server for running a suite of character sheet editors/viewers in role-playing games.
 
-## Setup
+The server is built for Unix systems, but the websites it serves should run anywhere.
 
-### Server
+## Pre-requisites
 
-You need [Cargo](https://doc.rust-lang.org/cargo/index.html) with nightly rustc installed. If you are on Linux and run into an error that says `'rustc' is not installed for the toolchain nightly-...` you might need to run:
+1. [Rust and Cargo](https://www.rust-lang.org/tools/install)
+2. [wasm32-unknown-unknown](https://doc.rust-lang.org/nightly/rustc/platform-support.html) compile target
+    - `rustup target add wasm32-unknown-unknown`
+3. [Trunk](https://trunkrs.dev/)
+    - `cargo install trunk`
+4. [cargo-script](https://lib.rs/crates/cargo-script)
+    - `cargo install cargo-script`
 
-```bash
-$ rustup toolchain uninstall nightly
-$ rustup toolchain install nightly
-```
+## Installation
 
-### UI
+1. First, clone the repo:
+   ```
+   git clone https://github.com/JoelCourtney/pantheon.git
+   ```
+2. In the root of the repo, run `./rmake install`. Yes, it is that sketchy.
+3. Then set the `PANTHEON_ROOT` environment variable to the path where you cloned the repo. This needs to be set whenever pantheon is run, so you should probably put it in you `.bashrc` or `.zshrc`.
+    ```
+    export PANTHEON_ROOT=/path/to/pantheon
+    ```
 
-The frontend uses [Svelte](https://svelte.dev/), [UIkit](https://getuikit.com/), [TypeScript](https://www.typescriptlang.org/), and [Snowpack](https://www.snowpack.dev/), through [npm](https://www.npmjs.com/).
-
-```
-$ cd src/www
-$ npm install
-```
-
-#### UI Style (optional)
-
-If you want to make changes to the css style, you will need [yarn](https://yarnpkg.com/) installed. I know it sucks using npm and yarn in the same project, but it won't matter unless you make changes to the style. Anyway, you will need to run:
-
-```bash
-$ cd src/www/uikit
-$ git submodule update --init
-$ yarn install
-```
-
-The UIkit theme is already included in the repo, so if you aren't making *changes* to the style, you don't need to do this (and you don't need yarn).
-
-## Building
-
-### Server
-
-Run in the root of the repo:
-
-```bash
-$ cargo build
-```
-
-If you make any changes to the client-side code, you do need to rebuild the server, because the contents of those files are bundled directly into the binary to avoid relying on environment variables.
-
-### UI
-
-Any changes to the frontend will require you to rebuild it with `npm run build --prefix src/www`. Or, you can use `npm run watch --prefix src/www` instead to watch for changes and rebuild automatically. Then, you will need to rebuild the server if you are not in dev mode (see end).
-
-#### UI Style
-
-If you make any changes in `src/www/uikit-custom`, you will need to rebuild the uikit theme. Do that with:
-
-```bash
-$ cd src/www
-$ ./compile_style.py
-$ npm run build
-```
+In total, this process will compile trunk, cargo-script, the rmake script, the Pantheon server, the home page, and a page for each implemented system. It will take a while.
 
 ## Running
 
-In the root of the repo, you can run the server with `cargo run [FILE]` for debug build or `cargo run --release [FILE]` for release build. Or, you can run the binary directly with `target/debug/dndcent [FILE]` or `target/release/dndcent [FILE]`.
+Run `pantheon` wherever you want. It will ~~erase~~ scan your files (recursively into subdirectories) and serve any files with the extension `.panth`.
 
-### Dev mode
+Open up your browser to http://localhost:8080. You can use a different port as a command line option (see `pantheon --help`).
 
-If [FILE] is not provided, it defaults to "test_character.json", which will be an error if run anywhere other than the root of the repo. Also, it will serve pages dynamically, so changes to the frontend files will be automatically be incorporated without rebuilding/restarting.
+## Important Considerations
+
+**Pros of installing my code on your computer:**
+
+- You get a cool character sheet viewer.*
+  - if it runs*
+- Its free.
+
+**Cons of installing my code on your computer:**
+
+- It could be any of these wonderful things instead!
+  - key logger
+  - ransomware
+  - crypto miner
+  - broken
+- If you don't like spaghetti, you won't like my code.
+    - Your characters will like it even less.
+- It uses http, not https.
+
+I wouldn't install my code on my machine if I was me.

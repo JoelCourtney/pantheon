@@ -1,0 +1,14 @@
+[package]
+name = "pantheon-dnd5e"
+version = "0.1.0"
+edition = "2021"
+authors = ["Joel Courtney <joel.e.courtney@gmail.com>"]
+
+[dependencies]
+pantheon = { path = "../../pantheon-lib" }
+
+[profile.release]
+strip = "debuginfo"
+codegen-units = 1
+opt-level = "z"
+lto = "fat"

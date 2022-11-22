@@ -1,0 +1,183 @@
+#!/usr/bin/env run-cargo-script
+
+//! ```cargo
+//! [dependencies]
+//! structopt = { version = "0.3", features = [ "paw" ] }
+//! paw = "1.0"
+//! thiserror = "1.0.30"
+//! colored = "2.0.0"
+//! ```
+
+extern crate structopt;
+extern crate thiserror;
+extern crate colored;
+
+use colored::Colorize;
+
+const TEMPLATE_WEBSITE: &str = "systems/template";
+const WEBSITES: [&str; 2] = [
+    "home",
+    "systems/dnd5e"
+];
+const SERVER: &str = "pantheon-bin";
+const OTHER_CRATES: [&str; 2] = [
+    "macros",
+    "pantheon-lib"
+];
+
+
+fn prefix() -> colored::ColoredString {
+    "rmake > ".green()
+}
+fn error_prefix() -> colored::ColoredString {
+    "rmake > ".red()
+}
+
+
+/// Pantheon build runner.
+#[derive(structopt::StructOpt)]
+struct Args {
+    #[structopt(subcommand)]
+    command: Option<Command>
+}
+
+#[derive(structopt::StructOpt)]
+enum Command {
+    /// Builds debug artifacts (default if no command specified)
+    Build,
+
+    /// Builds release artifacts
+    BuildRelease,
+
+    /// Builds debug artifacts and runs the server in the root
+    Run,
+
+    /// Installs the release server
+    Install,
+
+    /// Cleans all target and artifact directories
+    Clean,
+
+    /// Runs clippy
+    Clippy,
+
+    /// Runs cargo update in all crates
+    Update,
+
+    /// Runs cargo fmt
+    Format
+}
+
+impl Command {
+    fn exec(&self) -> Result<(), Error> {
+        use Command::*;
+
+        match self {
+            Build => {
+                invoke("trunk", vec!["build"], TEMPLATE_WEBSITE)?;
+                for site in WEBSITES {
+                    invoke("trunk", vec!["build"], site)?;
+                }
+                invoke("cargo", vec!["build"], SERVER)
+            }
+            BuildRelease => {
+                for site in WEBSITES {
+                    invoke("cargo", vec!["update"], site)?;
+                    invoke("trunk", vec!["build", "--release"], site)?;
+                }
+                invoke("cargo", vec!["build", "--release"], SERVER)
+            }
+            Run => {
+                Command::Build.exec()?;
+                invoke("cargo", vec!["run", "--manifest-path", &format!("{}/Cargo.toml", SERVER)], ".")
+            }
+            Install => {
+                Command::BuildRelease.exec()?;
+                invoke("cargo", vec!["install", "--path", "."], SERVER)
+            }
+            Clean => {
+                invoke("trunk", vec!["clean"], TEMPLATE_WEBSITE)?;
+                for site in WEBSITES {
+                    invoke("trunk", vec!["clean"], site)?;
+                }
+                for other in OTHER_CRATES {
+                    invoke("cargo", vec!["clean"], other)?;
+                }
+                invoke("cargo", vec!["clean"], SERVER)
+            }
+            Clippy => {
+                invoke("cargo", vec!["clippy"], TEMPLATE_WEBSITE)?;
+                for site in WEBSITES {
+                    invoke("cargo", vec!["clippy"], site)?;
+                }
+                for other in OTHER_CRATES {
+                    invoke("cargo", vec!["clippy"], other)?;
+                }
+                invoke("cargo", vec!["clippy"], SERVER)
+            }
+            Update => {
+                invoke("cargo", vec!["update"], TEMPLATE_WEBSITE)?;
+                for site in WEBSITES {
+                    invoke("cargo", vec!["update"], site)?;
+                }
+                for other in OTHER_CRATES {
+                    invoke("cargo", vec!["update"], other)?;
+                }
+                invoke("cargo", vec!["update"], SERVER)
+            }
+            Format => {
+                invoke("cargo", vec!["fmt"], TEMPLATE_WEBSITE)?;
+                for site in WEBSITES {
+                    invoke("cargo", vec!["fmt"], site)?;
+                }
+                for other in OTHER_CRATES {
+                    invoke("cargo", vec!["fmt"], other)?;
+                }
+                invoke("cargo", vec!["fmt"], SERVER)
+            }
+        }
+    }
+}
+
+#[paw::main]
+fn main(args: Args) {
+    match match args.command {
+        None => Command::Build.exec(),
+        Some(command) => command.exec()
+    } {
+        Ok(()) => println!("{}great success", prefix()),
+        Err(e) => eprintln!("{}{}", error_prefix(), e)
+    }
+}
+
+fn invoke(command: &str, args: Vec<&str>, path: &str) -> Result<(), Error> {
+    print!("{}{}: {}", prefix(), &path, &command);
+    for arg in &args {
+        print!(" {}", arg);
+    }
+    print!("\n");
+    let exit_code = std::process::Command::new(command)
+        .args(args)
+        .current_dir(path)
+        .stdout(std::process::Stdio::inherit())
+        .stderr(std::process::Stdio::inherit())
+        .output()?.status
+        .code().ok_or(Error::NoStatusCode)?;
+    if exit_code == 0 {
+        Ok(())
+    } else {
+        Err(Error::StatusCode(exit_code))
+    }
+}
+
+#[derive(thiserror::Error, Debug)]
+enum Error {
+    #[error("could not run command: {0}")]
+    Io(#[from] std::io::Error),
+
+    #[error("command exited with code: {0}")]
+    StatusCode(i32),
+
+    #[error("command exited with no status code")]
+    NoStatusCode
+}
