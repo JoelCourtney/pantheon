@@ -1,4 +1,0 @@
-crate::register! {
-    "Feat"
-    alert
-}

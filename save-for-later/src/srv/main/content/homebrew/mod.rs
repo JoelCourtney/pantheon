@@ -1,3 +1,0 @@
-crate::register! {
-    "Homebrew"
-}

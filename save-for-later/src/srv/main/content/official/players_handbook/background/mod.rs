@@ -1,4 +1,0 @@
-crate::register! {
-    "Background"
-    soldier
-}
