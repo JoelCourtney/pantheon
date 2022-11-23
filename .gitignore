@@ -4,10 +4,6 @@
 # Mac
 .DS_Store
 
-# Cargo
-target/
-Cargo.lock
-
 # Vim
 *.swp
 *.swo
@@ -18,3 +14,8 @@ www/*
 
 # Testing
 *.panth
+
+# Added by cargo
+
+/target
+/Cargo.lock
