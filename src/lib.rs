@@ -1,14 +1,13 @@
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
-}
+pub mod routes;
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+use actix_web::{HttpServer};
+use actix_web::dev::Server;
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
+pub fn new(port: u16) -> std::io::Result<Server> {
+    Ok(HttpServer::new(|| {
+        actix_web::App::new()
+            .service(routes::health)
+    })
+        .bind(("127.0.0.1", port))?
+        .run())
 }
