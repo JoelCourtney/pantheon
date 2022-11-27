@@ -1,6 +1,7 @@
-pub mod routes;
+mod routes;
+mod filesystem;
 
-use actix_web::{HttpServer};
+use actix_web::{HttpServer, dev::Server};
 use actix_cors::Cors;
 
 pub fn new(port: u16) -> std::io::Result<Server> {

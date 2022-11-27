@@ -8,10 +8,6 @@
 *.swp
 *.swo
 
-# Build artifacts
-www/*
-!www/favicon.ico
-
 # Testing
 *.panth
 
