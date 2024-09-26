@@ -8,10 +8,5 @@
 *.swp
 *.swo
 
-# Testing
-*.panth
-
-# Added by cargo
-
-/target
-/Cargo.lock
+# env
+.env
