@@ -1,5 +1,12 @@
 package net.joelcourtney.pantheon.engine
 
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
+
+@Serializable(with = Staged.StagedSerializer::class)
 class Staged<V: Any>(private var value: V? = null) {
     private enum class EvaluationState {
         NotStarted,
@@ -74,5 +81,11 @@ class Staged<V: Any>(private var value: V? = null) {
             throw IllegalStateException("Cannot set multiple overwriters.")
         }
         overwriter = op
+    }
+
+    class StagedSerializer<T: Any>(private val dataSerializer: KSerializer<T>) : KSerializer<Staged<T>> {
+        override val descriptor: SerialDescriptor = dataSerializer.descriptor
+        override fun serialize(encoder: Encoder, value: Staged<T>) = dataSerializer.serialize(encoder, value.invoke())
+        override fun deserialize(decoder: Decoder) = Staged(dataSerializer.deserialize(decoder))
     }
 }

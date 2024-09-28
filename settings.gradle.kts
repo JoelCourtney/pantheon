@@ -11,4 +11,7 @@ plugins {
 
 rootProject.name = "pantheon"
 
-include("engine")
+include(
+    "engine",
+    "server"
+)

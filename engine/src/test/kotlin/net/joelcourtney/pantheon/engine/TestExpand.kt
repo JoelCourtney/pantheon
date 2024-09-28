@@ -29,7 +29,7 @@ class TestExpand {
 
     @Test
     fun testExpand() {
-        val result = expand(listOf(BasicRules(2), ExtraPlugin))
+        val result = expand(listOf(BasicRules(2), ExtraPlugin), ::Result)
 
         assertEquals(2, result.v1())
         assertEquals("Test says: hellohello world!world!", result.v2())

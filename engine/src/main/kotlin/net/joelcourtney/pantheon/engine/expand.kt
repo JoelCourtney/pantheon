@@ -1,6 +1,6 @@
 package net.joelcourtney.pantheon.engine
 
-fun <C: Any> expand(plugins: Collection<Plugin<C>>, ctor: () -> C): C {
+fun <SHEET: Any> expand(plugins: Collection<Plugin<SHEET>>, ctor: () -> SHEET): SHEET {
     val c = ctor()
 
     for (plugin in plugins) {
