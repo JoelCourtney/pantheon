@@ -12,6 +12,7 @@ dependencies {
     implementation("com.google.guava:guava:32.1.1-jre")
     implementation(kotlin("stdlib-jdk8"))
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
+    implementation("io.ktor:ktor-server-netty:3.0.0-rc-1")
 
     implementation(project(":engine"))
 
@@ -25,5 +26,5 @@ tasks.named<Test>("test") {
 }
 
 kotlin {
-    jvmToolchain(21)
+    jvmToolchain(22)
 }

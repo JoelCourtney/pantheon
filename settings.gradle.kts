@@ -13,5 +13,6 @@ rootProject.name = "pantheon"
 
 include(
     "engine",
-    "server"
+    "server",
+    "examples:simpleRPG"
 )
